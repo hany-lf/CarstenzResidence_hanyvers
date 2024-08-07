@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "497360765806",
+    "project_id": "carstenzresidence",
+    "storage_bucket": "carstenzresidence.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:497360765806:android:65cc6b851450d2ceb9777f",
+        "android_client_info": {
+          "package_name": "com.ifcasoftware.carstenzresidence"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMVUkMRtTxQYMkrtMY4f6v_3IqvPlDx7U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:497360765806:android:1f3dd43a9be6611fb9777f",
+        "android_client_info": {
+          "package_name": "id.co.property365.carstenzresidence"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMVUkMRtTxQYMkrtMY4f6v_3IqvPlDx7U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
