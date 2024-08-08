@@ -87,7 +87,7 @@ export default function StatusHelpHouseNeo({ route }) {
       .then((res) => {
         const datas = res.data;
 
-        const arrDataTower = datas.Data;
+        const arrDataTower = datas.data;
         if (arrDataTower.length > 1) {
           setDefaultTower(false);
         } else {
@@ -172,9 +172,9 @@ export default function StatusHelpHouseNeo({ route }) {
       .then((res) => {
         const datas = res.data;
 
-        console.log("data kategori", datas.Error);
-        if (datas.Error === false) {
-          const datastatus = datas.Data;
+        console.log("data kategori", datas.success);
+        if (datas.success === true) {
+          const datastatus = datas.data;
           console.log("datastatus", datastatus);
 
           if (datastatus.length > 1) {
@@ -243,10 +243,10 @@ export default function StatusHelpHouseNeo({ route }) {
         const datas = res.data;
 
         console.log("data datastatuswhere", datas);
-        const datastatuswhere = datas.Data;
+        const datastatuswhere = datas.data;
         // navigation.navigate('ViewHistoryStatus', {datastatuswhere}); //sementara krn data 0
-        if (datas.Error === false) {
-          const datastatuswhere = datas.Data;
+        if (datas.success === true) {
+          const datastatuswhere = datas.data;
           // setDataStatus(datastatus);
           navigation.navigate("ViewHistoryStatusTRO", datastatuswhere);
           console.log("datastatuswhere", datastatuswhere);

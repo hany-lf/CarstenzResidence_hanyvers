@@ -1880,9 +1880,9 @@ const SignatureAfter = (props) => {
       })
       .then((res) => {
         console.log("res save signature", res.data);
-        setMessage(res.data.Pesan);
+        setMessage(res.data.message);
         //   setMessageResult(resJson.report_no);
-        setStatus(res.data.Error);
+        setStatus(res.data.success);
         showModalSuccess(true);
       })
       .catch((error) => {

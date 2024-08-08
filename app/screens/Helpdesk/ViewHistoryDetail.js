@@ -163,7 +163,7 @@ export default function ViewHistoryDetail({ route }) {
       .then((res) => {
         const datas = res.data;
 
-        const arrDataTower = datas.Data;
+        const arrDataTower = datas.data;
         arrDataTower.map((dat) => {
           if (dat) {
             setdataTowerUser(dat);
@@ -208,7 +208,7 @@ export default function ViewHistoryDetail({ route }) {
       )
       .then((res) => {
         // console.log('res tiket multi', res.data);
-        const resTiketMulti = res.data.Data[0];
+        const resTiketMulti = res.data.data[0];
         const resImageMulti = res.data.DataImage; //
         const resDataAction = res.data.DataAction; //diisi oleh engineer,
         // const resDataLabourdankawankawan = res.data.DataLabourdankawankawan

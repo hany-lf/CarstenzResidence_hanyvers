@@ -64,7 +64,7 @@ const Skip = (props) => {
         const datas = res.data;
         // console.log('res tower', res.data.Data[0]);
 
-        const arrDataTower = datas.Data;
+        const arrDataTower = datas.data;
         // let dataArr = {};
         arrDataTower.map((dat) => {
           if (dat) {

@@ -121,10 +121,10 @@ const Product = (params) => {
           `/modules/store/products?entity_cd=${entity_cd}&project_no=${project_no}&trx_class=H&facility_type=${dataMember.facility_type}`
       )
       .then((res) => {
-        console.log(res.data.Error);
-        if (res.data.Error == false) {
+        console.log(res.data.success);
+        if (res.data.success == true) {
           const datas = res.data;
-          const arrLocation = datas.Data;
+          const arrLocation = datas.data;
           console.log("res api >", datas);
           console.log("arrLocation >", arrLocation);
           console.log("ItemStoreFilter >", dataItemStoreFilter);
@@ -141,7 +141,7 @@ const Product = (params) => {
         } else {
           setSpinner(false);
         }
-        const datas = res.data.Data;
+        const datas = res.data.data;
         const qtyArrayItem = datas.map((item) => {
           return {
             ...item,

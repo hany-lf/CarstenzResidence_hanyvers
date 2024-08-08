@@ -65,8 +65,8 @@ const MeterInfos = ({
       const res = await axios.get(
         `http://apps.pakubuwono-residence.com/apiwebpbi/api/modules/meter/data-filter/IFCAPB/01/01/andi@ifca.co.id/09/2017`
       );
-      setData(res.data.Data);
-      setUserMeter(res.data.Data[0].trx_amt);
+      setData(res.data.data);
+      setUserMeter(res.data.data[0].trx_amt);
       console.log("data Meter", data);
       console.log("Cek trx_amt", userMeter);
     } catch (error) {
@@ -81,7 +81,7 @@ const MeterInfos = ({
       const res = await axios.get(
         `http://apps.pakubuwono-residence.com/apisysadmin/api/getProject/${user.user}`
       );
-      setTowerz(res.data.Data);
+      setTowerz(res.data.data);
       console.log("data Tower", towerz);
     } catch (error) {
       setErrors(error.ressponse.data);

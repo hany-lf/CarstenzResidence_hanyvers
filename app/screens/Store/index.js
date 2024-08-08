@@ -151,15 +151,15 @@ const Store = (props) => {
           `/modules/store/member?entity_cd=${entity_cd}&project_no=${project_no}&email=${email}`
       )
       .then((res) => {
-        console.log("ress member:", res.data.Data);
-        const data = res.data.Data;
+        console.log("ress member:", res.data.data);
+        const data = res.data.data;
         setDataMember(data);
         if (defaultMemberID == true) {
           // setTextLotno(resLotno[0]);
-          setMemberID(res.data.Data[0].member_id);
-          setMemberName(res.data.Data[0].member_name);
-          setTenantNo(res.data.Data[0].tenant_no);
-          setLotNo(res.data.Data[0].lot_no);
+          setMemberID(res.data.data[0].member_id);
+          setMemberName(res.data.data[0].member_name);
+          setTenantNo(res.data.data[0].tenant_no);
+          setLotNo(res.data.data[0].lot_no);
         }
         // if (data.length > 1) {
         //   setDefaultMemberID(false);

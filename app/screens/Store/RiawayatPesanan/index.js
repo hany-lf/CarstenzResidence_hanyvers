@@ -120,7 +120,7 @@ const History = () => {
           `/modules/store/transaction?entity_cd=${entity_cd}&project_no=${project_no}&email=${email}`
       )
       .then((res) => {
-        const data = res.data.Data;
+        const data = res.data.data;
 
         const filterDataStatus = data.filter(function (e) {
           return ["C", "X"].includes(e.bill_status);
@@ -139,9 +139,9 @@ const History = () => {
 
         console.log("tesd filter", sortedDesc);
 
-        if (res.data.Error == false) {
+        if (res.data.success == true) {
           const datas = res.data;
-          const arrLocation = datas.Data;
+          const arrLocation = datas.data;
 
           const filterDataStatus = data.filter(function (e) {
             // return ['D', 'N'].includes(e.bill_status);
@@ -360,7 +360,7 @@ const Payment = () => {
           `/modules/store/transaction?entity_cd=${entity_cd}&project_no=${project_no}&email=${email}`
       )
       .then((res) => {
-        const data = res.data.Data;
+        const data = res.data.data;
 
         const filterDataStatus = data.filter(function (e) {
           return ["D", "N"].includes(e.bill_status);
@@ -378,9 +378,9 @@ const Payment = () => {
 
         console.log("tesd filter", sortedDesc);
 
-        if (res.data.Error == false) {
+        if (res.data.success == true) {
           const datas = res.data;
-          const arrLocation = datas.Data;
+          const arrLocation = datas.data;
 
           const filterDataStatus = data.filter(function (e) {
             return ["D", "N"].includes(e.bill_status);

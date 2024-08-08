@@ -72,8 +72,8 @@ function HistoryBilling({ route }) {
         API_URL_LOKAL +
           `/modules/billing/detail-history/IFCAPB/${user.user}/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`
       );
-      console.log("res detail history", res.data.Data);
-      setDataCurrent(res.data.Data);
+      console.log("res detail history", res.data.data);
+      setDataCurrent(res.data.data);
       // console.log('DATA DUE DATE -->', dataCurrent);
     } catch (error) {
       setErrors(error.ressponse.data);

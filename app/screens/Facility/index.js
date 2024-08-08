@@ -95,7 +95,7 @@ const Facility = (props) => {
       .then((res) => {
         const datas = res.data;
         // console.log('tower entity projek', datas);
-        const arrDataTower = datas.Data;
+        const arrDataTower = datas.data;
         arrDataTower.map((dat) => {
           if (dat) {
             setdataTowerUser(dat);

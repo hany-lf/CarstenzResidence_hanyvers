@@ -156,8 +156,8 @@ class MeterInfo extends React.Component {
     })
       .then((response) => response.json())
       .then((res) => {
-        if (!res.Error) {
-          let resData = res.Data;
+        if (res.success) {
+          let resData = res.data;
           this.setState({
             dataProject: resData,
             spinner: false,
@@ -167,7 +167,7 @@ class MeterInfo extends React.Component {
           this.getMeterLoad(resData);
         } else {
           this.setState({ isLoaded: true }, () => {
-            alert(res.Pesan);
+            alert(res.message);
           });
         }
       })
@@ -210,8 +210,8 @@ class MeterInfo extends React.Component {
     )
       .then((response) => response.json())
       .then((res) => {
-        if (!res.Error) {
-          let resData = res.Data;
+        if (res.success) {
+          let resData = res.data;
           this.setState({ dataMeter: resData, spinner: false });
           console.log("getMeterLoad", this.state.dataMeter);
         } else {
@@ -281,13 +281,13 @@ class MeterInfo extends React.Component {
       .then((response) => response.json())
       .then((res) => {
         console.log("cek isi RES", res);
-        if (!res.Error) {
-          let resData = res.Data;
+        if (res.success) {
+          let resData = res.data;
           this.setState({ dataMeter: resData, spinner: false });
           // console.log('getMeterLoad', this);
         } else {
           this.setState({ isLoaded: true }, () => {
-            alert(res.Pesan);
+            alert(res.message);
           });
         }
       })

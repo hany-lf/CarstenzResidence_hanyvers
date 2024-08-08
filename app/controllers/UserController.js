@@ -35,20 +35,24 @@ class UserController {
           mac: "mac",
           token_firebase: token_firebase,
         },
+        headers: {
+          Authorization: token_firebase,
+        },
       });
       // alert(result.Pesan);
       console.log("39 after try");
       console.log("31 login response -->", result);
       // ini ada isreset dalemnya, sementara dihilangin, buat biar ga nyangkut insert token firebase
-      if (result.Error) {
-        console.log("34 first pesan", result.Pesan);
-        return Promise.reject(result.Pesan);
-      } else {
+      if (result.success) {
         console.log("37 if succes", result);
         return result;
+      } else {
+        console.log("34 first pesan", result.message);
+        return Promise.reject(result.message);
+        
       }
     } catch (error) {
-      console.log("41 if errorz", error);
+      console.log("41 if errorz", error.response);
       return Promise.reject(error);
     }
   };

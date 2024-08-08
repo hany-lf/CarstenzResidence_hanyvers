@@ -51,7 +51,7 @@ const TermsConditions = (props) => {
         project_no
     );
     console.log("response terms data: ", response.data);
-    setData(response.data.Data);
+    setData(response.data.data);
     setSpinner(false);
   };
 

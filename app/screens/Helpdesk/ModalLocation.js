@@ -77,10 +77,10 @@ export default function ModalLocation(props) {
         config,
       })
       .then((res) => {
-        console.log(res.data.Error);
-        if (res.data.Error == false) {
+        console.log(res.data.success);
+        if (res.data.success == true) {
           const datas = res.data;
-          const arrLocation = datas.Data;
+          const arrLocation = datas.data;
 
           console.log("bank arrLocationsdsa", arrLocation);
 
@@ -92,10 +92,10 @@ export default function ModalLocation(props) {
           // });
         } else {
           setSpinner(false);
-          alert(res.Pesan);
+          alert(res.message);
         }
 
-        setArrayHolder(res.data.Data);
+        setArrayHolder(res.data.data);
       })
       .catch((error) => {
         console.log("error get location api", error);

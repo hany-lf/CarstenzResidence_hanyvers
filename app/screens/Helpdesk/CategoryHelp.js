@@ -85,7 +85,7 @@ export default function CategoryHelp({route}) {
       .then(res => {
         const datas = res.data;
 
-        const arrDataTower = datas.Data;
+        const arrDataTower = datas.data;
         arrDataTower.map(dat => {
           if (dat) {
             setdataTowerUser(dat);
@@ -170,7 +170,7 @@ export default function CategoryHelp({route}) {
       })
       .then(res => {
         const datas = res.data;
-        const dataCategorys = datas.Data;
+        const dataCategorys = datas.data;
         console.log('data kategori', dataCategorys);
 
         setDataCategory(dataCategorys);

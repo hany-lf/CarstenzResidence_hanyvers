@@ -97,7 +97,7 @@ const Package = (props) => {
       const res = await axios.get(
         API_URL_LOKAL + `/modules/package/index/` + email
       );
-      const datas = res.data.Data;
+      const datas = res.data.data;
 
       console.log("data package", datas);
 

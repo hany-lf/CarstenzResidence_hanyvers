@@ -111,7 +111,7 @@ export default ChooseEditPartner = (props) => {
       );
       if (res) {
         console.log("res post get partners edit", res);
-        const resPartner = res.data.Data;
+        const resPartner = res.data.data;
         setPartner(resPartner); //akan ditambah ischecklis
         setPartnerItems(resPartner);
         setSpinner(false);

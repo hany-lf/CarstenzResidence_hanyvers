@@ -95,7 +95,7 @@ export default function ViewHistoryStatus({route}) {
       .then(res => {
         const datas = res.data;
 
-        const arrDataTower = datas.Data;
+        const arrDataTower = datas.data;
         arrDataTower.map(dat => {
           if (dat) {
             setdataTowerUser(dat);

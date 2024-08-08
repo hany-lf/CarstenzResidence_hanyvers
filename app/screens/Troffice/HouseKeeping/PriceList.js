@@ -180,7 +180,7 @@ export default function PriceList(props) {
       .then((res) => {
         const datas = res.data;
 
-        const arrDataTower = datas.Data;
+        const arrDataTower = datas.data;
         console.log("data tower ada berapa", arrDataTower.length);
 
         // arrDataTower.length > 1
@@ -256,7 +256,7 @@ export default function PriceList(props) {
       .then((res) => {
         // console.log('res', res);
         const datas = res.data;
-        const dataDebtors = datas.Data;
+        const dataDebtors = datas.data;
         console.log("res debtor", dataDebtors);
         console.log("ada berapa length debtor", dataDebtors.length);
 
@@ -363,11 +363,11 @@ export default function PriceList(props) {
         // console.log('datalotno', res);
         const datas = res.data;
 
-        const dataPrice = datas.Data.single.value;
-        const dataOnce = datas.Data.once_week.value;
-        const dataThrice = datas.Data.thrice_week.value;
-        const dataTwice = datas.Data.twice_week.value;
-        const dataDis = datas.Data.disinfectant.value;
+        const dataPrice = datas.data.single.value;
+        const dataOnce = datas.data.once_week.value;
+        const dataThrice = datas.data.thrice_week.value;
+        const dataTwice = datas.data.twice_week.value;
+        const dataDis = datas.data.disinfectant.value;
 
         // const radio = [
         //   dataLotno.single.value,
@@ -450,9 +450,9 @@ export default function PriceList(props) {
         // console.log('res ?', res);
         return res.json().then((resJson) => {
           // alert(resJson.Pesan);
-          setMessage(resJson.Pesan);
+          setMessage(resJson.message);
           // setStatus(resJson.Status);
-          setStatus(resJson.Error);
+          setStatus(resJson.success);
           setReport(resJson.report_no);
           showModalSuccess(true);
         });

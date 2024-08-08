@@ -218,7 +218,7 @@ export default function DeliveryAndPayment({ route, navigation }) {
           "facility_type=" +
           facility_type
       );
-      const resPayment = res.data.Data;
+      const resPayment = res.data.data;
       // resPayment.push({trx_code: 'others', descs: 'Others'});
 
       console.log("listpayment", resPayment);
@@ -280,7 +280,7 @@ export default function DeliveryAndPayment({ route, navigation }) {
       .then((res) => {
         // console.log('res', res);
         const datas = res.data;
-        const dataDebtors = datas.Data;
+        const dataDebtors = datas.data;
         console.log("res debtor", dataDebtors);
         console.log("ada berapa length debtor", dataDebtors.length);
 
@@ -407,16 +407,16 @@ export default function DeliveryAndPayment({ route, navigation }) {
       axios
         .post(API_URL_LOKAL + "/modules/store/save", formData)
         .then((res) => {
-          if (res.data.Error == false) {
+          if (res.data.success == true) {
             setModalSuccessPayment(true);
-            setMessageAlert(res.data.Pesan);
+            setMessageAlert(res.data.message);
             setMessage(res.data.bill_no);
-            setStatus(res.data.Error);
+            setStatus(res.data.success);
             // alert(res.data.Pesan);
           } else {
             setModalSuccessPayment(true);
-            setMessageAlert(res.data.Pesan);
-            setStatus(res.data.Error);
+            setMessageAlert(res.data.message);
+            setStatus(res.data.success);
             // alert(res.data.Pesan);
           }
         })
@@ -449,16 +449,16 @@ export default function DeliveryAndPayment({ route, navigation }) {
       axios
         .post(API_URL_LOKAL + "/modules/store/save", formData)
         .then((res) => {
-          if (res.data.Error == false) {
+          if (res.data.success == true) {
             setModalSuccessPayment(true);
-            setMessageAlert(res.data.Pesan);
+            setMessageAlert(res.data.message);
             setMessage(res.data.bill_no);
-            setStatus(res.data.Error);
+            setStatus(res.data.success);
             // alert(res.data.Pesan);
           } else {
             setModalSuccessPayment(true);
-            setMessageAlert(res.data.Pesan);
-            setStatus(res.data.Error);
+            setMessageAlert(res.data.message);
+            setStatus(res.data.success);
             // alert(res.data.Pesan);
           }
         })

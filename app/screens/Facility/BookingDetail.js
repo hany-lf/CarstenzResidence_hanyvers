@@ -736,10 +736,10 @@ export default BookingDetail = (props) => {
         .then((res) => {
           console.log("res save book", res.data);
           // return res.data;
-          console.log("res pesan", res.data.Pesan);
-          console.log("res error", res.data.Error);
-          setErrorSubmit(res.data.Error);
-          setMessageSuccess(res.data.Pesan);
+          console.log("res pesan", res.data.message);
+          console.log("res error", res.data.success);
+          setErrorSubmit(res.data.success);
+          setMessageSuccess(res.data.message);
           showModalSuccess(true);
         })
         .catch((error) => {
@@ -784,10 +784,10 @@ export default BookingDetail = (props) => {
         .then((res) => {
           // console.log('res', res);
           // return res.data;
-          console.log("res pesan", res.data.Pesan);
-          console.log("res error", res.data.Error);
-          setErrorSubmit(res.data.Error);
-          setMessageSuccess(res.data.Pesan);
+          console.log("res pesan", res.data.message);
+          console.log("res error", res.data.success);
+          setErrorSubmit(res.data.success);
+          setMessageSuccess(res.data.message);
           showModalSuccess(true);
         })
         .catch((error) => {

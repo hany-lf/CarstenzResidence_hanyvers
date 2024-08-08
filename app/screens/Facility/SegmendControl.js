@@ -69,7 +69,7 @@ const Segmented = ({
       const res = await axios.get(
         API_URL_LOKAL + `/getDataDue/IFCAPB/${user.user}`
       );
-      setDataCurrent(res.data.Data);
+      setDataCurrent(res.data.data);
       console.log("datasss", data);
     } catch (error) {
       setErrors(error.ressponse.data);
@@ -80,7 +80,7 @@ const Segmented = ({
   async function fetchDataTime() {
     try {
       const res = await axios.get(API_URL_LOKAL + "/home/common-current-time");
-      setTime(res.data.Data);
+      setTime(res.data.data);
       console.log("time", time);
     } catch (error) {
       setErrors(error.ressponse.data);

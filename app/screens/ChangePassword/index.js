@@ -43,14 +43,14 @@ const ChangePassword = (props) => {
       axios
         .post(API_URL_LOKAL + "/auth/change-pass", formData)
         .then((res) => {
-          if (res.data.Error == false) {
+          if (res.data.success == true) {
             setModalAlert(true);
-            setMessageAlert(res.data.Pesan);
+            setMessageAlert(res.data.message);
 
             // alert(res.data.Pesan);
           } else {
             setModalAlert(true);
-            setMessageAlert(res.data.Pesan);
+            setMessageAlert(res.data.message);
             // alert(res.data.Pesan);
           }
         })

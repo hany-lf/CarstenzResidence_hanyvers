@@ -182,7 +182,7 @@ const SpecHelp = (props) => {
       .then((res) => {
         const datas = res.data;
 
-        const arrDataTower = datas.Data;
+        const arrDataTower = datas.data;
         arrDataTower.map((dat) => {
           if (dat) {
             setdataTowerUser(dat);
@@ -227,7 +227,7 @@ const SpecHelp = (props) => {
       .then((res) => {
         // console.log('res', res);
         const datas = res.data;
-        const dataDebtors = datas.Data;
+        const dataDebtors = datas.data;
         setDataDebtor(dataDebtors);
 
         // return res.data;
@@ -322,7 +322,7 @@ const SpecHelp = (props) => {
       })
       .then((res) => {
         const datas = res.data;
-        const dataLotno = datas.Data;
+        const dataLotno = datas.data;
         setDataLotno(dataLotno);
 
         // return res.data;

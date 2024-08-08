@@ -240,7 +240,7 @@ function BookingFacility({ route }) {
       .then((res) => {
         const datas = res.data;
 
-        const arrDataTower = datas.Data;
+        const arrDataTower = datas.data;
         // let dataArr = {};
         arrDataTower.map((dat) => {
           if (dat) {

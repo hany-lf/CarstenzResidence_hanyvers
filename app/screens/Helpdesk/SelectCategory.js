@@ -91,7 +91,7 @@ export default function SelectCategory({ route }) {
       .then((res) => {
         const datas = res.data;
 
-        const arrDataTower = datas.Data;
+        const arrDataTower = datas.data;
         console.log("get data tower", arrDataTower);
         arrDataTower.map((dat) => {
           if (dat) {
@@ -171,9 +171,9 @@ export default function SelectCategory({ route }) {
       })
       .then((res) => {
         // console.log('res detail', res);
-        if (res.data.Error == false) {
+        if (res.data.success == true) {
           const datas = res.data;
-          const dataCategoryDetails = datas.Data;
+          const dataCategoryDetails = datas.data;
           console.log("data kategori", dataCategoryDetails);
 
           setDataCategoryDetail(dataCategoryDetails);
@@ -184,10 +184,10 @@ export default function SelectCategory({ route }) {
           // });
         } else {
           setSpinner(false);
-          alert(res.Pesan);
+          alert(res.data.message);
         }
-        console.log("ini isinya sama ga?", res.data.Data);
-        setArrayHolder(res.data.Data);
+        console.log("ini isinya sama ga?", res.data.data);
+        setArrayHolder(res.data.data);
         setSpinner(false);
         // return res.data;
       })

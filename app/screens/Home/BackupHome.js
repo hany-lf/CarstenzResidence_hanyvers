@@ -146,7 +146,7 @@ const Home = (props) => {
       .then((res) => {
         const datas = res.data;
 
-        const arrDataTower = datas.Data;
+        const arrDataTower = datas.data;
         arrDataTower.map((dat) => {
           if (dat) {
             setdataTowerUser(dat);
@@ -209,8 +209,8 @@ const Home = (props) => {
       const res = await axios.get(
         `http://apps.pakubuwono-residence.com/apiwebpbi/api/modules/billing/due-summary/IFCAPB/${user.user}`
       );
-      setDataDue(res.data.Data);
-      console.log("data get data due", res.data.Data);
+      setDataDue(res.data.data);
+      console.log("data get data due", res.data.data);
     } catch (error) {
       setErrors(error);
       // alert(hasError.toString());
@@ -222,8 +222,8 @@ const Home = (props) => {
       const res = await axios.get(
         `http://apps.pakubuwono-residence.com/apiwebpbi/api/modules/billing/current-summary/IFCAPB/${user.user}`
       );
-      setDataNotDue(res.data.Data);
-      console.log("data get data not due", res.data.Data);
+      setDataNotDue(res.data.data);
+      console.log("data get data not due", res.data.data);
     } catch (error) {
       setErrors(error);
       // alert(hasError.toString());
@@ -235,8 +235,8 @@ const Home = (props) => {
       const res = await axios.get(
         `http://apps.pakubuwono-residence.com/apiwebpbi/api/modules/billing/summary-history/IFCAPB/${user.user}`
       );
-      setDataHistory(res.data.Data);
-      console.log("data get history", res.data.Data);
+      setDataHistory(res.data.data);
+      console.log("data get history", res.data.data);
     } catch (error) {
       setErrors(error);
       // alert(hasError.toString());

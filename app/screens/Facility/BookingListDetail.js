@@ -107,9 +107,9 @@ export default BookingListDetail = (props) => {
           reservation_no
       );
       if (res) {
-        console.log("res post", res.data.Data);
-        setDetailBooking(res.data.Data);
-        const datalog = res.data.Data.datalog;
+        console.log("res post", res.data.data);
+        setDetailBooking(res.data.data);
+        const datalog = res.data.data.datalog;
         let temp = datalog.map((datalog) => {
           if (
             datalog.status == "B" ||
@@ -166,8 +166,8 @@ export default BookingListDetail = (props) => {
           reservation_no
       )
       .then((data) => {
-        // console.log('data on partner booking', data.data.Data);
-        setPartnerBooking(data.data.Data);
+        // console.log('data on partner booking', data.data.data);
+        setPartnerBooking(data.data.data);
         setSpinner(false);
       })
       .catch((error) => console.error(error))
@@ -328,16 +328,16 @@ export default BookingListDetail = (props) => {
       )
       .then((data) => {
         console.log("data remove partner", data);
-        //    setPartnerBooking(data.data.Data);
+        //    setPartnerBooking(data.data.data);
 
         setSpinner(false);
         onRefresh();
         getPartnerBooking();
 
-        console.log("res pesan", data.data.Pesan);
-        console.log("res error", data.data.Error);
-        setErrorSubmit(data.data.Error);
-        setMessageSuccess(data.data.Pesan);
+        console.log("res pesan", data.data.message);
+        console.log("res error", data.data.success);
+        setErrorSubmit(data.data.success);
+        setMessageSuccess(data.data.message);
         showModalSuccess(true);
       })
       .catch((error) => console.error(error))
@@ -404,10 +404,10 @@ export default BookingListDetail = (props) => {
       );
       if (res) {
         console.log("res post", res);
-        //  setDetailBooking(res.data.Data);
+        //  setDetailBooking(res.data.data);
         //  setSpinner(false);
-        setErrorSubmit(res.data.Error);
-        setMessageSuccess(res.data.Pesan);
+        setErrorSubmit(res.data.success);
+        setMessageSuccess(res.data.message);
         showModalSuccess(true);
       }
       return res;

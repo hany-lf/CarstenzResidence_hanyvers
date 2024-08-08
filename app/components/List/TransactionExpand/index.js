@@ -85,8 +85,8 @@ const TransactionExpand = ({
         API_URL_LOKAL +
           `/getDataDue/IFCAPB/${email}/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`,
       );
-      setDetailDateDue(res.data.Data);
-      console.log('detail date due -->', res.data.Data);
+      setDetailDateDue(res.data.data);
+      console.log('detail date due -->', res.data.data);
       setLoading(false);
     } catch (error) {
       setErrors(error);
@@ -105,8 +105,8 @@ const TransactionExpand = ({
         API_URL_LOKAL +
           `/getDataCurrent/IFCAPB/${email}/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`,
       );
-      setDetailNotDue(res.data.Data);
-      console.log('detail not due -->', res.Data);
+      setDetailNotDue(res.data.data);
+      console.log('detail not due -->', res.data);
       setLoading(false);
     } catch (error) {
       setErrors(error);

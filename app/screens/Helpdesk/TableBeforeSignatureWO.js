@@ -1981,19 +1981,12 @@ const SignatureBefore = (props) => {
       })
       .then((res) => {
         console.log("res save signature", res.data);
-        setMessage(res.data.Pesan);
+        setMessage(res.data.message);
         //   setMessageResult(resJson.report_no);
-        setStatus(res.data.Error);
+        setStatus(res.data.success);
         showModalSuccess(true);
 
-        // return res.json().then(resJson => {
-        //   // alert(resJson.Pesan);
-        //   console.log('resKsspn', resJson);
-        //   setMessage(resJson.Pesan);
-        //   setMessageResult(resJson.report_no);
-        //   setStatus(resJson.Error);
-        //   showModalSuccess(true);
-        // });
+       
       })
       .catch((error) => {
         console.log("error get tower api", error.response.data);

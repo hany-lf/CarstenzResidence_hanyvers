@@ -67,7 +67,7 @@ const BillingHistory = ({
         API_URL_LOKAL + `/modules/billing/summary-history/IFCAPB/${user.user}`
       );
       // console.log('res datacurrent', res.data.Data);
-      setDataCurrent(res.data.Data);
+      setDataCurrent(res.data.data);
       setLoading(false);
       // console.log('DATA DUE DATE -->', dataCurrent);
     } catch (error) {

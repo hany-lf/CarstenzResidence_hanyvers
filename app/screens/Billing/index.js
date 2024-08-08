@@ -116,7 +116,7 @@ const Billing = ({
       .then((res) => {
         const datas = res.data;
 
-        const arrDataTower = datas.Data;
+        const arrDataTower = datas.data;
         // let dataArr = {};
         arrDataTower.map((dat) => {
           if (dat) {
@@ -158,8 +158,8 @@ const Billing = ({
       const res = await axios.get(
         API_URL_LOKAL + `/modules/billing/due-summary/IFCAPB/${user.user}`
       );
-      setDataCurrent(res.data.Data);
-      console.log("DATA DUE DATE -->", res.data.Data);
+      setDataCurrent(res.data.data);
+      console.log("DATA DUE DATE -->", res.data.data);
       setLoading(false);
     } catch (error) {
       setErrors(error.ressponse.data);
@@ -181,8 +181,8 @@ const Billing = ({
       const res = await axios.get(
         API_URL_LOKAL + `/modules/billing/current-summary/IFCAPB/${user.user}`
       );
-      setData(res.data.Data);
-      console.log("data current", res.data.Data);
+      setData(res.data.data);
+      console.log("data current", res.data.data);
       setLoading(false);
     } catch (error) {
       setErrors(error.ressponse.data);

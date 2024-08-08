@@ -95,7 +95,7 @@ export const login = (email, password, token_firebase) => async (dispatch) => {
   dispatch(loginRequest());
   try {
     const user = await UserController.login(email, password, token_firebase);
-    dispatch(loginSuccess(user.Data));
+    dispatch(loginSuccess(user.data));
     console.log("99 userrrrr", user);
     // alert("JSON.stringify(user)");
   } catch (error) {
@@ -112,7 +112,7 @@ export const reset = (newPass, conPass, email) => async (dispatch) => {
     console.log(user);
 
     alert("Please Back to Login");
-    dispatch(resetPassSuccess(user.Data));
+    dispatch(resetPassSuccess(user.data));
     dispatch(logout());
   } catch (error) {
     console.log(error);
@@ -133,7 +133,7 @@ export const saveProfile = (data) => async (dispatch) => {
   const edits = await UserController.saveProfile(data);
   console.log("res save profil", edits);
   alert(edits.Pesan);
-  dispatch(editRequest(edits.Data));
+  dispatch(editRequest(edits.data));
 };
 
 export const saveFotoProfil = (data) => async (dispatch) => {
@@ -141,7 +141,7 @@ export const saveFotoProfil = (data) => async (dispatch) => {
   const foto = await UserController.saveFotoProfil(data);
   console.log("res save profil", foto);
   alert(foto.Pesan);
-  dispatch(changeFoto(foto.Data));
+  dispatch(changeFoto(foto.data));
 };
 
 export const changePass = (email, pass, conpass) => async (dispatch) => {
@@ -149,7 +149,7 @@ export const changePass = (email, pass, conpass) => async (dispatch) => {
   try {
     const res = await UserController.changePassword(email, pass, conpass);
     alert(res.Pesan);
-    dispatch(changePassSuccess(res.Data));
+    dispatch(changePassSuccess(res.data));
   } catch (error) {
     dispatch(changePassError(error));
   }

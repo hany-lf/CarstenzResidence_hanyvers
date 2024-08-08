@@ -232,7 +232,7 @@ function BookingFacility({ route }) {
       .then((res) => {
         const datas = res.data;
         // console.log('tower entity projek', datas);
-        const arrDataTower = datas.Data;
+        const arrDataTower = datas.data;
         console.log("tower entity arrDataTower", arrDataTower[0]);
         setdataTowerUser(arrDataTower[0]);
         // getDateBook(arrDataTower[0]);

@@ -89,9 +89,9 @@ export default BookingList = (props) => {
     axios
       .get(API_URL_LOKAL + `/modules/facilities/booking-all/` + email)
       .then((data) => {
-        console.log("data book list", data.data.Data);
+        console.log("data book list", data.data.data);
 
-        const datas = data.data.Data;
+        const datas = data.data.data;
         // console.log('data package', datas);
         if (datas != null) {
           const dataFilter = datas.filter((data) =>

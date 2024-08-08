@@ -114,9 +114,9 @@ const MeterInfoX = (params) => {
     })
       .then((response) => response.json())
       .then((res) => {
-        let resData = res.Data;
-        console.log("resData", res.Data);
-        console.log("resData1", res.Data);
+        let resData = res.data;
+        console.log("resData", res.data);
+        console.log("resData1", res.data);
         setDataProject(resData);
         // getMeterLoad(resData);
         // onRetrieve(resData);
@@ -244,10 +244,10 @@ const MeterInfoX = (params) => {
         .then((response) => response.json())
         .then((res) => {
           console.log("cek isi RES", res);
-          if (!res.Error) {
-            let resData = res.Data;
-            let resPesan = res.Pesan;
-            let resError = res.Error;
+          if (res.success) {
+            let resData = res.data;
+            let resPesan = res.message;
+            let resError = res.success;
             setDataMeter(resData);
             setMessage(resPesan);
             setError(resError);

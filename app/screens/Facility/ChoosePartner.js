@@ -96,7 +96,7 @@ export default ChoosePartner = (props) => {
       );
       if (res) {
         // console.log('res post get partners edit', res);
-        const resPartner = res.data.Data;
+        const resPartner = res.data.data;
         setPartner(resPartner); //akan ditambah ischecklis
         setPartnerItems(resPartner);
         setSpinner(false);
@@ -250,10 +250,10 @@ export default ChoosePartner = (props) => {
         //   console.log('res book partner', res);
         console.log("res", res);
         // return res.data;
-        console.log("res pesan", res.data.Pesan);
-        console.log("res error", res.data.Error);
-        setErrorSubmit(res.data.Error);
-        setMessageSuccess(res.data.Pesan);
+        console.log("res pesan", res.data.message);
+        console.log("res error", res.data.success);
+        setErrorSubmit(res.data.success);
+        setMessageSuccess(res.data.message);
         showModalSuccess(true);
       }
       return res;

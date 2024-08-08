@@ -83,7 +83,7 @@ const DetailFacility = (props) => {
       .then((res) => {
         const datas = res.data;
         // console.log('tower entity projek', datas);
-        const arrDataTower = datas.Data;
+        const arrDataTower = datas.data;
         arrDataTower.map((dat) => {
           if (dat) {
             // console.log('map arrdatatower', dat);
@@ -172,7 +172,7 @@ const DetailFacility = (props) => {
         project_no
     );
     console.log("response terms data: ", response.data);
-    setDataTerms(response.data.Data);
+    setDataTerms(response.data.data);
     setSpinner(false);
   };
 

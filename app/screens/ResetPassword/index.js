@@ -58,16 +58,16 @@ const ResetPassword = props => {
           .then(res => {
             // const resp = JSON.parse(res.Data);
             console.log('res forgot pass', res);
-            setError(res.Error);
-            if (!res.Error) {
+            setError(res.success);
+            if (res.success) {
               setLoading(true);
-              const pesan = res.Pesan;
+              const pesan = res.message;
               alertFillBlank(true, pesan);
-            } else if (res.Error) {
+            } else if (res.success) {
               setLoading(true);
-              const pesan = res.Pesan;
+              const pesan = res.message;
               alertFillBlank(true, pesan);
-              console.log('res pesan', res.Pesan);
+              console.log('res pesan', res.message);
             }
           })
           .catch(error => {

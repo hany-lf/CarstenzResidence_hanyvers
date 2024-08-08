@@ -550,7 +550,7 @@ export default function SeatBooking(props) {
       .then((res) => {
         const datas = res.data;
 
-        const arrDataTower = datas.Data;
+        const arrDataTower = datas.data;
         arrDataTower.map((dat) => {
           if (dat) {
             setdataTowerUser(dat);
@@ -882,10 +882,10 @@ export default function SeatBooking(props) {
         return res.json().then((resJson) => {
           // alert(resJson.Pesan);
           console.log("resJson", resJson);
-          setMessage(resJson.Pesan);
+          setMessage(resJson.message);
           setMessageResult(resJson.Result);
           // setStatus(resJson.Status);
-          setStatus(resJson.Error);
+          setStatus(resJson.success);
           showModalSuccess(true);
         });
       })

@@ -163,7 +163,7 @@ export default function PriceList(props) {
       .then((res) => {
         const datas = res.data;
 
-        const arrDataTower = datas.Data;
+        const arrDataTower = datas.data;
         console.log("data tower ada berapa", arrDataTower.length);
 
         // arrDataTower.length > 1
@@ -239,7 +239,7 @@ export default function PriceList(props) {
       .then((res) => {
         // console.log('res', res);
         const datas = res.data;
-        const dataDebtors = datas.Data;
+        const dataDebtors = datas.data;
         console.log("res debtor", dataDebtors);
         console.log("ada berapa length debtor", dataDebtors.length);
 
@@ -327,7 +327,7 @@ export default function PriceList(props) {
         // console.log('datalotno', res);
         const datas = res.data;
 
-        const dataPrice = datas.Data;
+        const dataPrice = datas.data;
         const dataPrices = dataPrice[0].price;
         console.log("dataPrices >", dataPrices);
         // const dataOnce = datas.Data.once_week.value;

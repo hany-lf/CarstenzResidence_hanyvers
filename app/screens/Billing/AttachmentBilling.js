@@ -62,8 +62,8 @@ const AttachmentBilling = (props) => {
         API_URL_LOKAL +
           `/modules/billing/attach/IFCAPB/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`
       );
-      console.log("res atatchment billing", res.data.Data);
-      setAttachment(res.data.Data);
+      console.log("res atatchment billing", res.data.data);
+      setAttachment(res.data.data);
     } catch (error) {
       console.log("error attach get", error);
       setErrors(error);

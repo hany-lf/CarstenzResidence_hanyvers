@@ -24,10 +24,10 @@ class ProjectController {
       // alert(result.Pesan);
       console.log("vardums result project -->", result);
       // ini ada isreset dalemnya, sementara dihilangin, buat biar ga nyangkut insert token firebase
-      if (result.Error) {
-        return Promise.reject(result.Pesan);
-      } else {
+      if (result.success) {
         return result;
+      } else {
+        return Promise.reject(result.message);
       }
     } catch (error) {
       return Promise.reject(error);

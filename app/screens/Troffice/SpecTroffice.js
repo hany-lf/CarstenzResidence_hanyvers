@@ -98,7 +98,7 @@ export default function SpecTroffice(props) {
       .then((res) => {
         const datas = res.data;
 
-        const arrDataTower = datas.Data;
+        const arrDataTower = datas.data;
         console.log("data tower ada berapa", arrDataTower.length);
 
         // arrDataTower.length > 1
@@ -174,7 +174,7 @@ export default function SpecTroffice(props) {
       .then((res) => {
         // console.log('res', res);
         const datas = res.data;
-        const dataDebtors = datas.Data;
+        const dataDebtors = datas.data;
         console.log("res debtor", dataDebtors);
         console.log("ada berapa length debtor", dataDebtors.length);
 
@@ -276,7 +276,7 @@ export default function SpecTroffice(props) {
       .then((res) => {
         // console.log('datalotno', res);
         const datas = res.data;
-        const dataLotno = datas.Data;
+        const dataLotno = datas.data;
         console.log("datalotno >", dataLotno);
         console.log("datalotno >", datas);
 
@@ -341,7 +341,7 @@ export default function SpecTroffice(props) {
         // console.log('res floor', res);
         const datas = res.data;
 
-        const dataFloor = datas.Data;
+        const dataFloor = datas.data;
 
         settextFloor(dataFloor);
 

@@ -97,10 +97,10 @@ const Product = params => {
         `http://apps.pakubuwono-residence.com/apiwebpbi/api/pos/getProducts?entity_cd=${entity_cd}&project_no=${project_no}&trx_class=H`,
       )
       .then(res => {
-        console.log(res.data.Error);
-        if (res.data.Error == false) {
+        console.log(res.data.success);
+        if (res.data.success == true) {
           const datas = res.data;
-          const arrLocation = datas.Data;
+          const arrLocation = datas.data;
 
           //   console.log('bank arrLocationsdsa', arrLocation);
 
@@ -110,7 +110,7 @@ const Product = params => {
           setSpinner(false);
         }
 
-        setItemStore(res.data.Data);
+        setItemStore(res.data.data);
       });
   };
 
@@ -160,9 +160,9 @@ const Product = params => {
         `http://apps.pakubuwono-residence.com/apiwebpbi/api/pos/productID?entity_cd=${entity_cd}&project_no=${project_no}&trx_class=H&trx_code=${trx_code}`,
       )
       .then(res => {
-        console.log(res.data.Error);
-        if (res.data.Error == false) {
-          const datas = res.data.Data[0];
+        console.log(res.data.success);
+        if (res.data.success == true) {
+          const datas = res.data.data[0];
 
           console.log('get trx_code by product ID', datas);
           const dataBuyNow = {

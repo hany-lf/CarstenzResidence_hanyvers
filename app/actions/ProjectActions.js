@@ -10,9 +10,9 @@ const project_success = Dataproject => ({
   Dataproject,
 });
 
-export const data_project = email => async dispatch => {
-  const dataproject = await ProjectController.data_project(email);
-  console.log('dataproject di project  action', dataproject.Data);
+export const data_project = (email, token_firebase) => async dispatch => {
+  const dataproject = await ProjectController.data_project(email, token_firebase);
+  console.log('dataproject di project  action', dataproject.data);
   dispatch(project_success(dataproject));
   // console.log('notifikasi nbadge', notifnbadge);
   //   dispatch(editRequest());

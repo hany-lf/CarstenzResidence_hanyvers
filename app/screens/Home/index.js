@@ -106,15 +106,14 @@ const Home = (props) => {
   const user = useSelector((state) => getUser(state));
   const notif = useSelector((state) => getNotifRed(state));
   const project = useSelector((state) => getProject(state));
-  console.log("project selector", project);
-  console.log("cobanotif di home", notif);
+ 
   // console.log(
   //   "99 state",
   //   useSelector((state) => state)
   // );
   // const email = user.user;
-  const [email, setEmail] = useState(user != null ? user.user : "");
-  console.log("user di home", user);
+  const [email, setEmail] = useState(user != null ? user.email : "");
+ console.log('usr di home', user)
   const [fotoprofil, setFotoProfil] = useState(
     user.pict != null
       ? { uri: user.pict }
@@ -303,24 +302,29 @@ const Home = (props) => {
   // https://dev.ifca.co.id/apicarstensz/api/facility/book/unit?entity=01&project=01&email=martin7id@yahoo.com
 
   async function getLotNo() {
+    console.log('email getlotno', email);
     // console.log(
     //   "302 url api '/facility/book/unit': ",
     //   //"http://apps.pakubuwono-residence.com/apiwebpbi/api/facility/book/unit?entity=" +
     //   entity_cd + "&" + "project=" + project_no + "&" + "email=" + email
     // );
+   
+
+    const config = {
+      method: 'GET',
+      // url: 'http://dev.ifca.co.id:8080/apiciputra/api/approval/groupMenu?approval_user=MGR',
+      url: API_URL_LOKAL + `/home/common-unit?entity_cd=` + entity_cd + "&" + "project_no=" + project_no + "&" + "email=" + email ,
+      headers: {
+        'content-type': 'application/json',
+        // 'X-Requested-With': 'XMLHttpRequest',
+        Authorization: `Bearer ${user.Token}`,
+      },
+      // params: {approval_user: user.userIDToken.UserId},
+      params: {},
+    };
+ 
     try {
-      await axios
-        .get(
-          API_URL_LOKAL +
-            `/home/common-unit?entity=` +
-            entity_cd +
-            "&" +
-            "project=" +
-            project_no +
-            "&" +
-            "email=" +
-            email
-        )
+      await axios(config)
         .then((res) => {
           const resLotno = res.data.data;
           console.log("reslotno", resLotno);
@@ -335,10 +339,11 @@ const Home = (props) => {
           setSpinner(false);
         })
         .catch((error) => {
-          console.log("error reslotno", error);
+          console.log("error reslotno", error.response);
           // alert('error get');
         });
     } catch (error) {
+      console.log('error get lotno', error.response);
       setErrors(error);
       // alert(hasError.toString());
     }
@@ -351,8 +356,20 @@ const Home = (props) => {
   );
 
   const dataImage = async () => {
-    await axios
-      .get(API_URL_LOKAL + `/about/image`)
+    const config = {
+      method: 'get',
+      // url: 'http://dev.ifca.co.id:8080/apiciputra/api/approval/groupMenu?approval_user=MGR',
+      url: API_URL_LOKAL + `/about/image`,
+      headers: {
+        'content-type': 'application/json',
+        // 'X-Requested-With': 'XMLHttpRequest',
+        Authorization: `Bearer ${user.Token}`,
+      },
+      // params: {approval_user: user.userIDToken.UserId},
+      params: {},
+    };
+
+    await axios(config)
       .then((res) => {
         console.log("res image", res.data.data);
         // console.log('data images', res.data[0].images);
@@ -366,12 +383,18 @@ const Home = (props) => {
   };
 
   async function fetchDataDue() {
+    const config = {
+      method: 'get',
+      url: API_URL_LOKAL + `/modules/billing/due-summary/IFCAPB/${user.user}`,
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${user.Token}`,
+      },
+    };
     try {
-      const res = await axios.get(
-        API_URL_LOKAL + `/modules/billing/due-summary/IFCAPB/${user.user}`
-      );
-      setDataDue(res.data.Data);
-      console.log("data get data due", res.data.Data);
+      const res = await axios(config);
+      setDataDue(res.data.data);
+      console.log("data get data due", res.data.data);
     } catch (error) {
       setErrors(error);
       // alert(hasError.toString());
@@ -379,12 +402,18 @@ const Home = (props) => {
   }
 
   async function fetchDataNotDue() {
+    const config = {
+      method: 'get',
+      url: API_URL_LOKAL + `/modules/billing/current-summary/IFCAPB/${user.user}`,
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${user.Token}`,
+      },
+    };
     try {
-      const res = await axios.get(
-        API_URL_LOKAL + `/modules/billing/current-summary/IFCAPB/${user.user}`
-      );
-      setDataNotDue(res.data.Data);
-      console.log("data get data not due", res.data.Data);
+      const res = await axios(config);
+      setDataNotDue(res.data.data);
+      console.log("data get data not due", res.data.data);
     } catch (error) {
       setErrors(error);
       // alert(hasError.toString());
@@ -392,11 +421,17 @@ const Home = (props) => {
   }
 
   async function fetchDataHistory() {
+    const config = {
+      method: 'get',
+      url: API_URL_LOKAL + `/modules/billing/summary-history/IFCAPB/${user.user}`,
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${user.Token}`,
+      },
+    };
     try {
-      const res = await axios.get(
-        API_URL_LOKAL + `/modules/billing/summary-history/IFCAPB/${user.user}`
-      );
-      setDataHistory(res.data.Data);
+      const res = await axios(config);
+      setDataHistory(res.data.data);
       // console.log('data get history', res.data.Data);
     } catch (error) {
       setErrors(error);
@@ -405,9 +440,20 @@ const Home = (props) => {
   }
 
   const dataNewsAnnounce = async () => {
-    // console.log('kok ini gada');
-    await axios
-      .get(API_URL_LOKAL + `/home/news`)
+    const config = {
+      method: 'get',
+      // url: 'http://dev.ifca.co.id:8080/apiciputra/api/approval/groupMenu?approval_user=MGR',
+      url: API_URL_LOKAL + '/home/news',
+      headers: {
+        'content-type': 'application/json',
+        // 'X-Requested-With': 'XMLHttpRequest',
+        Authorization: `Bearer ${user.Token}`,
+      },
+      // params: {approval_user: user.userIDToken.UserId},
+      params: {},
+    };
+    console.log('config news', config);
+    await axios(config)
       .then((res) => {
         console.log("res news", res.data.data);
         const datanews = res.data.data;
@@ -419,14 +465,26 @@ const Home = (props) => {
         // return res.data;
       })
       .catch((error) => {
-        console.log("error get news announce home", error);
+        console.log("error get news announce home", error.response);
         // alert('error get');
       });
   };
 
   const dataPromoClubFacilities = async () => {
-    await axios
-      .get(API_URL_LOKAL + `/home/promo-club-facilities`)
+    const config = {
+      method: 'get',
+      // url: 'http://dev.ifca.co.id:8080/apiciputra/api/approval/groupMenu?approval_user=MGR',
+      url: API_URL_LOKAL + `/home/promo-club-facilities`,
+      headers: {
+        'content-type': 'application/json',
+        // 'X-Requested-With': 'XMLHttpRequest',
+        Authorization: `Bearer ${user.Token}`,
+      },
+      // params: {approval_user: user.userIDToken.UserId},
+      params: {},
+    };
+
+    await axios(config)
       .then((res) => {
         console.log("res promoclubfacilities", res.data.data);
         const datapromoclub = res.data.data;

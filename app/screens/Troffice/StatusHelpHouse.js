@@ -126,18 +126,18 @@ export default function StatusHelpHouse(props) {
             { data: dataStatus2 },
             { data: dataStatus3 }
           ) => {
-            console.log("res1: ", dataStatus1.Data);
-            console.log("res2: ", dataStatus2.Data);
-            console.log("res3: ", dataStatus3.Data);
+            console.log("res1: ", dataStatus1.data);
+            console.log("res2: ", dataStatus2.data);
+            console.log("res3: ", dataStatus3.data);
 
-            if (dataStatus1.Data) {
-              setDataStatus1(dataStatus1.Data);
+            if (dataStatus1.data) {
+              setDataStatus1(dataStatus1.data);
             }
-            if (dataStatus2.Data) {
-              setDataStatus2(dataStatus2.Data);
+            if (dataStatus2.data) {
+              setDataStatus2(dataStatus2.data);
             }
-            if (dataStatus3.Data) {
-              setDataStatus3(dataStatus3.Data);
+            if (dataStatus3.data) {
+              setDataStatus3(dataStatus3.data);
             }
           }
         )

@@ -376,7 +376,7 @@ export default function SeatBokingsPest(props) {
       .then((res) => {
         const datas = res.data;
 
-        const arrDataTower = datas.Data;
+        const arrDataTower = datas.data;
         arrDataTower.map((dat) => {
           if (dat) {
             setdataTowerUser(dat);
@@ -669,7 +669,7 @@ export default function SeatBokingsPest(props) {
             console.log("resKsspn", resJson);
             setMessage(resJson.Pesan);
             setMessageResult(resJson.report_no);
-            setStatus(resJson.Error);
+            setStatus(resJson.success);
             showModalSuccess(true);
           });
         })

@@ -15,6 +15,7 @@ API_URL_LIVE_WEBIFCA
 */
 
 console.log("17 api url lokal", API_URL_LOKAL);
+
 const client = axios.create({
   baseURL: API_URL_LOKAL,
   //baseURL: API_URL_LIVE_WEBPBI,
@@ -23,14 +24,15 @@ const client = axios.create({
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
+
   },
 });
 
 client.interceptors.response.use(
   (response) => {
-    return !response.data.Error
+    return response.data.success
       ? response.data
-      : Promise.reject(response.data.Pesan);
+      : Promise.reject(response.data.message);
   },
   (error) => {
     return Promise.reject(error);
