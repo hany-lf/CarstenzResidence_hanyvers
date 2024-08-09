@@ -68,6 +68,7 @@ const Navigator = (props) => {
       dispatch(ApplicationActions.onChangeLanguage(languageCode));
       // Config language for app
       await i18n.use(initReactI18next).init({
+        compatibilityJSON: 'v3', // <--- add this line for error pluralresolver
         resources: BaseSetting.resourcesLanguage,
         lng: languageCode,
         fallbackLng: languageCode,
@@ -179,7 +180,7 @@ const Navigator = (props) => {
         >
           {loading ? (
             <RootStack.Screen name="Loading" component={Loading} />
-          ) : user == null || user == "" || user == 0 || user == [] ? (
+          ) : user == null || user == "" || user == 0 ? (
             <RootStack.Screen name="SignIn" component={SignIn} />
           ) : (
             <RootStack.Screen name="MainStack" component={MainStack} />

@@ -99,7 +99,7 @@ export const login = (email, password, token_firebase) => async (dispatch) => {
     console.log("99 userrrrr", user);
     // alert("JSON.stringify(user)");
   } catch (error) {
-    alert(error);
+    alert('error di login user action',error);
     console.log("103 ini konsol eror", error);
     dispatch(loginError(error));
   }

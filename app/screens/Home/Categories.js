@@ -17,15 +17,16 @@ import { useSelector } from "react-redux";
 import * as Utils from "@utils";
 import { BaseColor, BaseStyle, Images, useTheme } from "@config";
 
-const Categories = ({ style = {} }) => {
+const Categories = ({ style = {}, dataMenus }) => {
   const navigation = useNavigation();
   const { t } = useTranslation();
   const { colors } = useTheme();
   const goToScreen = (name) => name && navigation.navigate(name);
   const [expand, setExpand] = useState(false);
   const user = useSelector((state) => getUser(state));
-  console.log("user for user faccility ->", user);
-  console.log("user for user Pesan_Facility ->", user.Pesan_Facility);
+  // console.log("user for user faccility ->", user);
+//   console.log("user for user Pesan_Facility ->", user.Pesan_Facility);
+// console.log('data menus di categories', dataMenus)
   // "Pesan_Facility": "Facility Not Available"
 
   // const user.UserFacility = 'Y';
@@ -40,7 +41,7 @@ const Categories = ({ style = {} }) => {
     <View>
       <View style={[{ flexDirection: "row" }, style]}>
         <FlatList
-          data={FCategories}
+          data={dataMenus}
           renderItem={({ item }) => (
             // console.log(
             //   'coba userfacility == user_facility,',
@@ -60,18 +61,33 @@ const Categories = ({ style = {} }) => {
                 // justifyContent: 'center',
               }}
             >
-              <CategoryIconSoft
+              {/* <CategoryIconSoft
                 isRound
                 // icon={item.icon}
                 style={{ padding: 0 }}
                 icon_url={item.icon_url}
                 icon={item.icon}
-                title={t(item.title)}
+                title={t(item.Title)}
                 onPress={() =>
                   user.UserFacility == item.user_facility ||
                   item.user_menu == "Y"
                     ? goToScreen(item.screen)
                     : onExpand(user.Pesan_Facility)
+                }
+              /> */}
+               <CategoryIconSoft
+                isRound
+                // icon={item.icon}
+                style={{ padding: 0 }}
+                // icon_url={item.icon_url}
+                icon={item.IconClass}
+                title={t(item.Title)}
+                // onPress={() => console.log('coba di categories', item.Screen)}
+                onPress={() =>
+                  user.userData.facility_booking == item.User_Facility ||
+                  item.User_Menu == "Y"
+                    ? goToScreen(item.Screen)
+                    : onExpand('User tidak memiliki izin untuk booking fasilitas')
                 }
               />
             </View>
@@ -103,7 +119,7 @@ const Categories = ({ style = {} }) => {
               enableRTL={true}
               style={{ marginBottom: 10 }}
             />
-            <Text>{user.Pesan_Facility}</Text>
+            <Text>User tidak mendapatkan izin untuk booking fasilitas</Text>
 
             <View
               style={{

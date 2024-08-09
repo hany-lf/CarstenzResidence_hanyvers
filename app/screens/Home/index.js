@@ -70,6 +70,8 @@ import numFormat from "../../components/numFormat";
 import { notifikasi_nbadge, actionTypes } from "../../actions/NotifActions";
 import getNotifRed from "../../selectors/NotifSelectors";
 import getProject from "../../selectors/ProjectSelector";
+import getMenu from "../../selectors/MenuSelectors";
+import {get_menu_actions} from "../../actions/MenuActions";
 import { data_project } from "../../actions/ProjectActions";
 import messaging from "@react-native-firebase/messaging";
 import apiCall from "../../config/ApiActionCreator";
@@ -106,20 +108,22 @@ const Home = (props) => {
   const user = useSelector((state) => getUser(state));
   const notif = useSelector((state) => getNotifRed(state));
   const project = useSelector((state) => getProject(state));
- 
+  const dataMenus = useSelector((state) => getMenu(state));
+ console.log('project di home', project)
   // console.log(
   //   "99 state",
   //   useSelector((state) => state)
   // );
   // const email = user.user;
-  const [email, setEmail] = useState(user != null ? user.email : "");
- console.log('usr di home', user)
+  const [email, setEmail] = useState(user != null && user.userData != null ? user.userData.email : "");
+  console.log('usr di home', user)
+  // console.log('pict user', user.userData.pict)
   const [fotoprofil, setFotoProfil] = useState(
-    user.pict != null
-      ? { uri: user.pict }
-      : require("../../assets/images/image-home/Main_Image.png")
+   user != null && user.userData != null
+      ? { uri: user.userData.pict }
+      : { uri: `https://dev.ifca.co.id/no-image.png` }
   );
-  const [name, setName] = useState(user != null ? user.name : "");
+  const [name, setName] = useState(user != null && user.userData != null ? user.userData.name : "");
   const [heightHeader, setHeightHeader] = useState(Utils.heightHeader());
   const scrollY = useRef(new Animated.Value(0)).current;
   const [getDataDue, setDataDue] = useState([]);
@@ -132,18 +136,15 @@ const Home = (props) => {
   const [dataTowerUser, setdataTowerUser] = useState([]);
   const [arrDataTowerUser, setArrDataTowerUser] = useState([]);
   const [spinner, setSpinner] = useState(true);
-  const [entity_cd, setEntity] = useState("01");
-  const [project_no, setProjectNo] = useState("01");
-  //const [entity_cd, setEntity] = useState(project.Data[0].entity_cd);
-  //const [project_no, setProjectNo] = useState(project.Data[0].project_no);
+  const [entity_cd, setEntity] = useState("");
+  const [project_no, setProjectNo] = useState("");
+  // const [entity_cd, setEntity] = useState(project.Data[0].entity_cd);
+  // const [project_no, setProjectNo] = useState(project.Data[0].project_no);
   const [lotno, setLotno] = useState([]);
   console.log("lotno array 0", lotno.lot_no);
   console.log("fotoprofil >", fotoprofil);
-  const repl =
-    user.pict != null
-      ? fotoprofil.uri.replace("https", "http")
-      : require("../../assets/images/image-home/Main_Image.png");
-  console.log("repll", repl);
+  const repl = user != null && user.userData != null ? fotoprofil.uri : `https://dev.ifca.co.id/no-image.png`
+  // console.log("repll", repl);
   const [text_lotno, setTextLotno] = useState("");
   const [default_text_lotno, setDefaultLotno] = useState(true);
   const [keyword, setKeyword] = useState("");
@@ -169,14 +170,73 @@ const Home = (props) => {
   const [urlImageGreetings, setUrlGreetingsImage] = useState("");
 
   const [refreshing, setRefreshing] = useState(false);
-  // const isFocused = useFocusEffect();
-  const dispatch = useDispatch();
+ 
+  // useFocusEffect(
+  //   // console.log('user di home focus', user),
+  //   // console.log('userData di home focus', user.userData),
+  //   React.useCallback(() => {
+  //     // if (user && user.userData) {
+  //         console.log('user di home focus', user);
+  //         console.log('userData di home focus', user.userData);
+  //       dispatch(get_menu_actions({ token_firebase: user.Token, group_cd: user.userData.Group_Cd }));
+  //     // }
+  //   }, [user]),
+  // );
+ // --- useeffect untuk project
+ useEffect(() => {
+  if (project && project.data && project.data.length > 0) {
+    console.log('entity useeffect di home', project.data[0].entity_cd);
+    setEntity(project.data[0].entity_cd);
+    setProjectNo(project.data[0].project_no);
+  }
+}, [project]);
 
+useEffect(() => {
+  if (entity_cd && project_no) {
+    getLotNo();
+  }
+}, [entity_cd, project_no]);
+// --- useeffect untuk project
+
+  // --- useeffect untuk update email/name
+  useEffect(() => {
+    setEmail(user != null ? user.userData.email : '');
+  }, [email]);
+  // --- useeffect untuk update email/name
+
+  // --- useeffect untuk update email/name
+  useEffect(() => {
+    setName(user != null ? user.userData.name : '');
+  }, [name]);
+  // --- useeffect untuk update email/name
+
+  useFocusEffect(
+    useCallback(() => {
+      console.log('useFocusEffect triggered');
+      
+      if (user && user.userData) {
+        console.log('User data:', user.userData);
+        dispatch(get_menu_actions({ token_firebase: user.Token, group_cd: user.userData.Group_Cd }));
+      }
+  
+      return () => {
+        console.log('Screen unfocused or cleanup');
+      };
+    }, [user, dispatch])
+  );
+
+  const dispatch = useDispatch();
+  // --- onrefresh ini berfungsi jika ketika ditarik reload, maka update dispatch(ambil data terbaru) menu dari database
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    user;
-    wait(2000).then(() => setRefreshing(false));
-  }, []);
+    // console
+    // if (user && user.userData) {
+        console.log('user di home refresh', user),
+        console.log('userData di home refresh', user.userData),
+      dispatch(get_menu_actions({ token_firebase: user.Token, group_cd: user.userData.Group_Cd }))
+       .then(() => setRefreshing(false));  // Ensure refreshing ends after data is fetched
+    // }
+  }, [user]);
 
   useEffect(() => {
     messaging().onNotificationOpenedApp((remoteMessage) => {
@@ -206,8 +266,7 @@ const Home = (props) => {
   useEffect(() => {
     dispatch(
       apiCall(
-        API_URL_LOKAL +
-          `/setting/notification?email=${email}&entity_cd=01&project_no=01`
+        API_URL_LOKAL + `/setting/notification?email=${email}&entity_cd=${entity_cd}&project_no=${project_no}`, user.Token
       )
     );
   }, []);
@@ -303,17 +362,13 @@ const Home = (props) => {
 
   async function getLotNo() {
     console.log('email getlotno', email);
-    // console.log(
-    //   "302 url api '/facility/book/unit': ",
-    //   //"http://apps.pakubuwono-residence.com/apiwebpbi/api/facility/book/unit?entity=" +
-    //   entity_cd + "&" + "project=" + project_no + "&" + "email=" + email
-    // );
-   
+  
 
     const config = {
-      method: 'GET',
+      method: 'get',
       // url: 'http://dev.ifca.co.id:8080/apiciputra/api/approval/groupMenu?approval_user=MGR',
       url: API_URL_LOKAL + `/home/common-unit?entity_cd=` + entity_cd + "&" + "project_no=" + project_no + "&" + "email=" + email ,
+      // url: API_URL_LOKAL + `/home/common-unit` ,
       headers: {
         'content-type': 'application/json',
         // 'X-Requested-With': 'XMLHttpRequest',
@@ -328,7 +383,7 @@ const Home = (props) => {
         .then((res) => {
           const resLotno = res.data.data;
           console.log("reslotno", resLotno);
-          console.log("reslotno", res);
+          // console.log("reslotno", res);
 
           setLotno(resLotno);
 
@@ -355,32 +410,32 @@ const Home = (props) => {
     [email, entity_cd, project_no, dispatch]
   );
 
-  const dataImage = async () => {
-    const config = {
-      method: 'get',
-      // url: 'http://dev.ifca.co.id:8080/apiciputra/api/approval/groupMenu?approval_user=MGR',
-      url: API_URL_LOKAL + `/about/image`,
-      headers: {
-        'content-type': 'application/json',
-        // 'X-Requested-With': 'XMLHttpRequest',
-        Authorization: `Bearer ${user.Token}`,
-      },
-      // params: {approval_user: user.userIDToken.UserId},
-      params: {},
-    };
+  // const dataImage = async () => {
+  //   const config = {
+  //     method: 'get',
+  //     // url: 'http://dev.ifca.co.id:8080/apiciputra/api/approval/groupMenu?approval_user=MGR',
+  //     url: API_URL_LOKAL + `/about/image`,
+  //     headers: {
+  //       'content-type': 'application/json',
+  //       // 'X-Requested-With': 'XMLHttpRequest',
+  //       Authorization: `Bearer ${user.Token}`,
+  //     },
+  //     // params: {approval_user: user.userIDToken.UserId},
+  //     params: {},
+  //   };
 
-    await axios(config)
-      .then((res) => {
-        console.log("res image", res.data.data);
-        // console.log('data images', res.data[0].images);
-        setData(res.data.data);
-        // return res.data;
-      })
-      .catch((error) => {
-        console.log("error get about us image", error);
-        // alert('error get');
-      });
-  };
+  //   await axios(config)
+  //     .then((res) => {
+  //       console.log("res image", res.data.data);
+  //       // console.log('data images', res.data[0].images);
+  //       setData(res.data.data);
+  //       // return res.data;
+  //     })
+  //     .catch((error) => {
+  //       console.log("error get about us image", error.response);
+  //       // alert('error get');
+  //     });
+  // };
 
   async function fetchDataDue() {
     const config = {
@@ -474,7 +529,7 @@ const Home = (props) => {
     const config = {
       method: 'get',
       // url: 'http://dev.ifca.co.id:8080/apiciputra/api/approval/groupMenu?approval_user=MGR',
-      url: API_URL_LOKAL + `/home/promo-club-facilities`,
+      url: API_URL_LOKAL + `/home/promo`,
       headers: {
         'content-type': 'application/json',
         // 'X-Requested-With': 'XMLHttpRequest',
@@ -486,7 +541,7 @@ const Home = (props) => {
 
     await axios(config)
       .then((res) => {
-        console.log("res promoclubfacilities", res.data.data);
+        // console.log("res promoclubfacilities", res.data.data);
         const datapromoclub = res.data.data;
 
         // filter by category
@@ -495,8 +550,12 @@ const Home = (props) => {
           .filter((item) => item.category === "P")
           .map((items) => items);
 
-        const filterForClubFacilities = datapromoclub
-          .filter((item) => item.category === "CF")
+        const filterForClub = datapromoclub
+          .filter((item) => item.category === "C")
+          .map((items) => items);
+
+          const filterForFacilities = datapromoclub
+          .filter((item) => item.category === "F")
           .map((items) => items);
 
         const filterForEvent = datapromoclub
@@ -511,7 +570,8 @@ const Home = (props) => {
 
         const joinFilterDataPromoClubFac = [
           ...filterForPromo,
-          ...filterForClubFacilities,
+          ...filterForClub,
+          ...filterForFacilities,
         ];
 
         const joinFilterDataEventRestaurant = [
@@ -524,21 +584,26 @@ const Home = (props) => {
         const slicedatapromoclubfac = joinFilterDataPromoClubFac.slice(0, 6);
         const slicedataeventresto = joinFilterDataEventRestaurant.slice(0, 6);
 
+        // console.log('joinFilterDataPromoClubFac', joinFilterDataPromoClubFac);
+
         // pecah array images from data slice
 
         const arrayImagePromoClubFac = slicedatapromoclubfac.map(
           (item, key) => {
-            return {
-              ...item.images[0],
-            };
+            // console.log("item promo club fac", item.url_image);
+            return { url_image: item.url_image, key: key };
+            // return { url_image: `${item.url_image}`.replace('http://localhost/', 'https://ifca.carstensz.co.id/') , key: key };
+            // item.url_image
+            // return {
+            //   ...item.url_image,
+            // };
           }
         );
 
         const arrayImageEventResto = slicedataeventresto.map((item, key) => {
-          return {
-            ...item.images[0],
-          };
-        });
+          return { url_image: item.url_image };
+        }
+      );
 
         // const slicedatapromo = datapromoclub.slice(0, 6);
         // console.log('slice data promo', slicedatapromo);
@@ -551,7 +616,7 @@ const Home = (props) => {
         // });
         // console.log('tes gambar map', tes);
 
-        console.log("image club fac", arrayImagePromoClubFac);
+        // console.log("image club fac", arrayImagePromoClubFac);
 
         setImagePromoClubFac(arrayImagePromoClubFac);
         setPromoClubFacSlice(slicedatapromoclubfac);
@@ -565,12 +630,14 @@ const Home = (props) => {
         // return res.data;
       })
       .catch((error) => {
-        console.log("error get news announce home", error);
+        console.log("error get promo club facilities", error.response);
         // alert('error get');
       });
   };
 
   const galery = [...data];
+
+  
 
   //TOTAL DATE DUE
   const sum =
@@ -595,17 +662,7 @@ const Home = (props) => {
   const math_total = Math.floor(sumNotDue) + Math.floor(sum);
   console.log("math total", math_total);
 
-  // const sumHistory =
-  //   getDataHistory == null
-  //     ? 0
-  //     : getDataHistory.reduceRight((max, bills) => {
-  //         return (max += parseInt(bills.mdoc_amt));
-  //       }, 0);
-
-  // console.log('sumHistory', sumHistory);
-
-  //LENGTH
-  const onSelect = (indexSelected) => {};
+  
 
   const unique =
     getDataDue == 0 ? 0 : [...new Set(getDataDue.map((item) => item.doc_no))];
@@ -626,40 +683,11 @@ const Home = (props) => {
   const total_outstanding = Math.floor(invoice) + Math.floor(invoiceNotDue);
   console.log("total_outstanding", total_outstanding);
 
-  // const uniqueHistory =
-  //   getDataHistory == null
-  //     ? setDataHistory([])
-  //     : [...new Set(getDataHistory.map(item => item.doc_no))];
-  // console.log('uniqueHistory', uniqueHistory);
-
-  // const invoiceHistory = uniqueHistory.length;
-  // console.log('invoiceHistory', invoiceHistory);
-
-  const headerBackgroundColor = scrollY.interpolate({
-    inputRange: [0, 140],
-    outputRange: [BaseColor.whiteColor, colors.text],
-    extrapolate: "clamp",
-    useNativeDriver: true,
-  });
-
-  //For header image opacity
-  const headerImageOpacity = scrollY.interpolate({
-    inputRange: [0, 250 - heightHeader - 20],
-    outputRange: [1, 0],
-    extrapolate: "clamp",
-    useNativeDriver: true,
-  });
-
-  //artist profile image position from top
-  const heightViewImg = scrollY.interpolate({
-    inputRange: [0, 250 - heightHeader],
-    outputRange: [250, heightHeader],
-    useNativeDriver: true,
-  });
+ 
 
   useEffect(() => {
     console.log("galery", galery);
-    dataImage();
+    // dataImage();
     dataNewsAnnounce();
     dataPromoClubFacilities();
 
@@ -669,10 +697,10 @@ const Home = (props) => {
     fetchDataNotDue();
     fetchDataHistory();
 
-    getLotNo();
+    // getLotNo();
     notifUser();
     setLoading(false);
-  }, [user]);
+  }, [user, dataMenus]);
 
   useEffect(() => {
     // getNewsAnnounce();
@@ -1097,6 +1125,7 @@ const Home = (props) => {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
         >
+          
           {/* <View style={{flex: 1}}> */}
           <ImageBackground
             // source={require('../../assets/images/image-home/Main_Image.png')}
@@ -1458,7 +1487,10 @@ const Home = (props) => {
             {user == null || user == "" ? (
               <Text>user not available</Text>
             ) : (
-              <Categories style={{ marginTop: 10 }} />
+              // dataMenus.map((item, index)=>(
+              //   <Text key={index}>{item.Title}</Text>
+              // ))
+              <Categories style={{ marginTop: 10 }} dataMenus={dataMenus}/>
             )}
           </View>
 

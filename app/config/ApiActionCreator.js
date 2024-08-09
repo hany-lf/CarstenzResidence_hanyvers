@@ -1,18 +1,26 @@
 import axios from 'axios';
 import {fetchData, fetchSuccess, fetchError} from './ApiActions';
 
-const apiActionCreator = url => dispatch => {
+const apiActionCreator = (url, token) => dispatch => {
   dispatch(fetchData());
   return new Promise(() => {
-    axios
-      .get(url)
+    const config ={
+      method: 'get',
+      url: url,
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    }
+    axios(config)
+      // .get(url)
       .then(response => {
         dispatch(fetchSuccess(response.data));
         // console.log('response', response);
       })
       .catch(error => {
         dispatch(fetchError(error));
-        console.log(error);
+        console.log('error api action creator',error.response.data);
       });
   });
 };

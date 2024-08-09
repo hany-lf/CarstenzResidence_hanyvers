@@ -3,32 +3,32 @@ import { setAuthStorage } from "../config/Storage";
 import httpClient from "./HttpClient";
 import { API_URL_LOKAL } from "@env";
 
-class ProjectController {
+class MenuController {
   constructor() {
     // this.basePath = '/login_mobile';
     this.basePath = API_URL_LOKAL;
   }
 
-  data_project = async (datas) => {
-    console.log("email for project di controller", datas);
-    const data_app = "O";
+  get_menu_controller = async (datas) => {
+    console.log("datas for menu controler", datas);
+
     const config = {
       method: 'GET',
-      // url: 'http://dev.ifca.co.id:8080/apiciputra/api/approval/groupMenu?approval_user=MGR',
-      url: API_URL_LOKAL + `/home/common-project`,
+    
+      url: API_URL_LOKAL + `/home/menu`,
       headers: {
         'content-type': 'application/json',
         // 'X-Requested-With': 'XMLHttpRequest',
         Authorization: `Bearer ${datas.token_firebase}`,
       },
-      // params: {approval_user: user.userIDToken.UserId},
-      params: {email: datas.emails},
+  
+      params: {group_cd: datas.group_cd},
     };
 
     try {
       const result = await httpClient.request(config);
       // alert(result.Pesan);
-      console.log("vardums result project -->", result);
+      console.log("vardums result menu -->", result);
       // ini ada isreset dalemnya, sementara dihilangin, buat biar ga nyangkut insert token firebase
       if (result.success) {
         return result;
@@ -41,4 +41,4 @@ class ProjectController {
   };
 }
 
-export default new ProjectController();
+export default new MenuController();

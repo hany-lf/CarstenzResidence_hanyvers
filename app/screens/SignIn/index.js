@@ -51,12 +51,12 @@ const SignIn = (props) => {
   const user = useSelector((state) => getUser(state));
   const project = useSelector((state) => getProject(state));
 
-  const isLoading = useSelector((state) =>
-    isLoadingSelector([actionTypes.LOGIN], state)
-  );
-  const errors = useSelector((state) =>
-    errorsSelector([actionTypes.LOGIN], state)
-  );
+  // const isLoading = useSelector((state) =>
+  //   isLoadingSelector([actionTypes.LOGIN], state)
+  // );
+  // const errors = useSelector((state) =>
+  //   errorsSelector([actionTypes.LOGIN], state)
+  // );
   const loginklik = () => {
     console.log("54 run loginKlik");
     loginUser();
@@ -83,7 +83,7 @@ const SignIn = (props) => {
   useEffect(() => {
     console.log("user for reset? ", user);
     console.log("project di useeffect signin -->", project);
-    if (user !== null && project !== null) {
+    if (user !== null && project !== null && user.length < 0) {
       // loadProject();
       props.navigation.navigate("MainStack");
       // navigation.navigate('MainStack');

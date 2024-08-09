@@ -9,6 +9,7 @@ import counter from './reduceNotif';
 import apiReducer from '../config/ApiReducer';
 import Dataproject from './ProjectReducer';
 import DataCart from './cartReducer';
+import MenuReducer from './MenuReducer';
 
 const rootReducer = combineReducers({
   error,
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   apiReducer,
   Dataproject,
   DataCart,
+  MenuReducer, //nama ini harus sama seperti di selector yang akan dituju
 });
 
 export default rootReducer;
