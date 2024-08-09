@@ -12,30 +12,29 @@ class MenuController {
   get_menu_controller = async (datas) => {
     console.log("datas for menu controler", datas);
 
-    const config = {
-      method: 'GET',
-    
-      url: API_URL_LOKAL + `/home/menu`,
-      headers: {
-        'content-type': 'application/json',
-        // 'X-Requested-With': 'XMLHttpRequest',
-        Authorization: `Bearer ${datas.token_firebase}`,
-      },
-  
-      params: {group_cd: datas.group_cd},
-    };
+   
 
     try {
-      const result = await httpClient.request(config);
+      const result = await httpClient.request({
+        url: API_URL_LOKAL + `/home/menu`,
+        method: 'GET',
+        params: {group_cd: datas.group_cd},
+        headers: {
+          'content-type': 'application/json',
+          Authorization: `Bearer ${datas.token_firebase}`,
+        },
+      });
       // alert(result.Pesan);
       console.log("vardums result menu -->", result);
       // ini ada isreset dalemnya, sementara dihilangin, buat biar ga nyangkut insert token firebase
       if (result.success) {
         return result;
       } else {
+        console.log('result get menu controller', result);
         return Promise.reject(result.message);
       }
     } catch (error) {
+      console.log('error get menu controller', error.response);
       return Promise.reject(error);
     }
   };

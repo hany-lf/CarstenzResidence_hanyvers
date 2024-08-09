@@ -93,15 +93,17 @@ const removeUser = (user) => ({
 
 export const login = (email, password, token_firebase) => async (dispatch) => {
   dispatch(loginRequest());
+  console.log('login action', email);
   try {
+console.log('try login action', email);
     const user = await UserController.login(email, password, token_firebase);
     dispatch(loginSuccess(user.data));
     console.log("99 userrrrr", user);
     // alert("JSON.stringify(user)");
   } catch (error) {
-    alert('error di login user action',error);
-    console.log("103 ini konsol eror", error);
-    dispatch(loginError(error));
+    // alert('error di login user action',error);
+    console.log("103 ini konsol eror", error.response);
+    // dispatch(loginError(error));
   }
 };
 

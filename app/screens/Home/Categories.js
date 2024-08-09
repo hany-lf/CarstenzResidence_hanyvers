@@ -42,7 +42,7 @@ const Categories = ({ style = {}, dataMenus }) => {
       <View style={[{ flexDirection: "row" }, style]}>
         <FlatList
           data={dataMenus}
-          renderItem={({ item }) => (
+          renderItem={({ item, key }) => (
             // console.log(
             //   'coba userfacility == user_facility,',
             //   user.UserFacility != item.user_facility,
@@ -52,6 +52,7 @@ const Categories = ({ style = {}, dataMenus }) => {
             //   user.UserFacility == item.user_menu,
             // ),
             <View
+            key={key}
               style={{
                 flex: 1,
                 marginVertical: 12,

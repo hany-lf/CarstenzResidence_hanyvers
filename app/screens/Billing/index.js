@@ -35,6 +35,7 @@ import HeaderHome from "./HeaderHome";
 import styles from "./styles";
 import HeaderCard from "./HeaderCard";
 import getUser from "../../selectors/UserSelectors";
+import getProject from "../../selectors/ProjectSelector";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import numFormat from "../../components/numFormat";
@@ -55,6 +56,7 @@ const Billing = ({
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const user = useSelector((state) => getUser(state));
+  const project = useSelector((state) => getProject(state));
   const [hasError, setErrors] = useState(false);
   const [bill, setBill] = useState([]);
   const [data, setData] = useState([]);
@@ -63,8 +65,10 @@ const Billing = ({
   const [dataTowerUser, setdataTowerUser] = useState([]);
   const [arrDataTowerUser, setArrDataTowerUser] = useState([]);
 
-  const [email, setEmail] = useState(user.user);
-  const [entity, setEntity] = useState("");
+
+
+  const [email, setEmail] = useState("");
+  const [entity_cd, setEntity] = useState("");
   const [project_no, setProjectNo] = useState("");
   const [db_profile, setDb_Profile] = useState("");
   const [spinner, setSpinner] = useState(true);
@@ -89,6 +93,30 @@ const Billing = ({
       });
     }
   }, [route?.params?.id]);
+
+  // --- useeffect untuk project
+ useEffect(() => {
+  if (project && project.data && project.data.length > 0) {
+    console.log('entity useeffect di home', project.data[0].entity_cd);
+    setEntity(project.data[0].entity_cd);
+    setProjectNo(project.data[0].project_no);
+  }
+}, [project]);
+
+useEffect(() => {
+  // if (entity_cd && project_no) {
+
+  // }
+}, [entity_cd, project_no]);
+// --- useeffect untuk project
+
+  // --- useeffect untuk update email/name
+  useEffect(() => {
+    setEmail(user != null && user.userData != null ? user.userData.email : '');
+  }, [email]);
+  // --- useeffect untuk update email/name
+
+
   //-----FOR GET ENTITY & PROJJECT
   const getTower = async () => {
     const data = {
@@ -144,7 +172,7 @@ const Billing = ({
   };
 
   useEffect(() => {
-    getTower(user);
+    // getTower(user);
     setLoading(false);
     // setTimeout(() => {
     //   setLoading(false);
@@ -154,15 +182,21 @@ const Billing = ({
   }, []);
   // Make function to call the api
   async function fetchData() {
+     const config = {
+      method: 'get',
+      url: API_URL_LOKAL + `/modules/billing/due-summary/${email}`,
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${user.userData.Token}`,
+      },
+    };
     try {
-      const res = await axios.get(
-        API_URL_LOKAL + `/modules/billing/due-summary/IFCAPB/${user.user}`
-      );
+      const res = await axios(config);
       setDataCurrent(res.data.data);
       console.log("DATA DUE DATE -->", res.data.data);
       setLoading(false);
     } catch (error) {
-      setErrors(error.ressponse.data);
+      setErrors(error.response.data);
       // alert(hasError.toString());
     }
   }
@@ -177,15 +211,22 @@ const Billing = ({
   console.log("sum", sum);
 
   async function fetchDataCurrent() {
+    const config = {
+      method: 'get',
+      url: API_URL_LOKAL + `/modules/billing/current-summary/${email}`,
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${user.Token}`,
+      },
+    };
     try {
-      const res = await axios.get(
-        API_URL_LOKAL + `/modules/billing/current-summary/IFCAPB/${user.user}`
-      );
+      const res = await axios(config);
       setData(res.data.data);
       console.log("data current", res.data.data);
       setLoading(false);
     } catch (error) {
-      setErrors(error.ressponse.data);
+      console.log('error fetch data current', error.response);
+      setErrors(error.response.data);
       // alert(hasError.toString());
     }
   }
@@ -249,7 +290,7 @@ const Billing = ({
           <ActivityIndicator />
         ) : (
           <View style={{ flex: 1, paddingHorizontal: 20 }}>
-            {tab.id == 1 && dataCurrent != 0
+            {tab.id == 1 && dataCurrent != 0 && dataCurrent.length > 0
               ? dataCurrent.map((item, key) => (
                   <ListTransactionExpand
                     onPress={() => navigation.navigate("FHistoryDetail")}
@@ -265,9 +306,9 @@ const Billing = ({
                     mbal_amt={`${numFormat(`${item.mbal_amt}`)}`}
                     lot_no={item.lot_no}
                     debtor_acct={item.debtor_acct}
-                    entity_cd={entity}
+                    entity_cd={entity_cd}
                     project_no={project_no}
-                    email={user.user}
+                    email={email}
                     tab_id={1}
                   />
                 ))
@@ -312,7 +353,7 @@ const Billing = ({
         )}
 
         <View style={{ flex: 1, paddingHorizontal: 20 }}>
-          {tab.id == 2 && data != null
+          {tab.id == 2 && data != null && data.length > 0
             ? data.map((item, key) => (
                 <ListTransactionExpand
                   onPress={() => navigation.navigate("FHistoryDetail")}
@@ -328,9 +369,9 @@ const Billing = ({
                   mbal_amt={`${numFormat(`${item.mbal_amt}`)}`}
                   lot_no={item.lot_no}
                   debtor_acct={item.debtor_acct}
-                  entity_cd={entity}
+                  entity_cd={entity_cd}
                   project_no={project_no}
-                  email={user.user}
+                  email={email}
                   tab_id={2}
                 />
               ))

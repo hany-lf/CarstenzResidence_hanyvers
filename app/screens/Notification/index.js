@@ -42,7 +42,10 @@ const Notification = (props) => {
   const [refreshing, setRefreshing] = useState(false);
   // const [notification, setNotification] = useState(NotificationData);
   const users = useSelector((state) => getUser(state));
-  const [email, setEmail] = useState(users != null ? users.user : "");
+
+  const [email, setEmail] = useState("");
+  const [entity_cd, setEntity] = useState("");
+  const [project_no, setProjectNo] = useState("");
   console.log("users di notif", users.user);
   const [loading, setLoading] = useState(true);
   const [dataTowerUser, setdataTowerUser] = useState([]);
@@ -57,8 +60,7 @@ const Notification = (props) => {
   const [read, setRead] = useState(false);
   const [color, setColor] = useState("blue");
   const [indexList, setIndexList] = useState();
-  const [entity_cd, setEntity] = useState("");
-  const [project_no, setProject] = useState("");
+
   const data = useSelector((state) => state.apiReducer.data);
   console.log("data notif length", data);
   const [isRead, setisRead] = useState(data.IsRead);
@@ -69,11 +71,32 @@ const Notification = (props) => {
   const loadings = useSelector((state) => state.apiReducer.loading);
   const counter = useSelector((state) => state.counter);
 
+  // --- useeffect untuk project
+ useEffect(() => {
+  if (project && project.data && project.data.length > 0) {
+    console.log('entity useeffect di home', project.data[0].entity_cd);
+    setEntity(project.data[0].entity_cd);
+    setProjectNo(project.data[0].project_no);
+  }
+}, [project]);
+
+useEffect(() => {
+  if (entity_cd && project_no) {
+    getLotNo();
+  }
+}, [entity_cd, project_no]);
+// --- useeffect untuk project
+
+  // --- useeffect untuk update email/name
+  useEffect(() => {
+    setEmail(users != null && users.userData != null ? users.userData.email : '');
+  }, [email]);
+  // --- useeffect untuk update email/name
+
   useEffect(() => {
     dispatch(
       apiCall(
-        API_URL_LOKAL +
-          `/setting/notification?email=${email}&entity_cd=01&project_no=01`
+        API_URL_LOKAL + `/setting/notification?email=${email}&entity_cd=${entity_cd}&project_no=${project_no}`, users.Token
       )
     );
   }, []);
@@ -81,8 +104,7 @@ const Notification = (props) => {
   const refreshDataNotif = () => {
     dispatch(
       apiCall(
-        API_URL_LOKAL +
-          `/setting/notification?email=${email}&entity_cd=01&project_no=01`
+        API_URL_LOKAL + `/setting/notification?email=${email}&entity_cd=${entity_cd}&project_no=${project_no}`, users.Token
       )
     );
   };

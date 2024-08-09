@@ -116,7 +116,7 @@ const Home = (props) => {
   // );
   // const email = user.user;
   const [email, setEmail] = useState(user != null && user.userData != null ? user.userData.email : "");
-  // console.log('usr di home', user)
+  console.log('usr di home', user)
   // console.log('pict user', user.userData.pict)
   const [fotoprofil, setFotoProfil] = useState(
    user != null && user.userData != null
@@ -214,10 +214,10 @@ useEffect(() => {
     useCallback(() => {
       console.log('useFocusEffect triggered');
       
-      // if (user && user.userData) {
-      //   console.log('User data:', user.userData);
+      if (user && user.userData) {
+        console.log('User data:', user.userData);
         dispatch(get_menu_actions({ token_firebase: user.Token, group_cd: user.userData.Group_Cd }));
-      // }
+      }
   
       return () => {
         console.log('Screen unfocused or cleanup');
@@ -229,17 +229,14 @@ useEffect(() => {
   // --- onrefresh ini berfungsi jika ketika ditarik reload, maka update dispatch(ambil data terbaru) menu dari database
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    console.log('ini refresh on di home', user.userData)
+    // console
     // if (user && user.userData) {
-    //     console.log('user di home refresh', user),
-    //     console.log('userData di home refresh', user.userData),
+        console.log('user di home refresh', user),
+        console.log('userData di home refresh', user.userData),
         dispatch(get_menu_actions({ token_firebase: user.Token, group_cd: user.userData.Group_Cd }))
-    //    .then(() => setRefreshing(false));  // Ensure refreshing ends after data is fetched
+       .then(() => setRefreshing(false));  // Ensure refreshing ends after data is fetched
     // }
-    wait(5000).then(() => {
-      setRefreshing(false);
-    });
-  }, [user, dispatch]);
+  }, [user]);
 
   useEffect(() => {
     messaging().onNotificationOpenedApp((remoteMessage) => {
@@ -319,20 +316,12 @@ useEffect(() => {
   }, []);
 
   const getImageGreetings = async () => {
-    const config = {
-      method: 'get',
-      url: API_URL_LOKAL + `/home/greetings`,
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${user.Token}`,
-      },
-    };
     // console.log(
     //   'url greetings chairman',
     //   `http://apps.pakubuwono-residence.com/apiwebpbi/api/first_login_Get/` + email,
     // );
-    await axios(config)
-      // .get(API_URL_LOKAL + `/home/greetings`)
+    await axios
+      .get(API_URL_LOKAL + `/home/greetings`)
       .then((res) => {
         // console.log('res greetings', res.data.data);
         const image_greetings = res.data.data;
@@ -559,7 +548,7 @@ useEffect(() => {
 
     await axios(config)
       .then((res) => {
-        console.log("res promoclubfacilities", res.data.data);
+        // console.log("res promoclubfacilities", res.data.data);
         const datapromoclub = res.data.data;
 
         // filter by category
@@ -880,7 +869,84 @@ useEffect(() => {
                     }}
                   ></ImageBackground>
                 </View>
-               
+                // {/* Button Next Here  */}
+                // <View
+                //   style={{
+                //     flex: 1,
+                //     justifyContent: 'flex-end',
+                //     marginBottom: 36,
+                //   }}>
+                //   <View style={{flexDirection: 'row', width: '100%'}}>
+                //     <View
+                //       style={{
+                //         marginTop: 10,
+                //         justifyContent: 'space-between',
+                //         flex: 1,
+                //         // backgroundColor: 'red',
+                //         // width: '50%',
+                //       }}>
+                //       {/* <Text>halo</Text> */}
+                //       <Pressable
+                //         onPress={() =>
+                //           previewZoomGreeting(item.greetings_file)
+                //         }>
+                //         <View
+                //           style={{
+                //             alignItems: 'center',
+                //             flexDirection: 'row',
+                //           }}>
+                //           <Text
+                //             style={{
+                //               paddingHorizontal: 10,
+                //               fontSize: 16,
+                //               color: colors.primary,
+                //             }}>
+                //             Preview Zoom
+                //           </Text>
+                //           <Icon
+                //             name="search"
+                //             solid
+                //             size={16}
+                //             color={colors.primary}
+                //           />
+                //         </View>
+                //       </Pressable>
+                //     </View>
+                //     <View
+                //       style={{
+                //         marginTop: 10,
+                //         justifyContent: 'space-between',
+                //         // marginRight: 10,
+                //         // flex: 1,
+                //         // backgroundColor: 'blue',
+                //         // width: '50%',
+                //       }}>
+                //       <Pressable onPress={() => pressChairmanMessage()}>
+                //         <View
+                //           style={{
+                //             alignItems: 'center',
+                //             marginRight: 20,
+                //             flexDirection: 'row',
+                //           }}>
+                //           <Text
+                //             style={{
+                //               paddingHorizontal: 10,
+                //               fontSize: 16,
+                //               color: colors.primary,
+                //             }}>
+                //             Next
+                //           </Text>
+                //           <Icon
+                //             name="arrow-right"
+                //             solid
+                //             size={16}
+                //             color={colors.primary}
+                //           />
+                //         </View>
+                //       </Pressable>
+                //     </View>
+                //   </View>
+                // </View>
               ))}
             </View>
             <View
@@ -1071,7 +1137,17 @@ useEffect(() => {
           <ImageBackground
             // source={require('../../assets/images/image-home/Main_Image.png')}
             source={require("../../assets/images/image-home/carstensz.webp")}
-            
+            style={
+              {
+                // height: '100%',
+                // height: 400,
+                // width: '100%',
+                // flex: 1,
+                // resizeMode: 'cover',
+                // borderBottomLeftRadius: 500,
+                // borderBottomRightRadius: 175,
+              }
+            }
             imageStyle={{
               height: 400,
               width: "100%",
@@ -1186,7 +1262,6 @@ useEffect(() => {
           </ImageBackground>
           {/* </View> */}
 
-{/* ---- header image dan nama dan unit */}
           <View
             style={{
               flexDirection: "row",
@@ -1286,7 +1361,7 @@ useEffect(() => {
                       optionTextStyle={{ color: "#333" }}
                       selectedItemTextStyle={{ color: "#3C85F1" }}
                       accessible={true}
-                      keyExtractor={(item) => item}
+                      keyExtractor={(item) => item.lot_no}
                       // initValue={'ahlo'}
                       labelExtractor={(item) => item.lot_no} //khusus untuk lotno
                       cancelButtonAccessibilityLabel={"Cancel Button"}
@@ -1386,7 +1461,7 @@ useEffect(() => {
                       optionTextStyle={{ color: "#333" }}
                       selectedItemTextStyle={{ color: "#3C85F1" }}
                       accessible={true}
-                      keyExtractor={(item) => item}
+                      keyExtractor={(item) => item.lot_no}
                       // initValue={'ahlo'}
                       labelExtractor={(item) => item.lot_no} //khusus untuk lotno
                       cancelButtonAccessibilityLabel={"Cancel Button"}
@@ -1415,11 +1490,9 @@ useEffect(() => {
               )}
             </View>
           </View>
-          {/* ---- header image dan nama dan unit */}
-          
-          {/* --- menu dinamis kotak-kotak  */}
+
           <View style={styles.paddingContent}>
-            {user == null || user == "" || user.userData == null ? (
+            {user == null || user == "" ? (
               <Text>user not available</Text>
             ) : (
               // dataMenus.map((item, index)=>(
@@ -1428,7 +1501,218 @@ useEffect(() => {
               <Categories style={{ marginTop: 10 }} dataMenus={dataMenus}/>
             )}
           </View>
-             {/* --- menu dinamis  */}
+
+          <View style={{ marginBottom: 10, flex: 1 }}>
+            <View style={{ marginLeft: 30, marginTop: 20, marginBottom: 10 }}>
+              <Text
+                style={{
+                  fontSize: 24,
+                  // color: 'white',
+                  fontFamily: "DMSerifDisplay",
+                }}
+              >
+                Our Bulletin
+              </Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  marginRight: 20,
+                }}
+              >
+                <Text>News</Text>
+                {
+                  newsannounce.length >= 6 ? (
+                    <TouchableOpacity
+                      onPress={() => goToMoreNewsAnnounce(newsannounce)}
+                    >
+                      <View
+                        style={{ alignSelf: "center", flexDirection: "row" }}
+                      >
+                        <Text style={{ marginHorizontal: 5, fontSize: 14 }}>
+                          More
+                        </Text>
+                        <Icon
+                          name="arrow-right"
+                          solid
+                          size={16}
+                          color={colors.primary}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                  ) : null
+                  // <Text>kurang dari 6</Text>
+                }
+              </View>
+            </View>
+            <View style={{ marginVertical: 10, marginLeft: 20 }}>
+              {loadNewsAnnounce ? (
+                <ActivityIndicator />
+              ) : (
+                <SliderNews
+                  data={newsannounceslice}
+                  local={true}
+                  // contentContainerStyle={{paddingHorizontal: 16}}
+                  // onPress={console.log('klik')}
+                />
+              )}
+            </View>
+          </View>
+
+          <View style={{ marginBottom: 20, flex: 1 }}>
+            <View style={{ marginLeft: 30, marginTop: 20, marginBottom: 10 }}>
+              <Text
+                style={{
+                  fontSize: 24,
+                  // color: 'white',
+                  fontFamily: "DMSerifDisplay",
+                }}
+              >
+                This Weekend
+              </Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  marginRight: 20,
+                }}
+              >
+                <Text>Event And Restaurant</Text>
+                {
+                  eventresto.length >= 6 ? (
+                    <TouchableOpacity
+                      onPress={() => goToEventResto(eventresto)}
+                    >
+                      <View
+                        style={{ alignSelf: "center", flexDirection: "row" }}
+                      >
+                        <Text style={{ marginHorizontal: 5, fontSize: 14 }}>
+                          More
+                        </Text>
+                        <Icon
+                          name="arrow-right"
+                          solid
+                          size={16}
+                          color={colors.primary}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                  ) : null
+                  // <Text>kurang dari 6</Text>
+                }
+              </View>
+            </View>
+
+            <View style={{ marginVertical: 10, marginHorizontal: 10 }}>
+              <ScrollView horizontal>
+                <MasonryList
+                  data={imageEventResto}
+                  // data={sliceArrEvent}
+                  style={{ alignSelf: "stretch" }}
+                  showsHorizontalScrollIndicator={false}
+                  showsVerticalScrollIndicator={false}
+                  scrollEnabled={false}
+                  contentContainerStyle={{
+                    paddingHorizontal: 10,
+                    alignSelf: "stretch",
+                    // alignSelf: 'flex-start',
+                  }}
+                  keyExtractor={(item, index) => index}
+                  numColumns={3}
+                  renderItem={CardItem}
+                />
+              </ScrollView>
+            </View>
+          </View>
+
+          <View style={{ marginBottom: 20, flex: 1 }}>
+            <View style={{ marginLeft: 30, marginTop: 20, marginBottom: 10 }}>
+              <Text
+                style={{
+                  fontSize: 24,
+                  // color: 'white',
+                  fontFamily: "DMSerifDisplay",
+                }}
+              >
+                Club And Facilities
+              </Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  marginRight: 20,
+                }}
+              >
+                <Text>Check Our Promo Here</Text>
+                {
+                  promoclubfac.length >= 6 ? (
+                    <TouchableOpacity
+                      onPress={() => goToPromoClubFac(promoclubfac)}
+                    >
+                      <View
+                        style={{ alignSelf: "center", flexDirection: "row" }}
+                      >
+                        <Text style={{ marginHorizontal: 5, fontSize: 14 }}>
+                          More
+                        </Text>
+                        <Icon
+                          name="arrow-right"
+                          solid
+                          size={16}
+                          color={colors.primary}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                  ) : null
+                  // <Text>kurang dari 6</Text>
+                }
+              </View>
+            </View>
+            <View style={{ marginVertical: 10, marginHorizontal: 10 }}>
+              <ScrollView horizontal>
+                <FlatList
+                  pagingEnabled={true}
+                  decelerationRate="fast"
+                  bounces={false}
+                  data={imagePromoClubFac}
+                  numColumns={3}
+                  contentContainerStyle={{
+                    paddingHorizontal: 10,
+                  }}
+                  showsHorizontalScrollIndicator={false}
+                  showsVerticalScrollIndicator={false}
+                  renderItem={({ item, index }) => (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate("PreviewImageHome", {
+                          images: item.pict,
+                        })
+                      }
+                    >
+                      <View key={item.rowID} style={{}}>
+                        {/* <Text></Text> */}
+                        <Image
+                          source={{ uri: item.pict }}
+                          style={
+                            ([styles.shadow],
+                            {
+                              height: 450,
+                              margin: 5,
+                              width: 250,
+                              borderRadius: 10,
+                            })
+                          }
+                          resizeMode={"cover"}
+                        ></Image>
+                      </View>
+                    </TouchableOpacity>
+                  )}
+                  // keyExtractor={(item, index) => item.toString() + index}
+                  keyExtractor={(item, index) => index}
+                />
+              </ScrollView>
+            </View>
+          </View>
         </ScrollView>
       </View>
     );

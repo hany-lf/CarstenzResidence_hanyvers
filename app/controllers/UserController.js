@@ -13,36 +13,42 @@ class UserController {
   login = async (email, password, token_firebase) => {
     //var anyString = '';
     //var functionToText = anyString + httpClient;
-    console.log(
-      "16 api request: \n email:",
-      email,
-      "\n password:",
-      password,
-      "\n token_firebase:",
-      token_firebase
-    );
+    // console.log(
+    //   "16 api request: \n email:",
+    //   email,
+    //   "\n password:",
+    //   password,
+    //   "\n token_firebase:",
+    //   token_firebase
+    // );
+    console.log(' login user controller', email);
     try {
-      console.log("25 try controller login begin");
-      console.log("API: " + API_URL_LOKAL);
+      // console.log("25 try controller login begin");
+      // console.log("API: " + API_URL_LOKAL);
+      console.log('try login user controller', email);
       const result = await httpClient.request({
         url: "/auth/login",
         method: "POST",
         data: {
-          email,
-          password,
-          token: "",
+          email: email,
+          password: password,
+         
           device: "ios",
-          mac: "mac",
+          mac: "",
           token_firebase: token_firebase,
+          apps_type: "S"
+         
         },
         headers: {
-          Authorization: token_firebase,
+        
+          Authorization: `Bearer ${token_firebase}`,
         },
       });
-      // alert(result.Pesan);
-      console.log("39 after try");
-      console.log("31 login response -->", result);
-      // ini ada isreset dalemnya, sementara dihilangin, buat biar ga nyangkut insert token firebase
+      console.log('result login user controller', result);
+      // // alert(result.Pesan);
+      // console.log("39 after try");
+      // console.log("31 login response -->", result);
+      // // ini ada isreset dalemnya, sementara dihilangin, buat biar ga nyangkut insert token firebase
       if (result.success) {
         console.log("37 if succes", result);
         return result;
