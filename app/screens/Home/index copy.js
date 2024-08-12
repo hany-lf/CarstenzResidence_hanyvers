@@ -185,7 +185,7 @@ const Home = (props) => {
  // --- useeffect untuk project
  useEffect(() => {
   if (project && project.data && project.data.length > 0) {
-    console.log('entity useeffect di home', project.data[0].entity_cd);
+    // console.log('entity useeffect di home', project.data[0].entity_cd);
     setEntity(project.data[0].entity_cd);
     setProjectNo(project.data[0].project_no);
   }
@@ -520,7 +520,7 @@ useEffect(() => {
         console.log("res news", res.data.data);
         const datanews = res.data.data;
         const slicedatanews = datanews.slice(0, 6);
-        console.log("slice data", slicedatanews);
+        // console.log("slice data", slicedatanews);
         setNewsAnnounceSlice(slicedatanews);
         setNewsAnnounce(datanews);
         setLoadNews(false);

@@ -61,7 +61,7 @@ const Billing = ({
   const [bill, setBill] = useState([]);
   const [data, setData] = useState([]);
   const [dataCurrent, setDataCurrent] = useState([]);
-  console.log("user,", user);
+  // console.log("user,", user);
   const [dataTowerUser, setdataTowerUser] = useState([]);
   const [arrDataTowerUser, setArrDataTowerUser] = useState([]);
 
@@ -97,24 +97,28 @@ const Billing = ({
   // --- useeffect untuk project
  useEffect(() => {
   if (project && project.data && project.data.length > 0) {
-    console.log('entity useeffect di home', project.data[0].entity_cd);
+    // console.log('entity useeffect di home', project.data[0].entity_cd);
     setEntity(project.data[0].entity_cd);
     setProjectNo(project.data[0].project_no);
   }
 }, [project]);
 
-useEffect(() => {
-  // if (entity_cd && project_no) {
-
-  // }
-}, [entity_cd, project_no]);
-// --- useeffect untuk project
-
   // --- useeffect untuk update email/name
   useEffect(() => {
-    setEmail(user != null && user.userData != null ? user.userData.email : '');
-  }, [email]);
+    if (user && user.userData) {
+      // console.log('entity useeffect di home', user);
+      setEmail(user.userData.email);
+    }
+  }, [user]);
   // --- useeffect untuk update email/name
+
+  useEffect(() => {
+    console.log('apakah ini terload', email)
+    if(email){
+      fetchData();
+      fetchDataCurrent();
+    }
+  }, [email]);
 
 
   //-----FOR GET ENTITY & PROJJECT
@@ -182,12 +186,13 @@ useEffect(() => {
   }, []);
   // Make function to call the api
   async function fetchData() {
+    console.log('api due sumary', API_URL_LOKAL + `/modules/billing/due-summary/${email}`)
      const config = {
       method: 'get',
       url: API_URL_LOKAL + `/modules/billing/due-summary/${email}`,
       headers: {
         'content-type': 'application/json',
-        Authorization: `Bearer ${user.userData.Token}`,
+        Authorization: `Bearer ${user.Token}`,
       },
     };
     try {
@@ -201,16 +206,8 @@ useEffect(() => {
     }
   }
 
-  // ----- ini gak kepake kan? ga ada yang panggil const sum
-  const sum =
-    dataCurrent != 0
-      ? dataCurrent.reduceRight((max, bills) => {
-          return (max += parseInt(bills.mbal_amt));
-        }, 0)
-      : null;
-  console.log("sum", sum);
-
   async function fetchDataCurrent() {
+    console.log('api current sumary', API_URL_LOKAL + `/modules/billing/current-summary/${email}`)
     const config = {
       method: 'get',
       url: API_URL_LOKAL + `/modules/billing/current-summary/${email}`,
@@ -231,10 +228,18 @@ useEffect(() => {
     }
   }
 
-  useEffect(() => {
-    fetchData();
-    fetchDataCurrent();
-  }, []);
+
+  // ----- ini gak kepake kan? ga ada yang panggil const sum
+  const sum =
+    dataCurrent != 0
+      ? dataCurrent.reduceRight((max, bills) => {
+          return (max += parseInt(bills.mbal_amt));
+        }, 0)
+      : null;
+  console.log("sum", sum);
+
+
+
 
   return (
     <SafeAreaView

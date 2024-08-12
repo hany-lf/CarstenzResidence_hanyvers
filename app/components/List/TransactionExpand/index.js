@@ -78,12 +78,11 @@ const TransactionExpand = ({
     console.log(
       'url getDataDue',
       API_URL_LOKAL +
-        `/getDataDue/IFCAPB/${email}/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`,
+        `/modules/billing/detail-history/${email}/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`,
     );
     try {
       const res = await axios.get(
-        API_URL_LOKAL +
-          `/getDataDue/IFCAPB/${email}/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`,
+        API_URL_LOKAL + `/modules/billing/detail-history/${email}/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`,
       );
       setDetailDateDue(res.data.data);
       console.log('detail date due -->', res.data.data);
@@ -99,11 +98,11 @@ const TransactionExpand = ({
       console.log(
         'api not due detail',
         API_URL_LOKAL +
-          `/getDataCurrent/IFCAPB/${email}/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`,
+          `/modules/billing/detail-history/${email}/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`,
       );
       const res = await axios.get(
         API_URL_LOKAL +
-          `/getDataCurrent/IFCAPB/${email}/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`,
+          `/modules/billing/detail-history/${email}/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`,
       );
       setDetailNotDue(res.data.data);
       console.log('detail not due -->', res.data);
@@ -115,9 +114,10 @@ const TransactionExpand = ({
   };
 
   const sumTotal =
-    datadetailDateDue != 0
+    datadetailDateDue != 0 || datadetailDateDue != null || datadetailDateDue.length > 0
       ? datadetailDateDue.reduceRight((max, bills) => {
-          return (max += parseInt(bills.mbal_amt));
+          // return (max += parseInt(bills.mbal_amt));
+          return (max += parseInt(bills.mdoc_amt));
         }, 0)
       : null;
   const math_total = Math.floor(sumTotal);
@@ -132,7 +132,7 @@ const TransactionExpand = ({
   const sumTotalNotDue =
     datadetailNotDue_null != 0
       ? datadetailNotDue.reduceRight((max, bills) => {
-          return (max += parseInt(bills.mbal_amt));
+          return (max += parseInt(bills.mdoc_amt));
         }, 0)
       : null;
   const math_total_notdue = Math.floor(sumTotalNotDue);
@@ -220,7 +220,7 @@ const TransactionExpand = ({
                       paddingVertical: 5,
                     }}>
                     <View style={{width: '50%', paddingLeft: 10}}>
-                      <Text subhead>{item.descs_detail}</Text>
+                      <Text subhead>{item.descs}</Text>
                     </View>
                     <View
                       style={{
@@ -231,7 +231,7 @@ const TransactionExpand = ({
                       }}>
                       <Text>Rp. </Text>
                       <Text subhead>
-                        {numFormattanpaRupiah(item.mbal_amt)}
+                        {numFormattanpaRupiah(item.mdoc_amt)}
                         {/* 100.000.000.00 */}
                       </Text>
                       {/* <Text subhead>{numFormat(item.mbal_amt)}</Text> */}
@@ -256,7 +256,7 @@ const TransactionExpand = ({
                 }}>
                 <View style={{width: '50%', paddingLeft: 10}}>
                   <Text subhead bold style={{fontSize: 16}}>
-                    Total
+                    Totals
                   </Text>
                 </View>
                 <View
@@ -339,7 +339,7 @@ const TransactionExpand = ({
                 }}>
                 <View style={{width: '50%', paddingLeft: 10}}>
                   <Text subhead bold style={{fontSize: 16}}>
-                    Total
+                    Totalss
                   </Text>
                 </View>
                 <View

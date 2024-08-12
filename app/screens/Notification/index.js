@@ -74,7 +74,7 @@ const Notification = (props) => {
   // --- useeffect untuk project
  useEffect(() => {
   if (project && project.data && project.data.length > 0) {
-    console.log('entity useeffect di home', project.data[0].entity_cd);
+    // console.log('entity useeffect di home', project.data[0].entity_cd);
     setEntity(project.data[0].entity_cd);
     setProjectNo(project.data[0].project_no);
   }

@@ -2,6 +2,7 @@ import axios from 'axios';
 import {fetchData, fetchSuccess, fetchError} from './ApiActions';
 
 const apiActionCreator = (url, token) => dispatch => {
+  console.log('token di apiactioncreator', token)
   dispatch(fetchData());
   return new Promise(() => {
     const config ={

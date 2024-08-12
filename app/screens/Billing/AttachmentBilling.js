@@ -21,8 +21,9 @@ import { useTranslation } from "react-i18next";
 import { Card } from "react-native-paper";
 import { useSelector } from "react-redux";
 import axios from "axios";
-// import getUser from '../../selectors/UserSelectors';
+import  getUser  from "../../selectors/UserSelectors";
 import { API_URL_LOKAL } from "@env";
+
 
 const fileDummy = [
   {
@@ -41,27 +42,35 @@ const AttachmentBilling = (props) => {
   const [attachment, setAttachment] = useState([]);
   const [hasError, setErrors] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const user = useSelector((state) => getUser(state));
 
   useEffect(() => {
     getAttachment();
-  }, []);
+  }, [user]);
 
   const getAttachment = async () => {
     const entity_cd = route.params.entity_cd;
     const project_no = route.params.project_no;
     const debtor_acct = route.params.debtor_acct;
     const doc_no = route.params.doc_no;
-
+   
+    console.log('token user di gettacchament billing', user.Token)
     console.log(
       "params api attach",
       API_URL_LOKAL +
-        `/modules/billing/attach/IFCAPB/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`
+        `/modules/billing/attach/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`
     );
+
     try {
-      const res = await axios.get(
-        API_URL_LOKAL +
-          `/modules/billing/attach/IFCAPB/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`
-      );
+      const config = {
+        method: 'get',
+        url: API_URL_LOKAL + `/modules/billing/attach/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`,
+        headers: {
+          'content-type': 'application/json',
+          Authorization: `Bearer ${user.Token}`,
+        },
+      };
+      const res = await axios(config);
       console.log("res atatchment billing", res.data.data);
       setAttachment(res.data.data);
     } catch (error) {
@@ -128,7 +137,8 @@ const AttachmentBilling = (props) => {
           navigation.goBack();
         }}
       />
-      {attachment == null ? (
+   
+      {attachment == null || attachment.length <= 0 ? (
         <View
           style={{
             flex: 1,

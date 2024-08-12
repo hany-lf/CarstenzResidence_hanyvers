@@ -185,7 +185,7 @@ const Home = (props) => {
  // --- useeffect untuk project
  useEffect(() => {
   if (project && project.data && project.data.length > 0) {
-    console.log('entity useeffect di home', project.data[0].entity_cd);
+    // console.log('entity useeffect di home', project.data[0].entity_cd);
     setEntity(project.data[0].entity_cd);
     setProjectNo(project.data[0].project_no);
   }
@@ -458,7 +458,7 @@ useEffect(() => {
   async function fetchDataDue() {
     const config = {
       method: 'get',
-      url: API_URL_LOKAL + `/modules/billing/due-summary/IFCAPB/${user.user}`,
+      url: API_URL_LOKAL + `/modules/billing/due-summary/${email}`,
       headers: {
         'content-type': 'application/json',
         Authorization: `Bearer ${user.Token}`,
@@ -475,9 +475,10 @@ useEffect(() => {
   }
 
   async function fetchDataNotDue() {
+    console.log('email di home untuk fetchdatanotdue', email)
     const config = {
       method: 'get',
-      url: API_URL_LOKAL + `/modules/billing/current-summary/IFCAPB/${user.user}`,
+      url: API_URL_LOKAL + `/modules/billing/current-summary/${email}`,
       headers: {
         'content-type': 'application/json',
         Authorization: `Bearer ${user.Token}`,
@@ -494,9 +495,10 @@ useEffect(() => {
   }
 
   async function fetchDataHistory() {
+    console.log('email di home untuk fetchdatahistory', email)
     const config = {
       method: 'get',
-      url: API_URL_LOKAL + `/modules/billing/summary-history/IFCAPB/${user.user}`,
+      url: API_URL_LOKAL + `/modules/billing/summary-history/${email}`,
       headers: {
         'content-type': 'application/json',
         Authorization: `Bearer ${user.Token}`,
@@ -531,7 +533,7 @@ useEffect(() => {
         console.log("res news", res.data.data);
         const datanews = res.data.data;
         const slicedatanews = datanews.slice(0, 6);
-        console.log("slice data", slicedatanews);
+        // console.log("slice data", slicedatanews);
         setNewsAnnounceSlice(slicedatanews);
         setNewsAnnounce(datanews);
         setLoadNews(false);
@@ -559,7 +561,7 @@ useEffect(() => {
 
     await axios(config)
       .then((res) => {
-        console.log("res promoclubfacilities", res.data.data);
+        // console.log("res promoclubfacilities", res.data.data);
         const datapromoclub = res.data.data;
 
         // filter by category

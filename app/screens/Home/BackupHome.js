@@ -220,7 +220,7 @@ const Home = (props) => {
   async function fetchDataNotDue() {
     try {
       const res = await axios.get(
-        `http://apps.pakubuwono-residence.com/apiwebpbi/api/modules/billing/current-summary/IFCAPB/${user.user}`
+       API_ `http://apps.pakubuwono-residence.com/apiwebpbi/api/modules/billing/current-summary/IFCAPB/${user.user}`
       );
       setDataNotDue(res.data.data);
       console.log("data get data not due", res.data.data);
