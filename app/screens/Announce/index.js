@@ -29,6 +29,8 @@ import { CardReport01, CardReport08 } from "../../components";
 import List from "../../components/Product/List";
 import styles from "./styles";
 import { API_URL_LOKAL } from "@env";
+import  getUser  from "../../selectors/UserSelectors";
+import { useSelector } from "react-redux";
 
 const Announce = (props) => {
   const { navigation } = props;
@@ -37,10 +39,18 @@ const Announce = (props) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hasError, setErrors] = useState(false);
+  const user = useSelector(state => getUser(state));
 
-  useEffect(() => {
-    axios
-      .get(API_URL_LOKAL + "/home/announcement")
+  const getAnnounce = () => {
+    const config = {
+      method: 'get',
+      url: API_URL_LOKAL + "/home/announcement",
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${user.Token}`,
+      },
+    };
+    axios(config)
       .then(({ data }) => {
         console.log("defaultApp -> data", data.data);
         const peopleArray = Object.values(data);
@@ -49,32 +59,21 @@ const Announce = (props) => {
       })
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
-  }, []);
+  }
 
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
+      getAnnounce();
     }, 1000);
-  }, []);
+  }, [user]);
+
+ 
 
   const goPost = (item) => () => {
     navigation.navigate("Post", { item: item });
   };
 
-  // const goAnnouceDetail = item => () => {
-  // const announce_file = item.announce_file.replace('https', 'http');
-  // const replJ = JSON.stringify({announce_file});
-  // let items = new Object();
-  // items.push(announce_file);
-
-  // console.log('repl', items);
-  // item.forEach(function (key, val) {
-  //   item[key] = val.replace('https', 'http');
-  // });
-  // const repl = item.announce_file.replace('https', 'http');
-  //   console.log('announce detail', item);
-  //   navigation.navigate('AnnouceDetail', {item: item});
-  // };
   const goAnnouceDetail = (item) => {
     console.log("announce detail", item);
     navigation.navigate("AnnouceDetail", { item: item });

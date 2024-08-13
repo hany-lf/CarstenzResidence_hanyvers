@@ -34,6 +34,9 @@ import List from "../../components/Product/List";
 import styles from "./styles";
 import { enableExperimental } from "@utils";
 import { API_URL_LOKAL } from "@env";
+import  getUser from "../../selectors/UserSelectors";
+import { useSelector } from "react-redux";
+
 const Rent = (props) => {
   const { navigation } = props;
   const { t } = useTranslation();
@@ -43,6 +46,7 @@ const Rent = (props) => {
   const [rent, setRent] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hasError, setErrors] = useState(false);
+  const user = useSelector((state) => getUser(state));
   const TABS = [
     {
       id: 1,
@@ -65,33 +69,52 @@ const Rent = (props) => {
   }, [route?.params?.id]);
 
   useEffect(() => {
-    axios
-      .get(API_URL_LOKAL + "/modules/rs/sale-unit/")
-      .then(({ data }) => {
-        console.log("defaultApp -> data", data);
-        setData(data);
-        console.log("data >", data[0].images);
-      })
-      .catch((error) => console.error(error))
-      .finally(() => setLoading(false));
-  }, []);
-
-  useEffect(() => {
-    axios
-      .get(API_URL_LOKAL + "/modules/rs/rent-unit")
-      .then(({ data }) => {
-        console.log("defaultApp -> data", rent);
-        setRent(data);
-      })
-      .catch((error) => console.error(error))
-      .finally(() => setLoading(false));
-  }, []);
-
-  useEffect(() => {
     setTimeout(() => {
       setLoading(false);
+      getDataRentUnit()
+      getDataSaleUnit()
     }, 1000);
-  }, []);
+  }, [user]);
+
+  const getDataSaleUnit = () =>{
+    const config = {
+      method: 'get',
+      url: API_URL_LOKAL + "/modules/rs/sale-unit/",
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${user.Token}`,
+      },
+    };
+
+    axios(config)
+    .then(({ data }) => {
+      console.log("sale -> data", data);
+      setData(data.data);
+      console.log("data >", data[0].images);
+    })
+    .catch((error) => console.error(error))
+    .finally(() => setLoading(false));
+  }
+
+  const getDataRentUnit = () =>{
+    const config = {
+      method: 'get',
+      url: API_URL_LOKAL + "/modules/rs/rent-unit/",
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${user.Token}`,
+      },
+    };
+
+    axios(config)
+    .then(({ data }) => {
+      console.log("rent -> data", data.data);
+      setRent(data.data);
+      console.log("data >", data[0].images);
+    })
+    .catch((error) => console.error(error))
+    .finally(() => setLoading(false));
+  }
 
   const goPost = (item) => () => {
     navigation.navigate("Post", { item: item });
