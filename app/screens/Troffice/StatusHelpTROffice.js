@@ -28,7 +28,7 @@ import {
 } from "react-native";
 
 import { useSelector } from "react-redux";
-import getUser from "../../selectors/UserSelectors";
+
 import axios from "axios";
 import client from "../../controllers/HttpClient";
 import styles from "./styles";
@@ -36,19 +36,24 @@ import styles from "./styles";
 import { RadioButton } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API_URL_LOKAL } from "@env";
+import getProject from "../../selectors/ProjectSelector";
+import getUser from "../../selectors/UserSelectors";
+
 export default function StatusHelpTROffice({ route }) {
   const { t, i18n } = useTranslation();
   const { colors } = useTheme();
   const [keyword, setKeyword] = useState("");
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
+  const user = useSelector((state) => getUser(state));
 
+  const project = useSelector((state) => getProject(state));
   const [dataTowerUser, setdataTowerUser] = useState([]);
   const [arrDataTowerUser, setArrDataTowerUser] = useState([]);
   const users = useSelector((state) => getUser(state));
-  const [email, setEmail] = useState(users.user);
+  const [email, setEmail] = useState("");
   const [urlApi, seturlApi] = useState(client);
-  const [entity, setEntity] = useState("");
+  const [entity_cd, setEntity] = useState("");
   const [project_no, setProjectNo] = useState("");
   const [db_profile, setDb_Profile] = useState("");
   const [checkedEntity, setCheckedEntity] = useState(false);
@@ -122,15 +127,40 @@ export default function StatusHelpTROffice({ route }) {
       });
   };
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-      getTower();
+   // --- useeffect untuk project
+ useEffect(() => {
+  setTimeout(() => {
+    setLoading(false);
+    // getTower();
+    if (project && project.data && project.data.length > 0) {
+      // console.log('entity useeffect di home', project.data[0].entity_cd);
+      setEntity(project.data[0].entity_cd);
+      setProjectNo(project.data[0].project_no);
+    }
+    // getCategoryHelp;
+    // setSpinner(false);
+  }, 3000);
+  
+}, [project]);
 
-      // getCategoryHelp;
-      // setSpinner(false);
-    }, 3000);
-  }, []);
+useEffect(() => {
+  if (entity_cd && project_no) {
+    // getLotNo();
+    const params = {
+      entity_cd: entity_cd,
+      project_no: project_no,
+    };
+    getTicketStatus(params);
+    setShow(true);
+  }
+}, [entity_cd, project_no]);
+// --- useeffect untuk project
+
+  // --- useeffect untuk update email/name
+  useEffect(() => {
+    setEmail(user != null && user.userData != null ? user.userData.email : '');
+  }, [email]);
+  // --- useeffect untuk update email/name
 
   const handleCheckChange = (index, data) => {
     setCheckedEntity(index);
@@ -154,22 +184,17 @@ export default function StatusHelpTROffice({ route }) {
     };
 
     console.log("formdata", formData);
-    const config = {
-      headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        token: "",
-      },
-    };
+   const config = {
+    method: 'get',
+    url: API_URL_LOKAL + "/modules/troffice/ticket-status-count",
+    headers: {
+      'content-type': 'application/json',
+      Authorization: `Bearer ${user.Token}`,
+    },
+    params: formData,
+   };
 
-    await axios
-      .post(
-        API_URL_LOKAL + "/modules/troffice/ticket-status-count/IFCAPB",
-        formData,
-        {
-          config,
-        }
-      )
+    await axios(config)
       .then((res) => {
         const datas = res.data;
 
@@ -213,34 +238,37 @@ export default function StatusHelpTROffice({ route }) {
     const formData = {
       email: email,
       status: ticketStatus,
-      category_cd: "'AU01','MU52'",
+      category_cd: "'AU01','MU52'", //kok di hardcode??
     };
     console.log("formData", formData);
     const config = {
+      method: 'post',
+      url: API_URL_LOKAL + "/modules/troffice/ticket-by-status",
       headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        token: "",
+        'content-type': 'application/json',
+        Authorization: `Bearer ${user.Token}`,
       },
+      params: formData,
     };
-    console.log(
-      "test get data > ",
+  
+    // console.log(
+    //   "test get data > ",
 
-      `http://apps.pakubuwono-residence.com/apiwebpbi/api/modules/troffice/ticket-by-status/IFCAPB?email=${formData.email}&status=${formData.status}&category_cd=${formData.category_cd}`,
+    //   `http://apps.pakubuwono-residence.com/apiwebpbi/api/modules/troffice/ticket-by-status/IFCAPB?email=${formData.email}&status=${formData.status}&category_cd=${formData.category_cd}`,
+    //   //   formData,
+    //   {
+    //     config,
+    //   }
+    // );
+    await axios(config)
+      // .post(
+      //   API_URL_LOKAL + "/modules/troffice/ticket-by-status/IFCAPB",
+      //   // `http://apps.pakubuwono-residence.com/apiwebpbi/api/modules/troffice/ticket-by-status/IFCAPB?email=${formData.email}&status=${formData.status}&category_cd=${formData.category_cd}`,
       //   formData,
-      {
-        config,
-      }
-    );
-    await axios
-      .post(
-        API_URL_LOKAL + "/modules/troffice/ticket-by-status/IFCAPB",
-        // `http://apps.pakubuwono-residence.com/apiwebpbi/api/modules/troffice/ticket-by-status/IFCAPB?email=${formData.email}&status=${formData.status}&category_cd=${formData.category_cd}`,
-        formData,
-        {
-          config,
-        }
-      )
+      //   {
+      //     config,
+      //   }
+      // )
       .then((res) => {
         const datas = res.data;
 

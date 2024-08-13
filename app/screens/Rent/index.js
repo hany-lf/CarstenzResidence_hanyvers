@@ -187,19 +187,20 @@ const Rent = (props) => {
                   <ProductBlock
                     key={index}
                     loading={loading}
-                    description={item.description}
-                    subject={item.subject}
+                    adv_descs={item.adv_descs}
+                    adv_title={item.adv_title}
                     style={{ marginVertical: 8 }}
                     // images={item.images[0].pict}
                     images={item.images}
                     avatar={item.avatar}
                     email={item.email}
-                    bath_room={item.bath_room}
-                    bed_room={item.bed_room}
-                    land_area={item.land_area}
-                    build_area={item.build_area}
+                    qty_bathroom={item.qty_bathroom}
+                    qty_bedroom={item.qty_bedroom}
+                    nett={item.nett}
+                    semi_gross={item.semi_gross}
                     agent_name={item.agent_name}
                     publish_date={moment(item.publish_date).format("H:mm:ss")}
+                    // publish_date={moment(item.date_created).format("H:mm:ss")}
                     price_descs={item.price_descs}
                     onPress={() => goProductDetail(item)}
                     isFavorite={item.isFavorite}
@@ -230,10 +231,10 @@ const Rent = (props) => {
                     avatar={item.avatar}
                     email={item.email}
                     advID={item.advID}
-                    bath_room={item.bath_room}
-                    bed_room={item.bed_room}
-                    land_area={item.land_area}
-                    build_area={item.build_area}
+                    qty_bathroom={item.qty_bathroom}
+                    qty_bedroom={item.qty_bedroom}
+                    nett={item.nett}
+                    semi_gross={item.semi_gross}
                     agent_name={item.agent_name}
                     publish_date={moment(item.publish_date).format("H:mm:ss")}
                     price_descs={item.price_descs}
@@ -260,10 +261,10 @@ const Rent = (props) => {
                 images={item.images[0].pict}
                 avatar={item.avatar}
                 email={item.email}
-                bath_room={item.bath_room}
-                bed_room={item.bed_room}
-                land_area={item.land_area}
-                build_area={item.build_area}
+                qty_bathroom={item.qty_bathroom}
+                qty_bedroom={item.qty_bedroom}
+                nett={item.nett}
+                semi_gross={item.semi_gross}
                 agent_name={item.agent_name}
                 publish_date={moment(item.publish_date).format('H:mm:ss')}
                 price_descs={item.price_descs}

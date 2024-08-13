@@ -125,6 +125,7 @@ export default function PreviewImages({navigation, route}) {
           keyExtractor={(item, index) => index}
           renderItem={({item, index}) => (
             <TouchableOpacity
+              key={index}
               onPress={() => {
                 onTouchImage(index);
               }}

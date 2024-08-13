@@ -57,11 +57,11 @@ const EProductDetail = (props) => {
   const productData = { ...item };
   const {
     id,
-    description,
+    adv_descs,
     title,
     style,
     image,
-    maid_bedroom,
+    qty_maid_bedroom,
     styleThumb,
     costPrice,
     salePrice,
@@ -69,23 +69,23 @@ const EProductDetail = (props) => {
     agent_name,
     onPress,
     point,
-    bed_room,
-    subject,
+    qty_bedroom,
+    adv_title,
     floor,
     email,
     advID,
-    hp_wa,
-    land_area,
+    no_wa,
+    nett,
     publish_date,
-    build_area,
+    semi_gross,
     property_type,
-    bath_room,
+    qty_bathroom,
     price,
     price_descs,
     status,
     certificate,
     electrical_power,
-    parking,
+    qty_parking,
     avatar,
     images,
     market_type,
@@ -109,7 +109,7 @@ const EProductDetail = (props) => {
     "\n Email : " +
     user.user +
     "\n Phone Number : " +
-    user.handphone +
+    user.no_hp +
     "\n Contact me for the details information.";
 
   // const sendEmail = () => {
@@ -118,7 +118,7 @@ const EProductDetail = (props) => {
   //     dataProject: productData.subject,
   //     name: productData.agent_name,
   //     emailUser: productData.email,
-  //     handphone: productData.hp_wa,
+  //     no_hp: productData.no_wa,
   //   };
   //   console.log('datas', datas);
   //   const message =
@@ -127,7 +127,7 @@ const EProductDetail = (props) => {
   //     '<br> Email : ' +
   //     datas.dataEmail +
   //     '<br> Phone Number : ' +
-  //     datas.handphone +
+  //     datas.no_hp +
   //     '<br><br> Contact me for the details information. </div> </body> </html>';
 
   //   console.log('datas', datas);
@@ -251,7 +251,7 @@ const EProductDetail = (props) => {
             style={{ flexDirection: "row", marginRight: 10 }}
           >
             {" "}
-            {bath_room}
+            {qty_bathroom}
           </Icon>
           <Icon
             name="bed"
@@ -259,7 +259,7 @@ const EProductDetail = (props) => {
             style={{ flexDirection: "row", marginRight: 10 }}
           >
             {" "}
-            {bed_room}
+            {qty_bedroom}
           </Icon>
           <Icon
             name="building"
@@ -267,7 +267,7 @@ const EProductDetail = (props) => {
             style={{ flexDirection: "row", marginRight: 10 }}
           >
             {" "}
-            {land_area}
+            {nett}
           </Icon>
           <Icon
             name="map"
@@ -275,7 +275,7 @@ const EProductDetail = (props) => {
             style={{ flexDirection: "row", marginRight: 10 }}
           >
             {" "}
-            {build_area}
+            {semi_gross}
           </Icon>
           {/* <Icon
             name="clock"
@@ -293,13 +293,14 @@ const EProductDetail = (props) => {
           <Text headline style={{ marginTop: 20 }}>
             {t("Descriptions")}
           </Text>
+
           <Text
             light
             style={{
               paddingVertical: 15,
             }}
           >
-            {description}
+            {adv_descs}
           </Text>
         </View>
         <View>
@@ -331,32 +332,32 @@ const EProductDetail = (props) => {
           <ProductSpecGrid
             style={{ flex: 1 }}
             description={"Bed Room"}
-            title={bed_room}
+            title={qty_bedroom}
           />
 
           <ProductSpecGrid
             style={{ flex: 1 }}
             description={"Main Bedroom"}
-            title={maid_bedroom}
+            title={qty_maid_bedroom}
           />
         </View>
         <View style={styles.specifications}>
           <ProductSpecGrid
             style={{ flex: 1 }}
             description={"Semi Gross"}
-            title={build_area}
+            title={semi_gross}
           />
           <ProductSpecGrid
             style={{ flex: 1 }}
             description={"Bathroom"}
-            title={bath_room}
+            title={qty_bathroom}
           />
         </View>
         <View style={styles.specifications}>
           <ProductSpecGrid
             style={{ flex: 1 }}
             description={"Nett Area"}
-            title={land_area}
+            title={nett}
           />
           {/* <ProductSpecGrid
             style={{flex: 1}}
@@ -385,7 +386,7 @@ const EProductDetail = (props) => {
           <ProductSpecGrid
             style={{ flex: 1 }}
             description={"Parking"}
-            title={parking}
+            title={qty_parking}
           />
         </View>
         <View>
@@ -412,7 +413,7 @@ const EProductDetail = (props) => {
         style={[BaseStyle.safeAreaView]}
         forceInset={{ top: "always", bottom: "always" }}
       >
-        <Header title={subject} />
+        <Header title={adv_title} />
         <ScrollView
           onContentSizeChange={() => {
             setHeightHeader(Utils.heightHeader());
@@ -443,7 +444,7 @@ const EProductDetail = (props) => {
             }}
           >
             <Text title3 style={{ marginVertical: 10, marginVertical: 4 }}>
-              {subject}
+              {adv_title}
             </Text>
           </View>
 
@@ -470,7 +471,7 @@ const EProductDetail = (props) => {
             onPress={() =>
               user !== null
                 ? Linking.openURL(
-                    `mailto:${email}?subject=${subject}&body=${message}`
+                    `mailto:${email}?subject=${adv_title}&body=${message}`
                   )
                 : navigation.navigate("SignIn")
             }
@@ -494,7 +495,7 @@ const EProductDetail = (props) => {
             }}
             onPress={() =>
               user !== null
-                ? Linking.openURL(`tel:${hp_wa}`)
+                ? Linking.openURL(`tel:${no_wa}`)
                 : navigation.navigate("SignIn")
             }
           >
@@ -520,7 +521,7 @@ const EProductDetail = (props) => {
               user !== null
                 ? Linking.openURL(
                     // `mailto:${email}?subject=${subject}&body=Description`,
-                    `whatsapp://send?text=${subject}\n${message}&phone=${hp_wa}`
+                    `whatsapp://send?text=${adv_title}\n${message}&phone=${no_wa}`
                   )
                 : navigation.navigate("SignIn")
             }
@@ -569,13 +570,8 @@ const EProductDetail = (props) => {
                 activeOpacity={1}
                 onPress={() =>
                   navigation.navigate("PreviewImages", { images: images })
-                }
-              >
-                <Image
-                  key={key}
-                  style={{ flex: 1, width: "100%" }}
-                  source={{ uri: `${item.pict.replace("https", "http")}` }}
-                />
+                }>
+                <Image source={{ uri: `${item.pict}` }} style={{ width: '100%',  height: ((Utils.getWidthDevice() - 30) * 9) / 15 }} key={key}></Image>
               </TouchableOpacity>
             );
           })}

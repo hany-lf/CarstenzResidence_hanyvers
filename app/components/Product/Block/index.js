@@ -14,7 +14,7 @@ import Loading from './Loading';
 import Button from '@components/Button';
 
 const Block = ({
-  description,
+  adv_descs,
   title,
   style,
   image,
@@ -26,14 +26,14 @@ const Block = ({
   price_descs,
   agent_name,
   onPress,
-  subject,
+  adv_title,
   point,
-  bed_room,
-  land_area,
+  qty_bedroom,
+  nett,
   avatar,
   publish_date,
-  build_area,
-  bath_room,
+  semi_gross,
+  qty_bathroom,
   email,
   isFavorite = false,
   salePercent,
@@ -76,40 +76,56 @@ const Block = ({
       }}
       onPress={onPress}>
       {images.map((item, index) =>
-        item.flag == 'Y' ? (
-          <ImageBackground
-            key={index}
-            source={
-              `${item.pict}` != null
-                ? {uri: `${item.pict}`.replace('https', 'http')}
-                : require('../../../assets/images/image-home/Main_Image.png')
-            }
-            // {
-            // uri:
-            //   `${item.pict}` != null
-            //     ? `${item.pict}`.replace('https', 'http')
-            //     : require('../../assets/images/image-home/Main_Image.png'),
-            // }
-            // }
-            style={styles.imageBackground}>
-            {/* <Icon
-              name="heart"
-              solid={isFavorite}
-              size={24}
-              color={isFavorite ? colors.primary : BaseColor.whiteColor}
-              style={{position: 'absolute', top: 8, right: 8}}></Icon> */}
-            {salePercent ? (
+      
+        <ImageBackground
+          key={index}
+          source={
+           {uri: item.pict}
+          }
+
+    
+          style={styles.imageBackground}>
+          {salePercent ? (
               <Tag small style={styles.salePercent}>
                 {salePercent}
               </Tag>
             ) : null}
-          </ImageBackground>
-        ) : null,
+        </ImageBackground>
+
+        // item.flag == 'Y' ? (
+        //   <ImageBackground
+        //     key={index}
+        //     source={
+        //       `${item.pict}` != null
+        //         ? {uri: `${item.pict}`.replace('https', 'http')}
+        //         : require('../../../assets/images/image-home/Main_Image.png')
+        //     }
+        //     // {
+        //     // uri:
+        //     //   `${item.pict}` != null
+        //     //     ? `${item.pict}`.replace('https', 'http')
+        //     //     : require('../../assets/images/image-home/Main_Image.png'),
+        //     // }
+        //     // }
+        //     style={styles.imageBackground}>
+        //     {/* <Icon
+        //       name="heart"
+        //       solid={isFavorite}
+        //       size={24}
+        //       color={isFavorite ? colors.primary : BaseColor.whiteColor}
+        //       style={{position: 'absolute', top: 8, right: 8}}></Icon> */}
+        //     {salePercent ? (
+        //       <Tag small style={styles.salePercent}>
+        //         {salePercent}
+        //       </Tag>
+        //     ) : null}
+        //   </ImageBackground>
+        // ) : null,
       )}
 
       <View style={{paddingHorizontal: 16, paddingVertical: 8}}>
         <Text title3 semibold>
-          {subject}
+          {adv_title}
         </Text>
         <Text title3 style={{marginTop: 10}}>
           {currency} {price}
@@ -119,27 +135,27 @@ const Block = ({
             name="bath"
             size={14}
             style={{flexDirection: 'row', marginRight: 10}}>
-            {bath_room}
+            {qty_bathroom}
           </Icon>
           <Icon
             name="bed"
             size={14}
             style={{flexDirection: 'row', marginRight: 10}}>
-            {bed_room}
+            {qty_bedroom}
           </Icon>
           <Icon
             name="building"
             size={14}
             style={{flexDirection: 'row', marginRight: 10}}>
-            {land_area}
+            {nett}
           </Icon>
           <Icon
             name="map"
             size={14}
             style={{flexDirection: 'row', marginRight: 10}}>
-            {build_area}
+            {semi_gross}
           </Icon>
-          {/* <Icon
+          <Icon
             name="clock"
             size={14}
             style={{
@@ -148,7 +164,7 @@ const Block = ({
               color: BaseColor.grayColor,
             }}>
             {publish_date}
-          </Icon> */}
+          </Icon>
         </View>
         <Text
           footnote
@@ -157,8 +173,9 @@ const Block = ({
           style={{
             paddingVertical: 15,
           }}>
-          {description}
+          {adv_descs}
         </Text>
+        
 
         <View style={styles.content}>
           {/* <View style={styles.right}>
@@ -175,7 +192,7 @@ const Block = ({
 
           {/* <TouchableOpacity onPress={() =>
               Linking.openURL(
-                `mailto:${email}?subject=${subject}&body=Description`,
+                `mailto:${email}?adv_title=${adv_title}&body=adv_descs`,
               )}
             >
           <Icon
@@ -191,7 +208,7 @@ const Block = ({
           {/* <TouchableOpacity
             onPress={() =>
               Linking.openURL(
-                `mailto:${email}?subject=${subject}&body=${message}`,
+                `mailto:${email}?adv_title=${adv_title}&body=${message}`,
               )
             }
             style={[styles.contentRight]}>
@@ -208,7 +225,7 @@ const Block = ({
           <TouchableOpacity
             onPress={() =>
               Linking.openURL(
-                `whatsapp://send?text=${subject}\n${message}&phone=${hp_wa}`,
+                `whatsapp://send?text=${adv_title}\n${message}&phone=${hp_wa}`,
               )
             }
             style={[styles.contentRight]}>
@@ -229,7 +246,7 @@ const Block = ({
 };
 
 Block.propTypes = {
-  description: PropTypes.string,
+  adv_descs: PropTypes.string,
   title: PropTypes.string,
   currency: PropTypes.string,
   price: PropTypes.string,
@@ -245,7 +262,7 @@ Block.propTypes = {
 };
 
 Block.defaultProps = {
-  description: '',
+  adv_descs: '',
   title: '',
   style: {},
   pict: '',

@@ -38,7 +38,7 @@ export default function Troffice() {
   const [urlApi, seturlApi] = useState(client);
   const [index, setIndex] = useState(0);
   const [getCategories, setGetCategory] = useState([]);
-
+  const user = useSelector((state) => getUser(state));
   const [search, setSearch] = useState("");
 
   const TABS = [
@@ -59,12 +59,19 @@ export default function Troffice() {
       setLoading(false);
       getCategory();
     }, 1000);
-  }, []);
+  }, [user]);
 
   const getCategory = async () => {
-    await axios
-      .get(API_URL_LOKAL + `/modules/troffice/category`)
-      .then((res) => {
+    const config = {
+      method: 'get',
+      url: API_URL_LOKAL + `/modules/troffice/category`,
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${user.Token}`,
+      },
+    };
+    await axios(config)
+     .then((res) => {
         // console.log('res greetings', res.data.data);
         // const getdata = res.data.data[0].status;
         const getdata = res.data.data;
@@ -75,24 +82,6 @@ export default function Troffice() {
         console.log("error res get category", error);
       });
   };
-
-  //  const handleCategory = ({data, index}) => {
-  //   console.log('handlecategory',data);
-  //   (data.descs.includes('AC') ?
-  //   navigation.navigate('SelectType', data)
-  //   : navigation.navigate('SpecTroffice', data));
-  //  }
-  // console.log('status user new old', status_user);
-  // setStatusUser(status_user);
-
-  // if (status_user == 'N') {
-  //   setModalImage(true); // sementara di jadiin false dulu, untuk hide modal.
-  //   getImageGreetings();
-  // } else {
-  //   setModalImage(false);
-  // }
-  // setLoadNews(false);
-  // // return res.data;
 
   return (
     <SafeAreaView
