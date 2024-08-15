@@ -20,6 +20,7 @@ import { FlatList, TouchableOpacity, View, ScrollView } from "react-native";
 
 import { useSelector } from "react-redux";
 import getUser from "../../selectors/UserSelectors";
+import getProject from "../../selectors/ProjectSelector";
 import axios from "axios";
 import client from "../../controllers/HttpClient";
 import styles from "./styles";
@@ -28,6 +29,8 @@ import ModalDropdown_debtor from "@components/ModalDropdown_debtor";
 import ModalDropdown_lotno from "@components/ModalDropdown_lotno";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API_URL_LOKAL } from "@env";
+import { Dropdown } from "react-native-element-dropdown";
+
 export default function SpecHelpDesk() {
   const { t, i18n } = useTranslation();
   const { colors } = useTheme();
@@ -43,10 +46,17 @@ export default function SpecHelpDesk() {
   const [urlApi, seturlApi] = useState(client);
   const [checkedEntity, setCheckedEntity] = useState(false);
   const [dataDebtor, setDataDebtor] = useState([]);
-  const [entity, setEntity] = useState("");
+  const [entity_cd, setEntity] = useState("");
   const [project_no, setProjectNo] = useState("");
   const [db_profile, setDb_Profile] = useState("");
   const [spinner, setSpinner] = useState(true);
+
+   const [showChooseProject, setShowChooseProject] = useState(false);
+  const [isFocus, setIsFocus] = useState(false);
+  const [valueProject, setValueProject] = useState([]);
+  const [valueProjectSelected, setValueProjectSelected] = useState(null);
+  const [projectData, setProjectData] = useState([]);
+  const project = useSelector((state) => getProject(state));
 
   const [debtor, setDebtor] = useState("");
   const [textDebtor, settextDebtor] = useState("");
@@ -64,75 +74,68 @@ export default function SpecHelpDesk() {
   const [defaultDebtor, setDefaultDebtor] = useState(false);
   const [defaultLotNo, setDefaultLotNo] = useState(false);
 
-  //-----FOR GET ENTITY & PROJJECT
-  const getTower = async () => {
-    const data = {
-      email: email,
-      //   email: 'haniyya.ulfah@ifca.co.id',
-      app: "O",
-    };
+ // --- useeffect untuk project
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+      // getTower();
+      if (project && project.data && project.data.length > 0) {
+        // console.log('entity useeffect di home', project.data[0].entity_cd);
+        setEntity(project.data[0].entity_cd);
+        setProjectNo(project.data[0].project_no);
+        const projects = project.data.map((item, id) => ({
+          label: item.descs,
+          value: item.project_no,
+        }));
+        console.log("data di project", project);
+        setProjectData(project.data);
+        setValueProject(projects);
+      }
+      // getCategoryHelp;
+      // setSpinner(false);
+    }, 3000);
+  }, [project]);
 
-    const config = {
-      headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        // token: "",
-      },
-    };
+  // useEffect(() => {
+  //   if (entity_cd && project_no) {
+  //     // getLotNo();
+  //     const params = {
+  //       entity_cd: entity_cd,
+  //       project_no: project_no,
+  //     };
+  //     getDebtor(params);
+  //     // setShow(true);
+  //   }
+  // }, [entity_cd, project_no]);
+  // --- useeffect untuk project
 
-    await axios
-      .get(
-        // `http://apps.pakubuwono-residence.com/apisysadmin/api/getProject/${data.email}`,
-        API_URL_LOKAL + `/getData/mysql/${data.email}/${data.app}`,
-        {
-          config,
-        }
-      )
-      .then((res) => {
-        const datas = res.data;
+  // --- useeffect untuk update email/name
+  useEffect(() => {
+    setEmail(users != null && users.userData != null ? users.userData.email : "");
+  }, [email]);
+  // --- useeffect untuk update email/name
 
-        const arrDataTower = datas.data;
-        console.log("data tower ada berapa", arrDataTower.length);
+    const handleClickProject = (item, index) => {
+    console.log("index", index);
+    setValueProjectSelected(item.value);
 
-        // arrDataTower.length > 1
-        if (arrDataTower.length > 1) {
-          setDefaultTower(false);
-        } else {
-          setDefaultTower(true);
+    setIsFocus(!isFocus);
+    setShowChooseProject(!showChooseProject);
+
+    if (item.value != null) {
+      console.log("value project selected", item.value);
+      projectData.map((items, index) => {
+        console.log("items project data", items);
+        if (items.project_no === item.value) {
+          console.log("items choose project handle", items);
+          console.log("index", index);
+          // setProjectData(items);
           setCheckedEntity(true);
-          setEntity(arrDataTower[0].entity_cd);
-          setProjectNo(arrDataTower[0].project_no);
-          setDb_Profile(arrDataTower[0].db_profile);
-          const params = {
-            entity_cd: arrDataTower[0].entity_cd,
-            project_no: arrDataTower[0].project_no,
-            db_profile: arrDataTower[0].db_profile,
-          };
-          console.log("params for debtor tower default", params);
-          getDebtor(params);
+          // setShow(true);
+          getDebtor(items); // ini dikasih get apapun setelah pilih project
         }
-
-        arrDataTower.map((dat) => {
-          if (dat) {
-            setdataTowerUser(dat);
-            // const jsonValue = JSON.stringify(dat);
-            //   setdataFormHelp(saveStorage);
-            // console.log('storage', saveStorage);
-            // dataArr.push(jsonValue);
-          }
-        });
-        // console.log('arrdatatower yang 1 aja default', arrDataTower);
-        setArrDataTowerUser(arrDataTower);
-
-        setSpinner(false);
-        // let dataArr = {};
-
-        // return res.data;
-      })
-      .catch((error) => {
-        console.log("error get tower api", error);
-        // alert('error get');
       });
+    }
   };
 
   //-----FOR GET DEBTOR
@@ -140,30 +143,25 @@ export default function SpecHelpDesk() {
     // console.log(object)
     console.log("data for debtor", data);
 
-    const params =
-      "?" +
-      "entity_cd=" +
-      data.entity_cd +
-      "&" +
-      "project_no=" +
-      data.project_no +
-      "&" +
-      "email=" +
-      email;
-
-    console.log("data for", params);
-
-    const config = {
-      headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        token: "",
-      },
+    const formData = {
+      entity_cd: data.entity_cd,
+      project_no: data.project_no,
+      email: email,
+     
     };
-    await axios
-      .post(API_URL_LOKAL + "/modules/cs/debtor" + params, {
-        config,
-      })
+
+    console.log("data for", formData);
+
+   const config = {
+      method: "get",
+      url: API_URL_LOKAL + "/modules/cs/debtor",
+      headers: {
+        "content-type": "application/json",
+        Authorization: `Bearer ${users.Token}`,
+      },
+      params: formData,
+    };
+    await axios(config)
       .then((res) => {
         // console.log('res', res);
         const datas = res.data;
@@ -196,6 +194,7 @@ export default function SpecHelpDesk() {
           // getDebtor(params);
         }
 
+
         setDataDebtor(dataDebtors);
 
         // return res.data;
@@ -204,23 +203,6 @@ export default function SpecHelpDesk() {
         console.log("error get tower api", error.response);
         // alert('error get');
       });
-  };
-
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-      getTower(users);
-      // setSpinner(false);
-    }, 3000);
-  }, []);
-
-  const handleCheckChange = (index, data) => {
-    setCheckedEntity(index);
-
-    setEntity(data.entity_cd);
-    setProjectNo(data.project_no);
-    setDb_Profile(data.db_profile);
-    getDebtor(data);
   };
 
   const handleChangeModal = ({ data, index }) => {
@@ -243,25 +225,25 @@ export default function SpecHelpDesk() {
   const getLot = async (data, tenantno) => {
     console.log("tenant_no lot", data);
     const params = {
-      entity_cd: entity || data.entity_cd,
+      entity_cd: entity_cd || data.entity_cd,
       project_no: project_no || data.project_no,
       email: email,
       tenant_no: tenantno || data.tenant_no,
     };
+ 
     const config = {
+      method: "get",
+      url: API_URL_LOKAL + "/modules/cs/lot-no",
       headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        token: "",
+        "content-type": "application/json",
+        Authorization: `Bearer ${users.Token}`,
       },
+      params: params,
     };
 
     console.log("url getlotno", API_URL_LOKAL + "/modules/cs/lot-no", params);
 
-    await axios
-      .post(API_URL_LOKAL + "/modules/cs/lot-no", params, {
-        config,
-      })
+    await axios(config)
       .then((res) => {
         // console.log('datalotno', res);
         const datas = res.data;
@@ -302,26 +284,24 @@ export default function SpecHelpDesk() {
 
   const getFloor = async (lot) => {
     console.log("lot getfloor", lot);
-    const lotno = lot;
+
 
     const params = {
-      lotno: lotno,
+      lot_no: lot,
     };
-
-    const config = {
+const config = {
+      method: "get",
+      url: API_URL_LOKAL + "/modules/cs/floor",
       headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        token: "",
+        "content-type": "application/json",
+        Authorization: `Bearer ${users.Token}`,
       },
+      params: params,
     };
 
-    await axios
-      .post(API_URL_LOKAL + "/modules/cs/floor", params, {
-        config,
-      })
+    await axios(config)
       .then((res) => {
-        // console.log('res floor', res);
+        console.log('res floor', res);
         const datas = res.data;
 
         const dataFloor = datas.data;
@@ -339,6 +319,9 @@ export default function SpecHelpDesk() {
   const handleNavigation = async () => {
     // try {
     console.log("textfloor spec help", textFloor);
+    console.log("textlot spec help", textLot);
+    console.log("reportName reportName", reportName);
+    console.log("contactNo", contactNo);
     if (
       (!contactNo && !reportName && textLot.length < 0) ||
       textLot == "" ||
@@ -346,17 +329,20 @@ export default function SpecHelpDesk() {
     ) {
       alert("Please Check Field Lot No Entry");
     } else {
+      console.log("contactNo else", contactNo);
+      console.log("reportName else", reportName);
+      console.log("textLot else", textLot);
       const saveStorage = {
         contactNo: contactNo,
         reportName: reportName,
-        entity_cd: entity,
+        entity_cd: entity_cd,
         project_no: project_no,
         dataDebtor: dataDebtor[0],
         lot_no: dataLotno[0],
         floor: textFloor,
       };
       const jsonValue = JSON.stringify(saveStorage);
-      //   setdataFormHelp(saveStorage);
+      // //   setdataFormHelp(saveStorage);
       console.log("awal mula props", saveStorage);
 
       await AsyncStorage.setItem("@helpdeskStorage", jsonValue);
@@ -370,7 +356,7 @@ export default function SpecHelpDesk() {
       edges={["right", "top", "left"]}
     >
       <Header
-        title={t("ticket")} //belum dibuat lang
+        title={t("ticket")} 
         renderLeft={() => {
           return (
             <Icon
@@ -384,53 +370,56 @@ export default function SpecHelpDesk() {
         onPressLeft={() => {
           navigation.goBack();
         }}
+        onPressRight={() => {
+          // alert('test')
+          // handleClickProject()
+          setShowChooseProject(!showChooseProject);
+          // navigation.navigate("ViewHistoryStatusTRO");
+        }}
+        renderRight={() => {
+          return (
+            <Icon
+              name="sync-alt"
+              size={20}
+              color={colors.primary}
+              enableRTL={true}
+            />
+          );
+        }}
       />
+          {showChooseProject ? (
+        <Dropdown
+          style={[
+            styles.dropdown,
+            isFocus && { borderColor: BaseColor.corn30 },
+          ]}
+          placeholderStyle={styles.placeholderStyle}
+          selectedTextStyle={styles.selectedTextStyle}
+          inputSearchStyle={styles.inputSearchStyle}
+          iconStyle={styles.iconStyle}
+          itemTextStyle={styles.itemTextStyle}
+          containerStyle={{ borderRadius: 15, marginVertical: 5 }}
+          data={valueProject}
+          search
+          maxHeight={300}
+          labelField="label"
+          valueField="value"
+          placeholder={!isFocus ? "Choose Project" : "Choose Project"}
+          searchPlaceholder="Search..."
+          value={valueProjectSelected}
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
+          onChange={(item, index) => {
+            handleClickProject(item, index);
+          }}
+        />
+      ) : null}
       <View style={styles.wrap}>
         <Text title2>Ticket</Text>
         <Text headline style={{ fontWeight: "normal" }}>
           Service Request Form
         </Text>
 
-        <View style={[styles.subWrap, { paddingBottom: 0, marginBottom: 10 }]}>
-          <View>
-            <Text style={{ color: "#3f3b38", fontSize: 14 }}>
-              Choose Project
-            </Text>
-            {spinner ? (
-              <View>
-                {/* <Spinner visible={this.state.spinner} /> */}
-                <Placeholder
-                  style={{ marginVertical: 4, paddingHorizontal: 10 }}
-                >
-                  <PlaceholderLine
-                    width={100}
-                    noMargin
-                    style={{ height: 40 }}
-                  />
-                </Placeholder>
-              </View>
-            ) : defaulTower ? (
-              <CheckBox
-                disabled
-                checked={checkedEntity}
-                title={arrDataTowerUser[0].project_descs}
-                onPress={() => setCheckedEntity(!checkedEntity)}
-              ></CheckBox>
-            ) : (
-              arrDataTowerUser.map((data, index) => (
-                <CheckBox
-                  key={index}
-                  disabled
-                  // checkedIcon="dot-circle-o"
-                  // uncheckedIcon="circle-o"
-                  title={data.project_descs}
-                  checked={checkedEntity === index}
-                  onPress={() => handleCheckChange(index, data)}
-                />
-              ))
-            )}
-          </View>
-        </View>
         {checkedEntity === false ? null : (
           <ScrollView
             showsHorizontalScrollIndicator={false}

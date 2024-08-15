@@ -28,6 +28,7 @@ import {
 
 import { useSelector } from "react-redux";
 import getUser from "../../selectors/UserSelectors";
+import getProject from "../../selectors/ProjectSelector";
 import axios from "axios";
 import client from "../../controllers/HttpClient";
 import styles from "./styles";
@@ -52,6 +53,15 @@ export default function CategoryHelp({ route }) {
 
   const [dataCategory, setDataCategory] = useState([]);
 
+  const [showChooseProject, setShowChooseProject] = useState(false);
+  const [isFocus, setIsFocus] = useState(false);
+  const [valueProject, setValueProject] = useState([]);
+  const [valueProjectSelected, setValueProjectSelected] = useState(null);
+  const [projectData, setProjectData] = useState([]);
+  const [entity_cd, setEntity] = useState("");
+  const [project_no, setProjectNo] = useState("");
+  const project = useSelector((state) => getProject(state));
+
   const [typeLocation, setTypeLocation] = useState("");
   const [passPropStorage, setPassPropStorage] = useState();
   const [passProp, setpassProp] = useState(route.params.saveStorage);
@@ -62,46 +72,28 @@ export default function CategoryHelp({ route }) {
     ...styles.profileItem,
     borderBottomColor: colors.border,
   };
-  //-----FOR GET ENTITY & PROJJECT
-  const getTower = async () => {
-    setEmail(passProp.dataDebtor.email);
-    const data = {
-      email: email,
-      app: "O",
-    };
 
-    const config = {
-      headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        // token: "",
-      },
-    };
-
-    await axios
-      .get(API_URL_LOKAL + `/getData/mysql/${data.email}/${data.app}`, {
-        config,
-      })
-      .then((res) => {
-        const datas = res.data;
-
-        const arrDataTower = datas.data;
-        arrDataTower.map((dat) => {
-          if (dat) {
-            setdataTowerUser(dat);
-          }
-        });
-        setArrDataTowerUser(arrDataTower);
-        console.log("arrDataTower", arrDataTower);
-        setSpinner(false);
-
-        // return res.data;
-      })
-      .catch((error) => {
-        console.log("error get tower api", error);
-        alert("error get");
-      });
-  };
+  // --- useeffect untuk project
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+      // getTower();
+      if (project && project.data && project.data.length > 0) {
+        // console.log('entity useeffect di home', project.data[0].entity_cd);
+        setEntity(project.data[0].entity_cd);
+        setProjectNo(project.data[0].project_no);
+        const projects = project.data.map((item, id) => ({
+          label: item.descs,
+          value: item.project_no,
+        }));
+        console.log("data di project", project);
+        setProjectData(project.data);
+        setValueProject(projects);
+      }
+      getDataStorage();
+      defaultLocation();
+    }, 3000);
+  }, [project]);
 
   const getDataStorage = async () => {
     const value = await AsyncStorage.getItem("@helpdeskStorage");
@@ -112,19 +104,8 @@ export default function CategoryHelp({ route }) {
 
     setPassPropStorage(passPropStorage);
   };
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-      getTower(users);
-      getDataStorage();
-      defaultLocation();
-      // getCategoryHelp;
-      // setSpinner(false);
-    }, 3000);
-  }, []);
 
   const defaultLocation = () => {
-    getTower(users);
     getCategoryHelp("U");
   };
 
@@ -150,24 +131,21 @@ export default function CategoryHelp({ route }) {
 
   const getCategoryHelp = async (type) => {
     const params = {
-      entity: dataTowerUser.entity_cd,
-      project: dataTowerUser.project_no,
       location_type: type, //ini nanti pake radiobutton
     };
     console.log("params category", params);
 
     const config = {
+      method: "get",
+      url: API_URL_LOKAL + "/modules/cs/category-help",
       headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        token: "",
+        "content-type": "application/json",
+        Authorization: `Bearer ${users.Token}`,
       },
+      params: params,
     };
 
-    await axios
-      .post(API_URL_LOKAL + "/csentry-getCategoryHelp", params, {
-        config,
-      })
+    await axios(config)
       .then((res) => {
         const datas = res.data;
         const dataCategorys = datas.data;
