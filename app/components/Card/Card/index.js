@@ -7,7 +7,14 @@ import styles from "./styles";
 
 export default function Card(props) {
   const { colors } = useTheme();
-  const { style, children, styleContent, image, onPress, styleImage = {} } = props;
+  const {
+    style,
+    children,
+    styleContent,
+    image,
+    onPress,
+    styleImage = {},
+  } = props;
   return (
     <TouchableOpacity
       style={[styles.card, { borderColor: colors.border }, style]}

@@ -1,11 +1,11 @@
-import Icon from '@components/Icon';
-import Text from '@components/Text';
-import {BaseColor, Images, useTheme} from '@config';
-import PropTypes from 'prop-types';
-import React from 'react';
-import {ImageBackground, TouchableOpacity, View} from 'react-native';
-import styles from './styles';
-import Loading from './Loading';
+import Icon from "@components/Icon";
+import Text from "@components/Text";
+import { BaseColor, Images, useTheme } from "@config";
+import PropTypes from "prop-types";
+import React from "react";
+import { ImageBackground, TouchableOpacity, View } from "react-native";
+import styles from "./styles";
+import Loading from "./Loading";
 
 const Grid2 = ({
   description,
@@ -18,7 +18,7 @@ const Grid2 = ({
   isFavorite = false,
   loading = false,
 }) => {
-  const {colors} = useTheme();
+  const { colors } = useTheme();
 
   if (loading) {
     return <Loading style={style} />;
@@ -29,17 +29,23 @@ const Grid2 = ({
       <ImageBackground
         source={image}
         style={styles.imageBackgroundGrid2}
-        imageStyle={{borderRadius: 8}}>
+        imageStyle={{ borderRadius: 8 }}
+      >
         <Icon
           name="heart"
           solid={isFavorite}
           size={16}
           color={isFavorite ? colors.primary : BaseColor.whiteColor}
-          style={{position: 'absolute', top: 8, right: 8}}></Icon>
+          style={{ position: "absolute", top: 8, right: 8 }}
+        ></Icon>
       </ImageBackground>
 
       <View>
-        <Text subhead numberOfLines={2} style={{marginTop: 10, marginLeft: 10}}>
+        <Text
+          subhead
+          numberOfLines={2}
+          style={{ marginTop: 10, marginLeft: 10 }}
+        >
           {title}
         </Text>
 
@@ -68,12 +74,12 @@ Grid2.propTypes = {
 };
 
 Grid2.defaultProps = {
-  description: '',
-  title: '',
+  description: "",
+  title: "",
   style: {},
   image: Images.eProduct,
-  costPrice: '',
-  salePrice: '',
+  costPrice: "",
+  salePrice: "",
   onPress: () => {},
   isFavorite: false,
 };

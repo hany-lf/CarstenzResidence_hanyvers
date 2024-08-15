@@ -17,12 +17,12 @@ const Card1 = ({
   secondDescription,
   onDelete,
   onChange,
-  loading = false
+  loading = false,
 }) => {
   const { colors } = useTheme();
 
   if (loading) {
-    return <Loading style={style}/>;
+    return <Loading style={style} />;
   }
 
   return (

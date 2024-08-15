@@ -1,4 +1,4 @@
-import {actionTypes} from '../actions/ProjectActions';
+import { actionTypes } from "../actions/ProjectActions";
 
 const initialState = {
   Dataproject: [],

@@ -1,14 +1,14 @@
-import Image from '@components/Image';
-import Text from '@components/Text';
-import {Images, useTheme} from '@config';
-import PropTypes from 'prop-types';
-import React from 'react';
-import {TouchableOpacity, View, StyleSheet} from 'react-native';
-import styles from './styles';
-import Loading from './Loading';
+import Image from "@components/Image";
+import Text from "@components/Text";
+import { Images, useTheme } from "@config";
+import PropTypes from "prop-types";
+import React from "react";
+import { TouchableOpacity, View, StyleSheet } from "react-native";
+import styles from "./styles";
+import Loading from "./Loading";
 
-const CategoryList = props => {
-  const {colors} = useTheme();
+const CategoryList = (props) => {
+  const { colors } = useTheme();
   const {
     style,
     onPress,
@@ -26,7 +26,7 @@ const CategoryList = props => {
 
   return (
     <TouchableOpacity
-      style={[styles.contain, {backgroundColor: colors.background}, style]}
+      style={[styles.contain, { backgroundColor: colors.background }, style]}
       onPress={onPress}
       // activeOpacity={0.9}
     >
@@ -37,12 +37,13 @@ const CategoryList = props => {
           isImageRound && styles.imageRound,
         ])}
       />
-      <View style={{paddingHorizontal: 10, flex: 1}}>
+      <View style={{ paddingHorizontal: 10, flex: 1 }}>
         <Text
           headline
           semibold
           numberOfLines={2}
-          style={styles.paddingVertical5}>
+          style={styles.paddingVertical5}
+        >
           {title}
         </Text>
         <Text light footnote semibold grayColor>
@@ -67,8 +68,8 @@ CategoryList.defaultProps = {
   style: {},
   onPress: () => {},
   image: Images.channel1,
-  title: '',
-  subtitle: '',
+  title: "",
+  subtitle: "",
   isRound: false,
 };
 

@@ -1,13 +1,13 @@
-import React from 'react';
-import {StyleSheet} from 'react-native';
-import {BaseColor} from '@config';
+import React from "react";
+import { StyleSheet } from "react-native";
+import { BaseColor } from "@config";
 
 export default StyleSheet.create({
   contentTitle: {
-    alignItems: 'flex-start',
-    width: '100%',
+    alignItems: "flex-start",
+    width: "100%",
     height: 32,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   contain: {
     paddingHorizontal: 20,
@@ -18,12 +18,12 @@ export default StyleSheet.create({
     backgroundColor: BaseColor.fieldColor,
     borderRadius: 5,
     padding: 10,
-    width: '100%',
+    width: "100%",
   },
   profileItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     borderBottomWidth: StyleSheet.hairlineWidth,
     paddingBottom: 20,
     paddingTop: 20,
@@ -35,8 +35,8 @@ export default StyleSheet.create({
     marginRight: 24,
   },
   viewFollow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginTop: 24,
     marginBottom: 8,
   },

@@ -1,4 +1,4 @@
-import {actionTypes} from '../actions/cartActions';
+import { actionTypes } from "../actions/cartActions";
 
 const initialState = {
   DataCart: [],

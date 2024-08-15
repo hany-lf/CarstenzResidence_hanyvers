@@ -68,7 +68,8 @@ const SignIn = (props) => {
   );
 
   const loadProject = useCallback(
-    () => dispatch(data_project({ emails: email, token_firebase: token_firebase })),
+    () =>
+      dispatch(data_project({ emails: email, token_firebase: token_firebase })),
     [{ emails: email, token_firebase: token_firebase }, dispatch]
   );
 

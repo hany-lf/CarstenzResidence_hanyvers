@@ -1,6 +1,6 @@
-import React, {useEffect, useState, useRef} from 'react';
-import {Text, View, StyleSheet, Animated, Button} from 'react-native';
-import {BaseStyle, useTheme} from '@config';
+import React, { useEffect, useState, useRef } from "react";
+import { Text, View, StyleSheet, Animated, Button } from "react-native";
+import { BaseStyle, useTheme } from "@config";
 
 export const LoadingCount = () => {
   const counter = useRef(new Animated.Value(0)).current;
@@ -9,7 +9,7 @@ export const LoadingCount = () => {
   const [count, setCount] = useState(0);
   //   console.log('count', count);
   useEffect(() => {
-    countInterval.current = setInterval(() => setCount(old => old + 5), 1000);
+    countInterval.current = setInterval(() => setCount((old) => old + 5), 1000);
     return () => {
       clearInterval(countInterval);
     };
@@ -23,7 +23,7 @@ export const LoadingCount = () => {
     }
   }, [count]);
 
-  const load = count => {
+  const load = (count) => {
     Animated.timing(counter, {
       toValue: count,
       duration: 500,
@@ -33,9 +33,9 @@ export const LoadingCount = () => {
 
   const widthCounter = counter.interpolate({
     inputRange: [0, 100],
-    outputRange: ['0%', '100%'],
+    outputRange: ["0%", "100%"],
     //   outputRange: [0, 100],
-    extrapolate: 'clamp',
+    extrapolate: "clamp",
   });
 
   return (
@@ -65,19 +65,19 @@ export const LoadingCount = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
     // paddingTop: Constants.statusBarHeight,
-    backgroundColor: '#ecf0f1',
+    backgroundColor: "#ecf0f1",
     padding: 8,
   },
   progressBar: {
     height: 20,
-    flexDirection: 'row',
-    width: '100%',
-    backgroundColor: 'white',
-    borderColor: '#000',
+    flexDirection: "row",
+    width: "100%",
+    backgroundColor: "white",
+    borderColor: "#000",
     borderWidth: 2,
     borderRadius: 5,
   },

@@ -12,15 +12,13 @@ class MenuController {
   get_menu_controller = async (datas) => {
     console.log("datas for menu controler", datas);
 
-   
-
     try {
       const result = await httpClient.request({
         url: API_URL_LOKAL + `/home/menu`,
-        method: 'GET',
-        params: {group_cd: datas.group_cd},
+        method: "GET",
+        params: { group_cd: datas.group_cd },
         headers: {
-          'content-type': 'application/json',
+          "content-type": "application/json",
           Authorization: `Bearer ${datas.token_firebase}`,
         },
       });
@@ -30,11 +28,11 @@ class MenuController {
       if (result.success) {
         return result;
       } else {
-        console.log('result get menu controller', result);
+        console.log("result get menu controller", result);
         return Promise.reject(result.message);
       }
     } catch (error) {
-      console.log('error get menu controller', error.response);
+      console.log("error get menu controller", error.response);
       return Promise.reject(error);
     }
   };

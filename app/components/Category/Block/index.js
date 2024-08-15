@@ -11,7 +11,7 @@ const CategoryBlock = (props) => {
   const { style, image, title, subtitle, onPress, loading } = props;
 
   if (loading) {
-    return <Loading style={style}/>;
+    return <Loading style={style} />;
   }
 
   return (
@@ -20,10 +20,7 @@ const CategoryBlock = (props) => {
       onPress={onPress}
       activeOpacity={0.5}
     >
-      <Image
-        source={image}
-        style={styles.image}
-      />
+      <Image source={image} style={styles.image} />
       <View style={styles.contentIcon}>
         <View style={{ paddingLeft: 10 }}>
           <Text headline bold whiteColor>

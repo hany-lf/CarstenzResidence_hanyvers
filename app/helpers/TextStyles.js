@@ -1,27 +1,27 @@
-import { StyleSheet } from 'react-native';
-import Colors from '../helpers/Colors';
+import { StyleSheet } from "react-native";
+import Colors from "../helpers/Colors";
 
 const styles = StyleSheet.create({
   darkTitle: {
     fontSize: 18,
-    fontWeight: '700',
+    fontWeight: "700",
     color: Colors.black,
     fontFamily: "Montserrat-Regular",
   },
   lightTitle: {
     fontSize: 18,
-    fontWeight: '700',
+    fontWeight: "700",
     color: Colors.white,
     fontFamily: "Montserrat-Regular",
   },
   textField: {
     fontSize: 15,
-    fontWeight: 'normal',
+    fontWeight: "normal",
     fontFamily: "Montserrat-Regular",
   },
   fieldTitle: {
     fontSize: 16,
-    fontWeight: '700',
+    fontWeight: "700",
     color: Colors.primary,
     fontFamily: "Montserrat-Regular",
   },

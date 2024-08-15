@@ -8,13 +8,13 @@ import {
   StarRating,
   Tag,
   Text,
-} from '@components';
-import {BaseColor, BaseStyle, useTheme} from '@config';
-import {Images} from '@config';
-import {HomeListData, HomePopularData} from '@data';
-import * as Utils from '@utils';
-import React, {Fragment, useEffect, useRef, useState} from 'react';
-import {useTranslation} from 'react-i18next';
+} from "@components";
+import { BaseColor, BaseStyle, useTheme } from "@config";
+import { Images } from "@config";
+import { HomeListData, HomePopularData } from "@data";
+import * as Utils from "@utils";
+import React, { Fragment, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Animated,
   FlatList,
@@ -24,21 +24,21 @@ import {
   Share,
   TouchableOpacity,
   View,
-} from 'react-native';
-import {Dimensions} from 'react-native';
-import styles from './styles';
-import DeviceInfo from 'react-native-device-info';
-import {PlaceholderLine, Placeholder} from '@components';
-import {Button} from '../../components';
-import RenderHtml from 'react-native-render-html';
-import moment from 'moment';
-const PostDetail = props => {
+} from "react-native";
+import { Dimensions } from "react-native";
+import styles from "./styles";
+import DeviceInfo from "react-native-device-info";
+import { PlaceholderLine, Placeholder } from "@components";
+import { Button } from "../../components";
+import RenderHtml from "react-native-render-html";
+import moment from "moment";
+const PostDetail = (props) => {
   let isTablet = DeviceInfo.isTablet();
-  console.log('istablet', isTablet);
-  const {navigation, route} = props;
-  const {t} = useTranslation();
-  const {colors} = useTheme();
-  const {item} = route.params;
+  console.log("istablet", isTablet);
+  const { navigation, route } = props;
+  const { t } = useTranslation();
+  const { colors } = useTheme();
+  const { item } = route.params;
   const [loading, setLoading] = useState(true);
   const [popular, setPopular] = useState(HomePopularData);
   const [list, setList] = useState(HomeListData);
@@ -58,15 +58,15 @@ const PostDetail = props => {
     source,
     date_created,
   } = item[0];
-  const reps = url_image.replace('https', 'http');
+  const reps = url_image.replace("https", "http");
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
     }, 1000);
   }, []);
 
-  const goPostDetail = item => () => {
-    navigation.push('PostDetail', {item: item});
+  const goPostDetail = (item) => () => {
+    navigation.push("PostDetail", { item: item });
   };
 
   // const onShare = async () => {
@@ -100,7 +100,7 @@ const PostDetail = props => {
   const headerBackgroundColor = scrollY.interpolate({
     inputRange: [0, 140],
     outputRange: [colors.primary, colors.primary],
-    extrapolate: 'clamp',
+    extrapolate: "clamp",
     useNativeDriver: true,
   });
 
@@ -108,7 +108,7 @@ const PostDetail = props => {
   const headerImageOpacity = scrollY.interpolate({
     inputRange: [0, 250 - heightHeader - 20],
     outputRange: [1, 0],
-    extrapolate: 'clamp',
+    extrapolate: "clamp",
     useNativeDriver: true,
   });
 
@@ -132,7 +132,7 @@ const PostDetail = props => {
 
     return (
       <Placeholder>
-        <View style={{padding: 20}}>
+        <View style={{ padding: 20 }}>
           {holders.map((item, index) => (
             <PlaceholderLine key={index} width={100} />
           ))}
@@ -152,11 +152,12 @@ const PostDetail = props => {
               paddingTop: 10,
               paddingBottom: 20,
             }}
-            numberOfLines={100}>
+            numberOfLines={100}
+          >
             {/* {news_descs.replace(/<\/?[^>]+(>|$;)/gi, '')} */}
             {news_descs
-              .replace(/\&nbsp;/g, '')
-              .replace(/<\/?[^>]+(>|$;)/gi, '')}
+              .replace(/\&nbsp;/g, "")
+              .replace(/<\/?[^>]+(>|$;)/gi, "")}
           </Text>
         </View>
       </Fragment>
@@ -164,10 +165,11 @@ const PostDetail = props => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <SafeAreaView
         style={[BaseStyle.safeAreaView]}
-        forceInset={{top: 'always', bottom: 'always'}}>
+        forceInset={{ top: "always", bottom: "always" }}
+      >
         <Header
           // title={item.news_title}
           title={news_title}
@@ -178,21 +180,22 @@ const PostDetail = props => {
           }}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
-          overScrollMode={'never'}
-          style={{zIndex: 10}}
+          overScrollMode={"never"}
+          style={{ zIndex: 10 }}
           scrollEventThrottle={16}
           onScroll={Animated.event(
             [
               {
                 nativeEvent: {
-                  contentOffset: {y: scrollY},
+                  contentOffset: { y: scrollY },
                 },
               },
             ],
             {
               useNativeDriver: false,
-            },
-          )}>
+            }
+          )}
+        >
           {/* <View
             style={{
               height: isTablet ? 250 - heightHeader : 240 - heightHeader,
@@ -200,14 +203,15 @@ const PostDetail = props => {
               borderColor: '#000',
             }}
           /> */}
-          <View style={{marginBottom: 20}}>
+          <View style={{ marginBottom: 20 }}>
             <TouchableOpacity
               activeOpacity={1}
               onPress={() =>
-                navigation.navigate('PreviewImagesAnnounceHome', {
+                navigation.navigate("PreviewImagesAnnounceHome", {
                   images: reps,
                 })
-              }>
+              }
+            >
               <Image
                 // key={key}
                 style={{
@@ -218,7 +222,7 @@ const PostDetail = props => {
                 }}
                 resizeMode="contain"
                 // source={{uri: `${announce_file}`}}
-                source={{uri: `${reps}`}}
+                source={{ uri: `${reps}` }}
               />
             </TouchableOpacity>
           </View>
@@ -227,14 +231,15 @@ const PostDetail = props => {
               marginVertical: 10,
               marginTop: isTablet ? 250 : 0,
               paddingHorizontal: 20,
-            }}>
+            }}
+          >
             <Text medium caption1 grayColor>
               {/* {item.date}
               {moment(item.date_created).startOf('hour').fromNow()} */}
               {date}
-              {moment(date_created).lang('en').startOf('hour').fromNow()}
+              {moment(date_created).lang("en").startOf("hour").fromNow()}
             </Text>
-            <Text title1 semibold style={{marginVertical: 10}}>
+            <Text title1 semibold style={{ marginVertical: 10 }}>
               {/* {item.news_title} */}
               {news_title}
             </Text>
@@ -278,10 +283,11 @@ const PostDetail = props => {
         </TouchableOpacity> 
       </Animated.View>
       */}
-      <Animated.View style={[styles.headerStyle, {position: 'absolute'}]}>
+      <Animated.View style={[styles.headerStyle, { position: "absolute" }]}>
         <SafeAreaView
-          style={{width: '100%'}}
-          forceInset={{top: 'always', bottom: 'never'}}>
+          style={{ width: "100%" }}
+          forceInset={{ top: "always", bottom: "never" }}
+        >
           <Header
             title=""
             renderLeft={() => {

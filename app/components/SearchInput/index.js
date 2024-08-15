@@ -1,11 +1,11 @@
-import {BaseColor, BaseStyle, useFont, useTheme} from '@config';
-import PropTypes from 'prop-types';
-import React, {forwardRef} from 'react';
-import {I18nManager, TextInput, View} from 'react-native';
+import { BaseColor, BaseStyle, useFont, useTheme } from "@config";
+import PropTypes from "prop-types";
+import React, { forwardRef } from "react";
+import { I18nManager, TextInput, View } from "react-native";
 
 const Index = forwardRef((props, ref) => {
   const font = useFont();
-  const {colors} = useTheme();
+  const { colors } = useTheme();
   const cardColor = colors.card;
   const {
     style,
@@ -24,7 +24,7 @@ const Index = forwardRef((props, ref) => {
     ...attrs
   } = props;
   return (
-    <View style={[BaseStyle.textInput, {backgroundColor: cardColor}, style]}>
+    <View style={[BaseStyle.textInput, { backgroundColor: cardColor }, style]}>
       {icon}
       <TextInput
         ref={ref}
@@ -32,15 +32,15 @@ const Index = forwardRef((props, ref) => {
           {
             fontFamily: `${font}-Regular`,
             flex: 1,
-            height: '100%',
-            textAlign: I18nManager.isRTL ? 'right' : 'auto',
+            height: "100%",
+            textAlign: I18nManager.isRTL ? "right" : "auto",
             color: colors.text,
             paddingTop: 5,
             paddingBottom: 5,
           },
           inputStyle,
         ]}
-        onChangeText={text => onChangeText(text)}
+        onChangeText={(text) => onChangeText(text)}
         onFocus={() => onFocus()}
         autoCorrect={false}
         placeholder={placeholder}
@@ -77,15 +77,15 @@ Index.propTypes = {
 Index.defaultProps = {
   inputStyle: {},
   style: {},
-  onChangeText: text => {},
+  onChangeText: (text) => {},
   onFocus: () => {},
-  placeholder: 'Placeholder',
-  value: '',
+  placeholder: "Placeholder",
+  value: "",
   success: true,
   secureTextEntry: false,
-  keyboardType: 'default',
+  keyboardType: "default",
   multiline: false,
-  textAlignVertical: 'center',
+  textAlignVertical: "center",
   icon: null,
   onSubmitEditing: () => {},
 };

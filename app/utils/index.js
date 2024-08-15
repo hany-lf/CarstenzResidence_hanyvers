@@ -113,7 +113,7 @@ export const languageFromCode = (code) => {
       return "Iran";
     case "km":
       return "Cambodian";
-    case "ku": 
+    case "ku":
       return "Kurdish";
     default:
       return "Unknown";
@@ -146,9 +146,8 @@ export const parseHexTransparency = (
   return `${hexColor}${TRANSPARENCIES?.[transparency] ?? "00"}`;
 };
 
-
 export const haveChildren = (parent = "", children = "") => {
   const parentNew = parent?.toLowerCase?.();
   const childrenNew = children?.toLowerCase?.();
   return parentNew?.includes(childrenNew);
-}
+};

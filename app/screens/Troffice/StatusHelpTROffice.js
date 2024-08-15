@@ -39,6 +39,8 @@ import { API_URL_LOKAL } from "@env";
 import getProject from "../../selectors/ProjectSelector";
 import getUser from "../../selectors/UserSelectors";
 
+import { Dropdown } from "react-native-element-dropdown";
+
 export default function StatusHelpTROffice({ route }) {
   const { t, i18n } = useTranslation();
   const { colors } = useTheme();
@@ -46,6 +48,12 @@ export default function StatusHelpTROffice({ route }) {
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
   const user = useSelector((state) => getUser(state));
+
+  const [showChooseProject, setShowChooseProject] = useState(false);
+  const [isFocus, setIsFocus] = useState(false);
+  const [valueProject, setValueProject] = useState([]);
+  const [valueProjectSelected, setValueProjectSelected] = useState(null);
+  const [projectData, setProjectData] = useState([]);
 
   const project = useSelector((state) => getProject(state));
   const [dataTowerUser, setdataTowerUser] = useState([]);
@@ -70,129 +78,68 @@ export default function StatusHelpTROffice({ route }) {
     ...styles.profileItem,
     borderBottomColor: colors.border,
   };
-  //-----FOR GET ENTITY & PROJJECT
-  const getTower = async () => {
-    const data = {
-      email: email,
-      app: "O",
-    };
 
-    const config = {
-      headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        // token: "",
-      },
-    };
+  // --- useeffect untuk project
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+      // getTower();
+      if (project && project.data && project.data.length > 0) {
+        // console.log('entity useeffect di home', project.data[0].entity_cd);
+        setEntity(project.data[0].entity_cd);
+        setProjectNo(project.data[0].project_no);
+        const projects = project.data.map((item, id) => ({
+          label: item.descs,
+          value: item.project_no,
+        }));
+        console.log("data di project", project);
+        setProjectData(project.data);
+        setValueProject(projects);
+      }
+      // getCategoryHelp;
+      // setSpinner(false);
+    }, 3000);
+  }, [project]);
 
-    await axios
-      .get(API_URL_LOKAL + `/getData/mysql/${data.email}/${data.app}`, {
-        config,
-      })
-      .then((res) => {
-        const datas = res.data;
-
-        const arrDataTower = datas.data;
-        if (arrDataTower.length > 1) {
-          setDefaultTower(false);
-        } else {
-          setDefaultTower(true);
-          setCheckedEntity(true);
-          setEntity(arrDataTower[0].entity_cd);
-          setProjectNo(arrDataTower[0].project_no);
-          setDb_Profile(arrDataTower[0].db_profile);
-          const params = {
-            entity_cd: arrDataTower[0].entity_cd,
-            project_no: arrDataTower[0].project_no,
-            db_profile: arrDataTower[0].db_profile,
-          };
-          console.log("params for debtor tower default", params);
-          // getDebtor(params);
-          getTicketStatus(params);
-          setShow(true);
-        }
-        arrDataTower.map((dat) => {
-          if (dat) {
-            setdataTowerUser(dat);
-          }
-        });
-        setArrDataTowerUser(arrDataTower);
-        setSpinner(false);
-
-        // return res.data;
-      })
-      .catch((error) => {
-        console.log("error get tower api", error);
-        // alert('error get');
-      });
-  };
-
-   // --- useeffect untuk project
- useEffect(() => {
-  setTimeout(() => {
-    setLoading(false);
-    // getTower();
-    if (project && project.data && project.data.length > 0) {
-      // console.log('entity useeffect di home', project.data[0].entity_cd);
-      setEntity(project.data[0].entity_cd);
-      setProjectNo(project.data[0].project_no);
+  useEffect(() => {
+    if (entity_cd && project_no) {
+      // getLotNo();
+      const params = {
+        entity_cd: entity_cd,
+        project_no: project_no,
+      };
+      getTicketStatus(params);
+      setShow(true);
     }
-    // getCategoryHelp;
-    // setSpinner(false);
-  }, 3000);
-  
-}, [project]);
-
-useEffect(() => {
-  if (entity_cd && project_no) {
-    // getLotNo();
-    const params = {
-      entity_cd: entity_cd,
-      project_no: project_no,
-    };
-    getTicketStatus(params);
-    setShow(true);
-  }
-}, [entity_cd, project_no]);
-// --- useeffect untuk project
+  }, [entity_cd, project_no]);
+  // --- useeffect untuk project
 
   // --- useeffect untuk update email/name
   useEffect(() => {
-    setEmail(user != null && user.userData != null ? user.userData.email : '');
+    setEmail(user != null && user.userData != null ? user.userData.email : "");
   }, [email]);
   // --- useeffect untuk update email/name
 
-  const handleCheckChange = (index, data) => {
-    setCheckedEntity(index);
-    setShow(true);
-
-    setEntity(data.entity_cd);
-    setProjectNo(data.project_no);
-    setDb_Profile(data.db_profile);
-    getTicketStatus(data);
-  };
-
   const getTicketStatus = async (data) => {
     console.log("data for status", data);
-    const dT = data;
 
     const formData = {
-      entity_cd: dT.entity_cd,
-      project_no: dT.project_no,
+      entity_cd: data.entity_cd,
+      project_no: data.project_no,
       email: email,
       category_cd: "'AU01','MU52'", //hardcode yagesya buat ac dan water aja ni
     };
 
     console.log("formdata", formData);
-   const config = {
-    method: 'get',
-    url: API_URL_LOKAL + "/modules/troffice/ticket-status-count",
-    headers: {
-      'content-type': 'application/json',
-      Authorization: `Bearer ${user.Token}`,
-    },
-    params: formData,
-   };
+    const config = {
+      method: "get",
+      url: API_URL_LOKAL + "/modules/troffice/ticket-status-count",
+      headers: {
+        "content-type": "application/json",
+        Authorization: `Bearer ${user.Token}`,
+      },
+      params: formData,
+    };
 
     await axios(config)
       .then((res) => {
@@ -242,15 +189,15 @@ useEffect(() => {
     };
     console.log("formData", formData);
     const config = {
-      method: 'post',
+      method: "post",
       url: API_URL_LOKAL + "/modules/troffice/ticket-by-status",
       headers: {
-        'content-type': 'application/json',
+        "content-type": "application/json",
         Authorization: `Bearer ${user.Token}`,
       },
       params: formData,
     };
-  
+
     // console.log(
     //   "test get data > ",
 
@@ -293,13 +240,31 @@ useEffect(() => {
       });
   };
 
-  //    const onCategoryPress = cat => {
-  //        this.setState({isDisabled: true}, () => {
-  //          this.goToScreen('screen.SelectCategory', cat);
-  //        });
-  //      };
+  const handleClickProject = (item, index) => {
+    console.log("index", index);
+    setValueProjectSelected(item.value);
+
+    setIsFocus(!isFocus);
+    setShowChooseProject(!showChooseProject);
+
+    if (item.value != null) {
+      console.log("value project selected", item.value);
+      projectData.map((items, index) => {
+        console.log("items project data", items);
+        if (items.project_no === item.value) {
+          console.log("items choose project handle", items);
+          console.log("index", index);
+          // setProjectData(items);
+          setCheckedEntity(true);
+          setShow(true);
+          getTicketStatus(items); // ini dikasih get apapun setelah pilih project
+        }
+      });
+    }
+  };
+
   const ds = dataStatus;
-  console.log("ds", ds);
+  // console.log("ds", ds);
   return (
     <SafeAreaView
       style={BaseStyle.safeAreaView}
@@ -317,55 +282,61 @@ useEffect(() => {
             />
           );
         }}
+        renderRight={() => {
+          return (
+            <Icon
+              name="sync-alt"
+              size={20}
+              color={colors.primary}
+              enableRTL={true}
+            />
+          );
+        }}
         onPressLeft={() => {
           navigation.goBack();
         }}
+        onPressRight={() => {
+          // alert('test')
+          // handleClickProject()
+          setShowChooseProject(!showChooseProject);
+          // navigation.navigate("ViewHistoryStatusTRO");
+        }}
       />
+      {showChooseProject ? (
+        <Dropdown
+          style={[
+            styles.dropdown,
+            isFocus && { borderColor: BaseColor.corn30 },
+          ]}
+          placeholderStyle={styles.placeholderStyle}
+          selectedTextStyle={styles.selectedTextStyle}
+          inputSearchStyle={styles.inputSearchStyle}
+          iconStyle={styles.iconStyle}
+          itemTextStyle={styles.itemTextStyle}
+          containerStyle={{ borderRadius: 15, marginVertical: 5 }}
+          data={valueProject}
+          search
+          maxHeight={300}
+          labelField="label"
+          valueField="value"
+          placeholder={!isFocus ? "Choose Project" : "Choose Project"}
+          searchPlaceholder="Search..."
+          value={valueProjectSelected}
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
+          onChange={(item, index) => {
+            handleClickProject(item, index);
+          }}
+        />
+      ) : null}
       <View style={styles.wrap}>
         <Text title2>Ticket</Text>
         <Text headline style={{ fontWeight: "normal" }}>
-          Status Help TR Office
+          Status Help TR Officess
         </Text>
 
         <View style={[styles.subWrap, { paddingBottom: 0, marginBottom: 10 }]}>
-          <View>
-            <Text style={{ color: "#3f3b38", fontSize: 14 }}>
-              Choose Project
-            </Text>
-            {spinner ? (
-              <View>
-                {/* <Spinner visible={this.state.spinner} /> */}
-                <Placeholder
-                  style={{ marginVertical: 4, paddingHorizontal: 10 }}
-                >
-                  <PlaceholderLine
-                    width={100}
-                    noMargin
-                    style={{ height: 40 }}
-                  />
-                </Placeholder>
-              </View>
-            ) : defaulTower ? (
-              <CheckBox
-                checked={checkedEntity}
-                title={arrDataTowerUser[0].project_descs}
-                onPress={() => setCheckedEntity(!checkedEntity)}
-              ></CheckBox>
-            ) : (
-              arrDataTowerUser.map((data, index) => (
-                <CheckBox
-                  key={index}
-                  // checkedIcon="dot-circle-o"
-                  // uncheckedIcon="circle-o"
-                  title={data.project_descs}
-                  checked={checkedEntity === index}
-                  onPress={() => handleCheckChange(index, data)}
-                />
-              ))
-            )}
-          </View>
-
-          {show && checkedEntity === true ? (
+          {show && checkedEntity ? (
             <View style={{ marginTop: 30, marginHorizontal: 10 }}>
               <TouchableOpacity
                 // onPress={() => handleNavigation(dataTowerUser, "'R'")}

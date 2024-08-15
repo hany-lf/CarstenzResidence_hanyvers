@@ -1,91 +1,91 @@
-import {BaseColor, FontWeight, Typography, useFont, useTheme} from '@config';
-import PropTypes from 'prop-types';
-import React from 'react';
-import {StyleSheet, Text} from 'react-native';
+import { BaseColor, FontWeight, Typography, useFont, useTheme } from "@config";
+import PropTypes from "prop-types";
+import React from "react";
+import { StyleSheet, Text } from "react-native";
 
 const Roboto = {
-  100: 'Thin',
-  200: 'Thin',
-  300: 'Light',
-  400: 'Regular',
-  500: 'Medium',
-  600: 'Medium',
-  700: 'Bold',
-  800: 'Bold',
-  900: 'Black',
-  normal: 'Regular',
-  bold: 'Bold',
+  100: "Thin",
+  200: "Thin",
+  300: "Light",
+  400: "Regular",
+  500: "Medium",
+  600: "Medium",
+  700: "Bold",
+  800: "Bold",
+  900: "Black",
+  normal: "Regular",
+  bold: "Bold",
 };
 
 const Raleway = {
-  100: 'Thin',
-  200: 'ExtraLight',
-  300: 'Light',
-  400: 'Regular',
-  500: 'Medium',
-  600: 'SemiBold',
-  700: 'Bold',
-  800: 'ExtraBold',
-  900: 'Black',
-  normal: 'Regular',
-  bold: 'Bold',
+  100: "Thin",
+  200: "ExtraLight",
+  300: "Light",
+  400: "Regular",
+  500: "Medium",
+  600: "SemiBold",
+  700: "Bold",
+  800: "ExtraBold",
+  900: "Black",
+  normal: "Regular",
+  bold: "Bold",
 };
 
 const Merriweather = {
-  100: 'Light',
-  200: 'Light',
-  300: 'Light',
-  400: 'Regular',
-  500: 'Regular',
-  600: 'Bold',
-  700: 'Bold',
-  800: 'Bold',
-  900: 'Black',
-  normal: 'Regular',
-  bold: 'Bold',
+  100: "Light",
+  200: "Light",
+  300: "Light",
+  400: "Regular",
+  500: "Regular",
+  600: "Bold",
+  700: "Bold",
+  800: "Bold",
+  900: "Black",
+  normal: "Regular",
+  bold: "Bold",
 };
 
 const ProximaNova = {
-  100: 'Thin',
-  200: 'Thin',
-  300: 'Thin',
-  400: 'Regular',
-  500: 'Regular',
-  600: 'Bold',
-  700: 'Bold',
-  800: 'Bold',
-  900: 'Black',
-  normal: 'Regular',
-  bold: 'Bold',
+  100: "Thin",
+  200: "Thin",
+  300: "Thin",
+  400: "Regular",
+  500: "Regular",
+  600: "Bold",
+  700: "Bold",
+  800: "Bold",
+  900: "Black",
+  normal: "Regular",
+  bold: "Bold",
 };
 
 const DMSerifDisplay = {
-  100: 'Thin',
-  200: 'Thin',
-  300: 'Thin',
-  400: 'Regular',
-  500: 'Regular',
-  600: 'Bold',
-  700: 'Bold',
-  800: 'Bold',
-  900: 'Black',
-  normal: 'Regular',
-  bold: 'Bold',
+  100: "Thin",
+  200: "Thin",
+  300: "Thin",
+  400: "Regular",
+  500: "Regular",
+  600: "Bold",
+  700: "Bold",
+  800: "Bold",
+  900: "Black",
+  normal: "Regular",
+  bold: "Bold",
 };
 
 const KaiseiHarunoUmi = {
-  100: 'Regular',
-  200: 'Regular',
-  300: 'Regular',
-  400: 'Medium',
-  500: 'Medium',
-  600: 'Medium',
-  700: 'Bold',
-  800: 'Bold',
-  900: 'Bold',
-  normal: 'Regular',
-  bold: 'Bold',
-  medium: 'Medium',
+  100: "Regular",
+  200: "Regular",
+  300: "Regular",
+  400: "Medium",
+  500: "Medium",
+  600: "Medium",
+  700: "Bold",
+  800: "Bold",
+  900: "Bold",
+  normal: "Regular",
+  bold: "Bold",
+  medium: "Medium",
 };
 
 export default function Index(props) {
@@ -132,7 +132,7 @@ export default function Index(props) {
     children,
   } = props;
 
-  const {colors} = useTheme();
+  const { colors } = useTheme();
   const font = useFont();
 
   let textStyle = StyleSheet.flatten([
@@ -150,72 +150,72 @@ export default function Index(props) {
     caption2 && Typography.caption2,
     overline && Typography.overline,
     //custom for font
-    thin && {fontWeight: FontWeight.thin},
-    ultraLight && {fontWeight: FontWeight.ultraLight},
-    light && {fontWeight: FontWeight.light},
-    regular && {fontWeight: FontWeight.regular},
-    medium && {fontWeight: FontWeight.medium},
-    semibold && {fontWeight: FontWeight.semibold},
-    bold && {fontWeight: FontWeight.bold},
-    heavy && {fontWeight: FontWeight.heavy},
-    black && {fontWeight: FontWeight.black},
+    thin && { fontWeight: FontWeight.thin },
+    ultraLight && { fontWeight: FontWeight.ultraLight },
+    light && { fontWeight: FontWeight.light },
+    regular && { fontWeight: FontWeight.regular },
+    medium && { fontWeight: FontWeight.medium },
+    semibold && { fontWeight: FontWeight.semibold },
+    bold && { fontWeight: FontWeight.bold },
+    heavy && { fontWeight: FontWeight.heavy },
+    black && { fontWeight: FontWeight.black },
     // default color
-    {color: colors.text},
+    { color: colors.text },
     //custom for color
-    primaryColor && {color: colors.primary},
-    darkPrimaryColor && {color: colors.primaryDark},
-    lightPrimaryColor && {color: colors.primaryLight},
-    accentColor && {color: colors.accent},
-    grayColor && {color: BaseColor.grayColor},
-    dividerColor && {color: BaseColor.dividerColor},
-    whiteColor && {color: BaseColor.whiteColor},
-    fieldColor && {color: BaseColor.fieldColor},
-    {fontFamily: font, textAlign},
+    primaryColor && { color: colors.primary },
+    darkPrimaryColor && { color: colors.primaryDark },
+    lightPrimaryColor && { color: colors.primaryLight },
+    accentColor && { color: colors.accent },
+    grayColor && { color: BaseColor.grayColor },
+    dividerColor && { color: BaseColor.dividerColor },
+    whiteColor && { color: BaseColor.whiteColor },
+    fieldColor && { color: BaseColor.fieldColor },
+    { fontFamily: font, textAlign },
     style && style,
   ]);
 
   if (textStyle.fontFamily) {
-    const fontStyle = textStyle.fontStyle == 'italic' ? 'Italic' : '';
+    const fontStyle = textStyle.fontStyle == "italic" ? "Italic" : "";
     const fontWeight = textStyle?.fontWeight ?? 400;
     switch (textStyle.fontFamily) {
-      case 'Raleway':
+      case "Raleway":
         textStyle.fontFamily = `${textStyle.fontFamily}-${
-          Raleway[fontWeight] == 'Regular'
+          Raleway[fontWeight] == "Regular"
             ? Raleway[fontWeight]
             : Raleway[fontWeight] + fontStyle
         }`;
         break;
-      case 'Roboto':
+      case "Roboto":
         textStyle.fontFamily = `${textStyle.fontFamily}-${
-          Roboto[fontWeight] == 'Regular'
+          Roboto[fontWeight] == "Regular"
             ? Roboto[fontWeight]
             : Roboto[fontWeight] + fontStyle
         }`;
         break;
-      case 'Merriweather':
+      case "Merriweather":
         textStyle.fontFamily = `${textStyle.fontFamily}-${
-          Merriweather[fontWeight] == 'Regular'
+          Merriweather[fontWeight] == "Regular"
             ? Merriweather[fontWeight]
             : Merriweather[fontWeight] + fontStyle
         }`;
         break;
-      case 'DMSerifDisplay':
+      case "DMSerifDisplay":
         // console.log('DMSerifDisplay[fontWeight]', DMSerifDisplay[fontWeight]);
         textStyle.fontFamily = `${textStyle.fontFamily}-${
-          DMSerifDisplay[fontWeight] == 'Regular'
+          DMSerifDisplay[fontWeight] == "Regular"
             ? DMSerifDisplay[fontWeight]
             : DMSerifDisplay[fontWeight] + fontStyle
         }`;
         break;
-      case 'KaiseiHarunoUmi':
-        console.log('KaiseiHarunoUmi[fontWeight]', KaiseiHarunoUmi[fontWeight]);
+      case "KaiseiHarunoUmi":
+        console.log("KaiseiHarunoUmi[fontWeight]", KaiseiHarunoUmi[fontWeight]);
         textStyle.fontFamily = `${textStyle.fontFamily}-${
-          KaiseiHarunoUmi[fontWeight] == 'Regular'
+          KaiseiHarunoUmi[fontWeight] == "Regular"
             ? KaiseiHarunoUmi[fontWeight]
             : KaiseiHarunoUmi[fontWeight] + fontStyle
         }`;
         break;
-      case 'ProximaNova':
+      case "ProximaNova":
         let prefix = `${textStyle.fontFamily}`;
         if (parseInt(fontWeight) <= 300) {
           prefix = `${textStyle.fontFamily}T`;
@@ -315,8 +315,8 @@ Index.defaultProps = {
   fieldColor: false,
   //numberOfLines
   numberOfLines: 10,
-  textAlign: 'left',
+  textAlign: "left",
   //custom style
   style: {},
-  children: '',
+  children: "",
 };

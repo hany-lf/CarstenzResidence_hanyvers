@@ -25,8 +25,8 @@ const Categories = ({ style = {}, dataMenus }) => {
   const [expand, setExpand] = useState(false);
   const user = useSelector((state) => getUser(state));
   // console.log("user for user faccility ->", user);
-//   console.log("user for user Pesan_Facility ->", user.Pesan_Facility);
-// console.log('data menus di categories', dataMenus)
+  //   console.log("user for user Pesan_Facility ->", user.Pesan_Facility);
+  // console.log('data menus di categories', dataMenus)
   // "Pesan_Facility": "Facility Not Available"
 
   // const user.UserFacility = 'Y';
@@ -52,7 +52,7 @@ const Categories = ({ style = {}, dataMenus }) => {
             //   user.UserFacility == item.user_menu,
             // ),
             <View
-            key={key}
+              key={key}
               style={{
                 flex: 1,
                 marginVertical: 12,
@@ -76,7 +76,7 @@ const Categories = ({ style = {}, dataMenus }) => {
                     : onExpand(user.Pesan_Facility)
                 }
               /> */}
-               <CategoryIconSoft
+              <CategoryIconSoft
                 isRound
                 // icon={item.icon}
                 style={{ padding: 0 }}
@@ -88,7 +88,9 @@ const Categories = ({ style = {}, dataMenus }) => {
                   user.userData.facility_booking == item.User_Facility ||
                   item.User_Menu == "Y"
                     ? goToScreen(item.Screen)
-                    : onExpand('User tidak memiliki izin untuk booking fasilitas')
+                    : onExpand(
+                        "User tidak memiliki izin untuk booking fasilitas"
+                      )
                 }
               />
             </View>

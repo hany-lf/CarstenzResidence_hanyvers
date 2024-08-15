@@ -18,7 +18,7 @@ export default function ProfileAuthor(props) {
     textRight,
     styleName,
     styleDescription,
-    loading
+    loading,
   } = props;
 
   if (loading) {

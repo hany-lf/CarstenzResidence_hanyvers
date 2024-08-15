@@ -21,7 +21,10 @@ const Feedback = (props) => {
   const [review, setReview] = useState("");
 
   return (
-    <SafeAreaView style={BaseStyle.safeAreaView} edges={['right', 'top', 'left']}>
+    <SafeAreaView
+      style={BaseStyle.safeAreaView}
+      edges={["right", "top", "left"]}
+    >
       <Header
         title={t("feedback")}
         renderLeft={() => {

@@ -8,44 +8,44 @@ import {
   Header,
   Icon,
   colors,
-} from '@components';
-import {BaseStyle, useTheme} from '@config';
+} from "@components";
+import { BaseStyle, useTheme } from "@config";
 import {
   HomeChannelData,
   HomeListData,
   HomePopularData,
   HomeTopicData,
   PostListData,
-} from '@data';
-import axios from 'axios';
-import moment from 'moment';
-import React, {useEffect, useState} from 'react';
-import {useTranslation} from 'react-i18next';
-import {FlatList, ScrollView, View, ActivityIndicator} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {NewsList, NotFound, CategoryGrid} from '../../components';
-import List from '../../components/Product/List';
-import styles from './styles';
-import {CardReport01, CardReport08} from '../../components';
+} from "@data";
+import axios from "axios";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { FlatList, ScrollView, View, ActivityIndicator } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { NewsList, NotFound, CategoryGrid } from "../../components";
+import List from "../../components/Product/List";
+import styles from "./styles";
+import { CardReport01, CardReport08 } from "../../components";
 
-const ClubFacilities = props => {
-  const {navigation} = props;
-  const {route} = props;
-  const {t} = useTranslation();
-  const {colors} = useTheme();
+const ClubFacilities = (props) => {
+  const { navigation } = props;
+  const { route } = props;
+  const { t } = useTranslation();
+  const { colors } = useTheme();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hasError, setErrors] = useState(false);
   const [dataItems, setdataItems] = useState(route.params.items);
-  console.log('dataItems', dataItems);
+  console.log("dataItems", dataItems);
 
   const filterForPromo = dataItems
-    .filter(item => item.category === 'P')
-    .map(items => items);
+    .filter((item) => item.category === "P")
+    .map((items) => items);
 
   const filterForClubFacilities = dataItems
-    .filter(item => item.category === 'CF')
-    .map(items => items);
+    .filter((item) => item.category === "CF")
+    .map((items) => items);
 
   const joinFilterDataPromoClubFac = [
     ...filterForPromo,
@@ -58,7 +58,7 @@ const ClubFacilities = props => {
     };
   });
 
-  console.log('array image', arrayImagePromoClubFac);
+  console.log("array image", arrayImagePromoClubFac);
 
   useEffect(() => {
     setTimeout(() => {
@@ -70,10 +70,11 @@ const ClubFacilities = props => {
     const mainNews = PostListData[0];
     return (
       <SafeAreaView
-        style={[BaseStyle.safeAreaView, {flex: 1}]}
-        edges={['right', 'top', 'left']}>
+        style={[BaseStyle.safeAreaView, { flex: 1 }]}
+        edges={["right", "top", "left"]}
+      >
         <Header
-          title={t('Event & Restaurant')}
+          title={t("Event & Restaurant")}
           renderLeft={() => {
             return (
               <Icon
@@ -99,15 +100,15 @@ const ClubFacilities = props => {
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
             keyExtractor={(item, index) => index.toString()}
-            renderItem={({item, index}) => (
+            renderItem={({ item, index }) => (
               <CategoryGrid
                 onPress={() =>
-                  navigation.navigate('PreviewImageHome', {
+                  navigation.navigate("PreviewImageHome", {
                     images: item.pict,
                   })
                 }
                 // style={{paddingHorizontal: 5}}
-                image={{uri: item.pict}}
+                image={{ uri: item.pict }}
                 //   title={item.descs} //bisa aja dimunculin, tapi harus deskripsi / textnya betul
               ></CategoryGrid>
             )}
@@ -125,10 +126,11 @@ const ClubFacilities = props => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <SafeAreaView
         style={BaseStyle.safeAreaView}
-        edges={['right', 'top', 'left']}>
+        edges={["right", "top", "left"]}
+      >
         {renderContent()}
       </SafeAreaView>
     </View>

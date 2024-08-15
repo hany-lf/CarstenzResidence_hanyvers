@@ -4,20 +4,20 @@ import {
   SafeAreaView,
   TextInput,
   Transaction2Col,
-} from '@components';
-import {BaseColor, BaseStyle, useTheme} from '@config';
-import {FActivites} from '@data';
-import {useNavigation} from '@react-navigation/native';
-import {haveChildren} from '@utils';
-import React, {useState} from 'react';
-import {useTranslation} from 'react-i18next';
-import {FlatList, TouchableOpacity, View} from 'react-native';
-import styles from './styles';
+} from "@components";
+import { BaseColor, BaseStyle, useTheme } from "@config";
+import { FActivites } from "@data";
+import { useNavigation } from "@react-navigation/native";
+import { haveChildren } from "@utils";
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { FlatList, TouchableOpacity, View } from "react-native";
+import styles from "./styles";
 
 export default function FActivity() {
-  const {t, i18n} = useTranslation();
-  const {colors} = useTheme();
-  const [category, setCategory] = useState('');
+  const { t, i18n } = useTranslation();
+  const { colors } = useTheme();
+  const [category, setCategory] = useState("");
   const [categories, setCategories] = useState(FActivites);
   const navigation = useNavigation();
   /**
@@ -25,20 +25,20 @@ export default function FActivity() {
    */
   const goToFilter = () => {
     navigation.navigate({
-      name: 'FActivityFilter',
+      name: "FActivityFilter",
       params: {},
       merge: true,
     });
   };
 
-  const filterCategory = text => {
+  const filterCategory = (text) => {
     setCategory(text);
     if (text) {
       setCategories(
         FActivites.filter(
-          item =>
-            haveChildren(item.name, text) || haveChildren(item.status, text),
-        ),
+          (item) =>
+            haveChildren(item.name, text) || haveChildren(item.status, text)
+        )
       );
     } else {
       setCategories(FActivites);
@@ -48,39 +48,41 @@ export default function FActivity() {
   return (
     <SafeAreaView
       style={BaseStyle.safeAreaView}
-      edges={['right', 'top', 'left']}>
-      <HeaderText title={t('activities')} />
+      edges={["right", "top", "left"]}
+    >
+      <HeaderText title={t("activities")} />
       <View style={styles.contain}>
         <View
           style={{
             paddingHorizontal: 20,
             paddingTop: 15,
             paddingBottom: 20,
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}>
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
           <TextInput
-            style={{flex: 1}}
+            style={{ flex: 1 }}
             onChangeText={filterCategory}
-            placeholder={t('enter_a_currency')}
+            placeholder={t("enter_a_currency")}
             value={category}
             icon={
-              <TouchableOpacity onPress={() => filterCategory('')}>
+              <TouchableOpacity onPress={() => filterCategory("")}>
                 <Icon name="times" size={16} color={BaseColor.grayColor} />
               </TouchableOpacity>
             }
           />
-          <TouchableOpacity style={{paddingLeft: 20}} onPress={goToFilter}>
+          <TouchableOpacity style={{ paddingLeft: 20 }} onPress={goToFilter}>
             <Icon name="sliders-h" size={24} color={colors.text} />
           </TouchableOpacity>
         </View>
         <FlatList
-          contentContainerStyle={{paddingHorizontal: 20}}
+          contentContainerStyle={{ paddingHorizontal: 20 }}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
           data={categories}
-          keyExtractor={item => item.id}
-          renderItem={({item, index}) => (
+          keyExtractor={(item) => item.id}
+          renderItem={({ item, index }) => (
             <Transaction2Col
               key={item.id}
               icon={item.icon}
@@ -90,7 +92,7 @@ export default function FActivity() {
               price={item.price}
               isUp={item.isUp}
               backgroundIcon={item.backgroundIcon}
-              onPress={() => navigation.navigate('FHistoryDetail')}
+              onPress={() => navigation.navigate("FHistoryDetail")}
             />
           )}
         />

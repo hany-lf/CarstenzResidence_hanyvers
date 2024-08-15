@@ -1,21 +1,21 @@
-import {StyleSheet, Dimensions, PixelRatio} from 'react-native';
-import {BaseColor, useTheme} from '@config';
-const deviceHeight = Dimensions.get('window').height;
-const deviceWidth = Dimensions.get('window').width;
+import { StyleSheet, Dimensions, PixelRatio } from "react-native";
+import { BaseColor, useTheme } from "@config";
+const deviceHeight = Dimensions.get("window").height;
+const deviceWidth = Dimensions.get("window").width;
 
 export default StyleSheet.create({
-  paddingSrollView: {padding: 20},
+  paddingSrollView: { padding: 20 },
   paddingFlatList: {
     paddingTop: 24,
   },
   topicsView: {
     marginVertical: 24,
   },
-  title: {marginBottom: 5, color: 'black'},
+  title: { marginBottom: 5, color: "black" },
   specifications: {
     marginVertical: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   container: {
     flex: 1,
@@ -27,39 +27,39 @@ export default StyleSheet.create({
     marginTop: 10,
   },
   bottomModal: {
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
     margin: 0,
   },
   modalView: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
   },
   modalContainer: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     height: deviceHeight / 2,
     width: deviceWidth,
     // justifyContent : 'center',
-    alignItems: 'center',
+    alignItems: "center",
     borderTopLeftRadius: 18,
     borderTopRightRadius: 18,
   },
   modalHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     width: deviceWidth,
     paddingHorizontal: 25,
     paddingTop: 22,
   },
   textModal: {
     fontSize: 18,
-    color: '#333',
+    color: "#333",
   },
   iconModal: {
     fontSize: 25,
-    color: '#333',
+    color: "#333",
   },
   modalBody: {
-    justifyContent: 'center',
+    justifyContent: "center",
     height: deviceHeight - deviceHeight / 1.5,
     width: deviceWidth,
     paddingHorizontal: 25,
@@ -67,7 +67,7 @@ export default StyleSheet.create({
   },
   modalBodyTitle: {
     paddingVertical: 15,
-    textAlign: 'center',
+    textAlign: "center",
   },
   starWrap: {
     paddingBottom: 40,
@@ -75,7 +75,7 @@ export default StyleSheet.create({
   },
   btnWrapModal: {
     marginHorizontal: 60,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });

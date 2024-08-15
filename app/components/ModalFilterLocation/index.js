@@ -1,31 +1,38 @@
-import Button from '@components/Button';
-import Icon from '@components/Icon';
-import Image from '@components/Image';
-import Text from '@components/Text';
-import TextInput from '@components/TextInput';
-import {useTheme, BaseStyle, BaseColor} from '@config';
-import PropTypes from 'prop-types';
-import React from 'react';
-import {useTranslation} from 'react-i18next';
-import {ScrollView} from 'react-native';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import Modal from 'react-native-modal';
-import styles from './styles';
+import Button from "@components/Button";
+import Icon from "@components/Icon";
+import Image from "@components/Image";
+import Text from "@components/Text";
+import TextInput from "@components/TextInput";
+import { useTheme, BaseStyle, BaseColor } from "@config";
+import PropTypes from "prop-types";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { ScrollView } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+import Modal from "react-native-modal";
+import styles from "./styles";
 
-const ModalFilterLocation = props => {
-  const {colors} = useTheme();
-  const {t} = useTranslation();
+const ModalFilterLocation = (props) => {
+  const { colors } = useTheme();
+  const { t } = useTranslation();
   const cardColor = colors.card;
-  const {options, onApply, onSelectFilter, textSearch, onChangeText, ...attrs} =
-    props;
+  const {
+    options,
+    onApply,
+    onSelectFilter,
+    textSearch,
+    onChangeText,
+    ...attrs
+  } = props;
 
   // clg;
 
   return (
-    <Modal swipeDirection={['down']} style={styles.bottomModal} {...attrs}>
+    <Modal swipeDirection={["down"]} style={styles.bottomModal} {...attrs}>
       <ScrollView>
         <View
-          style={[styles.contentFilterBottom, {backgroundColor: cardColor}]}>
+          style={[styles.contentFilterBottom, { backgroundColor: cardColor }]}
+        >
           <View style={styles.contentSwipeDown}>
             <View style={styles.lineSwipeDown} />
           </View>
@@ -33,7 +40,7 @@ const ModalFilterLocation = props => {
             style={BaseStyle.textInput}
             onChangeText={onChangeText}
             autoCorrect={false}
-            placeholder={t('enter_keywords')}
+            placeholder={t("enter_keywords")}
             placeholderTextColor={BaseColor.grayColor}
             value={textSearch}
             selectionColor={colors.primary}
@@ -52,8 +59,9 @@ const ModalFilterLocation = props => {
                 },
               ]}
               key={item.location_cd}
-              onPress={() => onSelectFilter(item)}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              onPress={() => onSelectFilter(item)}
+            >
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
                 {/* {item.image && <Image source={item.image} style={styles.image} />} */}
                 <Text body2 semibold primaryColor={item.checked}>
                   {t(item.descs)}
@@ -66,8 +74,12 @@ const ModalFilterLocation = props => {
           ))}
         </View>
       </ScrollView>
-      <Button full style={{marginTop: 10, marginBottom: 20}} onPress={onApply}>
-        {t('apply')}
+      <Button
+        full
+        style={{ marginTop: 10, marginBottom: 20 }}
+        onPress={onApply}
+      >
+        {t("apply")}
       </Button>
     </Modal>
   );

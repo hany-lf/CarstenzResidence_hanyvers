@@ -6,7 +6,7 @@ import styles from "./styles";
 const Loading = (props) => {
   return (
     <Placeholder style={{ marginVertical: 4 }}>
-      <PlaceholderLine  width={40} noMargin />
+      <PlaceholderLine width={40} noMargin />
     </Placeholder>
   );
 };

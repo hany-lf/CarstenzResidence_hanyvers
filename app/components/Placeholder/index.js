@@ -14,11 +14,10 @@ export const PlaceholderLine = ({ style, ...attrs }) => {
 };
 
 export const Placeholder = ({ ...attrs }) => {
-
   return (
     <RNPlaceholder.Placeholder
       {...attrs}
-      Animation={(props) => <Progressive {...props} duration={1500}/>}
+      Animation={(props) => <Progressive {...props} duration={1500} />}
     />
   );
 };

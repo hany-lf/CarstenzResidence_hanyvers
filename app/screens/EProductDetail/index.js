@@ -570,8 +570,16 @@ const EProductDetail = (props) => {
                 activeOpacity={1}
                 onPress={() =>
                   navigation.navigate("PreviewImages", { images: images })
-                }>
-                <Image source={{ uri: `${item.pict}` }} style={{ width: '100%',  height: ((Utils.getWidthDevice() - 30) * 9) / 15 }} key={key}></Image>
+                }
+              >
+                <Image
+                  source={{ uri: `${item.pict}` }}
+                  style={{
+                    width: "100%",
+                    height: ((Utils.getWidthDevice() - 30) * 9) / 15,
+                  }}
+                  key={key}
+                ></Image>
               </TouchableOpacity>
             );
           })}

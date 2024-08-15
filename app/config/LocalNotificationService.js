@@ -1,13 +1,13 @@
-import PushNotification from 'react-native-push-notification';
+import PushNotification from "react-native-push-notification";
 
 class LocalNotificationService {
-  configure = onOpenNotification => {
+  configure = (onOpenNotification) => {
     PushNotification.configure({
       onRegister: function (token) {
-        console.log('[LocalNotificationService] onRegister:', token);
+        console.log("[LocalNotificationService] onRegister:", token);
       },
       onNotification: function (notification) {
-        console.log('[LocalNotificationService] onNotification:', notification);
+        console.log("[LocalNotificationService] onNotification:", notification);
         if (!notification?.data) {
           return;
         }
@@ -44,12 +44,12 @@ class LocalNotificationService {
     PushNotification.localNotification({
       /* Android Only Properties */
       ...this.buildAndroidNotification(id, title, message, data, options),
-      title: title || '',
-      message: message || '',
+      title: title || "",
+      message: message || "",
       playSound: options.playSound || false,
-      soundName: options.soundName || 'default',
+      soundName: options.soundName || "default",
       userInteraction: false, // BOOLEAN : If notification was opened by the user from notification
-      channelId: '32',
+      channelId: "32",
       badge: true,
     });
   };
@@ -58,14 +58,14 @@ class LocalNotificationService {
     return {
       id: id,
       autoCancel: true,
-      largeIcon: options.largeIcon || 'ic_launcher',
-      smallIcon: options.smallIcon || 'ic_notification',
-      bigText: message || '',
-      subText: title || '',
+      largeIcon: options.largeIcon || "ic_launcher",
+      smallIcon: options.smallIcon || "ic_notification",
+      bigText: message || "",
+      subText: title || "",
       vibrate: options.vibrate || true,
       vibration: options.vibration || 300,
-      priority: options.priority || 'high',
-      importance: options.importance || 'high',
+      priority: options.priority || "high",
+      importance: options.importance || "high",
       data: data,
     };
   };
@@ -74,10 +74,10 @@ class LocalNotificationService {
     PushNotification.cancelAllLocalNotifications();
   };
 
-  removeDeliveredNotificationByID = notificationId => {
+  removeDeliveredNotificationByID = (notificationId) => {
     console.log(
-      '[LocalNotificationService] removeDeliveredNotificationByID:',
-      notificationId,
+      "[LocalNotificationService] removeDeliveredNotificationByID:",
+      notificationId
     );
     PushNotification.cancelLocalNotifications({
       id: `${notificationId}`,

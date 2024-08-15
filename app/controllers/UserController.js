@@ -21,30 +21,28 @@ class UserController {
     //   "\n token_firebase:",
     //   token_firebase
     // );
-    console.log(' login user controller', email);
+    console.log(" login user controller", email);
     try {
       // console.log("25 try controller login begin");
       // console.log("API: " + API_URL_LOKAL);
-      console.log('try login user controller', email);
+      console.log("try login user controller", email);
       const result = await httpClient.request({
         url: "/auth/login",
         method: "POST",
         data: {
           email: email,
           password: password,
-         
+
           device: "ios",
           mac: "",
           token_firebase: token_firebase,
-          apps_type: "S"
-         
+          apps_type: "S",
         },
         headers: {
-        
           Authorization: `Bearer ${token_firebase}`,
         },
       });
-      console.log('result login user controller', result);
+      console.log("result login user controller", result);
       // // alert(result.Pesan);
       // console.log("39 after try");
       // console.log("31 login response -->", result);
@@ -55,7 +53,6 @@ class UserController {
       } else {
         console.log("34 first pesan", result.message);
         return Promise.reject(result.message);
-        
       }
     } catch (error) {
       console.log("41 if errorz", error.response);

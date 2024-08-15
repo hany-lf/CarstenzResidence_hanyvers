@@ -11,7 +11,7 @@ const ProductCategory1 = (props) => {
   const { style, image, title, subtitle, onPress, loading } = props;
 
   if (loading) {
-    return <Loading style={style}/>;
+    return <Loading style={style} />;
   }
 
   return (

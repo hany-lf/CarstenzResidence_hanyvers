@@ -18,7 +18,10 @@ export default function CategoryFull(props) {
       onPress={onPress}
       activeOpacity={0.9}
     >
-      <Image source={image} style={{ flex: 1, borderRadius: 8, height: "100%" }} />
+      <Image
+        source={image}
+        style={{ flex: 1, borderRadius: 8, height: "100%" }}
+      />
       <View style={styles.contentIcon}>
         <View
           style={[styles.iconCircle, { backgroundColor: colors.primaryLight }]}

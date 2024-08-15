@@ -7,28 +7,28 @@ import {
   Tag,
   Header,
   Icon,
-} from '@components';
-import {BaseColor, BaseStyle, useTheme} from '@config';
+} from "@components";
+import { BaseColor, BaseStyle, useTheme } from "@config";
 // Load sample data
-import {EPostListData, ESortOption} from '@data';
-import {useNavigation} from '@react-navigation/native';
-import * as Utils from '@utils';
-import React, {Fragment, useEffect, useRef, useState} from 'react';
-import {useTranslation} from 'react-i18next';
-import {Dimensions, FlatList, RefreshControl, View} from 'react-native';
-import {SceneMap, TabBar, TabView} from 'react-native-tab-view';
-import styles from './styles';
+import { EPostListData, ESortOption } from "@data";
+import { useNavigation } from "@react-navigation/native";
+import * as Utils from "@utils";
+import React, { Fragment, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Dimensions, FlatList, RefreshControl, View } from "react-native";
+import { SceneMap, TabBar, TabView } from "react-native-tab-view";
+import styles from "./styles";
 
 let timeoutChangeMode = null;
 
-const initialLayout = {width: Dimensions.get('window').width};
+const initialLayout = { width: Dimensions.get("window").width };
 
-const Product = props => {
+const Product = (props) => {
   const navigation = useNavigation();
-  const {t} = useTranslation();
-  const {colors} = useTheme();
+  const { t } = useTranslation();
+  const { colors } = useTheme();
   const [refreshing, setRefreshing] = useState(false);
-  const [modeView, setModeView] = useState('list');
+  const [modeView, setModeView] = useState("list");
   const [list, setList] = useState(EPostListData);
   const [loading, setLoading] = useState(true);
 
@@ -38,24 +38,24 @@ const Product = props => {
     }, 1000);
   }, []);
 
-  const onChangeSort = sortOption => {
+  const onChangeSort = (sortOption) => {
     Utils.enableExperimental();
-    const {value} = sortOption;
+    const { value } = sortOption;
     switch (value) {
-      case 'all':
+      case "all":
         setList(EPostListData);
         break;
-      case 'best_match':
-        setList(EPostListData.filter(product => product.isBestMatch));
+      case "best_match":
+        setList(EPostListData.filter((product) => product.isBestMatch));
         break;
-      case 'price_low_to_high':
+      case "price_low_to_high":
         const products = [...EPostListData];
         products.sort((a, b) => {
           return a.price - b.price;
         });
         setList(products);
         break;
-      case 'price_high_to_low':
+      case "price_high_to_low":
         const productHights = [...EPostListData];
         productHights.sort((a, b) => {
           return b.price - a.price;
@@ -74,7 +74,7 @@ const Product = props => {
    * @date 2019-09-01
    */
   const onFilter = () => {
-    navigation.navigate('EFilter');
+    navigation.navigate("EFilter");
   };
 
   /**
@@ -91,16 +91,16 @@ const Product = props => {
 
     Utils.enableExperimental();
 
-    let mode = 'block';
+    let mode = "block";
     switch (modeView) {
-      case 'block':
-        mode = 'grid';
+      case "block":
+        mode = "grid";
         break;
-      case 'grid':
-        mode = 'list';
+      case "grid":
+        mode = "list";
         break;
-      case 'list':
-        mode = 'block';
+      case "list":
+        mode = "block";
         break;
       default:
         break;
@@ -110,34 +110,34 @@ const Product = props => {
 
   const getTotalCol = () => {
     switch (modeView) {
-      case 'block':
+      case "block":
         return 1;
-      case 'list':
+      case "list":
         return 1;
-      case 'grid':
+      case "grid":
         return 2;
       default:
         return 1;
     }
   };
 
-  const goProductDetail = item => {
-    navigation.navigate('EProductDetailStore', {item: item});
+  const goProductDetail = (item) => {
+    navigation.navigate("EProductDetailStore", { item: item });
   };
 
-  const goStore = item => {
+  const goStore = (item) => {
     navigation.goBack();
   };
 
-  const renderItem = ({item, index}) => {
+  const renderItem = ({ item, index }) => {
     switch (modeView) {
-      case 'list':
+      case "list":
         return (
           <ProductList
             loading={loading}
             description={item.description}
             title={item.title}
-            style={{marginVertical: 8}}
+            style={{ marginVertical: 8 }}
             image={item.image}
             costPrice={item.costPrice}
             salePrice={item.salePrice}
@@ -146,7 +146,7 @@ const Product = props => {
             salePercent={item.salePercent}
           />
         );
-      case 'grid':
+      case "grid":
         return (
           <ProductGrid2
             loading={loading}
@@ -155,7 +155,7 @@ const Product = props => {
             style={{
               paddingLeft: index % 2 ? 4 : 0,
               paddingRight: index % 2 ? 0 : 4,
-              width: '50%',
+              width: "50%",
               paddingBottom: 16,
             }}
             image={item.image}
@@ -167,13 +167,13 @@ const Product = props => {
           />
         );
 
-      case 'block':
+      case "block":
         return (
           <ProductBlock
             loading={loading}
             description={item.description}
             title={item.title}
-            style={{marginVertical: 8}}
+            style={{ marginVertical: 8 }}
             image={item.image}
             costPrice={item.costPrice}
             salePrice={item.salePrice}
@@ -190,10 +190,10 @@ const Product = props => {
 
   const renderList = () => {
     return (
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <FlatList
           contentContainerStyle={{
-            paddingHorizontal: modeView != 'block' ? 20 : 0,
+            paddingHorizontal: modeView != "block" ? 20 : 0,
           }}
           refreshControl={
             <RefreshControl
@@ -217,16 +217,16 @@ const Product = props => {
   return <Fragment>{renderList()}</Fragment>;
 };
 
-const PostTab = props => {
-  const {colors} = useTheme();
-  const {navigation, route} = props;
+const PostTab = (props) => {
+  const { colors } = useTheme();
+  const { navigation, route } = props;
 
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    {key: 'clothing', title: 'Clothing'},
-    {key: 'accessories', title: 'Accessories'},
-    {key: 'activewear', title: 'Activewear'},
-    {key: 'shoes', title: 'Shoes'},
+    { key: "clothing", title: "Clothing" },
+    { key: "accessories", title: "Accessories" },
+    { key: "activewear", title: "Activewear" },
+    { key: "shoes", title: "Shoes" },
   ]);
 
   const renderScene = SceneMap({
@@ -235,16 +235,16 @@ const PostTab = props => {
     activewear: Product,
     shoes: Product,
   });
-  const renderTabBar = props => (
+  const renderTabBar = (props) => (
     <TabBar
       {...props}
       renderIndicator={() => null}
       scrollEnabled
-      style={[styles.tabbar, {backgroundColor: colors.background}]}
+      style={[styles.tabbar, { backgroundColor: colors.background }]}
       tabStyle={styles.tab}
       activeColor={BaseColor.whiteColor}
       inactiveColor={colors.text}
-      renderLabel={({route, focused, color}) => (
+      renderLabel={({ route, focused, color }) => (
         <Tag
           primary={true}
           style={{
@@ -252,7 +252,8 @@ const PostTab = props => {
           }}
           textStyle={{
             color: color,
-          }}>
+          }}
+        >
           {route.title}
         </Tag>
       )}
@@ -262,9 +263,10 @@ const PostTab = props => {
   return (
     <SafeAreaView
       style={BaseStyle.safeAreaView}
-      edges={['right', 'top', 'left']}>
+      edges={["right", "top", "left"]}
+    >
       <Header
-        title={'Store'}
+        title={"Store"}
         renderLeft={() => {
           return (
             <Icon
@@ -281,7 +283,7 @@ const PostTab = props => {
       />
       <TabView
         scrollEnabled={true}
-        navigationState={{index, routes}}
+        navigationState={{ index, routes }}
         renderScene={renderScene}
         onIndexChange={setIndex}
         initialLayout={initialLayout}

@@ -65,8 +65,6 @@ const Billing = ({
   const [dataTowerUser, setdataTowerUser] = useState([]);
   const [arrDataTowerUser, setArrDataTowerUser] = useState([]);
 
-
-
   const [email, setEmail] = useState("");
   const [entity_cd, setEntity] = useState("");
   const [project_no, setProjectNo] = useState("");
@@ -95,13 +93,13 @@ const Billing = ({
   }, [route?.params?.id]);
 
   // --- useeffect untuk project
- useEffect(() => {
-  if (project && project.data && project.data.length > 0) {
-    // console.log('entity useeffect di home', project.data[0].entity_cd);
-    setEntity(project.data[0].entity_cd);
-    setProjectNo(project.data[0].project_no);
-  }
-}, [project]);
+  useEffect(() => {
+    if (project && project.data && project.data.length > 0) {
+      // console.log('entity useeffect di home', project.data[0].entity_cd);
+      setEntity(project.data[0].entity_cd);
+      setProjectNo(project.data[0].project_no);
+    }
+  }, [project]);
 
   // --- useeffect untuk update email/name
   useEffect(() => {
@@ -113,13 +111,12 @@ const Billing = ({
   // --- useeffect untuk update email/name
 
   useEffect(() => {
-    console.log('apakah ini terload', email)
-    if(email){
+    console.log("apakah ini terload", email);
+    if (email) {
       fetchData();
       fetchDataCurrent();
     }
   }, [email]);
-
 
   //-----FOR GET ENTITY & PROJJECT
   const getTower = async () => {
@@ -186,12 +183,15 @@ const Billing = ({
   }, []);
   // Make function to call the api
   async function fetchData() {
-    console.log('api due sumary', API_URL_LOKAL + `/modules/billing/due-summary/${email}`)
-     const config = {
-      method: 'get',
+    console.log(
+      "api due sumary",
+      API_URL_LOKAL + `/modules/billing/due-summary/${email}`
+    );
+    const config = {
+      method: "get",
       url: API_URL_LOKAL + `/modules/billing/due-summary/${email}`,
       headers: {
-        'content-type': 'application/json',
+        "content-type": "application/json",
         Authorization: `Bearer ${user.Token}`,
       },
     };
@@ -207,12 +207,15 @@ const Billing = ({
   }
 
   async function fetchDataCurrent() {
-    console.log('api current sumary', API_URL_LOKAL + `/modules/billing/current-summary/${email}`)
+    console.log(
+      "api current sumary",
+      API_URL_LOKAL + `/modules/billing/current-summary/${email}`
+    );
     const config = {
-      method: 'get',
+      method: "get",
       url: API_URL_LOKAL + `/modules/billing/current-summary/${email}`,
       headers: {
-        'content-type': 'application/json',
+        "content-type": "application/json",
         Authorization: `Bearer ${user.Token}`,
       },
     };
@@ -222,12 +225,11 @@ const Billing = ({
       console.log("data current", res.data.data);
       setLoading(false);
     } catch (error) {
-      console.log('error fetch data current', error.response);
+      console.log("error fetch data current", error.response);
       setErrors(error.response.data);
       // alert(hasError.toString());
     }
   }
-
 
   // ----- ini gak kepake kan? ga ada yang panggil const sum
   const sum =
@@ -237,9 +239,6 @@ const Billing = ({
         }, 0)
       : null;
   console.log("sum", sum);
-
-
-
 
   return (
     <SafeAreaView

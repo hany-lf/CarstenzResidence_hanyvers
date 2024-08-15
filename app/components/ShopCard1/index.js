@@ -16,12 +16,12 @@ const ShopCard1 = ({
   description = "300 products",
   isVerified = false,
   onPress = () => {},
-  loading = false
+  loading = false,
 }) => {
   const { colors } = useTheme();
 
   if (loading) {
-    return <Loading style={style}/>;
+    return <Loading style={style} />;
   }
 
   return (

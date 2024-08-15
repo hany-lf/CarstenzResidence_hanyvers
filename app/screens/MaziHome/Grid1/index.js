@@ -16,7 +16,7 @@ const Grid1 = ({
   salePrice,
   onPress,
   isFavorite,
-  loading = false
+  loading = false,
 }) => {
   const { colors } = useTheme();
   return (
@@ -34,7 +34,6 @@ const Grid1 = ({
         <Text footnote grayColor style={{ marginTop: 5 }}>
           {description}
         </Text>
-        
       </View>
     </TouchableOpacity>
   );

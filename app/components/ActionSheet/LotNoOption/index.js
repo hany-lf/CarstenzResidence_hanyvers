@@ -1,25 +1,27 @@
-import Button from '@components/Button';
-import Icon from '@components/Icon';
-import Image from '@components/Image';
-import Text from '@components/Text';
-import {useTheme} from '@config';
-import PropTypes from 'prop-types';
-import React from 'react';
-import {useTranslation} from 'react-i18next';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import Modal from 'react-native-modal';
-import styles from './styles';
+import Button from "@components/Button";
+import Icon from "@components/Icon";
+import Image from "@components/Image";
+import Text from "@components/Text";
+import { useTheme } from "@config";
+import PropTypes from "prop-types";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+import Modal from "react-native-modal";
+import styles from "./styles";
 
-const SelectOptionIcon = props => {
-  const {colors} = useTheme();
-  const {t} = useTranslation();
+const SelectOptionIcon = (props) => {
+  const { colors } = useTheme();
+  const { t } = useTranslation();
   const cardColor = colors.card;
-  const {lotnoChoosed, options, onChange, ...attrs} = props;
-  console.log('venuechoosed di selcted,', lotnoChoosed);
+  const { lotnoChoosed, options, onChange, ...attrs } = props;
+  console.log("venuechoosed di selcted,", lotnoChoosed);
 
   return (
-    <Modal swipeDirection={['down']} style={styles.bottomModal} {...attrs}>
-      <View style={[styles.contentFilterBottom, {backgroundColor: cardColor}]}>
+    <Modal swipeDirection={["down"]} style={styles.bottomModal} {...attrs}>
+      <View
+        style={[styles.contentFilterBottom, { backgroundColor: cardColor }]}
+      >
         <View style={styles.contentSwipeDown}>
           <View style={styles.lineSwipeDown} />
         </View>
@@ -34,13 +36,15 @@ const SelectOptionIcon = props => {
               },
             ]}
             key={index}
-            onPress={() => onChange(item)}>
+            onPress={() => onChange(item)}
+          >
             <View
               style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               {item.iconName && (
                 <Icon
                   solid

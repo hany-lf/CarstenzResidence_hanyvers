@@ -1,8 +1,8 @@
-import {actionTypes} from '../actions/GlobalActions';
-import {NOT_STARTED, LOADING, SUCCESS, ERROR} from '../helpers/Status';
+import { actionTypes } from "../actions/GlobalActions";
+import { NOT_STARTED, LOADING, SUCCESS, ERROR } from "../helpers/Status";
 
 export default (state = {}, action) => {
-  const {type} = action;
+  const { type } = action;
 
   if (type === actionTypes.GLOBAL_RESET) return {};
 

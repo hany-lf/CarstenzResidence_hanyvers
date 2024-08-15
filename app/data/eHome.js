@@ -149,33 +149,31 @@ export const EYourStores = [
 ];
 
 export const EWishlistHome = [
-    {
-      id: 1,
-      title: "Glasses and Looped Halter Swimsuit",
-      image: Images.productGrid07,
-      costPrice: "$39",
-      salePrice: "$39",
-      isFavorite: false,
-      price: 29,
-    },
-    {
-      id: 2,
-      title: "Best Formal Shirts for Women",
-      image: Images.productGrid08,
-      costPrice: "$69",
-      salePrice: "$49",
-      isFavorite: true,
-      price: 49,
-    },
-    {
-      id: 3,
-      title: "Barton Perriera Fear of God FGBP.2020 Black",
-      image: Images.productCategory08,
-      costPrice: "$59",
-      salePrice: "$39",
-      isFavorite: true,
-      price: 39,
-    },
-    
-  ];
-  
+  {
+    id: 1,
+    title: "Glasses and Looped Halter Swimsuit",
+    image: Images.productGrid07,
+    costPrice: "$39",
+    salePrice: "$39",
+    isFavorite: false,
+    price: 29,
+  },
+  {
+    id: 2,
+    title: "Best Formal Shirts for Women",
+    image: Images.productGrid08,
+    costPrice: "$69",
+    salePrice: "$49",
+    isFavorite: true,
+    price: 49,
+  },
+  {
+    id: 3,
+    title: "Barton Perriera Fear of God FGBP.2020 Black",
+    image: Images.productCategory08,
+    costPrice: "$59",
+    salePrice: "$39",
+    isFavorite: true,
+    price: 39,
+  },
+];

@@ -33,5 +33,5 @@ export default StyleSheet.create({
   },
   containLoading: {
     width: 220,
-  }
+  },
 });

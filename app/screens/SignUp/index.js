@@ -39,7 +39,10 @@ const SignUp = (props) => {
   };
 
   return (
-    <SafeAreaView style={BaseStyle.safeAreaView} edges={['right', 'top', 'left']}>
+    <SafeAreaView
+      style={BaseStyle.safeAreaView}
+      edges={["right", "top", "left"]}
+    >
       <Header
         title={t("sign_up")}
         renderLeft={() => {

@@ -8,13 +8,13 @@ import {
   StarRating,
   Tag,
   Text,
-} from '@components';
-import {BaseColor, BaseStyle, useTheme} from '@config';
-import {Images} from '@config';
-import {HomeListData, HomePopularData} from '@data';
-import * as Utils from '@utils';
-import React, {Fragment, useEffect, useRef, useState} from 'react';
-import {useTranslation} from 'react-i18next';
+} from "@components";
+import { BaseColor, BaseStyle, useTheme } from "@config";
+import { Images } from "@config";
+import { HomeListData, HomePopularData } from "@data";
+import * as Utils from "@utils";
+import React, { Fragment, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Animated,
   FlatList,
@@ -23,22 +23,22 @@ import {
   Share,
   TouchableOpacity,
   View,
-} from 'react-native';
-import styles from './styles';
-import {PlaceholderLine, Placeholder} from '@components';
-import moment from 'moment';
+} from "react-native";
+import styles from "./styles";
+import { PlaceholderLine, Placeholder } from "@components";
+import moment from "moment";
 
-const AnnouceDetail = props => {
-  const {navigation, route} = props;
-  const {t} = useTranslation();
-  const {colors} = useTheme();
-  const {item} = route.params;
+const AnnouceDetail = (props) => {
+  const { navigation, route } = props;
+  const { t } = useTranslation();
+  const { colors } = useTheme();
+  const { item } = route.params;
   const [loading, setLoading] = useState(true);
   const [popular, setPopular] = useState(HomePopularData);
   const [list, setList] = useState(HomeListData);
   const [heightHeader, setHeightHeader] = useState(Utils.heightHeader());
   const scrollY = useRef(new Animated.Value(0)).current;
-  const productData = {...item};
+  const productData = { ...item };
   // console.log('productData', productData.images);
 
   const {
@@ -63,12 +63,12 @@ const AnnouceDetail = props => {
     }, 1000);
   }, []);
 
-  let ann = announce_file.replace('https', 'http');
+  let ann = announce_file.replace("https", "http");
   // const annoe = [...ann];
   const annoe = [ann];
-  console.log('annoe', annoe);
-  const goPostDetail = item => () => {
-    navigation.push('PostDetail', {item: item});
+  console.log("annoe", annoe);
+  const goPostDetail = (item) => () => {
+    navigation.push("PostDetail", { item: item });
   };
 
   // const onShare = async () => {
@@ -97,7 +97,7 @@ const AnnouceDetail = props => {
   const headerBackgroundColor = scrollY.interpolate({
     inputRange: [0, 140],
     outputRange: [BaseColor.greyColor, colors.primary],
-    extrapolate: 'clamp',
+    extrapolate: "clamp",
     useNativeDriver: true,
   });
 
@@ -105,7 +105,7 @@ const AnnouceDetail = props => {
   const headerImageOpacity = scrollY.interpolate({
     inputRange: [0, 250 - heightHeader - 20],
     outputRange: [1, 0],
-    extrapolate: 'clamp',
+    extrapolate: "clamp",
     useNativeDriver: true,
   });
 
@@ -122,7 +122,7 @@ const AnnouceDetail = props => {
 
     return (
       <Placeholder>
-        <View style={{padding: 20}}>
+        <View style={{ padding: 20 }}>
           {holders.map((item, index) => (
             <PlaceholderLine key={index} width={100} />
           ))}
@@ -156,7 +156,7 @@ const AnnouceDetail = props => {
                       marginTop: 20,
                     }}
                     resizeMode="contain"
-                    source={{uri: `${item}`}}
+                    source={{ uri: `${item}` }}
                   />
                 </TouchableOpacity>
               );
@@ -165,16 +165,18 @@ const AnnouceDetail = props => {
           <View
             style={{
               marginVertical: 10,
-            }}>
-            <Text subhead light style={{marginTop: 15}}>
-              {moment(item.date).lang('en').startOf('hour').fromNow()}
+            }}
+          >
+            <Text subhead light style={{ marginTop: 15 }}>
+              {moment(item.date).lang("en").startOf("hour").fromNow()}
             </Text>
           </View>
           <View
             style={{
               marginVertical: 10,
-            }}>
-            <Text bold style={{marginTop: 15, fontSize: 20}}>
+            }}
+          >
+            <Text bold style={{ marginTop: 15, fontSize: 20 }}>
               Information
             </Text>
             <Text
@@ -184,7 +186,8 @@ const AnnouceDetail = props => {
                 paddingTop: 10,
                 paddingBottom: 20,
               }}
-              numberOfLines={100}>
+              numberOfLines={100}
+            >
               {announce_descs}
             </Text>
           </View>
@@ -194,14 +197,15 @@ const AnnouceDetail = props => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <SafeAreaView
         style={[BaseStyle.safeAreaView]}
-        forceInset={{top: 'always', bottom: 'always'}}>
+        forceInset={{ top: "always", bottom: "always" }}
+      >
         <Header
           style={{
-            width: '90%',
-            alignSelf: 'center',
+            width: "90%",
+            alignSelf: "center",
           }}
           _numberOfLines={0}
           // title={t('Announce')}
@@ -226,29 +230,31 @@ const AnnouceDetail = props => {
           }}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
-          overScrollMode={'never'}
-          style={{zIndex: 10}}
+          overScrollMode={"never"}
+          style={{ zIndex: 10 }}
           scrollEventThrottle={16}
           onScroll={Animated.event(
             [
               {
                 nativeEvent: {
-                  contentOffset: {y: scrollY},
+                  contentOffset: { y: scrollY },
                 },
               },
             ],
             {
               useNativeDriver: false,
-            },
-          )}>
+            }
+          )}
+        >
           {loading ? renderPlaceholder() : renderContent()}
         </ScrollView>
       </SafeAreaView>
 
-      <Animated.View style={[styles.headerStyle, {position: 'absolute'}]}>
+      <Animated.View style={[styles.headerStyle, { position: "absolute" }]}>
         <SafeAreaView
-          style={{width: '100%'}}
-          forceInset={{top: 'always', bottom: 'never'}}>
+          style={{ width: "100%" }}
+          forceInset={{ top: "always", bottom: "never" }}
+        >
           <Header
             title=""
             renderLeft={() => {

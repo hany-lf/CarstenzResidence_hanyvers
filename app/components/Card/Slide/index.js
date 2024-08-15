@@ -14,7 +14,7 @@ const CardSlide = (props) => {
   let { date, title, image, style, onPress, loading } = props;
   const { colors } = useTheme();
   if (loading) {
-    return <Loading style={style}/>;
+    return <Loading style={style} />;
   }
   return (
     <TouchableOpacity

@@ -1,9 +1,9 @@
-import {Text} from '@components';
-import {useTheme} from '@config';
-import React from 'react';
-import {useTranslation} from 'react-i18next';
-import {StyleSheet, View, TouchableOpacity} from 'react-native';
-import styles from './styles';
+import { Text } from "@components";
+import { useTheme } from "@config";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
+import styles from "./styles";
 
 function HeaderCard({
   isCenter = false,
@@ -11,24 +11,25 @@ function HeaderCard({
   style = {},
   onPress = () => {},
   disabled = false,
-  mbal_amt = '',
+  mbal_amt = "",
 }) {
-  const {t} = useTranslation();
-  const {colors} = useTheme();
+  const { t } = useTranslation();
+  const { colors } = useTheme();
   return (
     <TouchableOpacity
       disabled={disabled}
       style={StyleSheet.flatten([
         styles.headerCard,
-        {backgroundColor: colors.card},
+        { backgroundColor: colors.card },
         isPrimary && styles.headerCardPrimary,
-        isPrimary && {backgroundColor: colors.primaryLight},
+        isPrimary && { backgroundColor: colors.primaryLight },
         isCenter && styles.headerCardCenter,
         style,
       ])}
-      onPress={onPress}>
+      onPress={onPress}
+    >
       <Text subhead light={!isPrimary} whiteColor={isPrimary}>
-        {t('total_balance')}
+        {t("total_balance")}
       </Text>
     </TouchableOpacity>
   );

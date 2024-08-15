@@ -12,6 +12,6 @@ export default StyleSheet.create({
   },
   costPrice: { paddingHorizontal: 8, textDecorationLine: "line-through" },
   imageLoading: {
-    borderRadius: 8
-  }
+    borderRadius: 8,
+  },
 });

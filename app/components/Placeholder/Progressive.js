@@ -7,13 +7,7 @@ const END_VALUE = 100;
 const DURATION = 1200;
 const isInteraction = false;
 
-
-
-const Progressive = ({
-  style,
-  color = "rgba(0,0,0,0.1)",
-  children,
-}) => {
+const Progressive = ({ style, color = "rgba(0,0,0,0.1)", children }) => {
   const animation = useRef(new Animated.Value(START_VALUE));
 
   const start = () => {

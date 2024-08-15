@@ -77,7 +77,7 @@ const EWishlist = ({ navigation }) => {
   return (
     <SafeAreaView
       style={[BaseStyle.safeAreaView]}
-      edges={['right', 'top', 'left']}
+      edges={["right", "top", "left"]}
     >
       {renderContent()}
     </SafeAreaView>

@@ -1,15 +1,23 @@
-import Image from '@components/Image';
-import Text from '@components/Text';
-import {Images} from '@config';
-import PropTypes from 'prop-types';
-import React from 'react';
-import {TouchableOpacity, View} from 'react-native';
-import styles from './styles';
-import Loading from './Loading';
+import Image from "@components/Image";
+import Text from "@components/Text";
+import { Images } from "@config";
+import PropTypes from "prop-types";
+import React from "react";
+import { TouchableOpacity, View } from "react-native";
+import styles from "./styles";
+import Loading from "./Loading";
 
-const ListFacility = props => {
-  const {style, onPress, facility_name, image, title, subtitle, date, loading} =
-    props;
+const ListFacility = (props) => {
+  const {
+    style,
+    onPress,
+    facility_name,
+    image,
+    title,
+    subtitle,
+    date,
+    loading,
+  } = props;
   if (loading) {
     return <Loading style={style} />;
   }
@@ -17,14 +25,16 @@ const ListFacility = props => {
     <TouchableOpacity
       style={[styles.contain, style]}
       onPress={onPress}
-      activeOpacity={0.9}>
+      activeOpacity={0.9}
+    >
       <Image source={image} style={styles.image} />
       <View
         style={{
           paddingHorizontal: 10,
           flex: 1,
           paddingVertical: 5,
-        }}>
+        }}
+      >
         <Text light footnote semibold grayColor>
           {facility_name}
         </Text>
@@ -32,7 +42,8 @@ const ListFacility = props => {
           headline
           semibold
           numberOfLines={2}
-          style={styles.marginVertical5}>
+          style={styles.marginVertical5}
+        >
           {facility_name}
         </Text>
         <Text caption1 light grayColor>
@@ -57,9 +68,9 @@ ListFacility.defaultProps = {
   style: {},
   onPress: () => {},
   image: Images.news,
-  title: '',
-  facility_name: '',
-  date: '',
+  title: "",
+  facility_name: "",
+  date: "",
 };
 
 export default ListFacility;

@@ -1,4 +1,4 @@
-import {actionTypes} from '../actions/NotifActions';
+import { actionTypes } from "../actions/NotifActions";
 
 const initialState = {
   notifDataRed: [],

@@ -78,7 +78,7 @@ const Review = (props) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={['right', 'top', 'left']}>
+    <SafeAreaView style={{ flex: 1 }} edges={["right", "top", "left"]}>
       <View style={{ height: "auto" }}>
         <Header
           title={t("customer_review")}
@@ -161,7 +161,9 @@ const Review = (props) => {
               title={item.title}
               comment={item.comment}
               totalLike={item.totalLike}
-              openGallery={() => navigation.navigate("PreviewImage", {images: item.images})}
+              openGallery={() =>
+                navigation.navigate("PreviewImage", { images: item.images })
+              }
             />
           )}
         />

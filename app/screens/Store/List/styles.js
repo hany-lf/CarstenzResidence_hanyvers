@@ -1,10 +1,10 @@
-import * as Utils from '@utils';
-import {StyleSheet} from 'react-native';
+import * as Utils from "@utils";
+import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
   contain: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
 
   imageWishlist: {
@@ -13,19 +13,19 @@ export default StyleSheet.create({
     borderRadius: 8,
   },
   salePercentList: {
-    position: 'absolute',
+    position: "absolute",
     top: 8,
     left: 8,
     paddingHorizontal: 8,
     paddingBottom: 2,
   },
-  costPrice: {paddingHorizontal: 8, textDecorationLine: 'line-through'},
+  costPrice: { paddingHorizontal: 8, textDecorationLine: "line-through" },
   viewText: {
-    flexDirection: 'row',
+    flexDirection: "row",
     flex: 1,
-    alignItems: 'center',
+    alignItems: "center",
   },
   containLoading: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
 });

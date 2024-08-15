@@ -10,7 +10,7 @@ export default StyleSheet.create({
     width: Utils.scaleWithPixel(80),
     height: Utils.scaleWithPixel(110),
   },
-  containLoading : {
+  containLoading: {
     flexDirection: "row",
-  }
+  },
 });

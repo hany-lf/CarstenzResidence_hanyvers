@@ -5,7 +5,7 @@ export default StyleSheet.create({
   imageBackgroundGrid1: {
     width: "100%",
     height: Utils.scaleWithPixel(200),
-    borderRadius: 8 
+    borderRadius: 8,
   },
   grid1: {
     width: "50%",
@@ -13,6 +13,6 @@ export default StyleSheet.create({
   },
   costPrice: { paddingHorizontal: 8, textDecorationLine: "line-through" },
   imageLoading: {
-    borderRadius: 8
-  }
+    borderRadius: 8,
+  },
 });

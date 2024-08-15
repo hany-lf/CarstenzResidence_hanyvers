@@ -1,13 +1,13 @@
-import ProfileAuthor from '@components/Profile/Author';
-import Text from '@components/Text';
-import {BaseColor, Images} from '@config';
-import PropTypes from 'prop-types';
-import React from 'react';
-import {ImageBackground, TouchableOpacity, View} from 'react-native';
-import styles from './styles';
-import Loading from './Loading';
+import ProfileAuthor from "@components/Profile/Author";
+import Text from "@components/Text";
+import { BaseColor, Images } from "@config";
+import PropTypes from "prop-types";
+import React from "react";
+import { ImageBackground, TouchableOpacity, View } from "react-native";
+import styles from "./styles";
+import Loading from "./Loading";
 
-const News43 = props => {
+const News43 = (props) => {
   const {
     name,
     description,
@@ -31,7 +31,8 @@ const News43 = props => {
       <ImageBackground
         source={image}
         style={styles.imageBackground}
-        borderRadius={8}>
+        borderRadius={8}
+      >
         <View style={styles.viewBackground}>
           <View style={styles.viewItem}>
             {/* <ProfileAuthor
@@ -71,9 +72,9 @@ News43.defaultProps = {
   style: {},
   image: Images.news,
   avatar: Images.profile2,
-  name: '',
-  description: '',
-  title: '',
+  name: "",
+  description: "",
+  title: "",
   onPress: () => {},
 };
 

@@ -1,15 +1,15 @@
 import {
-    CategoryBlock,
-    CategoryBoxColor,
-    CategoryBoxColor2,
-    CategoryGrid,
-    CategoryIcon,
-    CategoryList,
-    Header,
-    Icon,
-    SafeAreaView,
-    Text,
-    TextInput,
+  CategoryBlock,
+  CategoryBoxColor,
+  CategoryBoxColor2,
+  CategoryGrid,
+  CategoryIcon,
+  CategoryList,
+  Header,
+  Icon,
+  SafeAreaView,
+  Text,
+  TextInput,
 } from "@components";
 import { BaseColor, BaseStyle, Typography, useTheme } from "@config";
 import { CategoryData } from "@data";
@@ -20,35 +20,35 @@ import { useTranslation } from "react-i18next";
 let timeoutChangeMode = null;
 
 function HeaderText() {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
 
-    return (
-        <Header
-            renderLeft={() => (
-                <Text header bold>
-                    {t("Report")}
-                </Text>
-            )}
-            title={""}
-            styleLeft={{
-                flex: 1,
-            }}
-            styleContentLeft={{
-                flex: 1,
-                justifyContent: "center",
-                paddingHorizontal: 0,
-                width: "100%",
-                paddingHorizontal: 20
-            }}
-            styleContentCenter={{
-                flex: 0,
-                alignItems: "flex-start",
-                justifyContent: "flex-start",
-            }}
-            styleRight={{ flex: 0 }}
-            onPressRight={() => {}}
-        />
-    );
+  return (
+    <Header
+      renderLeft={() => (
+        <Text header bold>
+          {t("Report")}
+        </Text>
+      )}
+      title={""}
+      styleLeft={{
+        flex: 1,
+      }}
+      styleContentLeft={{
+        flex: 1,
+        justifyContent: "center",
+        paddingHorizontal: 0,
+        width: "100%",
+        paddingHorizontal: 20,
+      }}
+      styleContentCenter={{
+        flex: 0,
+        alignItems: "flex-start",
+        justifyContent: "flex-start",
+      }}
+      styleRight={{ flex: 0 }}
+      onPressRight={() => {}}
+    />
+  );
 }
 
-export default HeaderText
+export default HeaderText;

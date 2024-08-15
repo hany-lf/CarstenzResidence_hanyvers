@@ -24,6 +24,8 @@ import "moment/locale/id";
 
 import { useSelector } from "react-redux";
 import getUser from "../../../selectors/UserSelectors";
+import getProject from "../../../selectors/ProjectSelector";
+
 import axios from "axios";
 import client from "../../../controllers/HttpClient";
 import styles from "../styles";
@@ -32,6 +34,8 @@ import ModalDropdown_debtor from "@components/ModalDropdown_debtor";
 import ModalDropdown_lotno from "@components/ModalDropdown_lotno";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API_URL_LOKAL } from "@env";
+import { Dropdown } from "react-native-element-dropdown";
+
 export default function SpecTrofficeUnitCleaning(props) {
   const { t, i18n } = useTranslation();
   const { colors } = useTheme();
@@ -46,12 +50,12 @@ export default function SpecTrofficeUnitCleaning(props) {
   const [dataTowerUser, setdataTowerUser] = useState([]);
   const [arrDataTowerUser, setArrDataTowerUser] = useState([]);
   const users = useSelector((state) => getUser(state));
-  const [email, setEmail] = useState(users.user);
+  const [email, setEmail] = useState("");
 
   const [urlApi, seturlApi] = useState(client);
   const [checkedEntity, setCheckedEntity] = useState(false);
   const [dataDebtor, setDataDebtor] = useState([]);
-  const [entity, setEntity] = useState("");
+  const [entity_cd, setEntity] = useState("");
   const [project_no, setProjectNo] = useState("");
   const [db_profile, setDb_Profile] = useState("");
   const [spinner, setSpinner] = useState(true);
@@ -84,88 +88,88 @@ export default function SpecTrofficeUnitCleaning(props) {
   const [open, setOpen] = useState(false);
   const [time, setTime] = useState({});
 
+
+  const [showChooseProject, setShowChooseProject] = useState(false);
+  const [isFocus, setIsFocus] = useState(false);
+  const [valueProject, setValueProject] = useState([]);
+  const [valueProjectSelected, setValueProjectSelected] = useState(null);
+  const [projectData, setProjectData] = useState([]);
+  const user = useSelector((state) => getUser(state));
+  const project = useSelector((state) => getProject(state));
+  const [show, setShow] = useState(false);
   // moment.locale('id');
 
   // moment().tz('Asia/Jakarta').format();
   // const tomorrow = moment();
-  console.log("type >", typeCode);
+
   const tomorrow = new Date();
   moment.locale("id");
   // const format = moment(tomorrow).add(1, 'days').format('DD-MM-YYYY');
   const format = moment(tomorrow).add(1, "days").format("YYYY-MM-DD");
 
-  console.log("TESTING MOMENT");
-  console.log("tomorrow >", format);
 
-  //-----FOR GET ENTITY & PROJJECT
-  const getTower = async () => {
-    const data = {
-      email: email,
-      //   email: 'haniyya.ulfah@ifca.co.id',
-      app: "O",
-    };
 
-    const config = {
-      headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        // token: "",
-      },
-    };
+  // --- useeffect untuk project
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+      // getTower();
+      if (project && project.data && project.data.length > 0) {
+        // console.log('entity useeffect di home', project.data[0].entity_cd);
+        setEntity(project.data[0].entity_cd);
+        setProjectNo(project.data[0].project_no);
+        const projects = project.data.map((item, id) => ({
+          label: item.descs,
+          value: item.project_no,
+        }));
+        console.log("data di project", project);
+        setProjectData(project.data);
+        setValueProject(projects);
+      }
 
-    await axios
-      .get(
-        // `http://apps.pakubuwono-residence.com/apisysadmin/api/getProject/${data.email}`,
-        API_URL_LOKAL + `/getData/mysql/${data.email}/${data.app}`,
-        {
-          config,
-        }
-      )
-      .then((res) => {
-        const datas = res.data;
+    }, 3000);
+  }, [project]);
 
-        const arrDataTower = datas.data;
-        console.log("data tower ada berapa", arrDataTower.length);
+  useEffect(() => {
+    if (entity_cd && project_no) {
 
-        // arrDataTower.length > 1
-        if (arrDataTower.length > 1) {
-          setDefaultTower(false);
-        } else {
-          setDefaultTower(true);
+      const params = {
+        entity_cd: entity_cd,
+        project_no: project_no,
+      };
+      getDebtor(params);
+      setShow(true);
+    }
+  }, [entity_cd, project_no]);
+  // --- useeffect untuk project
+
+    // --- useeffect untuk update email/name
+  useEffect(() => {
+    setEmail(user != null && user.userData != null ? user.userData.email : "");
+  }, [email]);
+  // --- useeffect untuk update email/name
+
+    const handleClickProject = (item, index) => {
+    console.log("index", index);
+    setValueProjectSelected(item.value);
+
+    setIsFocus(!isFocus);
+    setShowChooseProject(!showChooseProject);
+
+    if (item.value != null) {
+      console.log("value project selected", item.value);
+      projectData.map((items, index) => {
+        console.log("items project data", items);
+        if (items.project_no === item.value) {
+          console.log("items choose project handle", items);
+          console.log("index", index);
+          // setProjectData(items);
           setCheckedEntity(true);
-          setEntity(arrDataTower[0].entity_cd);
-          setProjectNo(arrDataTower[0].project_no);
-          setDb_Profile(arrDataTower[0].db_profile);
-          const params = {
-            entity_cd: arrDataTower[0].entity_cd,
-            project_no: arrDataTower[0].project_no,
-            db_profile: arrDataTower[0].db_profile,
-          };
-          console.log("params for debtor tower default", params);
-          getDebtor(params);
+          setShow(true);
+          getDebtor(items); // ini dikasih get apapun setelah pilih project
         }
-
-        arrDataTower.map((dat) => {
-          if (dat) {
-            setdataTowerUser(dat);
-            // const jsonValue = JSON.stringify(dat);
-            //   setdataFormHelp(saveStorage);
-            // console.log('storage', saveStorage);
-            // dataArr.push(jsonValue);
-          }
-        });
-        // console.log('arrdatatower yang 1 aja default', arrDataTower);
-        setArrDataTowerUser(arrDataTower);
-
-        setSpinner(false);
-        // let dataArr = {};
-
-        // return res.data;
-      })
-      .catch((error) => {
-        console.log("error get tower api", error);
-        // alert('error get');
       });
+    }
   };
 
   //-----FOR GET DEBTOR
@@ -173,30 +177,28 @@ export default function SpecTrofficeUnitCleaning(props) {
     // console.log(object)
     console.log("data for debtor", data);
 
-    const params =
-      "?" +
-      "entity_cd=" +
-      data.entity_cd +
-      "&" +
-      "project_no=" +
-      data.project_no +
-      "&" +
-      "email=" +
-      email;
+ 
+    const params = {
+      entity_cd: data.entity_cd,
+      project_no: data.project_no,
+      email: email,
+    }
 
     console.log("data for", params);
 
-    const config = {
+  const config = {
+      method: "get",
+      url: API_URL_LOKAL + "/modules/cs/debtor",
       headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        token: "",
+        "content-type": "application/json",
+        Authorization: `Bearer ${user.Token}`,
       },
+      params: params,
     };
-    await axios
-      .post(API_URL_LOKAL + "/modules/cs/debtor" + params, {
-        config,
-      })
+
+    console.log('config', config)
+ 
+    await axios(config)
       .then((res) => {
         // console.log('res', res);
         const datas = res.data;
@@ -238,18 +240,17 @@ export default function SpecTrofficeUnitCleaning(props) {
         // alert('error get');
       });
   };
-  console.log("textLotNo", textLot);
-  console.log("dataLotno", dataLotno);
+
   useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-      getTower(users);
-      // setSpinner(false);
-    }, 3000);
-  }, []);
-  useEffect(() => {
-    axios
-      .get(API_URL_LOKAL + "/home/common-current-time")
+    const config = {
+      method: "get",
+      url: API_URL_LOKAL + "/home/common-current-time",
+      headers: {
+        "content-type": "application/json",
+        Authorization: `Bearer ${user.Token}`,
+      },
+    };
+    axios(config)
       .then((time) => {
         // console.log('time from server?', time.data);
         setTime(time.data);
@@ -262,15 +263,6 @@ export default function SpecTrofficeUnitCleaning(props) {
   const datatime = {
     timeget: time.tanggal,
     daily: time.jam,
-  };
-
-  const handleCheckChange = (index, data) => {
-    setCheckedEntity(index);
-
-    setEntity(data.entity_cd);
-    setProjectNo(data.project_no);
-    setDb_Profile(data.db_profile);
-    getDebtor(data);
   };
 
   const handleChangeModal = ({ data, index }) => {
@@ -298,24 +290,17 @@ export default function SpecTrofficeUnitCleaning(props) {
       email: email,
       tenant_no: tenantno || data.tenant_no,
     };
-    const config = {
-      headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        token: "",
-      },
-    };
+  const config = {
+    method: "get",
+    url: API_URL_LOKAL + "/modules/cs/lot-no",
+    headers: {
+      "content-type": "application/json",
+      Authorization: `Bearer ${user.Token}`,
+    },
+    params: params,
+  };
 
-    console.log(
-      "url lotSlot",
-      "http://apps.pakubuwono-residence.com/apiwebpbi/api/csentry-lotSlot",
-      params
-    );
-
-    await axios
-      .post(API_URL_LOKAL + "/modules/troffice/lot-no", params, {
-        config,
-      })
+    await axios(config)
       .then((res) => {
         // console.log('datalotno', res);
         const datas = res.data;
@@ -368,21 +353,20 @@ export default function SpecTrofficeUnitCleaning(props) {
     const lotno = lot;
 
     const params = {
-      lotno: lotno,
+      lot_no: lotno,
     };
 
     const config = {
+      method: "get",
+      url: API_URL_LOKAL + "/modules/cs/floor",
       headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        token: "",
+        "content-type": "application/json",
+        Authorization: `Bearer ${user.Token}`,
       },
+      params: params,
     };
 
-    await axios
-      .post(API_URL_LOKAL + "/modules/cs/floor", params, {
-        config,
-      })
+    await axios(config)
       .then((res) => {
         // console.log('res floor', res);
         const datas = res.data;
@@ -453,10 +437,50 @@ export default function SpecTrofficeUnitCleaning(props) {
             />
           );
         }}
+        renderRight={() => {
+          return (
+            <Icon
+              name="sync-alt"
+              size={20}
+              color={colors.primary}
+              enableRTL={true}
+            />
+          );
+        }}
+        onPressRight={() => {
+          setShowChooseProject(!showChooseProject);
+        }}
         onPressLeft={() => {
           navigation.goBack();
         }}
       />
+      {showChooseProject ? (
+        <Dropdown
+          style={[
+            styles.dropdown,
+            isFocus && { borderColor: BaseColor.corn30 },
+          ]}
+          placeholderStyle={styles.placeholderStyle}
+          selectedTextStyle={styles.selectedTextStyle}
+          inputSearchStyle={styles.inputSearchStyle}
+          iconStyle={styles.iconStyle}
+          itemTextStyle={styles.itemTextStyle}
+          containerStyle={{ borderRadius: 15, marginVertical: 5 }}
+          data={valueProject}
+          search
+          maxHeight={300}
+          labelField="label"
+          valueField="value"
+          placeholder={!isFocus ? "Choose Project" : "Choose Project"}
+          searchPlaceholder="Search..."
+          value={valueProjectSelected}
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
+          onChange={(item, index) => {
+            handleClickProject(item, index);
+          }}
+        />
+      ) : null}
       <View style={styles.wrap}>
         {/* <View style={{flexDirection: 'center'}}> */}
         <Text
@@ -484,50 +508,7 @@ export default function SpecTrofficeUnitCleaning(props) {
         {/* {dataCategory.descs.includes('AC') ? <Text>ini klik ac</Text> : <Text>ini klik water</Text>} */}
         {/* {indexCategory == 0 ? <Text>ini klik ac</Text> : <Text>ini klik water</Text>} */}
 
-        <View style={[styles.subWrap, { paddingBottom: 0, marginBottom: 10 }]}>
-          <View>
-            <Text
-              style={{
-                color: "#3f3b38",
-                fontSize: 14,
-                // fontFamily: 'KaiseiHarunoUmi',
-              }}
-            >
-              Choose Project
-            </Text>
-            {spinner ? (
-              <View>
-                {/* <Spinner visible={this.state.spinner} /> */}
-                <Placeholder
-                  style={{ marginVertical: 4, paddingHorizontal: 10 }}
-                >
-                  <PlaceholderLine
-                    width={100}
-                    noMargin
-                    style={{ height: 40 }}
-                  />
-                </Placeholder>
-              </View>
-            ) : defaulTower ? (
-              <CheckBox
-                checked={checkedEntity}
-                title={arrDataTowerUser[0].project_descs}
-                onPress={() => setCheckedEntity(!checkedEntity)}
-              ></CheckBox>
-            ) : (
-              arrDataTowerUser.map((data, index) => (
-                <CheckBox
-                  key={index}
-                  // checkedIcon="dot-circle-o"
-                  // uncheckedIcon="circle-o"
-                  title={data.project_descs}
-                  checked={checkedEntity === index}
-                  onPress={() => handleCheckChange(index, data)}
-                />
-              ))
-            )}
-          </View>
-        </View>
+        
         {checkedEntity === false ? null : (
           <ScrollView
             showsHorizontalScrollIndicator={false}

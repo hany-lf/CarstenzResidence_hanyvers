@@ -1,23 +1,23 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "space-between",
     marginTop: 10,
     marginLeft: 15,
     paddingRight: 15,
   },
   text: {
-    textAlign: 'right',
+    textAlign: "right",
   },
   title: {
-    textTransform: 'uppercase',
+    textTransform: "uppercase",
   },
   viewRight: {
-    alignItems: 'flex-end',
+    alignItems: "flex-end",
   },
   content: {
     maxWidth: 150,

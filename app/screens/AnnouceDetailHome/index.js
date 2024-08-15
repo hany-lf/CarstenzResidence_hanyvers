@@ -8,13 +8,13 @@ import {
   StarRating,
   Tag,
   Text,
-} from '@components';
-import {BaseColor, BaseStyle, useTheme} from '@config';
-import {Images} from '@config';
-import {HomeListData, HomePopularData} from '@data';
-import * as Utils from '@utils';
-import React, {Fragment, useEffect, useRef, useState} from 'react';
-import {useTranslation} from 'react-i18next';
+} from "@components";
+import { BaseColor, BaseStyle, useTheme } from "@config";
+import { Images } from "@config";
+import { HomeListData, HomePopularData } from "@data";
+import * as Utils from "@utils";
+import React, { Fragment, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Animated,
   FlatList,
@@ -23,24 +23,24 @@ import {
   Share,
   TouchableOpacity,
   View,
-} from 'react-native';
-import styles from './styles';
-import {PlaceholderLine, Placeholder} from '@components';
-import moment from 'moment';
+} from "react-native";
+import styles from "./styles";
+import { PlaceholderLine, Placeholder } from "@components";
+import moment from "moment";
 
-const AnnouceDetail = props => {
-  const {navigation, route} = props;
-  const {t} = useTranslation();
-  const {colors} = useTheme();
-  const {item} = route.params;
+const AnnouceDetail = (props) => {
+  const { navigation, route } = props;
+  const { t } = useTranslation();
+  const { colors } = useTheme();
+  const { item } = route.params;
   const [loading, setLoading] = useState(true);
   const [popular, setPopular] = useState(HomePopularData);
   const [list, setList] = useState(HomeListData);
   const [heightHeader, setHeightHeader] = useState(Utils.heightHeader());
   const scrollY = useRef(new Animated.Value(0)).current;
-  const productData = {...item};
+  const productData = { ...item };
   // console.log('from home', productData);
-  console.log('from home', item);
+  console.log("from home", item);
 
   const {
     style,
@@ -57,9 +57,9 @@ const AnnouceDetail = props => {
     date,
   } = item[0];
 
-  console.log('announce_file', announce_file);
-  const repl = announce_file.replace('https', 'http');
-  console.log('annc', repl);
+  console.log("announce_file", announce_file);
+  const repl = announce_file.replace("https", "http");
+  console.log("annc", repl);
 
   useEffect(() => {
     // console.log('liattt', annoe);
@@ -71,8 +71,8 @@ const AnnouceDetail = props => {
 
   // const annoe = [...images];
 
-  const goPostDetail = item => () => {
-    navigation.push('PostDetail', {item: item});
+  const goPostDetail = (item) => () => {
+    navigation.push("PostDetail", { item: item });
   };
 
   // const onShare = async () => {
@@ -101,7 +101,7 @@ const AnnouceDetail = props => {
   const headerBackgroundColor = scrollY.interpolate({
     inputRange: [0, 140],
     outputRange: [BaseColor.greyColor, colors.primary],
-    extrapolate: 'clamp',
+    extrapolate: "clamp",
     useNativeDriver: true,
   });
 
@@ -109,7 +109,7 @@ const AnnouceDetail = props => {
   const headerImageOpacity = scrollY.interpolate({
     inputRange: [0, 250 - heightHeader - 20],
     outputRange: [1, 0],
-    extrapolate: 'clamp',
+    extrapolate: "clamp",
     useNativeDriver: true,
   });
 
@@ -126,7 +126,7 @@ const AnnouceDetail = props => {
 
     return (
       <Placeholder>
-        <View style={{padding: 20}}>
+        <View style={{ padding: 20 }}>
           {holders.map((item, index) => (
             <PlaceholderLine key={index} width={100} />
           ))}
@@ -145,10 +145,11 @@ const AnnouceDetail = props => {
               // style={{flex: 1}}
               activeOpacity={1}
               onPress={() =>
-                navigation.navigate('PreviewImagesAnnounceHome', {
+                navigation.navigate("PreviewImagesAnnounceHome", {
                   images: announce_file,
                 })
-              }>
+              }
+            >
               <Image
                 // key={key}
                 style={{
@@ -158,7 +159,7 @@ const AnnouceDetail = props => {
                   marginTop: 20,
                 }}
                 resizeMode="contain"
-                source={{uri: `${announce_file}`}}
+                source={{ uri: `${announce_file}` }}
               />
             </TouchableOpacity>
             {/* {annoe.map((item, key) => {
@@ -196,8 +197,9 @@ const AnnouceDetail = props => {
           <View
             style={{
               marginVertical: 10,
-            }}>
-            <Text bold style={{marginTop: 15, fontSize: 20}}>
+            }}
+          >
+            <Text bold style={{ marginTop: 15, fontSize: 20 }}>
               Information
             </Text>
             <Text
@@ -207,7 +209,8 @@ const AnnouceDetail = props => {
                 paddingTop: 10,
                 paddingBottom: 20,
               }}
-              numberOfLines={100}>
+              numberOfLines={100}
+            >
               {announce_descs}
               {/* {announce_descs.replace(/\&nbsp;/g, '')} */}
             </Text>
@@ -218,15 +221,16 @@ const AnnouceDetail = props => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <SafeAreaView
         style={[BaseStyle.safeAreaView]}
-        forceInset={{top: 'always', bottom: 'always'}}>
+        forceInset={{ top: "always", bottom: "always" }}
+      >
         <Header
           style={{
-            width: '90%',
+            width: "90%",
             // textAlign: 'center',
-            alignSelf: 'center',
+            alignSelf: "center",
             // flex: 1,
           }}
           _numberOfLines={0}
@@ -252,29 +256,31 @@ const AnnouceDetail = props => {
           }}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
-          overScrollMode={'never'}
-          style={{zIndex: 10}}
+          overScrollMode={"never"}
+          style={{ zIndex: 10 }}
           scrollEventThrottle={16}
           onScroll={Animated.event(
             [
               {
                 nativeEvent: {
-                  contentOffset: {y: scrollY},
+                  contentOffset: { y: scrollY },
                 },
               },
             ],
             {
               useNativeDriver: false,
-            },
-          )}>
+            }
+          )}
+        >
           {loading ? renderPlaceholder() : renderContent()}
         </ScrollView>
       </SafeAreaView>
 
-      <Animated.View style={[styles.headerStyle, {position: 'absolute'}]}>
+      <Animated.View style={[styles.headerStyle, { position: "absolute" }]}>
         <SafeAreaView
-          style={{width: '100%'}}
-          forceInset={{top: 'always', bottom: 'never'}}>
+          style={{ width: "100%" }}
+          forceInset={{ top: "always", bottom: "never" }}
+        >
           <Header
             title=""
             renderLeft={() => {

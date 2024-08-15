@@ -8,60 +8,57 @@ import styles from "./styles";
 import { parseHexTransparency } from "@utils";
 
 const CardReport02 = ({
-    title = "",
-    price = "",
-    icon = "",
-    style = {},
-    onPress = () => {},
-    disabled = false
+  title = "",
+  price = "",
+  icon = "",
+  style = {},
+  onPress = () => {},
+  disabled = false,
 }) => {
-    const { colors } = useTheme();
+  const { colors } = useTheme();
 
-    return (
-        <TouchableOpacity
-            disabled={disabled}
-            style={[styles.container, style]}
-            onPress={onPress}
-        >
-            <View
-                style={[
-                    styles.content,
-                    {
-                        backgroundColor: colors.background,
-                        borderColor: colors.border,
-                    },
-                ]}
-            >
-                <View style={[styles.header]}>
-                    <View
-                        style={[
-                            styles.viewIcon,
-                            {
-                                backgroundColor: parseHexTransparency(
-                                    colors.primaryLight,
-                                    30
-                                ),
-                            },
-                        ]}
-                    >
-                        <Icon
-                            name={icon}
-                            size={12}
-                            style={{ color: colors.primary }}
-                            solid
-                        />
-                    </View>
-                </View>
+  return (
+    <TouchableOpacity
+      disabled={disabled}
+      style={[styles.container, style]}
+      onPress={onPress}
+    >
+      <View
+        style={[
+          styles.content,
+          {
+            backgroundColor: colors.background,
+            borderColor: colors.border,
+          },
+        ]}
+      >
+        <View style={[styles.header]}>
+          <View
+            style={[
+              styles.viewIcon,
+              {
+                backgroundColor: parseHexTransparency(colors.primaryLight, 30),
+              },
+            ]}
+          >
+            <Icon
+              name={icon}
+              size={12}
+              style={{ color: colors.primary }}
+              solid
+            />
+          </View>
+        </View>
 
-                <Text subhead light style={{ marginTop: 5 }}>
-                    {title}
-                </Text>
-                <Text headline style={{ marginTop: 5 }}>
-                    {price}
-                </Text>
-            </View>
-        </TouchableOpacity>
-    );
+        <Text subhead light style={{ marginTop: 5 }}>
+          {title}
+        </Text>
+        <Text headline style={{ marginTop: 5 }}>
+          {price}
+        </Text>
+      </View>
+    </TouchableOpacity>
+  );
 };
 
 CardReport02.propTypes = {

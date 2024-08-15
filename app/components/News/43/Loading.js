@@ -6,7 +6,7 @@ const Loading = (props) => {
   const { style } = props;
   return (
     <Placeholder style={style}>
-      <PlaceholderLine width={100} style={styles.imageBackground} noMargin/>
+      <PlaceholderLine width={100} style={styles.imageBackground} noMargin />
     </Placeholder>
   );
 };

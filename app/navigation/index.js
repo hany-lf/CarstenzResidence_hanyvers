@@ -68,7 +68,7 @@ const Navigator = (props) => {
       dispatch(ApplicationActions.onChangeLanguage(languageCode));
       // Config language for app
       await i18n.use(initReactI18next).init({
-        compatibilityJSON: 'v3', // <--- add this line for error pluralresolver
+        compatibilityJSON: "v3", // <--- add this line for error pluralresolver
         resources: BaseSetting.resourcesLanguage,
         lng: languageCode,
         fallbackLng: languageCode,

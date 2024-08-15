@@ -29,7 +29,7 @@ import { CardReport01, CardReport08 } from "../../components";
 import List from "../../components/Product/List";
 import styles from "./styles";
 import { API_URL_LOKAL } from "@env";
-import  getUser  from "../../selectors/UserSelectors";
+import getUser from "../../selectors/UserSelectors";
 import { useSelector } from "react-redux";
 
 const Announce = (props) => {
@@ -39,14 +39,14 @@ const Announce = (props) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hasError, setErrors] = useState(false);
-  const user = useSelector(state => getUser(state));
+  const user = useSelector((state) => getUser(state));
 
   const getAnnounce = () => {
     const config = {
-      method: 'get',
+      method: "get",
       url: API_URL_LOKAL + "/home/announcement",
       headers: {
-        'content-type': 'application/json',
+        "content-type": "application/json",
         Authorization: `Bearer ${user.Token}`,
       },
     };
@@ -59,7 +59,7 @@ const Announce = (props) => {
       })
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
-  }
+  };
 
   useEffect(() => {
     setTimeout(() => {
@@ -67,8 +67,6 @@ const Announce = (props) => {
       getAnnounce();
     }, 1000);
   }, [user]);
-
- 
 
   const goPost = (item) => () => {
     navigation.navigate("Post", { item: item });

@@ -18,7 +18,7 @@ export const tabBarIconHaveNoty = ({ color, name }) => {
   // console.log('buat badge notifg', notifData_FromRed);
 
   const data = useSelector((state) => state.apiReducer.data);
-  console.log('data di tabbar', data);
+  console.log("data di tabbar", data);
   let sum = 0;
   // data != null || data != undefined || data.length > 0 ? data.map((item, index) => {
   //   sum += parseInt(item.IsRead);

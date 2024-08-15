@@ -1,38 +1,38 @@
-import {StyleSheet, Dimensions, PixelRatio} from 'react-native';
-import {BaseColor, useTheme} from '@config';
-const deviceHeight = Dimensions.get('window').height;
-const deviceWidth = Dimensions.get('window').width;
+import { StyleSheet, Dimensions, PixelRatio } from "react-native";
+import { BaseColor, useTheme } from "@config";
+const deviceHeight = Dimensions.get("window").height;
+const deviceWidth = Dimensions.get("window").width;
 const colors = useTheme;
 
 export default StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     paddingHorizontal: 20,
   },
   button: {
     padding: 15,
-    backgroundColor: '#f4f4f4',
+    backgroundColor: "#f4f4f4",
     borderRadius: 5,
     marginBottom: 20,
   },
   buttonText: {
-    color: '#A4A4A4',
-    textAlign: 'center',
+    color: "#A4A4A4",
+    textAlign: "center",
   },
   modalContainer: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
   },
   modalContent: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     padding: 20,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
   },
   picker: {
-    width: '100%',
+    width: "100%",
   },
   iosPicker: {
     height: 200,
@@ -40,15 +40,15 @@ export default StyleSheet.create({
   closeButton: {
     marginTop: 20,
     padding: 15,
-    backgroundColor: '#315447',
+    backgroundColor: "#315447",
     borderRadius: 5,
   },
   closeButtonText: {
-    color: 'white',
-    textAlign: 'center',
+    color: "white",
+    textAlign: "center",
   },
   checkBoxSize: {
-    transform: [{scale: 0.8}],
+    transform: [{ scale: 0.8 }],
     marginRight: 10,
   },
   checkBoxFontSize: {
@@ -57,20 +57,20 @@ export default StyleSheet.create({
     marginRight: 10,
   },
   nextButtonContainer: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 40,
     right: 20,
   },
   nextButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#315447',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#315447",
     padding: 10,
     borderRadius: 10,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
   },
   nextButtonText: {
-    color: 'white',
+    color: "white",
     fontSize: 18,
     marginRight: 10,
   },

@@ -37,7 +37,10 @@ export default function Followers({ navigation }) {
   };
 
   return (
-    <SafeAreaView style={BaseStyle.safeAreaView} edges={['right', 'top', 'left']}>
+    <SafeAreaView
+      style={BaseStyle.safeAreaView}
+      edges={["right", "top", "left"]}
+    >
       <Header
         title={t("followers")}
         renderLeft={() => {

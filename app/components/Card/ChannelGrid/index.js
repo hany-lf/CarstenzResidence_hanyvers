@@ -11,7 +11,7 @@ const CardChannelGrid = (props) => {
   const { style, onPress, image, title, loading } = props;
 
   if (loading) {
-    return <Loading style={style}/>;
+    return <Loading style={style} />;
   }
 
   return (

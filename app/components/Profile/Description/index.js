@@ -5,15 +5,8 @@ import React from "react";
 import { TouchableOpacity, View } from "react-native";
 import styles from "./styles";
 export default function ProfileDescription(props) {
-  const {
-    style,
-    image,
-    styleThumb,
-    onPress,
-    name,
-    subName,
-    description,
-  } = props;
+  const { style, image, styleThumb, onPress, name, subName, description } =
+    props;
   return (
     <TouchableOpacity
       style={[styles.contain, style]}

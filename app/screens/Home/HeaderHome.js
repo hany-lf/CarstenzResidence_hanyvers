@@ -1,22 +1,22 @@
-import {Icon, Image, Text} from '@components';
-import {BaseColor, Images, useTheme} from '@config';
-import React, {Fragment, useState} from 'react';
-import {View, TouchableOpacity} from 'react-native';
-import styles from './styles';
-import {useNavigation} from '@react-navigation/core';
-import {useTranslation} from 'react-i18next';
-import getUser from '../../selectors/UserSelectors';
-import {useSelector} from 'react-redux';
+import { Icon, Image, Text } from "@components";
+import { BaseColor, Images, useTheme } from "@config";
+import React, { Fragment, useState } from "react";
+import { View, TouchableOpacity } from "react-native";
+import styles from "./styles";
+import { useNavigation } from "@react-navigation/core";
+import { useTranslation } from "react-i18next";
+import getUser from "../../selectors/UserSelectors";
+import { useSelector } from "react-redux";
 
-const HeaderHome = props => {
-  console.log('propsnotif', props);
-  const {t} = useTranslation();
+const HeaderHome = (props) => {
+  console.log("propsnotif", props);
+  const { t } = useTranslation();
   const navigation = useNavigation();
 
-  const {colors} = useTheme();
-  const {onPressRight = () => {}, style = {}, ComponentRight} = props;
-  const user = useSelector(state => getUser(state));
-  console.log('user di header home', user);
+  const { colors } = useTheme();
+  const { onPressRight = () => {}, style = {}, ComponentRight } = props;
+  const user = useSelector((state) => getUser(state));
+  console.log("user di header home", user);
   return (
     <Fragment>
       {user != null ? (
@@ -68,16 +68,16 @@ const HeaderHome = props => {
         <View>
           {/* <Image source={Images.trip4} style={{width: '100%', height: 135}} /> */}
           <Image
-            source={require('../../assets/images/logo_at_home.jpeg')}
+            source={require("../../assets/images/logo_at_home.jpeg")}
             style={{
               height: 50,
               width: 150,
-              alignItems: 'center',
+              alignItems: "center",
               // marginHorizontal: 100,
 
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignSelf: 'center',
+              flexDirection: "row",
+              justifyContent: "center",
+              alignSelf: "center",
             }}
           />
         </View>

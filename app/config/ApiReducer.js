@@ -1,9 +1,9 @@
-import ACTION_TYPES from './ActionTypes';
+import ACTION_TYPES from "./ActionTypes";
 
 const initialState = {
   loading: false,
   data: [],
-  error: '',
+  error: "",
 };
 
 const apiReducer = (state = initialState, action) => {

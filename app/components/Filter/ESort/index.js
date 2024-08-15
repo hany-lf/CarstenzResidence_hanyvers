@@ -94,7 +94,9 @@ export default function FilterESort(props) {
     );
 
   return (
-    <View style={[styles.contain, { backgroundColor: colors.background }, style]}>
+    <View
+      style={[styles.contain, { backgroundColor: colors.background }, style]}
+    >
       <View>
         <Text body2>{title}</Text>
       </View>

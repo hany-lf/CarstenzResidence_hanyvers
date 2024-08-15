@@ -21,9 +21,8 @@ import { useTranslation } from "react-i18next";
 import { Card } from "react-native-paper";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import  getUser  from "../../selectors/UserSelectors";
+import getUser from "../../selectors/UserSelectors";
 import { API_URL_LOKAL } from "@env";
-
 
 const fileDummy = [
   {
@@ -53,8 +52,8 @@ const AttachmentBilling = (props) => {
     const project_no = route.params.project_no;
     const debtor_acct = route.params.debtor_acct;
     const doc_no = route.params.doc_no;
-   
-    console.log('token user di gettacchament billing', user.Token)
+
+    console.log("token user di gettacchament billing", user.Token);
     console.log(
       "params api attach",
       API_URL_LOKAL +
@@ -63,10 +62,12 @@ const AttachmentBilling = (props) => {
 
     try {
       const config = {
-        method: 'get',
-        url: API_URL_LOKAL + `/modules/billing/attach/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`,
+        method: "get",
+        url:
+          API_URL_LOKAL +
+          `/modules/billing/attach/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`,
         headers: {
-          'content-type': 'application/json',
+          "content-type": "application/json",
           Authorization: `Bearer ${user.Token}`,
         },
       };
@@ -137,7 +138,7 @@ const AttachmentBilling = (props) => {
           navigation.goBack();
         }}
       />
-   
+
       {attachment == null || attachment.length <= 0 ? (
         <View
           style={{

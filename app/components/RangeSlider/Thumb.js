@@ -1,12 +1,10 @@
-import React, { memo } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { memo } from "react";
+import { View, StyleSheet } from "react-native";
 
 const THUMB_RADIUS = 12;
 
 const Thumb = () => {
-  return (
-    <View style={styles.root}/>
-  );
+  return <View style={styles.root} />;
 };
 
 const styles = StyleSheet.create({
@@ -15,8 +13,8 @@ const styles = StyleSheet.create({
     height: THUMB_RADIUS * 2,
     borderRadius: THUMB_RADIUS,
     borderWidth: 2,
-    borderColor: '#7f7f7f',
-    backgroundColor: '#ffffff',
+    borderColor: "#7f7f7f",
+    backgroundColor: "#ffffff",
   },
 });
 

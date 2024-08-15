@@ -1,26 +1,26 @@
-import {Images} from '@config';
+import { Images } from "@config";
 
 const EPostListData = [
   {
     id: 1,
-    description: 'Stamp Duty - 3.000',
-    title: 'Stamp Duty - 3.000',
+    description: "Stamp Duty - 3.000",
+    title: "Stamp Duty - 3.000",
     image: Images.productView,
-    costPrice: '5.000',
-    salePrice: '4.000',
+    costPrice: "5.000",
+    salePrice: "4.000",
     isFavorite: false,
-    salePercent: '-10%',
+    salePercent: "-10%",
     price: 4000,
   },
   {
     id: 2,
-    description: 'Stamp Duty - 6.000',
-    title: 'Stamp Duty - 6.000',
+    description: "Stamp Duty - 6.000",
+    title: "Stamp Duty - 6.000",
     image: Images.productView,
-    costPrice: '9.000',
-    salePrice: '7.000',
+    costPrice: "9.000",
+    salePrice: "7.000",
     isFavorite: false,
-    salePercent: '-10%',
+    salePercent: "-10%",
     price: 7000,
     isBestMatch: true,
   },
@@ -74,21 +74,21 @@ const EPostListData = [
 
 const ESortOption = [
   {
-    value: 'all',
-    text: 'all',
+    value: "all",
+    text: "all",
   },
   {
-    value: 'best_match',
-    text: 'best_match',
+    value: "best_match",
+    text: "best_match",
   },
   {
-    value: 'price_low_to_high',
-    text: 'price_low_to_high',
+    value: "price_low_to_high",
+    text: "price_low_to_high",
   },
   {
-    value: 'price_high_to_low',
-    text: 'price_high_to_low',
+    value: "price_high_to_low",
+    text: "price_high_to_low",
   },
 ];
 
-export {EPostListData, ESortOption};
+export { EPostListData, ESortOption };

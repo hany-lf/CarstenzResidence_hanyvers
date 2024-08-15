@@ -1,20 +1,20 @@
-import Image from '@components/Image';
-import Text from '@components/Text';
-import {useTheme} from '@config';
-import PropTypes from 'prop-types';
-import React from 'react';
-import {TouchableOpacity} from 'react-native';
-import styles from './styles';
+import Image from "@components/Image";
+import Text from "@components/Text";
+import { useTheme } from "@config";
+import PropTypes from "prop-types";
+import React from "react";
+import { TouchableOpacity } from "react-native";
+import styles from "./styles";
 
 export default function ProfileGridSmall(props) {
-  const {style, image, onPress, name, desc} = props;
-  const {colors} = useTheme();
+  const { style, image, onPress, name, desc } = props;
+  const { colors } = useTheme();
 
   return (
     <TouchableOpacity style={[styles.contain, style]} onPress={onPress}>
       <Image
         source={image}
-        style={[styles.thumb, {borderColor: colors.border}]}
+        style={[styles.thumb, { borderColor: colors.border }]}
       />
       <Text caption2 light>
         {name}
@@ -36,9 +36,9 @@ ProfileGridSmall.propTypes = {
 };
 
 ProfileGridSmall.defaultProps = {
-  image: '',
-  name: '',
-  desc: '',
+  image: "",
+  name: "",
+  desc: "",
 
   style: {},
   onPress: () => {},

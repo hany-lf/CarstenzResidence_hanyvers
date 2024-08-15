@@ -1,6 +1,6 @@
-import React from 'react';
-import {StyleSheet} from 'react-native';
-import {BaseColor} from '@config';
+import React from "react";
+import { StyleSheet } from "react-native";
+import { BaseColor } from "@config";
 
 export default StyleSheet.create({
   contain: {
@@ -8,9 +8,9 @@ export default StyleSheet.create({
     paddingVertical: 15,
   },
   profileItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     paddingVertical: 20,
   },
   themeIcon: {

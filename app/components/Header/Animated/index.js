@@ -11,7 +11,7 @@ const HeaderAnimated = ({
   widthRight = 80,
   heightScroll = 140,
   styleRight = {},
-  style = {}
+  style = {},
 }) => {
   // const scrollY = useRef(new Animated.Value(0)).current;
 
@@ -48,7 +48,7 @@ const HeaderAnimated = ({
       style={[
         styles.paddingSrollView,
         { position: "relative", paddingBottom: 0 },
-        style
+        style,
       ]}
     >
       <View

@@ -1,28 +1,28 @@
-import PushNotification from 'react-native-push-notification';
+import PushNotification from "react-native-push-notification";
 
 class NotificationHandler {
   onNotification(notification) {
-    console.log('NotificationHandler Notification:', notification);
+    console.log("NotificationHandler Notification:", notification);
 
-    if (typeof this._onNotification === 'function') {
+    if (typeof this._onNotification === "function") {
       this._onNotification(notification);
     }
   }
 
   onRegister(token) {
-    console.log('NotificationHandler Token:', token);
+    console.log("NotificationHandler Token:", token);
 
-    if (typeof this._onRegister === 'function') {
+    if (typeof this._onRegister === "function") {
       this._onRegister(token);
     }
   }
 
   onAction(notification) {
-    console.log('Notification action received --->>> :', notification);
+    console.log("Notification action received --->>> :", notification);
     console.log(notification.action);
     console.log(notification);
 
-    if (notification.action === 'Yes') {
+    if (notification.action === "Yes") {
       PushNotification.invokeApp(notification);
     }
   }

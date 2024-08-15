@@ -7,10 +7,8 @@ const Loading = (props) => {
   const { style } = props;
   return (
     <Placeholder style={[style]}>
-      <PlaceholderLine
-        style={[styles.imageBackground, {borderRadius: 0}]}
-      />
-      <View style={{ paddingHorizontal: 16}}>
+      <PlaceholderLine style={[styles.imageBackground, { borderRadius: 0 }]} />
+      <View style={{ paddingHorizontal: 16 }}>
         <PlaceholderLine width={100} />
         <PlaceholderLine width={80} />
         <View style={{ flexDirection: "row" }}>

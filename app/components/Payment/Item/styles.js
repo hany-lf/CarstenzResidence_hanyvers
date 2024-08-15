@@ -8,6 +8,6 @@ export default StyleSheet.create({
     alignItems: "center",
     marginVertical: 4,
     borderBottomWidth: 1,
-    paddingVertical: 10
+    paddingVertical: 10,
   },
 });

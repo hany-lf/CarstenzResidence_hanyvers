@@ -9,17 +9,23 @@ import {
   Text,
   Button,
   FormCounterSelect,
-} from '@components';
-import ProductList from './List';
-import numFormat from '../../components/numFormat';
-import {BaseColor, BaseStyle, useTheme} from '@config';
+} from "@components";
+import ProductList from "./List";
+import numFormat from "../../components/numFormat";
+import { BaseColor, BaseStyle, useTheme } from "@config";
 // Load sample data
-import {EPostListData, ESortOption} from '@data';
-import {useNavigation} from '@react-navigation/native';
-import * as Utils from '@utils';
-import React, {Fragment, useEffect, useRef, useState, useCallback} from 'react';
-import {useTranslation} from 'react-i18next';
-import {addItemToCart, updateCartItem} from '../../actions/cartActions';
+import { EPostListData, ESortOption } from "@data";
+import { useNavigation } from "@react-navigation/native";
+import * as Utils from "@utils";
+import React, {
+  Fragment,
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+} from "react";
+import { useTranslation } from "react-i18next";
+import { addItemToCart, updateCartItem } from "../../actions/cartActions";
 import {
   Dimensions,
   FlatList,
@@ -28,43 +34,43 @@ import {
   TextInput,
   ScrollView,
   Pressable,
-} from 'react-native';
-import {SceneMap, TabBar, TabView} from 'react-native-tab-view';
-import styles from './styles';
-import getProject from '../../selectors/ProjectSelector';
-import {useSelector, useDispatch} from 'react-redux';
-import axios from 'axios';
-import {ActivityIndicator} from 'react-native-paper';
+} from "react-native";
+import { SceneMap, TabBar, TabView } from "react-native-tab-view";
+import styles from "./styles";
+import getProject from "../../selectors/ProjectSelector";
+import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
+import { ActivityIndicator } from "react-native-paper";
 
-import Modal from 'react-native-modal';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {CheckBox, Badge} from 'react-native-elements';
+import Modal from "react-native-modal";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { CheckBox, Badge } from "react-native-elements";
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import getCartData from '../../selectors/cartSelectors';
-import {data_cart} from '../../actions/cartActions';
+import getCartData from "../../selectors/cartSelectors";
+import { data_cart } from "../../actions/cartActions";
 
 let timeoutChangeMode = null;
 
-const initialLayout = {width: Dimensions.get('window').width};
+const initialLayout = { width: Dimensions.get("window").width };
 
-const Product = params => {
+const Product = (params) => {
   //   console.log('routes di product', params.params);
   const [dataMember, setDataMember] = useState(params.params);
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const {t} = useTranslation();
-  const {colors} = useTheme();
+  const { t } = useTranslation();
+  const { colors } = useTheme();
   const [refreshing, setRefreshing] = useState(false);
-  const [modeView, setModeView] = useState('list');
+  const [modeView, setModeView] = useState("list");
   const [list, setList] = useState(EPostListData);
   const [loading, setLoading] = useState(true);
   const [spinner, setSpinner] = useState(true);
 
   const [dataItemStore, setItemStore] = useState([]);
   const [dataItemStoreFilter, setItemStoreFilter] = useState([]);
-  const projectSelector = useSelector(state => getProject(state));
+  const projectSelector = useSelector((state) => getProject(state));
   //   console.log('project selector di product', projectSelector);
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -80,23 +86,23 @@ const Product = params => {
 
   const [disableAddToCart, setDisableAddToCart] = useState(false);
 
-  const cartSelector = useSelector(state => getCartData(state));
-  console.log('cart selector item store', cartSelector.length);
+  const cartSelector = useSelector((state) => getCartData(state));
+  console.log("cart selector item store", cartSelector.length);
   //   const {navigation, route} = props;
 
   const getItemStore = () => {
     const entity_cd = projectSelector.Data[0].entity_cd;
-    console.log('entity', entity_cd);
+    console.log("entity", entity_cd);
     const project_no = projectSelector.Data[0].project_no;
     console.log(
-      'url menu store di product',
-      `http://apps.pakubuwono-residence.com/apiwebpbi/api/pos/getProducts?entity_cd=${entity_cd}&project_no=${project_no}&trx_class=H`,
+      "url menu store di product",
+      `http://apps.pakubuwono-residence.com/apiwebpbi/api/pos/getProducts?entity_cd=${entity_cd}&project_no=${project_no}&trx_class=H`
     );
     axios
       .get(
-        `http://apps.pakubuwono-residence.com/apiwebpbi/api/pos/getProducts?entity_cd=${entity_cd}&project_no=${project_no}&trx_class=H`,
+        `http://apps.pakubuwono-residence.com/apiwebpbi/api/pos/getProducts?entity_cd=${entity_cd}&project_no=${project_no}&trx_class=H`
       )
-      .then(res => {
+      .then((res) => {
         console.log(res.data.success);
         if (res.data.success == true) {
           const datas = res.data;
@@ -123,48 +129,48 @@ const Product = params => {
     }, 1000);
   }, [cartSelector]);
 
-  const goProductDetail = item => {
-    navigation.navigate('EProductDetailStore', {item: item});
+  const goProductDetail = (item) => {
+    navigation.navigate("EProductDetailStore", { item: item });
   };
 
-  const goStore = item => {
+  const goStore = (item) => {
     navigation.goBack();
   };
 
-  const searchFilterFunction = text => {
-    console.log('text', text);
+  const searchFilterFunction = (text) => {
+    console.log("text", text);
     // console.log('arrayholder', arrayholder);
-    const newData = dataItemStore.filter(item => {
+    const newData = dataItemStore.filter((item) => {
       const itemData = `${item.descs.toUpperCase()}`;
       //   console.log('itemdata', itemData);
       const textData = text;
       return itemData.indexOf(textData) > -1;
     });
-    console.log('new data', newData);
+    console.log("new data", newData);
     setItemStoreFilter(newData);
   };
 
   const pressBuy = async (item, index) => {
     //get trx_code by product ID
     const entity_cd = projectSelector.Data[0].entity_cd;
-    console.log('entity', entity_cd);
+    console.log("entity", entity_cd);
     const project_no = projectSelector.Data[0].project_no;
     const trx_code = item.trx_code;
-    console.log('item yang akan diambil', item);
+    console.log("item yang akan diambil", item);
     console.log(
-      'get trx_code by product ID',
-      `http://apps.pakubuwono-residence.com/apiwebpbi/api/pos/productID?entity_cd=${entity_cd}&project_no=${project_no}&trx_class=H&trx_code=${trx_code}`,
+      "get trx_code by product ID",
+      `http://apps.pakubuwono-residence.com/apiwebpbi/api/pos/productID?entity_cd=${entity_cd}&project_no=${project_no}&trx_class=H&trx_code=${trx_code}`
     );
     axios
       .get(
-        `http://apps.pakubuwono-residence.com/apiwebpbi/api/pos/productID?entity_cd=${entity_cd}&project_no=${project_no}&trx_class=H&trx_code=${trx_code}`,
+        `http://apps.pakubuwono-residence.com/apiwebpbi/api/pos/productID?entity_cd=${entity_cd}&project_no=${project_no}&trx_class=H&trx_code=${trx_code}`
       )
-      .then(res => {
+      .then((res) => {
         console.log(res.data.success);
         if (res.data.success == true) {
           const datas = res.data.data[0];
 
-          console.log('get trx_code by product ID', datas);
+          console.log("get trx_code by product ID", datas);
           const dataBuyNow = {
             //   totalHarga: total,
             //   quantity: qty,
@@ -186,7 +192,7 @@ const Product = params => {
           };
 
           const arrayCart = [...ArrayDataBuy, dataBuyNow];
-          console.log('array', arrayCart);
+          console.log("array", arrayCart);
 
           setArrayDataBuy(arrayCart);
           dispatch(data_cart(arrayCart));
@@ -201,11 +207,11 @@ const Product = params => {
         }
       });
 
-    console.log('cek quantity', qty);
+    console.log("cek quantity", qty);
   };
 
   const tesfunction = () => {
-    console.log('array databuy tes', ArrayDataBuy);
+    console.log("array databuy tes", ArrayDataBuy);
   };
 
   // const setItemCart = useCallback(
@@ -214,11 +220,11 @@ const Product = params => {
   // );
 
   const setItemCart = () => {
-    console.log('set item cart tes', ArrayDataBuy);
+    console.log("set item cart tes", ArrayDataBuy);
   };
 
   const toCheckout = async () => {
-    navigation.navigate('CartStore', {itemsforCheckout: cartSelector});
+    navigation.navigate("CartStore", { itemsforCheckout: cartSelector });
     //  navigation.navigate('EProductDetailStore', {item: item});
     // try {
     //   const jsonValue = JSON.stringify({ArrayDataBuy});
@@ -235,7 +241,7 @@ const Product = params => {
   };
 
   const removebyIndex = (item, index) => {
-    console.log('index remove', index);
+    console.log("index remove", index);
     // const remainingArr = ArrayDataBuy.splice(index, 1);
     // setArrayDataBuy(remainingArr);
     // setItemCart();
@@ -243,7 +249,7 @@ const Product = params => {
     const dataSplice = ArrayDataBuy;
 
     // dataSplice.splice(0, 1);
-    const indexOfObject = dataSplice.findIndex(object => {
+    const indexOfObject = dataSplice.findIndex((object) => {
       return object.trx_code === item.trx_code;
     });
 
@@ -252,22 +258,22 @@ const Product = params => {
     dataSplice.splice(indexOfObject, 1);
 
     // console.log(arr); // 👉️ [{id: 1}, {id: 5}]
-    console.log('remaining', dataSplice);
+    console.log("remaining", dataSplice);
     setArrayDataBuy(dataSplice);
     dispatch(data_cart(dataSplice));
     // console.log('remaining', remainingArr);
   };
 
-  const renderItem = ({item, index}) => {
+  const renderItem = ({ item, index }) => {
     return (
       <View key={index}>
         <ProductList
           loading={loading}
           // description={item.descs}
           title={item.descs}
-          style={{marginVertical: 8}}
+          style={{ marginVertical: 8 }}
           // image={item.picture}
-          image={require('@assets/images/logo.png')}
+          image={require("@assets/images/logo.png")}
           // costPrice={item.default_price}
           salePrice={item.default_price}
           //   pressBuy={() => pressBuy(item)}
@@ -277,7 +283,7 @@ const Product = params => {
           // salePercent={'30%'}
         />
         {/* gimana caranya trx code di array redux per index == trx code dari item ? */}
-        <View style={{alignItems: 'flex-end'}} key={index}>
+        <View style={{ alignItems: "flex-end" }} key={index}>
           {cartSelector[index] ? (
             <TouchableOpacity
               key={index}
@@ -290,8 +296,9 @@ const Product = params => {
                 width: 150,
                 borderRadius: 10,
 
-                alignItems: 'center',
-              }}>
+                alignItems: "center",
+              }}
+            >
               {/* <Button></Button></Button> */}
               {/* <Text style={{color: colors.primary}}>Already in the cart</Text>
                */}
@@ -308,9 +315,10 @@ const Product = params => {
                 width: 150,
                 borderRadius: 10,
 
-                alignItems: 'center',
-              }}>
-              <Text style={{color: BaseColor.whiteColor}}>Add to cart</Text>
+                alignItems: "center",
+              }}
+            >
+              <Text style={{ color: BaseColor.whiteColor }}>Add to cart</Text>
             </TouchableOpacity>
           )}
         </View>
@@ -341,13 +349,14 @@ const Product = params => {
     return spinner ? (
       <ActivityIndicator color={colors.primary} />
     ) : (
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <View
           style={{
-            alignItems: 'flex-end',
+            alignItems: "flex-end",
             marginHorizontal: 10,
             marginBottom: 10,
-          }}>
+          }}
+        >
           <Button
             onPress={() => toCheckout()}
             style={{
@@ -357,7 +366,8 @@ const Product = params => {
               padding: 5,
               // flex: 1,
               // bottom: 0,
-            }}>
+            }}
+          >
             {/* {t('Cart')} */}
             <Icon
               solid
@@ -369,7 +379,7 @@ const Product = params => {
               // value={ArrayDataBuy.length}
               value={cartSelector.length}
               status="success"
-              containerStyle={{position: 'absolute', top: 10, left: 40}}
+              containerStyle={{ position: "absolute", top: 10, left: 40 }}
             />
           </Button>
         </View>
@@ -377,15 +387,15 @@ const Product = params => {
         <TextInput
           placeholder="Search"
           style={{
-            color: '#555',
+            color: "#555",
             fontSize: 14,
-            borderColor: '#000',
+            borderColor: "#000",
             borderWidth: 0.5,
             borderRadius: 10,
             marginHorizontal: 20,
           }}
           // onChangeText={this.handleSearch}
-          onChangeText={text => searchFilterFunction(text.toUpperCase())}
+          onChangeText={(text) => searchFilterFunction(text.toUpperCase())}
           autoCorrect={false}
         />
 
@@ -413,8 +423,8 @@ const Product = params => {
   };
 
   const changeQty = (value, default_price, item, index) => {
-    console.log('value qty', value);
-    console.log('index ? ', index);
+    console.log("value qty", value);
+    console.log("index ? ", index);
     setQty(value);
     setTotal(value * default_price);
 
@@ -433,7 +443,7 @@ const Product = params => {
     };
 
     const array = [...ArrayDataBuy, dataBuyNow];
-    console.log('array di change qty', array);
+    console.log("array di change qty", array);
 
     setArrayDataBuy(array);
     toCheckout(index);
@@ -454,7 +464,7 @@ const Product = params => {
       quantity: qty,
       data_buy: dataBuy,
     };
-    console.log('data buynow', dataBuyNow);
+    console.log("data buynow", dataBuyNow);
     // navigation.navigate('CartStore', {itemsdataBuyNow: dataBuyNow}); // ini tidak ngambil dari params route, ini pasti ada data yang udah di set
   };
 
@@ -526,11 +536,11 @@ const Product = params => {
   );
 };
 
-export default function ItemStore({route}) {
-  const {colors} = useTheme();
-  console.log('routeee', route);
+export default function ItemStore({ route }) {
+  const { colors } = useTheme();
+  console.log("routeee", route);
   const navigation = useNavigation();
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -542,24 +552,24 @@ export default function ItemStore({route}) {
 
   const [index, setIndex] = useState(0);
   const [routes] = useState([
-    {key: 'all', title: 'All'},
+    { key: "all", title: "All" },
     // {key: 'feedback', title: 'Feedback'},
   ]);
-  console.log('rputes', routes);
+  console.log("rputes", routes);
   const renderScene = SceneMap({
     all: Product,
     // feedback: Product,
   });
-  const renderTabBar = props => (
+  const renderTabBar = (props) => (
     <TabBar
       {...props}
       renderIndicator={() => null}
       scrollEnabled
-      style={[styles.tabbar, {backgroundColor: colors.background}]}
+      style={[styles.tabbar, { backgroundColor: colors.background }]}
       tabStyle={styles.tab}
       activeColor={BaseColor.whiteColor}
       inactiveColor={colors.text}
-      renderLabel={({route, focused, color}) => (
+      renderLabel={({ route, focused, color }) => (
         <Tag
           primary={true}
           style={{
@@ -567,7 +577,8 @@ export default function ItemStore({route}) {
           }}
           textStyle={{
             color: color,
-          }}>
+          }}
+        >
           {route.title}
         </Tag>
       )}
@@ -577,9 +588,10 @@ export default function ItemStore({route}) {
   return (
     <SafeAreaView
       style={BaseStyle.safeAreaView}
-      edges={['right', 'top', 'left']}>
+      edges={["right", "top", "left"]}
+    >
       <Header
-        title={'Items Store'}
+        title={"Items Store"}
         renderLeft={() => {
           return (
             <Icon

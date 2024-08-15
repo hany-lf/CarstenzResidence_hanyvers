@@ -1,16 +1,16 @@
-import React from 'react';
-import {View} from 'react-native';
-import styles from './styles';
-import {BaseStyle, useTheme} from '@config';
-import {useTranslation} from 'react-i18next';
-import Text from '@components/Text';
-import Icon from '@components/Icon';
-import {parseHexTransparency} from '@utils';
-import LottieView from 'lottie-react-native';
+import React from "react";
+import { View } from "react-native";
+import styles from "./styles";
+import { BaseStyle, useTheme } from "@config";
+import { useTranslation } from "react-i18next";
+import Text from "@components/Text";
+import Icon from "@components/Icon";
+import { parseHexTransparency } from "@utils";
+import LottieView from "lottie-react-native";
 
 const NotFound = () => {
-  const {t} = useTranslation();
-  const {colors} = useTheme();
+  const { t } = useTranslation();
+  const { colors } = useTheme();
   return (
     <View style={styles.container}>
       <View>
@@ -22,9 +22,9 @@ const NotFound = () => {
           }}
         /> */}
         <LottieView
-          source={require('@data/notfound.json')}
+          source={require("@data/notfound.json")}
           autoPlay
-          style={{width: 300, height: 300}}
+          style={{ width: 300, height: 300 }}
         />
       </View>
       <Text
@@ -32,8 +32,9 @@ const NotFound = () => {
         bold
         style={{
           color: parseHexTransparency(colors.text, 50),
-        }}>
-        {t('not_found')}
+        }}
+      >
+        {t("not_found")}
       </Text>
     </View>
   );

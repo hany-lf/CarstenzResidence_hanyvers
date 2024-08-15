@@ -1,14 +1,14 @@
-import {actionTypes} from '../actions/GlobalActions';
+import { actionTypes } from "../actions/GlobalActions";
 
 export default (state = {}, action) => {
-  const {type, error} = action;
+  const { type, error } = action;
   const matches = /(.*)_(REQUEST|ERROR)/.exec(type);
 
   if (matches) {
     const [, requestName, requestState] = matches;
     return {
       ...state,
-      [requestName]: requestState === 'ERROR' ? error : null,
+      [requestName]: requestState === "ERROR" ? error : null,
     };
   }
 
@@ -19,7 +19,7 @@ export default (state = {}, action) => {
   if (!matchesReset) return state;
 
   const [, requestName] = matchesReset;
-  const newState = {...state};
+  const newState = { ...state };
   delete newState[requestName];
   return newState;
 };

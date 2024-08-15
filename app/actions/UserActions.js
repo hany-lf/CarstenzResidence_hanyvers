@@ -93,9 +93,9 @@ const removeUser = (user) => ({
 
 export const login = (email, password, token_firebase) => async (dispatch) => {
   dispatch(loginRequest());
-  console.log('login action', email);
+  console.log("login action", email);
   try {
-console.log('try login action', email);
+    console.log("try login action", email);
     const user = await UserController.login(email, password, token_firebase);
     dispatch(loginSuccess(user.data));
     console.log("99 userrrrr", user);

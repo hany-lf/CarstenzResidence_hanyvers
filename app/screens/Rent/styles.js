@@ -1,7 +1,7 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
-  paddingSrollView: {padding: 10},
+  paddingSrollView: { padding: 10 },
   paddingFlatList: {
     paddingTop: 5,
     paddingVertical: 45,
@@ -9,5 +9,5 @@ export default StyleSheet.create({
   topicsView: {
     marginVertical: 10,
   },
-  title: {marginBottom: 5},
+  title: { marginBottom: 5 },
 });

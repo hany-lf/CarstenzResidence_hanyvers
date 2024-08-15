@@ -1,11 +1,11 @@
-import CounterSelectCheckout from '@components/Form/CounterSelectCheckout';
-import Text from '@components/Text';
-import {BaseColor, Images, useTheme} from '@config';
-import PropTypes from 'prop-types';
-import React from 'react';
-import {ImageBackground, TouchableOpacity, View} from 'react-native';
-import styles from './styles';
-import Loading from './Loading';
+import CounterSelectCheckout from "@components/Form/CounterSelectCheckout";
+import Text from "@components/Text";
+import { BaseColor, Images, useTheme } from "@config";
+import PropTypes from "prop-types";
+import React from "react";
+import { ImageBackground, TouchableOpacity, View } from "react-native";
+import styles from "./styles";
+import Loading from "./Loading";
 
 const Checkout = ({
   description,
@@ -20,7 +20,7 @@ const Checkout = ({
   loading = false,
   CurrentValue,
 }) => {
-  const {colors} = useTheme();
+  const { colors } = useTheme();
 
   // console.log('current value', CurrentValue);
 
@@ -38,17 +38,17 @@ const Checkout = ({
             // require('@assets/images/logo.png')
           }
           style={styles.imageBackgroundCard1}
-          imageStyle={{borderRadius: 8}}
+          imageStyle={{ borderRadius: 8 }}
         />
       </TouchableOpacity>
-      <View style={{flex: 1, paddingVertical: 4}}>
-        <View style={{flexDirection: 'row', paddingHorizontal: 10}}>
-          <View style={{flex: 1, paddingBottom: 4}}>
-            <View style={{flex: 1}}>
+      <View style={{ flex: 1, paddingVertical: 4 }}>
+        <View style={{ flexDirection: "row", paddingHorizontal: 10 }}>
+          <View style={{ flex: 1, paddingBottom: 4 }}>
+            <View style={{ flex: 1 }}>
               <TouchableOpacity onPress={onPress}>
                 <Text headline>{title}</Text>
               </TouchableOpacity>
-              <Text footnote grayColor style={{marginTop: 4}}>
+              <Text footnote grayColor style={{ marginTop: 4 }}>
                 {description}
               </Text>
             </View>
@@ -104,12 +104,12 @@ Checkout.propTypes = {
 };
 
 Checkout.defaultProps = {
-  description: '',
-  title: '',
+  description: "",
+  title: "",
   style: {},
   image: Images.eProduct,
-  salePrice: '',
-  CurrentValue: '',
+  salePrice: "",
+  CurrentValue: "",
   onPress: () => {},
   onDelete: () => {},
   onChange: () => {},

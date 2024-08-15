@@ -2,7 +2,7 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 
 # Getting Started
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+> **Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
 
 ## Step 1: Start the Metro Server
 
@@ -78,8 +78,8 @@ To learn more about React Native, take a look at the following resources:
 - [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
 - [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
 
+---
 
--------
 keystore alias
 haniyyah@Haniyyahs-MacBook-Pro app % keytool -v -list -keystore upload-keystore.jks
 Enter keystore password:  
@@ -98,11 +98,10 @@ Issuer: C=ifca, ST=ifca, L=ifca, O=ifca, OU=ifca, CN=ifca
 Serial number: 1
 Valid from: Wed Aug 09 16:56:31 WIB 2023 until: Sun Aug 02 16:56:31 WIB 2048
 Certificate fingerprints:
-         SHA1: 0E:32:7F:29:EB:6A:A6:15:8E:E6:C1:3B:8D:62:BE:17:72:03:26:6D
-         SHA256: 48:FB:6F:04:65:5E:77:15:9B:3B:58:6F:9C:98:63:A6:9C:80:75:F0:37:77:35:6C:3E:D8:64:79:E6:D4:FC:87
+SHA1: 0E:32:7F:29:EB:6A:A6:15:8E:E6:C1:3B:8D:62:BE:17:72:03:26:6D
+SHA256: 48:FB:6F:04:65:5E:77:15:9B:3B:58:6F:9C:98:63:A6:9C:80:75:F0:37:77:35:6C:3E:D8:64:79:E6:D4:FC:87
 Signature algorithm name: SHA256withRSA
 Subject Public Key Algorithm: 2048-bit RSA key
 Version: 1
 
-
-***************
+---

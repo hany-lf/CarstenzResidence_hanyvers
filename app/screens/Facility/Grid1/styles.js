@@ -1,17 +1,17 @@
-import * as Utils from '@utils';
-import {StyleSheet} from 'react-native';
+import * as Utils from "@utils";
+import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
   imageBackgroundGrid1: {
-    width: '100%',
+    width: "100%",
     height: Utils.scaleWithPixel(130),
     borderRadius: 30,
   },
   grid1: {
-    width: '50%',
+    width: "50%",
     paddingVertical: 10,
   },
-  costPrice: {paddingHorizontal: 8, textDecorationLine: 'line-through'},
+  costPrice: { paddingHorizontal: 8, textDecorationLine: "line-through" },
   imageLoading: {
     borderRadius: 8,
   },

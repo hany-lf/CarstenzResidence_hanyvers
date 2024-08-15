@@ -1,21 +1,21 @@
-import {Icon, Image, Text} from '@components';
-import {Images} from '@config';
-import PropTypes from 'prop-types';
-import React from 'react';
-import {TouchableOpacity, View} from 'react-native';
-import styles from './styles';
-import {BaseColor} from '@config';
+import { Icon, Image, Text } from "@components";
+import { Images } from "@config";
+import PropTypes from "prop-types";
+import React from "react";
+import { TouchableOpacity, View } from "react-native";
+import styles from "./styles";
+import { BaseColor } from "@config";
 
 const Transaction2Col = ({
   style = {},
-  backgroundIcon = 'red',
-  icon = '',
-  name = '',
-  due_date = '',
-  doc_no = '',
-  status = '',
-  mbal_amt = '',
-  descs = '',
+  backgroundIcon = "red",
+  icon = "",
+  name = "",
+  due_date = "",
+  doc_no = "",
+  status = "",
+  mbal_amt = "",
+  descs = "",
   isUp = true,
   onPress = () => {},
 }) => {
@@ -24,11 +24,11 @@ const Transaction2Col = ({
       {/* <View style={[styles.image, {backgroundColor: backgroundIcon}]}>
         <Icon name={icon} size={20} color={BaseColor.whiteColor} solid />
       </View> */}
-      <View style={{paddingLeft: 8, flex: 1}}>
+      <View style={{ paddingLeft: 8, flex: 1 }}>
         <Text subhead light>
           {descs}
         </Text>
-        <Text subhead light style={{marginTop: 5}}>
+        <Text subhead light style={{ marginTop: 5 }}>
           {due_date}
         </Text>
       </View>
@@ -37,10 +37,11 @@ const Transaction2Col = ({
           headline
           darkPrimaryColor={isUp}
           accentColor={!isUp}
-          style={styles.text}>
+          style={styles.text}
+        >
           {mbal_amt}
         </Text>
-        <Text subhead light style={[styles.text, {marginTop: 5}]}>
+        <Text subhead light style={[styles.text, { marginTop: 5 }]}>
           {status}
         </Text>
       </View>

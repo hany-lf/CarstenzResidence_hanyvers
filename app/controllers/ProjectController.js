@@ -13,16 +13,16 @@ class ProjectController {
     console.log("email for project di controller", datas);
     const data_app = "O";
     const config = {
-      method: 'GET',
+      method: "GET",
       // url: 'http://dev.ifca.co.id:8080/apiciputra/api/approval/groupMenu?approval_user=MGR',
       url: API_URL_LOKAL + `/home/common-project`,
       headers: {
-        'content-type': 'application/json',
+        "content-type": "application/json",
         // 'X-Requested-With': 'XMLHttpRequest',
         Authorization: `Bearer ${datas.token_firebase}`,
       },
       // params: {approval_user: user.userIDToken.UserId},
-      params: {email: datas.emails},
+      params: { email: datas.emails },
     };
 
     try {

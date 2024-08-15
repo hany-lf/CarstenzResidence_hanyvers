@@ -70,7 +70,7 @@ const SearchHistory = (props) => {
   return (
     <SafeAreaView
       style={[BaseStyle.safeAreaView]}
-      edges={['right', 'top', 'left']}
+      edges={["right", "top", "left"]}
     >
       <Header
         title={t("search")}

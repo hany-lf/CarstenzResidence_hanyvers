@@ -1985,8 +1985,6 @@ const SignatureBefore = (props) => {
         //   setMessageResult(resJson.report_no);
         setStatus(res.data.success);
         showModalSuccess(true);
-
-       
       })
       .catch((error) => {
         console.log("error get tower api", error.response.data);

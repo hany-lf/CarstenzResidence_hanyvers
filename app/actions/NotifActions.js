@@ -1,12 +1,12 @@
-import NotifController from '../controllers/NotifController';
+import NotifController from "../controllers/NotifController";
 
 export const actionTypes = {
-  NOTIFIKASI_NBADGE: 'NOTIFIKASI_NBADGE',
-  NOTIFIKASI_NBADGE_REQUEST: 'NOTIFIKASI_NBADGE_REQUEST',
-  NOTIFIKASI_NBADGE_ERROR: 'NOTIFIKASI_NBADGE_ERROR',
-  NOTIFIKASI_NBADGE_SUCCESS: 'NOTIFIKASI_NBADGE_SUCCESS',
-  NOTIFIKASI_NBADGE_DECREASE: 'NOTIFIKASI_NBADGE_DECREASE',
-  NOTIFIKASI_NBADGE_COUNT_DECREASE: 'NOTIFIKASI_NBADGE_COUNT_DECREASE',
+  NOTIFIKASI_NBADGE: "NOTIFIKASI_NBADGE",
+  NOTIFIKASI_NBADGE_REQUEST: "NOTIFIKASI_NBADGE_REQUEST",
+  NOTIFIKASI_NBADGE_ERROR: "NOTIFIKASI_NBADGE_ERROR",
+  NOTIFIKASI_NBADGE_SUCCESS: "NOTIFIKASI_NBADGE_SUCCESS",
+  NOTIFIKASI_NBADGE_DECREASE: "NOTIFIKASI_NBADGE_DECREASE",
+  NOTIFIKASI_NBADGE_COUNT_DECREASE: "NOTIFIKASI_NBADGE_COUNT_DECREASE",
 };
 
 const notification_nbadgerequest = () => ({
@@ -14,13 +14,13 @@ const notification_nbadgerequest = () => ({
   //   user,
 });
 
-const notifikasi_nbadge_success = notifDataRed => ({
+const notifikasi_nbadge_success = (notifDataRed) => ({
   type: actionTypes.NOTIFIKASI_NBADGE_SUCCESS,
   //   user,'
   notifDataRed,
 });
 
-const notifikasi_nbadge_count_decrease = notifDataRedCount => ({
+const notifikasi_nbadge_count_decrease = (notifDataRedCount) => ({
   type: actionTypes.NOTIFIKASI_NBADGE_DECREASE,
   //   user,'
   notifDataRedCount,
@@ -47,11 +47,11 @@ const notifikasi_nbadge_count_decrease = notifDataRedCount => ({
 //     };
 
 export const notifikasi_nbadge =
-  (email, entity_cd, project_no) => async dispatch => {
+  (email, entity_cd, project_no) => async (dispatch) => {
     const notifnbadge = await NotifController.notifikasi_nbadge(
       email,
       entity_cd,
-      project_no,
+      project_no
     );
     dispatch(notifikasi_nbadge_success(notifnbadge));
     // console.log('notifikasi nbadge', notifnbadge);

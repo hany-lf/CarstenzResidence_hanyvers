@@ -14,7 +14,10 @@ const Messenger = (props) => {
   const [messenger, setMessenger] = useState(MessagesData);
 
   return (
-    <SafeAreaView style={BaseStyle.safeAreaView} edges={['right', 'top', 'left']}>
+    <SafeAreaView
+      style={BaseStyle.safeAreaView}
+      edges={["right", "top", "left"]}
+    >
       <Header
         title={t("messenger")}
         renderLeft={() => {

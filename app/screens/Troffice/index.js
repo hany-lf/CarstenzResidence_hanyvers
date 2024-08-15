@@ -63,15 +63,15 @@ export default function Troffice() {
 
   const getCategory = async () => {
     const config = {
-      method: 'get',
+      method: "get",
       url: API_URL_LOKAL + `/modules/troffice/category`,
       headers: {
-        'content-type': 'application/json',
+        "content-type": "application/json",
         Authorization: `Bearer ${user.Token}`,
       },
     };
     await axios(config)
-     .then((res) => {
+      .then((res) => {
         // console.log('res greetings', res.data.data);
         // const getdata = res.data.data[0].status;
         const getdata = res.data.data;

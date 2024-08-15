@@ -77,7 +77,7 @@ export default function StatusHelpHouse(props) {
   const [loading, setLoading] = useState(true);
   const [spinner, setSpinner] = useState(true);
   const users = useSelector((state) => getUser(state));
-  const [email, setEmail] = useState(users.user);
+  const [email, setEmail] = useState('');
 
   //   const deviceWidth = Dimensions.get('window').width;
   // const [loadingTab, setLoadingTab] = useState(true);
@@ -90,35 +90,67 @@ export default function StatusHelpHouse(props) {
   // console.log('dataStatus3', dataStatus3);
   const [tabChoosed, setTabChoosed] = useState(TABS[0]);
 
+      // --- useeffect untuk update email/name
+  useEffect(() => {
+    setEmail(users != null && users.userData != null ? users.userData.email : "");
+  }, [email]);
+  // --- useeffect untuk update email/name
+
+  useEffect(() => {
+    // setEmail(users != null && users.userData != null ? users.userData.email : "");
+    getListBooking();
+  }, [tabChoosed]);
+
+  const createAxiosConfig = (endpoint, method = "get", params = {}) => {
+    return {
+      method: method,
+      url: `${API_URL_LOKAL}${endpoint}`,
+      headers: {
+        "content-type": "application/json",
+        Authorization: `Bearer ${users.Token}`,
+      },
+      params: params,
+    };
+  };
+
   const getListBooking = () => {
     setSpinner(true);
     const status1 = "A";
     const status2 = "O";
     const status3 = "C";
+    const emails = email;
+
 
     const endpoints = [
-      API_URL_LOKAL +
-        `/modules/troffice/housekeeping-booking-status/` +
-        email +
-        "?" +
-        "status=" +
-        status1,
-      API_URL_LOKAL +
-        `/modules/troffice/housekeeping-booking-status/` +
-        email +
-        "?" +
-        "status=" +
-        status2,
-      API_URL_LOKAL +
-        `/modules/troffice/housekeeping-booking-status/` +
-        email +
-        "?" +
-        "status=" +
-        status3,
+      createAxiosConfig(`/modules/troffice/housekeeping-booking-status`, "get", { status: status1, email: emails }),
+      createAxiosConfig(`/modules/troffice/housekeeping-booking-status`, "get", { status: status2, email: emails }),
+      createAxiosConfig(`/modules/troffice/housekeeping-booking-status`, "get", { status: status3, email: emails }),
     ];
+
+    // const endpoints = [
+    //   API_URL_LOKAL +
+    //     `/modules/troffice/housekeeping-booking-status/` +
+    //     email +
+    //     "?" +
+    //     "status=" +
+    //     status1,
+    //   API_URL_LOKAL +
+    //     `/modules/troffice/housekeeping-booking-status/` +
+    //     email +
+    //     "?" +
+    //     "status=" +
+    //     status2,
+    //   API_URL_LOKAL +
+    //     `/modules/troffice/housekeeping-booking-status/` +
+    //     email +
+    //     "?" +
+    //     "status=" +
+    //     status3,
+    // ];
     console.log("endpoints", endpoints);
+
     axios
-      .all(endpoints.map((endpoint) => axios.get(endpoint)))
+      .all(endpoints.map((config) => axios(config)))
       .then(
         axios.spread(
           (
@@ -142,7 +174,7 @@ export default function StatusHelpHouse(props) {
           }
         )
       )
-      .catch((error) => console.error("ini error if getbooking", error))
+      .catch((error) => console.error("ini error if getbooking", error.response))
       .finally(() =>
         // setLoading(false),
         // setSpinnerHours(false),
@@ -153,9 +185,7 @@ export default function StatusHelpHouse(props) {
   // useEffect(() => {
   //   getListBooking();
   // }, []);
-  useEffect(() => {
-    getListBooking();
-  }, [tabChoosed]);
+
 
   const renderItemList1 = ({ item, index }) => {
     return (

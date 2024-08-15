@@ -8,7 +8,7 @@ const Loading = (props) => {
   return (
     <Placeholder>
       <View style={[styles.containLoading, style]}>
-        <PlaceholderLine style={[styles.imageWishlist]} noMargin/>
+        <PlaceholderLine style={[styles.imageWishlist]} noMargin />
         <View style={{ padding: 10, flex: 1 }}>
           <PlaceholderLine width={100} />
           <PlaceholderLine width={80} />

@@ -11,7 +11,7 @@ export default StyleSheet.create({
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
     paddingHorizontal: 20,
-    paddingBottom: 20
+    paddingBottom: 20,
   },
   contentSwipeDown: {
     paddingTop: 10,

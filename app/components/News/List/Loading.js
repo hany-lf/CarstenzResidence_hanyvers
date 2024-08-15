@@ -8,13 +8,13 @@ const Loading = (props) => {
   return (
     <Placeholder>
       <View style={[styles.contain, style]}>
-        <PlaceholderLine style={[[styles.image]]} noMargin/>
+        <PlaceholderLine style={[[styles.image]]} noMargin />
         <View
           style={{
             paddingHorizontal: 10,
             flex: 1,
             paddingVertical: 5,
-            justifyContent: "center"
+            justifyContent: "center",
           }}
         >
           <PlaceholderLine width={80} />

@@ -60,7 +60,10 @@ const ProductGallery = ({ images = imagesInit, onPress = () => {} }) => {
                 </View>
               )}
               {images?.[3] && (
-                <TouchableOpacity style={{ flex: 2, padding: 4, position: "relative" }} onPress={onPress}>
+                <TouchableOpacity
+                  style={{ flex: 2, padding: 4, position: "relative" }}
+                  onPress={onPress}
+                >
                   <Image source={images?.[3]?.image} style={styles.image} />
                   {images?.[4] && (
                     <View style={styles.viewMore}>

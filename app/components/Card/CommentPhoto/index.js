@@ -25,7 +25,7 @@ export default function CardCommentPhoto(props) {
     onYes,
     onNo,
     totalLike,
-    openGallery
+    openGallery,
   } = props;
   return (
     <View
@@ -96,7 +96,7 @@ export default function CardCommentPhoto(props) {
         </Text>
       </View>
       <View style={{ paddingVertical: 8 }}>
-        <ProductGallery images={images} onPress={openGallery}/>
+        <ProductGallery images={images} onPress={openGallery} />
       </View>
 
       <View
@@ -159,5 +159,5 @@ CardCommentPhoto.defaultProps = {
   onYes: () => {},
   onNo: () => {},
   totalLike: 0,
-  openGallery: () => {}
+  openGallery: () => {},
 };

@@ -41,7 +41,9 @@ const index = () => {
       offsetX={20}
       offsetY={20}
       buttonColor={colors.primary}
-      renderIcon={() => <Icon name="list-ul" color={BaseColor.whiteColor} size={24} />}
+      renderIcon={() => (
+        <Icon name="list-ul" color={BaseColor.whiteColor} size={24} />
+      )}
       size={56}
     >
       {Object.keys(MENUS).map((key) => {

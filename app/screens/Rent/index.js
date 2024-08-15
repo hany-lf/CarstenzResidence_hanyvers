@@ -34,7 +34,7 @@ import List from "../../components/Product/List";
 import styles from "./styles";
 import { enableExperimental } from "@utils";
 import { API_URL_LOKAL } from "@env";
-import  getUser from "../../selectors/UserSelectors";
+import getUser from "../../selectors/UserSelectors";
 import { useSelector } from "react-redux";
 
 const Rent = (props) => {
@@ -71,50 +71,50 @@ const Rent = (props) => {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-      getDataRentUnit()
-      getDataSaleUnit()
+      getDataRentUnit();
+      getDataSaleUnit();
     }, 1000);
   }, [user]);
 
-  const getDataSaleUnit = () =>{
+  const getDataSaleUnit = () => {
     const config = {
-      method: 'get',
+      method: "get",
       url: API_URL_LOKAL + "/modules/rs/sale-unit/",
       headers: {
-        'content-type': 'application/json',
+        "content-type": "application/json",
         Authorization: `Bearer ${user.Token}`,
       },
     };
 
     axios(config)
-    .then(({ data }) => {
-      console.log("sale -> data", data);
-      setData(data.data);
-      console.log("data >", data[0].images);
-    })
-    .catch((error) => console.error(error))
-    .finally(() => setLoading(false));
-  }
+      .then(({ data }) => {
+        console.log("sale -> data", data);
+        setData(data.data);
+        console.log("data >", data[0].images);
+      })
+      .catch((error) => console.error(error))
+      .finally(() => setLoading(false));
+  };
 
-  const getDataRentUnit = () =>{
+  const getDataRentUnit = () => {
     const config = {
-      method: 'get',
+      method: "get",
       url: API_URL_LOKAL + "/modules/rs/rent-unit/",
       headers: {
-        'content-type': 'application/json',
+        "content-type": "application/json",
         Authorization: `Bearer ${user.Token}`,
       },
     };
 
     axios(config)
-    .then(({ data }) => {
-      console.log("rent -> data", data.data);
-      setRent(data.data);
-      console.log("data >", data[0].images);
-    })
-    .catch((error) => console.error(error))
-    .finally(() => setLoading(false));
-  }
+      .then(({ data }) => {
+        console.log("rent -> data", data.data);
+        setRent(data.data);
+        console.log("data >", data[0].images);
+      })
+      .catch((error) => console.error(error))
+      .finally(() => setLoading(false));
+  };
 
   const goPost = (item) => () => {
     navigation.navigate("Post", { item: item });

@@ -1,21 +1,21 @@
-import {StyleSheet} from 'react-native';
-import {BaseColor} from '@config';
+import { StyleSheet } from "react-native";
+import { BaseColor } from "@config";
 
 export default StyleSheet.create({
   bottomModal: {
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
     margin: 0,
   },
   contentFilterBottom: {
     paddingVertical: 16,
-    width: '100%',
+    width: "100%",
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
     paddingHorizontal: 20,
   },
   contentSwipeDown: {
     paddingTop: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
   lineSwipeDown: {
     width: 30,
@@ -23,9 +23,9 @@ export default StyleSheet.create({
     backgroundColor: BaseColor.dividerColor,
   },
   contentActionModalBottom: {
-    flexDirection: 'row',
+    flexDirection: "row",
     paddingVertical: 15,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
   },
   image: {
     marginRight: 8,

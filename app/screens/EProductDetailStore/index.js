@@ -12,12 +12,12 @@ import {
   StarRating,
   Tag,
   Text,
-} from '@components';
-import {BaseColor, BaseStyle, Images, useTheme} from '@config';
-import {EFilterColors, EFilterSizes} from '@data';
-import * as Utils from '@utils';
-import React, {useRef, useState, useEffect} from 'react';
-import {useTranslation} from 'react-i18next';
+} from "@components";
+import { BaseColor, BaseStyle, Images, useTheme } from "@config";
+import { EFilterColors, EFilterSizes } from "@data";
+import * as Utils from "@utils";
+import React, { useRef, useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Animated,
   I18nManager,
@@ -25,11 +25,11 @@ import {
   Share,
   TouchableOpacity,
   View,
-} from 'react-native';
-import ModalProduct from './ModalProduct';
-import styles from './styles';
-import Swiper from 'react-native-swiper';
-import {PlaceholderLine, Placeholder} from '@components';
+} from "react-native";
+import ModalProduct from "./ModalProduct";
+import styles from "./styles";
+import Swiper from "react-native-swiper";
+import { PlaceholderLine, Placeholder } from "@components";
 
 let imagesInit = [
   {
@@ -61,32 +61,32 @@ let imagesInit = [
 const itemInit = {
   price: 60,
   image: Images.eProduct,
-  title: 'White T-Shirt with simple logo and …',
-  category: 'Burberry',
+  title: "White T-Shirt with simple logo and …",
+  category: "Burberry",
   rating: 4.5,
   review: 1,
-  status: 'In Stock',
-  salePrice: '$60.00',
-  costPrice: '$70.00',
-  taxStatus: 'Tax included',
-  sku: 'AV01-D-32',
-  style: 'High-neck',
-  measurement: 'Wearing Size: 24',
-  washCare: 'Machine Wash',
-  fabricComposition: 'Lightweight',
-  menOrWomen: 'For Men',
-  season: 'Summer, Spring',
+  status: "In Stock",
+  salePrice: "$60.00",
+  costPrice: "$70.00",
+  taxStatus: "Tax included",
+  sku: "AV01-D-32",
+  style: "High-neck",
+  measurement: "Wearing Size: 24",
+  washCare: "Machine Wash",
+  fabricComposition: "Lightweight",
+  menOrWomen: "For Men",
+  season: "Summer, Spring",
   returnsPolicy:
     "Returns and exchanges don't need to be a dreaded part of ecommerce. Here's how to write a return policy that creates a win-win situation.",
   shipping:
-    'A Shipping Policy is where you let your customers know important details about how you ship your goods if your business sells goods that get shipped to your customers',
+    "A Shipping Policy is where you let your customers know important details about how you ship your goods if your business sells goods that get shipped to your customers",
 };
 
-const EProductDetailStore = props => {
-  const {navigation, route} = props;
-  const {t} = useTranslation();
-  const {colors} = useTheme();
-  const {item} = route.params;
+const EProductDetailStore = (props) => {
+  const { navigation, route } = props;
+  const { t } = useTranslation();
+  const { colors } = useTheme();
+  const { item } = route.params;
   const [loading, setLoading] = useState(true);
   const [heightHeader, setHeightHeader] = useState(Utils.heightHeader());
   const [modalVisible, setModalVisible] = useState(false);
@@ -96,7 +96,7 @@ const EProductDetailStore = props => {
   const [sizeChoosed, setSizeChoosed] = useState(EFilterSizes[0]);
   const [isFavourite, setIsFavourtie] = useState(false);
   const scrollY = useRef(new Animated.Value(0)).current;
-  const productData = {...itemInit, ...item};
+  const productData = { ...itemInit, ...item };
   const {
     id,
     image,
@@ -125,16 +125,16 @@ const EProductDetailStore = props => {
     }, 1000);
   }, []);
 
-  const images = [{id: 0, image: image}].concat(imagesInit);
+  const images = [{ id: 0, image: image }].concat(imagesInit);
 
-  const goPostDetail = item => () => {
-    navigation.push('PostDetail', {item: item});
+  const goPostDetail = (item) => () => {
+    navigation.push("PostDetail", { item: item });
   };
 
   const onShare = async () => {
     try {
       const result = await Share.share({
-        message: 'https://codecanyon.net/user/passionui/portfolio',
+        message: "https://codecanyon.net/user/passionui/portfolio",
       });
 
       if (result.action === Share.sharedAction) {
@@ -155,7 +155,7 @@ const EProductDetailStore = props => {
   const headerBackgroundColor = scrollY.interpolate({
     inputRange: [0, 140],
     outputRange: [BaseColor.blackColor, colors.text],
-    extrapolate: 'clamp',
+    extrapolate: "clamp",
     useNativeDriver: true,
   });
 
@@ -163,7 +163,7 @@ const EProductDetailStore = props => {
   const headerImageOpacity = scrollY.interpolate({
     inputRange: [0, 250 - heightHeader - 20],
     outputRange: [1, 0],
-    extrapolate: 'clamp',
+    extrapolate: "clamp",
     useNativeDriver: true,
   });
 
@@ -174,14 +174,14 @@ const EProductDetailStore = props => {
     useNativeDriver: true,
   });
 
-  const onSelect = indexSelected => {};
+  const onSelect = (indexSelected) => {};
 
   const renderPlaceholder = () => {
     let holders = Array.from(Array(5));
 
     return (
       <Placeholder>
-        <View style={{padding: 20}}>
+        <View style={{ padding: 20 }}>
           {holders.map((item, index) => (
             <PlaceholderLine key={index} width={100} />
           ))}
@@ -192,16 +192,17 @@ const EProductDetailStore = props => {
 
   const renderContent = () => {
     return (
-      <View style={{paddingHorizontal: 20}}>
+      <View style={{ paddingHorizontal: 20 }}>
         <View style={styles.contentDescription}>
           <View>
             <View
               style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
                 marginBottom: 4,
-              }}>
+              }}
+            >
               <Text title3>{salePrice}</Text>
               <Text title3 grayColor style={styles.costPrice}>
                 {costPrice}
@@ -209,93 +210,95 @@ const EProductDetailStore = props => {
             </View>
             <Text body2>{taxStatus}</Text>
           </View>
-          <View style={{alignItems: 'flex-end'}}>
-            <Text subhead style={{marginBottom: 4}}>
-              {t('sku')}
+          <View style={{ alignItems: "flex-end" }}>
+            <Text subhead style={{ marginBottom: 4 }}>
+              {t("sku")}
             </Text>
             <Text headline>{sku}</Text>
           </View>
         </View>
-        <View style={{flexDirection: 'row', marginBottom: 8, marginTop: 10}}>
-          <Text body1>{t('color').toUpperCase()}</Text>
+        <View style={{ flexDirection: "row", marginBottom: 8, marginTop: 10 }}>
+          <Text body1>{t("color").toUpperCase()}</Text>
           <Text
             headline
             style={{
               paddingHorizontal: 4,
-            }}>
+            }}
+          >
             {`${colorChoosed.name}`.toUpperCase()}
           </Text>
         </View>
         <ProductColorPicker
           colorChoosed={colorChoosed}
           colors={eColors}
-          onPress={color => setColorChoosed(color)}
+          onPress={(color) => setColorChoosed(color)}
         />
-        <View style={{flexDirection: 'row', marginBottom: 8, marginTop: 20}}>
-          <Text body1>{t('size').toUpperCase()}</Text>
+        <View style={{ flexDirection: "row", marginBottom: 8, marginTop: 20 }}>
+          <Text body1>{t("size").toUpperCase()}</Text>
           <Text
             headline
             style={{
               paddingHorizontal: 4,
-            }}>
+            }}
+          >
             {`${sizeChoosed.name}`.toUpperCase()}
           </Text>
         </View>
         <ProductSize
           sizeChoosed={sizeChoosed}
           sizes={eSizes}
-          onPress={size => setSizeChoosed(size)}
+          onPress={(size) => setSizeChoosed(size)}
         />
 
-        <Text headline style={{marginTop: 20}}>
-          {t('specifications')}
+        <Text headline style={{ marginTop: 20 }}>
+          {t("specifications")}
         </Text>
 
         <View style={styles.specifications}>
           <ProductSpecGrid
-            style={{flex: 1}}
-            description={'Style'}
+            style={{ flex: 1 }}
+            description={"Style"}
             title={style}
           />
           <ProductSpecGrid
-            style={{flex: 1}}
-            description={'Measurement'}
+            style={{ flex: 1 }}
+            description={"Measurement"}
             title={measurement}
           />
         </View>
         <View style={styles.specifications}>
           <ProductSpecGrid
-            style={{flex: 1}}
-            description={'Wash Care'}
+            style={{ flex: 1 }}
+            description={"Wash Care"}
             title={washCare}
           />
 
           <ProductSpecGrid
-            style={{flex: 1}}
-            description={'Fabric Composition'}
+            style={{ flex: 1 }}
+            description={"Fabric Composition"}
             title={fabricComposition}
           />
         </View>
         <View style={styles.specifications}>
           <ProductSpecGrid
-            style={{flex: 1}}
-            description={'Men & Women'}
+            style={{ flex: 1 }}
+            description={"Men & Women"}
             title={menOrWomen}
           />
           <ProductSpecGrid
-            style={{flex: 1}}
-            description={'Season'}
+            style={{ flex: 1 }}
+            description={"Season"}
             title={season}
           />
         </View>
 
-        <Text headline style={{marginBottom: 20}}>
-          {t('returns_policy')}
+        <Text headline style={{ marginBottom: 20 }}>
+          {t("returns_policy")}
         </Text>
         <Text body2>{returnsPolicy}</Text>
 
-        <Text headline style={{marginVertical: 20}}>
-          {t('shipping')}
+        <Text headline style={{ marginVertical: 20 }}>
+          {t("shipping")}
         </Text>
         <Text body2>{shipping}</Text>
       </View>
@@ -303,10 +306,11 @@ const EProductDetailStore = props => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <SafeAreaView
         style={[BaseStyle.safeAreaView]}
-        forceInset={{top: 'always', bottom: 'always'}}>
+        forceInset={{ top: "always", bottom: "always" }}
+      >
         <Header title={title} />
         <ScrollView
           onContentSizeChange={() => {
@@ -314,29 +318,31 @@ const EProductDetailStore = props => {
           }}
           // showsHorizontalScrollIndicator={false}
           // showsVerticalScrollIndicator={false}
-          overScrollMode={'never'}
-          style={{zIndex: 10}}
+          overScrollMode={"never"}
+          style={{ zIndex: 10 }}
           scrollEventThrottle={16}
           onScroll={Animated.event(
             [
               {
                 nativeEvent: {
-                  contentOffset: {y: scrollY},
+                  contentOffset: { y: scrollY },
                 },
               },
             ],
             {
               useNativeDriver: false,
-            },
-          )}>
-          <View style={{height: 230 - heightHeader}} />
+            }
+          )}
+        >
+          <View style={{ height: 230 - heightHeader }} />
           <View
             style={{
               marginVertical: 10,
               paddingHorizontal: 20,
-            }}>
+            }}
+          >
             <Text subhead>{category}</Text>
-            <Text title3 style={{marginVertical: 10, marginVertical: 4}}>
+            <Text title3 style={{ marginVertical: 10, marginVertical: 4 }}>
               {title}
             </Text>
 
@@ -344,11 +350,13 @@ const EProductDetailStore = props => {
               <View>
                 <TouchableOpacity
                   style={styles.rateLine}
-                  onPress={() => navigation.navigate('EReviews')}>
+                  onPress={() => navigation.navigate("EReviews")}
+                >
                   <Tag
                     rateSmall
-                    style={{marginRight: 5}}
-                    onPress={() => navigation.navigate('Review')}>
+                    style={{ marginRight: 5 }}
+                    onPress={() => navigation.navigate("Review")}
+                  >
                     {rating}
                   </Tag>
                   <StarRating
@@ -358,8 +366,8 @@ const EProductDetailStore = props => {
                     rating={rating}
                     fullStarColor={BaseColor.yellowColor}
                   />
-                  <Text footnote style={{marginLeft: 5}}>
-                    {`${review} ${t('reviews').toLowerCase()}`}
+                  <Text footnote style={{ marginLeft: 5 }}>
+                    {`${review} ${t("reviews").toLowerCase()}`}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -375,10 +383,11 @@ const EProductDetailStore = props => {
         </ScrollView>
         <View
           style={{
-            flexDirection: 'row',
+            flexDirection: "row",
             paddingHorizontal: 20,
             paddingVertical: 10,
-          }}>
+          }}
+        >
           <Button
             style={{
               backgroundColor: Utils.parseHexTransparency(colors.primary, 30),
@@ -387,12 +396,17 @@ const EProductDetailStore = props => {
             icon={
               <Icon solid name="cart-plus" size={20} color={colors.primary} />
             }
-            onPress={() => setModalVisible(true)}>
-            {' '}
+            onPress={() => setModalVisible(true)}
+          >
+            {" "}
           </Button>
 
-          <Button full style={{flex: 1}} onPress={() => setModalVisible(true)}>
-            {t('buy_now')}
+          <Button
+            full
+            style={{ flex: 1 }}
+            onPress={() => setModalVisible(true)}
+          >
+            {t("buy_now")}
           </Button>
         </View>
       </SafeAreaView>
@@ -403,7 +417,8 @@ const EProductDetailStore = props => {
             opacity: headerImageOpacity,
             height: heightViewImg,
           },
-        ]}>
+        ]}
+      >
         <Swiper
           dotStyle={{
             backgroundColor: BaseColor.dividerColor,
@@ -412,23 +427,25 @@ const EProductDetailStore = props => {
           activeDotStyle={{
             marginBottom: 8,
           }}
-          paginationStyle={{bottom: 0}}
+          paginationStyle={{ bottom: 0 }}
           loop={false}
           activeDotColor={colors.primary}
           removeClippedSubviews={false}
-          onIndexChanged={index => onSelect(index)}>
+          onIndexChanged={(index) => onSelect(index)}
+        >
           {images.map((item, key) => {
             return (
               <TouchableOpacity
                 key={key}
-                style={{flex: 1}}
+                style={{ flex: 1 }}
                 activeOpacity={1}
                 onPress={() =>
-                  navigation.navigate('PreviewImage', {images: images})
-                }>
+                  navigation.navigate("PreviewImage", { images: images })
+                }
+              >
                 <Image
                   key={key}
-                  style={{flex: 1, width: '100%'}}
+                  style={{ flex: 1, width: "100%" }}
                   source={item.image}
                 />
               </TouchableOpacity>
@@ -446,7 +463,8 @@ const EProductDetailStore = props => {
               borderColor: BaseColor.whiteColor,
             },
           ]}
-          onPress={() => setIsFavourtie(!isFavourite)}>
+          onPress={() => setIsFavourtie(!isFavourite)}
+        >
           <Icon
             solid
             name="heart"
@@ -455,10 +473,11 @@ const EProductDetailStore = props => {
           />
         </TouchableOpacity>
       </Animated.View>
-      <Animated.View style={[styles.headerStyle, {position: 'absolute'}]}>
+      <Animated.View style={[styles.headerStyle, { position: "absolute" }]}>
         <SafeAreaView
-          style={{width: '100%'}}
-          forceInset={{top: 'always', bottom: 'never'}}>
+          style={{ width: "100%" }}
+          forceInset={{ top: "always", bottom: "never" }}
+        >
           <Header
             title=""
             renderLeft={() => {
@@ -509,7 +528,7 @@ const EProductDetailStore = props => {
         onSwipeComplete={() => setModalVisible(false)}
         onApply={() => {
           setModalVisible(false);
-          navigation.navigate('ECart');
+          navigation.navigate("ECart");
         }}
       />
     </View>

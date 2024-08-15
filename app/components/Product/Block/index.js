@@ -1,17 +1,17 @@
-import Icon from '@components/Icon';
-import Tag from '@components/Tag';
-import Text from '@components/Text';
-import Image from '@components/Image';
+import Icon from "@components/Icon";
+import Tag from "@components/Tag";
+import Text from "@components/Text";
+import Image from "@components/Image";
 
-import {BaseColor, Images, useTheme} from '@config';
-import PropTypes from 'prop-types';
-import {parseHexTransparency} from '@utils';
+import { BaseColor, Images, useTheme } from "@config";
+import PropTypes from "prop-types";
+import { parseHexTransparency } from "@utils";
 
-import React from 'react';
-import {ImageBackground, Linking, TouchableOpacity, View} from 'react-native';
-import styles from './styles';
-import Loading from './Loading';
-import Button from '@components/Button';
+import React from "react";
+import { ImageBackground, Linking, TouchableOpacity, View } from "react-native";
+import styles from "./styles";
+import Loading from "./Loading";
+import Button from "@components/Button";
 
 const Block = ({
   adv_descs,
@@ -44,18 +44,18 @@ const Block = ({
   currency,
   price,
 }) => {
-  const {colors} = useTheme();
+  const { colors } = useTheme();
 
   const message =
-    '\n Advertising ID : ' +
+    "\n Advertising ID : " +
     `${advID}` +
-    '\n Name : ' +
+    "\n Name : " +
     Block.agent_name +
-    '\n Email : ' +
+    "\n Email : " +
     Block.email +
-    '\n Phone Number : ' +
+    "\n Phone Number : " +
     Block.hp_wa +
-    '\n Contact me for the details information.';
+    "\n Contact me for the details information.";
 
   if (loading) {
     return <Loading style={style} />;
@@ -74,23 +74,22 @@ const Block = ({
         borderBottomWidth: 1,
         marginVertical: 1,
       }}
-      onPress={onPress}>
-      {images.map((item, index) =>
-      
-        <ImageBackground
-          key={index}
-          source={
-           {uri: item.pict}
-          }
-
-    
-          style={styles.imageBackground}>
-          {salePercent ? (
+      onPress={onPress}
+    >
+      {images.map(
+        (item, index) => (
+          <ImageBackground
+            key={index}
+            source={{ uri: item.pict }}
+            style={styles.imageBackground}
+          >
+            {salePercent ? (
               <Tag small style={styles.salePercent}>
                 {salePercent}
               </Tag>
             ) : null}
-        </ImageBackground>
+          </ImageBackground>
+        )
 
         // item.flag == 'Y' ? (
         //   <ImageBackground
@@ -123,46 +122,51 @@ const Block = ({
         // ) : null,
       )}
 
-      <View style={{paddingHorizontal: 16, paddingVertical: 8}}>
+      <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
         <Text title3 semibold>
           {adv_title}
         </Text>
-        <Text title3 style={{marginTop: 10}}>
+        <Text title3 style={{ marginTop: 10 }}>
           {currency} {price}
         </Text>
-        <View style={{flexDirection: 'row', marginTop: 10}}>
+        <View style={{ flexDirection: "row", marginTop: 10 }}>
           <Icon
             name="bath"
             size={14}
-            style={{flexDirection: 'row', marginRight: 10}}>
+            style={{ flexDirection: "row", marginRight: 10 }}
+          >
             {qty_bathroom}
           </Icon>
           <Icon
             name="bed"
             size={14}
-            style={{flexDirection: 'row', marginRight: 10}}>
+            style={{ flexDirection: "row", marginRight: 10 }}
+          >
             {qty_bedroom}
           </Icon>
           <Icon
             name="building"
             size={14}
-            style={{flexDirection: 'row', marginRight: 10}}>
+            style={{ flexDirection: "row", marginRight: 10 }}
+          >
             {nett}
           </Icon>
           <Icon
             name="map"
             size={14}
-            style={{flexDirection: 'row', marginRight: 10}}>
+            style={{ flexDirection: "row", marginRight: 10 }}
+          >
             {semi_gross}
           </Icon>
           <Icon
             name="clock"
             size={14}
             style={{
-              flexDirection: 'row-reverse',
+              flexDirection: "row-reverse",
               marginRight: 60,
               color: BaseColor.grayColor,
-            }}>
+            }}
+          >
             {publish_date}
           </Icon>
         </View>
@@ -172,10 +176,10 @@ const Block = ({
           numberOfLines={2}
           style={{
             paddingVertical: 15,
-          }}>
+          }}
+        >
           {adv_descs}
         </Text>
-        
 
         <View style={styles.content}>
           {/* <View style={styles.right}>
@@ -262,19 +266,19 @@ Block.propTypes = {
 };
 
 Block.defaultProps = {
-  adv_descs: '',
-  title: '',
+  adv_descs: "",
+  title: "",
   style: {},
-  pict: '',
-  currency: '',
-  price: '',
-  avatar: '',
+  pict: "",
+  currency: "",
+  price: "",
+  avatar: "",
   user: {},
-  publish_date: '',
+  publish_date: "",
   image: Images.home,
-  costPrice: '',
-  salePrice: '',
-  salePercent: '',
+  costPrice: "",
+  salePrice: "",
+  salePercent: "",
   onPress: () => {},
   isFavorite: false,
 };

@@ -71,7 +71,7 @@ import { notifikasi_nbadge, actionTypes } from "../../actions/NotifActions";
 import getNotifRed from "../../selectors/NotifSelectors";
 import getProject from "../../selectors/ProjectSelector";
 import getMenu from "../../selectors/MenuSelectors";
-import {get_menu_actions} from "../../actions/MenuActions";
+import { get_menu_actions } from "../../actions/MenuActions";
 import { data_project } from "../../actions/ProjectActions";
 import messaging from "@react-native-firebase/messaging";
 import apiCall from "../../config/ApiActionCreator";
@@ -109,17 +109,19 @@ const Home = (props) => {
   const notif = useSelector((state) => getNotifRed(state));
   const project = useSelector((state) => getProject(state));
   const dataMenus = useSelector((state) => getMenu(state));
- console.log('project di home', project)
+  console.log("project di home", project);
   // console.log(
   //   "99 state",
   //   useSelector((state) => state)
   // );
   // const email = user.user;
-  const [email, setEmail] = useState(user != null && user.userData != null ? user.userData.email : "");
-  console.log('usr di home', user)
+  const [email, setEmail] = useState(
+    user != null && user.userData != null ? user.userData.email : ""
+  );
+  console.log("usr di home", user);
   // console.log('pict user', user.userData.pict)
   const [fotoprofil, setFotoProfil] = useState(
-   user != null && user.userData != null
+    user != null && user.userData != null
       ? { uri: user.userData.pict }
       : { uri: `https://dev.ifca.co.id/no-image.png` }
   );
@@ -143,7 +145,10 @@ const Home = (props) => {
   const [lotno, setLotno] = useState([]);
   console.log("lotno array 0", lotno.lot_no);
   console.log("fotoprofil >", fotoprofil);
-  const repl = user != null && user.userData != null ? fotoprofil.uri : `https://dev.ifca.co.id/no-image.png`
+  const repl =
+    user != null && user.userData != null
+      ? fotoprofil.uri
+      : `https://dev.ifca.co.id/no-image.png`;
   // console.log("repll", repl);
   const [text_lotno, setTextLotno] = useState("");
   const [default_text_lotno, setDefaultLotno] = useState(true);
@@ -170,7 +175,7 @@ const Home = (props) => {
   const [urlImageGreetings, setUrlGreetingsImage] = useState("");
 
   const [refreshing, setRefreshing] = useState(false);
- 
+
   // useFocusEffect(
   //   // console.log('user di home focus', user),
   //   // console.log('userData di home focus', user.userData),
@@ -182,45 +187,50 @@ const Home = (props) => {
   //     // }
   //   }, [user]),
   // );
- // --- useeffect untuk project
- useEffect(() => {
-  if (project && project.data && project.data.length > 0) {
-    // console.log('entity useeffect di home', project.data[0].entity_cd);
-    setEntity(project.data[0].entity_cd);
-    setProjectNo(project.data[0].project_no);
-  }
-}, [project]);
+  // --- useeffect untuk project
+  useEffect(() => {
+    if (project && project.data && project.data.length > 0) {
+      // console.log('entity useeffect di home', project.data[0].entity_cd);
+      setEntity(project.data[0].entity_cd);
+      setProjectNo(project.data[0].project_no);
+    }
+  }, [project]);
 
-useEffect(() => {
-  if (entity_cd && project_no) {
-    getLotNo();
-  }
-}, [entity_cd, project_no]);
-// --- useeffect untuk project
+  useEffect(() => {
+    if (entity_cd && project_no) {
+      getLotNo();
+    }
+  }, [entity_cd, project_no]);
+  // --- useeffect untuk project
 
   // --- useeffect untuk update email/name
   useEffect(() => {
-    setEmail(user != null && user.userData != null ? user.userData.email : '');
+    setEmail(user != null && user.userData != null ? user.userData.email : "");
   }, [email]);
   // --- useeffect untuk update email/name
 
   // --- useeffect untuk update email/name
   useEffect(() => {
-    setName(user != null && user.userData != null ? user.userData.name : '');
+    setName(user != null && user.userData != null ? user.userData.name : "");
   }, [name]);
   // --- useeffect untuk update email/name
 
   useFocusEffect(
     useCallback(() => {
-      console.log('useFocusEffect triggered');
-      
+      console.log("useFocusEffect triggered");
+
       if (user && user.userData) {
-        console.log('User data:', user.userData);
-        dispatch(get_menu_actions({ token_firebase: user.Token, group_cd: user.userData.Group_Cd }));
+        console.log("User data:", user.userData);
+        dispatch(
+          get_menu_actions({
+            token_firebase: user.Token,
+            group_cd: user.userData.Group_Cd,
+          })
+        );
       }
-  
+
       return () => {
-        console.log('Screen unfocused or cleanup');
+        console.log("Screen unfocused or cleanup");
       };
     }, [user, dispatch])
   );
@@ -231,10 +241,14 @@ useEffect(() => {
     setRefreshing(true);
     // console
     // if (user && user.userData) {
-        console.log('user di home refresh', user),
-        console.log('userData di home refresh', user.userData),
-        dispatch(get_menu_actions({ token_firebase: user.Token, group_cd: user.userData.Group_Cd }))
-       .then(() => setRefreshing(false));  // Ensure refreshing ends after data is fetched
+    console.log("user di home refresh", user),
+      console.log("userData di home refresh", user.userData),
+      dispatch(
+        get_menu_actions({
+          token_firebase: user.Token,
+          group_cd: user.userData.Group_Cd,
+        })
+      ).then(() => setRefreshing(false)); // Ensure refreshing ends after data is fetched
     // }
   }, [user]);
 
@@ -266,7 +280,9 @@ useEffect(() => {
   useEffect(() => {
     dispatch(
       apiCall(
-        API_URL_LOKAL + `/setting/notification?email=${email}&entity_cd=${entity_cd}&project_no=${project_no}`, user.Token
+        API_URL_LOKAL +
+          `/setting/notification?email=${email}&entity_cd=${entity_cd}&project_no=${project_no}`,
+        user.Token
       )
     );
   }, []);
@@ -282,15 +298,15 @@ useEffect(() => {
     //   `http://apps.pakubuwono-residence.com/apiwebpbi/api/first_login_Get/` + email,
     // );
     const config = {
-      method: 'get',
+      method: "get",
       url: API_URL_LOKAL + `/home/greetings`,
       headers: {
-        'content-type': 'application/json',
+        "content-type": "application/json",
         Authorization: `Bearer ${user.userData.Token}`,
       },
     };
     await axios(config)
-        .then((res) => {
+      .then((res) => {
         console.log("res greetings", res.data.data);
         const status_user = res.data.data[0].status;
         // console.log('status user new old', status_user);
@@ -368,23 +384,31 @@ useEffect(() => {
   // https://dev.ifca.co.id/apicarstensz/api/facility/book/unit?entity=01&project=01&email=martin7id@yahoo.com
 
   async function getLotNo() {
-    console.log('email getlotno', email);
-  
+    console.log("email getlotno", email);
 
     const config = {
-      method: 'get',
+      method: "get",
       // url: 'http://dev.ifca.co.id:8080/apiciputra/api/approval/groupMenu?approval_user=MGR',
-      url: API_URL_LOKAL + `/home/common-unit?entity_cd=` + entity_cd + "&" + "project_no=" + project_no + "&" + "email=" + email ,
+      url:
+        API_URL_LOKAL +
+        `/home/common-unit?entity_cd=` +
+        entity_cd +
+        "&" +
+        "project_no=" +
+        project_no +
+        "&" +
+        "email=" +
+        email,
       // url: API_URL_LOKAL + `/home/common-unit` ,
       headers: {
-        'content-type': 'application/json',
+        "content-type": "application/json",
         // 'X-Requested-With': 'XMLHttpRequest',
         Authorization: `Bearer ${user.Token}`,
       },
       // params: {approval_user: user.userIDToken.UserId},
       params: {},
     };
- 
+
     try {
       await axios(config)
         .then((res) => {
@@ -405,7 +429,7 @@ useEffect(() => {
           // alert('error get');
         });
     } catch (error) {
-      console.log('error get lotno', error.response);
+      console.log("error get lotno", error.response);
       setErrors(error);
       // alert(hasError.toString());
     }
@@ -446,10 +470,10 @@ useEffect(() => {
 
   async function fetchDataDue() {
     const config = {
-      method: 'get',
+      method: "get",
       url: API_URL_LOKAL + `/modules/billing/due-summary/IFCAPB/${user.user}`,
       headers: {
-        'content-type': 'application/json',
+        "content-type": "application/json",
         Authorization: `Bearer ${user.Token}`,
       },
     };
@@ -465,10 +489,11 @@ useEffect(() => {
 
   async function fetchDataNotDue() {
     const config = {
-      method: 'get',
-      url: API_URL_LOKAL + `/modules/billing/current-summary/IFCAPB/${user.user}`,
+      method: "get",
+      url:
+        API_URL_LOKAL + `/modules/billing/current-summary/IFCAPB/${user.user}`,
       headers: {
-        'content-type': 'application/json',
+        "content-type": "application/json",
         Authorization: `Bearer ${user.Token}`,
       },
     };
@@ -484,10 +509,11 @@ useEffect(() => {
 
   async function fetchDataHistory() {
     const config = {
-      method: 'get',
-      url: API_URL_LOKAL + `/modules/billing/summary-history/IFCAPB/${user.user}`,
+      method: "get",
+      url:
+        API_URL_LOKAL + `/modules/billing/summary-history/IFCAPB/${user.user}`,
       headers: {
-        'content-type': 'application/json',
+        "content-type": "application/json",
         Authorization: `Bearer ${user.Token}`,
       },
     };
@@ -503,18 +529,18 @@ useEffect(() => {
 
   const dataNewsAnnounce = async () => {
     const config = {
-      method: 'get',
+      method: "get",
       // url: 'http://dev.ifca.co.id:8080/apiciputra/api/approval/groupMenu?approval_user=MGR',
-      url: API_URL_LOKAL + '/home/news',
+      url: API_URL_LOKAL + "/home/news",
       headers: {
-        'content-type': 'application/json',
+        "content-type": "application/json",
         // 'X-Requested-With': 'XMLHttpRequest',
         Authorization: `Bearer ${user.Token}`,
       },
       // params: {approval_user: user.userIDToken.UserId},
       params: {},
     };
-    console.log('config news', config);
+    console.log("config news", config);
     await axios(config)
       .then((res) => {
         console.log("res news", res.data.data);
@@ -534,11 +560,11 @@ useEffect(() => {
 
   const dataPromoClubFacilities = async () => {
     const config = {
-      method: 'get',
+      method: "get",
       // url: 'http://dev.ifca.co.id:8080/apiciputra/api/approval/groupMenu?approval_user=MGR',
       url: API_URL_LOKAL + `/home/promo`,
       headers: {
-        'content-type': 'application/json',
+        "content-type": "application/json",
         // 'X-Requested-With': 'XMLHttpRequest',
         Authorization: `Bearer ${user.Token}`,
       },
@@ -561,7 +587,7 @@ useEffect(() => {
           .filter((item) => item.category === "C")
           .map((items) => items);
 
-          const filterForFacilities = datapromoclub
+        const filterForFacilities = datapromoclub
           .filter((item) => item.category === "F")
           .map((items) => items);
 
@@ -609,8 +635,7 @@ useEffect(() => {
 
         const arrayImageEventResto = slicedataeventresto.map((item, key) => {
           return { url_image: item.url_image };
-        }
-      );
+        });
 
         // const slicedatapromo = datapromoclub.slice(0, 6);
         // console.log('slice data promo', slicedatapromo);
@@ -644,8 +669,6 @@ useEffect(() => {
 
   const galery = [...data];
 
-  
-
   //TOTAL DATE DUE
   const sum =
     getDataDue == 0
@@ -669,8 +692,6 @@ useEffect(() => {
   const math_total = Math.floor(sumNotDue) + Math.floor(sum);
   console.log("math total", math_total);
 
-  
-
   const unique =
     getDataDue == 0 ? 0 : [...new Set(getDataDue.map((item) => item.doc_no))];
   console.log("unique", unique);
@@ -689,8 +710,6 @@ useEffect(() => {
 
   const total_outstanding = Math.floor(invoice) + Math.floor(invoiceNotDue);
   console.log("total_outstanding", total_outstanding);
-
- 
 
   useEffect(() => {
     console.log("galery", galery);
@@ -1132,7 +1151,6 @@ useEffect(() => {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
         >
-          
           {/* <View style={{flex: 1}}> */}
           <ImageBackground
             // source={require('../../assets/images/image-home/Main_Image.png')}
@@ -1498,7 +1516,7 @@ useEffect(() => {
               // dataMenus.map((item, index)=>(
               //   <Text key={index}>{item.Title}</Text>
               // ))
-              <Categories style={{ marginTop: 10 }} dataMenus={dataMenus}/>
+              <Categories style={{ marginTop: 10 }} dataMenus={dataMenus} />
             )}
           </View>
 

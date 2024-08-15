@@ -6,7 +6,7 @@ const Loading = (props) => {
   const { style } = props;
   return (
     <Placeholder style={[styles.containerLoading, style]}>
-      <PlaceholderLine style={styles.loading} noMargin/>
+      <PlaceholderLine style={styles.loading} noMargin />
     </Placeholder>
   );
 };

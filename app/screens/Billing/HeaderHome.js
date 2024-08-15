@@ -1,16 +1,16 @@
-import {Icon, Image, Text} from '@components';
-import {BaseColor, Images, useTheme} from '@config';
-import React, {Fragment} from 'react';
-import {View, TouchableOpacity} from 'react-native';
-import styles from './styles';
-import {useNavigation} from '@react-navigation/core';
-import {useTranslation} from 'react-i18next';
+import { Icon, Image, Text } from "@components";
+import { BaseColor, Images, useTheme } from "@config";
+import React, { Fragment } from "react";
+import { View, TouchableOpacity } from "react-native";
+import styles from "./styles";
+import { useNavigation } from "@react-navigation/core";
+import { useTranslation } from "react-i18next";
 
-const HeaderHome = props => {
-  const {t} = useTranslation();
-  const {colors} = useTheme();
+const HeaderHome = (props) => {
+  const { t } = useTranslation();
+  const { colors } = useTheme();
   const navigation = useNavigation();
-  const {onPressRight = () => {}, style = {}, ComponentRight} = props;
+  const { onPressRight = () => {}, style = {}, ComponentRight } = props;
 
   return (
     <Fragment>
@@ -18,7 +18,7 @@ const HeaderHome = props => {
         <Image source={Images.profile1} style={styles.avatar} />
         <View style={styles.contentHeader}>
           <Text subhead light>
-            {t('hello')}
+            {t("hello")}
           </Text>
           <Text body2>Steve Garrett</Text>
         </View>
@@ -27,9 +27,10 @@ const HeaderHome = props => {
           ComponentRight
         ) : (
           <TouchableOpacity
-            style={{position: 'relative'}}
-            onPress={onPressRight}>
-            <Icon name={'bell'} solid size={19} color={BaseColor.grayColor} />
+            style={{ position: "relative" }}
+            onPress={onPressRight}
+          >
+            <Icon name={"bell"} solid size={19} color={BaseColor.grayColor} />
             <View
               style={[
                 styles.notyHeader,

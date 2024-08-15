@@ -1,45 +1,45 @@
-import Text from '@components/Text';
-import ListTransaction from '@components/List/Transaction';
-import PropTypes from 'prop-types';
-import React, {useState, Fragment} from 'react';
-import {View, StyleSheet} from 'react-native';
-import styles from './styles';
-import {useTheme} from '@config';
-import numFormat from '../../numFormat';
-import TransactionHistory from '../TransactionHistory';
-import {useNavigation, useRoute} from '@react-navigation/core';
+import Text from "@components/Text";
+import ListTransaction from "@components/List/Transaction";
+import PropTypes from "prop-types";
+import React, { useState, Fragment } from "react";
+import { View, StyleSheet } from "react-native";
+import styles from "./styles";
+import { useTheme } from "@config";
+import numFormat from "../../numFormat";
+import TransactionHistory from "../TransactionHistory";
+import { useNavigation, useRoute } from "@react-navigation/core";
 
 const TransactionExpandHistory = ({
   style = {
     paddingTop: 5,
   },
-  tradingPairTitle = '',
-  tradingPairValue = '',
-  priceTitle = '',
-  price = '',
-  name = '',
-  doc_no = '',
-  descs = '',
-  mbal_amt = '',
-  trx_type = '',
-  due_date = '',
-  doc_date = '',
-  tower = '',
-  feeTitle = '',
-  feeValue = '',
-  costTitle = '',
-  costValue = '',
-  changeTitle = '',
-  changeValue = '',
-  currentTitle = '',
-  currentValue = '',
-  debtor_acct = '',
-  lot_no = '',
-  mdoc_amt = '',
-  entity_cd = '',
-  project_no = '',
+  tradingPairTitle = "",
+  tradingPairValue = "",
+  priceTitle = "",
+  price = "",
+  name = "",
+  doc_no = "",
+  descs = "",
+  mbal_amt = "",
+  trx_type = "",
+  due_date = "",
+  doc_date = "",
+  tower = "",
+  feeTitle = "",
+  feeValue = "",
+  costTitle = "",
+  costValue = "",
+  changeTitle = "",
+  changeValue = "",
+  currentTitle = "",
+  currentValue = "",
+  debtor_acct = "",
+  lot_no = "",
+  mdoc_amt = "",
+  entity_cd = "",
+  project_no = "",
   ListTransactionProps = {
-    icon: 'exchange-alt',
+    icon: "exchange-alt",
     name: name,
     tower: tower,
     entity_cd: entity_cd,
@@ -58,7 +58,7 @@ const TransactionExpandHistory = ({
   isExpandInit = false,
 }) => {
   // console.log('propsss', ListTransactionProps);
-  const {colors} = useTheme();
+  const { colors } = useTheme();
   const [isExpand, setIsExpand] = useState(isExpandInit);
   const navigation = useNavigation();
 
@@ -79,18 +79,19 @@ const TransactionExpandHistory = ({
         ])}
         {...ListTransactionProps}
         onPress={() =>
-          navigation.navigate('HistoryBilling', {...ListTransactionProps})
+          navigation.navigate("HistoryBilling", { ...ListTransactionProps })
         }
       />
       {isExpand && (
         <View
           style={StyleSheet.flatten([
-            {paddingBottom: 20},
+            { paddingBottom: 20 },
             isExpand && {
               borderBottomWidth: 1,
               borderBottomColor: colors.border,
             },
-          ])}>
+          ])}
+        >
           <View style={[styles.container, style.paddingTop]}>
             <View>
               <Text subhead blod style={styles.title}>
@@ -110,7 +111,8 @@ const TransactionExpandHistory = ({
                 footnote
                 grayColor
                 numberOfLines={2}
-                style={styles.content}>
+                style={styles.content}
+              >
                 {lot_no}
               </Text>
             </View>

@@ -30,11 +30,11 @@ export const EReviewsData = [
       },
       {
         id: 5,
-        image:  Images.productGrid05,
+        image: Images.productGrid05,
       },
       {
         id: 6,
-        image:  Images.productGrid06,
+        image: Images.productGrid06,
       },
     ],
   },

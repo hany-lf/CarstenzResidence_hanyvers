@@ -8,20 +8,20 @@ import {
   Text,
   TextInput,
   TextInputMoney,
-} from '@components';
-import {BaseColor, BaseStyle, Typography, useTheme} from '@config';
-import {FRecentTransactions} from '@data';
-import LabelUpper2Row from '@components/Label/Upper2Row';
+} from "@components";
+import { BaseColor, BaseStyle, Typography, useTheme } from "@config";
+import { FRecentTransactions } from "@data";
+import LabelUpper2Row from "@components/Label/Upper2Row";
 
-import React, {useState} from 'react';
-import {useTranslation} from 'react-i18next';
-import {Keyboard, View} from 'react-native';
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Keyboard, View } from "react-native";
 
-const FBank = props => {
-  const {navigation} = props;
-  const {t} = useTranslation();
-  const {colors} = useTheme();
-  const [memo, setMemo] = useState('');
+const FBank = (props) => {
+  const { navigation } = props;
+  const { t } = useTranslation();
+  const { colors } = useTheme();
+  const [memo, setMemo] = useState("");
   const [add, setAdd] = useState(false);
   const item = FRecentTransactions[1];
   const [money, setMoney] = useState(32000);
@@ -29,9 +29,10 @@ const FBank = props => {
   return (
     <SafeAreaView
       style={BaseStyle.safeAreaView}
-      edges={['right', 'top', 'left']}>
+      edges={["right", "top", "left"]}
+    >
       <Header
-        title={t('transfer_amount')}
+        title={t("transfer_amount")}
         renderLeft={() => {
           return (
             <Icon
@@ -43,16 +44,16 @@ const FBank = props => {
           );
         }}
         onPressLeft={() => {
-          navigation.goBack('ModalProduct');
+          navigation.goBack("ModalProduct");
         }}
       />
 
-      <View style={{paddingHorizontal: 20, alignItems: 'center', flex: 1}}>
+      <View style={{ paddingHorizontal: 20, alignItems: "center", flex: 1 }}>
         <ProfileGridSmall
-          style={{marginVertical: 20}}
+          style={{ marginVertical: 20 }}
           image={item.image}
           name={item.name}
-          onPress={() => navigation.navigate('FChooseFriend')}
+          onPress={() => navigation.navigate("FChooseFriend")}
         />
         <Text body2>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
@@ -62,46 +63,49 @@ const FBank = props => {
         </Text>
         <View
           style={{
-            flexDirection: 'row',
+            flexDirection: "row",
             marginBottom: 10,
             marginTop: 20,
             paddingHorizontal: 10,
-          }}>
+          }}
+        >
           <LabelUpper2Row
-            style={{flex: 1}}
-            label={t('Specialist')}
+            style={{ flex: 1 }}
+            label={t("Specialist")}
             value="Ball Bay"
           />
           <LabelUpper2Row
-            style={{flex: 1}}
-            label={t('Available')}
+            style={{ flex: 1 }}
+            label={t("Available")}
             value="Duration 1 hour"
           />
         </View>
         <View
           style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
+            flexDirection: "row",
+            justifyContent: "space-between",
             marginBottom: 10,
             marginTop: 20,
             paddingHorizontal: 10,
-          }}>
+          }}
+        >
           <LabelUpper2Row
-            style={{flex: 1}}
-            label={t('Order Time')}
+            style={{ flex: 1 }}
+            label={t("Order Time")}
             value="2020-12-08"
           />
           <LabelUpper2Row
-            style={{flex: 1}}
-            label={t('Time')}
+            style={{ flex: 1 }}
+            label={t("Time")}
             value="09:00 - 10:00"
           />
         </View>
         <Button
           full
-          style={{marginTop: 20}}
-          onPress={() => navigation.navigate('FConfirmation')}>
-          {t('Choose')}
+          style={{ marginTop: 20 }}
+          onPress={() => navigation.navigate("FConfirmation")}
+        >
+          {t("Choose")}
         </Button>
       </View>
     </SafeAreaView>

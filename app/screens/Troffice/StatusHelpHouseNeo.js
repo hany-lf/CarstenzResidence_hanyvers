@@ -269,7 +269,7 @@ export default function StatusHelpHouseNeo({ route }) {
   //        });
   //      };
   const ds = dataStatus;
-  console.log("ds", ds);
+  // console.log("ds", ds);
   return (
     <SafeAreaView
       style={BaseStyle.safeAreaView}

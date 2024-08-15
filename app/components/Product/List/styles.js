@@ -27,5 +27,5 @@ export default StyleSheet.create({
   },
   containLoading: {
     flexDirection: "row",
-  }
+  },
 });

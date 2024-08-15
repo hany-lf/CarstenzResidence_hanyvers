@@ -1,41 +1,41 @@
-import {persistor, store} from './store';
-import React, {useEffect, useState} from 'react';
-import {Provider} from 'react-redux';
-import {PersistGate} from 'redux-persist/integration/react';
-import App from './navigation';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
-import * as Utils from '@utils';
-import {NavigationContainer} from '@react-navigation/native';
+import { persistor, store } from "./store";
+import React, { useEffect, useState } from "react";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import App from "./navigation";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import * as Utils from "@utils";
+import { NavigationContainer } from "@react-navigation/native";
 // import OneSignal from 'react-native-onesignal';
-import NotifService from './NotifService';
-import {Alert} from 'react-native';
+import NotifService from "./NotifService";
+import { Alert } from "react-native";
 // import {useNavigation} from '@react-navigation/native';
 
 Utils.setupLayoutAnimation();
 
 const Mazi = () => {
   // const {navigation} = props;
-  const [registerToken, setRegisterToken] = useState('');
+  const [registerToken, setRegisterToken] = useState("");
   const [fcmRegistered, setFcmRegistered] = useState(false);
   // const navigation = useNavigation();
 
-  const onRegister = token => {
+  const onRegister = (token) => {
     setRegisterToken(token.token);
-    console.log('token', registerToken);
+    console.log("token", registerToken);
     setFcmRegistered(true);
   };
 
-  const onNotif = notif => {
-    console.log('notif di on notif', notif);
+  const onNotif = (notif) => {
+    console.log("notif di on notif", notif);
     // navigation.navigate('Notification', notif);
-    console.log('notif data title di onnotif', notif.data.title);
-    console.log('notif data body di onnotif', notif.data.body);
+    console.log("notif data title di onnotif", notif.data.title);
+    console.log("notif data body di onnotif", notif.data.body);
     // Alert.alert('di index.app on notif');
   };
 
   const notif = new NotifService(onRegister, onNotif);
-  const handlePerm = perms => {
-    Alert.alert('Permissions', JSON.stringify(perms));
+  const handlePerm = (perms) => {
+    Alert.alert("Permissions", JSON.stringify(perms));
   };
 
   useEffect(() => {

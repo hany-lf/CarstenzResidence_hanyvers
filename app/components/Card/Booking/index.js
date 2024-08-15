@@ -14,7 +14,7 @@ const CardBooking = ({
   secondDescription,
   textButton,
   onPress,
-  loading = false
+  loading = false,
 }) => {
   const { colors } = useTheme();
 
@@ -25,7 +25,7 @@ const CardBooking = ({
           {description}
         </Text>
         {loading ? (
-          <Loading/>
+          <Loading />
         ) : (
           <Text title3 semibold style={{ marginVertical: 4 }}>
             {price}
