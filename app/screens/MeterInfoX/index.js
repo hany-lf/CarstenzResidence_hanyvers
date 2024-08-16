@@ -41,6 +41,7 @@ const { height: deviceHeight, width: deviceWidth } = Dimensions.get("window");
 import moment from "moment";
 import Style from "./styles";
 import { API_URL_LOKAL } from "@env";
+import axios from "axios";
 
 const MeterInfoX = (params) => {
   const [dataMember, setDataMember] = useState(params.params);
@@ -48,29 +49,43 @@ const MeterInfoX = (params) => {
   const { colors } = useTheme();
   const navigation = useNavigation();
   const [projectDesc, setProjectDesc] = useState("");
-  const [chooseMonths, setChooseMonths] = useState("");
-  const [getYears, setGetYears] = useState("");
-  const projectSelector = useSelector((state) => getProject(state));
+  const toMonth = moment(new Date()).format("MM");
+  console.log('tomount', toMonth)
+  const [chooseMonths, setChooseMonths] = useState(toMonth);
+  const toYears = moment(new Date()).format("YYYY");
+  const [getYears, setGetYears] = useState(toYears);
+
+  // const projectSelector = useSelector((state) => getProject(state));
   const user = useSelector((state) => getUser(state));
   const [email, setEmail] = useState(user != null ? user.user : "");
-  const [dataProject, setDataProject] = useState([]);
+  // const [dataProject, setDataProject] = useState([]);
   const [dataMeter, setDataMeter] = useState([]);
   const [message, setMessage] = useState("");
   const [errorMsg, setError] = useState("");
-  const [spinner, setSpinner] = useState(true);
+  const [spinner, setSpinner] = useState(false);
+
+  const [showChooseProject, setShowChooseProject] = useState(false);
+  const [isFocus, setIsFocus] = useState(false);
+  const [valueProject, setValueProject] = useState([]);
+  const [valueProjectSelected, setValueProjectSelected] = useState(null);
+  const [projectData, setProjectData] = useState([]);
+  const [entity_cd, setEntity] = useState("");
+  const [project_no, setProjectNo] = useState("");
+  const project = useSelector((state) => getProject(state));
+  const [loading, setLoading] = useState(true);
 
   console.log("params >", dataMember);
   console.log("email >", email);
   console.log("user >", user);
   // console.log('projectSelector >', projectSelector);
-  console.log("projectSelector >", projectSelector.Data[0].entity_cd);
+
   console.log("getMeterLoad", dataMeter);
-  console.log("dataProject", dataProject);
+
   console.log("chooseMonths", chooseMonths);
 
-  const toMonth = moment(new Date()).format("MM");
-  const toYears = moment(new Date()).format("YYYY");
-  const toMonthName = moment(new Date()).format("MMMM");
+  // const toMonth = moment(new Date()).format("MM");
+  // const toYears = moment(new Date()).format("YYYY");
+  const toMonthName = moment(new Date()) .format("MMMM");
 
   const customStyleIndex = 0;
 
@@ -82,15 +97,15 @@ const MeterInfoX = (params) => {
     }
   };
   const defaultMonths = [
-    { value: "1", descs: "January" },
-    { value: "2", descs: "February" },
-    { value: "3", descs: "March" },
-    { value: "4", descs: "April" },
-    { value: "5", descs: "May" },
-    { value: "6", descs: "June" },
-    { value: "7", descs: "July" },
-    { value: "8", descs: "August" },
-    { value: "9", descs: "September" },
+    { value: "01", descs: "January" },
+    { value: "02", descs: "February" },
+    { value: "03", descs: "March" },
+    { value: "04", descs: "April" },
+    { value: "05", descs: "May" },
+    { value: "06", descs: "June" },
+    { value: "07", descs: "July" },
+    { value: "08", descs: "August" },
+    { value: "09", descs: "September" },
     { value: "10", descs: "October" },
     { value: "11", descs: "November" },
     { value: "12", descs: "December" },
@@ -98,43 +113,33 @@ const MeterInfoX = (params) => {
 
   const defaultYears = moment(new Date()).format("YYYY");
 
-  const getProjects = () => {
-    const getEmail = email;
-    console.log(
-      "url tes",
-      "http://apps.pakubuwono-residence.com/apiwebpbi/api/getProject" +
-        "/" +
-        `${getEmail}`
-    );
-    fetch(API_URL_LOKAL + "/getProject" + "/" + `${getEmail}`, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((res) => {
-        let resData = res.data;
-        console.log("resData", res.data);
-        console.log("resData1", res.data);
-        setDataProject(resData);
-        // getMeterLoad(resData);
-        // onRetrieve(resData);
-        setSpinner(false);
-        // if (!res.Error) {
+   // --- useeffect untuk project
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+      // getTower();
+      if (project && project.data && project.data.length > 0) {
+        // console.log('entity useeffect di home', project.data[0].entity_cd);
+        setEntity(project.data[0].entity_cd);
+        setProjectNo(project.data[0].project_no);
+        const projects = project.data.map((item, id) => ({
+          label: item.descs,
+          value: item.project_no,
+        }));
+        console.log("data di project", project);
+        setProjectData(project.data);
+        setValueProject(projects);
+      }
+      // getDataStorage();
+      // defaultLocation();
+    }, 3000);
+  }, [project]);
 
-        // ---- getMeterLoad baru di load jika data yang ada di getProject muncul.
-
-        // } else {
-        // this.setState({isLoaded: true}, () => {
-        // alert(res.Pesan);
-        // });
-        // }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+    // --- useeffect untuk update email/name
+  useEffect(() => {
+    setEmail(user != null && user.userData != null ? user.userData.email : "");
+  }, [email]);
+  // --- useeffect untuk update email/name
 
   // const getMeterLoad = data => {
   //   const entitycds = data[0].entity_cd;
@@ -193,14 +198,20 @@ const MeterInfoX = (params) => {
   // };
 
   const onRetrieve = () => {
-    if (!getYears && !chooseMonths && !toMonth) {
+    if (getYears == '' || chooseMonths == '' || toMonth == '') {
+      console.log('cek getYears', getYears);
+      console.log('cek chooseMonths', chooseMonths);
+      console.log('cek toMonth', toMonth);
       alert("Please fill in Years");
     } else {
+      // console.log('get years ada isinya', getYears)
+      //    console.log('ada isinya chooseMonths', chooseMonths);
+      // console.log('ada isinya toMonth', toMonth);
       setSpinner(true);
 
       const toEmail = email;
-      const Entitycdz = projectSelector.Data[0].entity_cd;
-      const Projectnoz = projectSelector.Data[0].project_no;
+      const Entitycdz = entity_cd;
+      const Projectnoz = project_no;
       const Monthz = chooseMonths || toMonth;
       const Yearz = getYears;
 
@@ -209,45 +220,26 @@ const MeterInfoX = (params) => {
       console.log("Monthz", Monthz);
       console.log("getYears", getYears);
       console.log("toEmail", toEmail);
-      console.log(
-        "cek isi retrieve >",
-        "http://apps.pakubuwono-residence.com/apiwebpbi/api/modules/meter/data-filter/IFCAPB/" +
-          Entitycdz +
-          "/" +
-          Projectnoz +
-          "/" +
-          toEmail +
-          "/" +
-          Monthz +
-          "/" +
-          Yearz
-      );
-      fetch(
-        API_URL_LOKAL +
-          "/modules/meter/data-filter/IFCAPB/" +
-          Entitycdz +
-          "/" +
-          Projectnoz +
-          "/" +
-          toEmail +
-          "/" +
-          Monthz +
-          "/" +
-          Yearz,
-        {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-          },
-        }
-      )
-        .then((response) => response.json())
+
+      const config = {
+        method: "get",
+        url: API_URL_LOKAL + "/modules/meter/data-filter/" + Entitycdz + "/" + Projectnoz + "/" + toEmail + "/" + Monthz + "/" + Yearz,
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${user.Token}`,
+        },
+      };
+
+      axios(config)
         .then((res) => {
           console.log("cek isi RES", res);
-          if (res.success) {
-            let resData = res.data;
-            let resPesan = res.message;
-            let resError = res.success;
+           let resData = res.data.data;
+            let resPesan = res.data.message;
+            let resError = res.data.success;
+          if (res.data.success) {
+            // let resData = res.data.data;
+            // let resPesan = res.data.message;
+            // let resError = res.data.success;
             setDataMeter(resData);
             setMessage(resPesan);
             setError(resError);
@@ -255,21 +247,19 @@ const MeterInfoX = (params) => {
             setSpinner(false);
             // console.log('getMeterLoad', this);
           } else {
-            alert(res.Pesan);
+            console.log('res.message', res.data.data)
+             setDataMeter(resData);
+            setMessage(resPesan);
+            setError(resError);
+            // alert(res.message);
             setSpinner(false);
           }
         })
         .catch((error) => {
-          console.log(error);
+          console.log('error retrieve,', error.response);
         });
     }
   };
-
-  useEffect(() => {
-    setTimeout(() => {
-      getProjects();
-    }, 1000);
-  }, []);
 
   return (
     <SafeAreaView>
@@ -332,7 +322,7 @@ const MeterInfoX = (params) => {
             onValueChange={(val) => setProjectDesc(val)}
           >
             {/* <Picker.Item label="Java" value="java" /> */}
-            {dataProject.map((data, key) => {
+            {projectData.map((data, key) => {
               return (
                 <Picker.Item
                   key={key}
@@ -369,7 +359,7 @@ const MeterInfoX = (params) => {
               },
             ]}
             mode={"dropdown"}
-            selectedValue={chooseMonths || toMonth}
+            selectedValue={chooseMonths}
             onValueChange={(val) => setChooseMonths(val)}
           >
             {defaultMonths.map((data, key) => (
@@ -393,7 +383,8 @@ const MeterInfoX = (params) => {
           >
             Years
           </Text>
-          <TextInput
+          <View style={{flexDirection: 'column', justifyContent: 'flex-start'}}>
+            <TextInput
             style={{
               height: 55,
               backgroundColor:
@@ -414,7 +405,14 @@ const MeterInfoX = (params) => {
             value={getYears}
             onChangeText={(val) => setGetYears(val)}
           />
+            {getYears == null ? 
+              <Text style={{color: 'red', fontSize:11, paddingHorizontal: 20}}>
+                If you don't fill in the Year field, it will fill in the current year.
+              </Text> : 
+            null}
+          </View>
         </View>
+        
         <View
           style={{
             flexDirection: "row",
@@ -450,9 +448,9 @@ const MeterInfoX = (params) => {
           <ScrollView style={styles.listview}>
             {spinner ? (
               <ActivityIndicator size="large" color="#37BEB7" />
-            ) : errorMsg == true ? (
-              <Text>{message}</Text>
-            ) : dataMeter != null ? (
+            ) : errorMsg == false ? (
+              <Text style={{textAlign: 'center'}}>{message}</Text>
+            ) : dataMeter != null || dataMeter.length > 0 ? (
               dataMeter.map((data, key) => {
                 return (
                   <View key={key} style={styles.card}>
