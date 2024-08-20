@@ -1,17 +1,17 @@
-import Icon from "@components/Icon";
-import Tag from "@components/Tag";
-import Text from "@components/Text";
-import Image from "@components/Image";
+import Icon from '@components/Icon';
+import Tag from '@components/Tag';
+import Text from '@components/Text';
+import Image from '@components/Image';
 
-import { BaseColor, Images, useTheme } from "@config";
-import PropTypes from "prop-types";
-import { parseHexTransparency } from "@utils";
+import { BaseColor, Images, useTheme } from '@config';
+import PropTypes from 'prop-types';
+import { parseHexTransparency } from '@utils';
 
-import React from "react";
-import { ImageBackground, Linking, TouchableOpacity, View } from "react-native";
-import styles from "./styles";
-import Loading from "./Loading";
-import Button from "@components/Button";
+import React from 'react';
+import { ImageBackground, Linking, TouchableOpacity, View } from 'react-native';
+import styles from './styles';
+import Loading from './Loading';
+import Button from '@components/Button';
 
 const Block = ({
   adv_descs,
@@ -47,15 +47,15 @@ const Block = ({
   const { colors } = useTheme();
 
   const message =
-    "\n Advertising ID : " +
+    '\n Advertising ID : ' +
     `${advID}` +
-    "\n Name : " +
+    '\n Name : ' +
     Block.agent_name +
-    "\n Email : " +
+    '\n Email : ' +
     Block.email +
-    "\n Phone Number : " +
+    '\n Phone Number : ' +
     Block.hp_wa +
-    "\n Contact me for the details information.";
+    '\n Contact me for the details information.';
 
   if (loading) {
     return <Loading style={style} />;
@@ -76,51 +76,34 @@ const Block = ({
       }}
       onPress={onPress}
     >
-      {images.map(
-        (item, index) => (
-          <ImageBackground
-            key={index}
-            source={{ uri: item.pict }}
-            style={styles.imageBackground}
-          >
-            {salePercent ? (
-              <Tag small style={styles.salePercent}>
-                {salePercent}
-              </Tag>
-            ) : null}
-          </ImageBackground>
-        )
-
-        // item.flag == 'Y' ? (
-        //   <ImageBackground
-        //     key={index}
-        //     source={
-        //       `${item.pict}` != null
-        //         ? {uri: `${item.pict}`.replace('https', 'http')}
-        //         : require('../../../assets/images/image-home/Main_Image.png')
-        //     }
-        //     // {
-        //     // uri:
-        //     //   `${item.pict}` != null
-        //     //     ? `${item.pict}`.replace('https', 'http')
-        //     //     : require('../../assets/images/image-home/Main_Image.png'),
-        //     // }
-        //     // }
-        //     style={styles.imageBackground}>
-        //     {/* <Icon
-        //       name="heart"
-        //       solid={isFavorite}
-        //       size={24}
-        //       color={isFavorite ? colors.primary : BaseColor.whiteColor}
-        //       style={{position: 'absolute', top: 8, right: 8}}></Icon> */}
-        //     {salePercent ? (
-        //       <Tag small style={styles.salePercent}>
-        //         {salePercent}
-        //       </Tag>
-        //     ) : null}
-        //   </ImageBackground>
-        // ) : null,
+      {/* -- image ini dimunculin 1 object array aja -- */}
+      {images.length > 0 && (
+        <ImageBackground
+          source={{ uri: images[0].pict }}
+          style={styles.imageBackground}
+        >
+          {salePercent ? (
+            <Tag small style={styles.salePercent}>
+              {salePercent}
+            </Tag>
+          ) : null}
+        </ImageBackground>
       )}
+      {/* -- image ini dimunculin 1 object array aja -- */}
+
+      {/* {images.map((item, index) => (
+        <ImageBackground
+          key={index}
+          source={{ uri: item.pict }}
+          style={styles.imageBackground}
+        >
+          {salePercent ? (
+            <Tag small style={styles.salePercent}>
+              {salePercent}
+            </Tag>
+          ) : null}
+        </ImageBackground>
+      ))} */}
 
       <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
         <Text title3 semibold>
@@ -129,32 +112,32 @@ const Block = ({
         <Text title3 style={{ marginTop: 10 }}>
           {currency} {price}
         </Text>
-        <View style={{ flexDirection: "row", marginTop: 10 }}>
+        <View style={{ flexDirection: 'row', marginTop: 10 }}>
           <Icon
             name="bath"
             size={14}
-            style={{ flexDirection: "row", marginRight: 10 }}
+            style={{ flexDirection: 'row', marginRight: 10 }}
           >
             {qty_bathroom}
           </Icon>
           <Icon
             name="bed"
             size={14}
-            style={{ flexDirection: "row", marginRight: 10 }}
+            style={{ flexDirection: 'row', marginRight: 10 }}
           >
             {qty_bedroom}
           </Icon>
           <Icon
             name="building"
             size={14}
-            style={{ flexDirection: "row", marginRight: 10 }}
+            style={{ flexDirection: 'row', marginRight: 10 }}
           >
             {nett}
           </Icon>
           <Icon
             name="map"
             size={14}
-            style={{ flexDirection: "row", marginRight: 10 }}
+            style={{ flexDirection: 'row', marginRight: 10 }}
           >
             {semi_gross}
           </Icon>
@@ -162,7 +145,7 @@ const Block = ({
             name="clock"
             size={14}
             style={{
-              flexDirection: "row-reverse",
+              flexDirection: 'row-reverse',
               marginRight: 60,
               color: BaseColor.grayColor,
             }}
@@ -266,19 +249,19 @@ Block.propTypes = {
 };
 
 Block.defaultProps = {
-  adv_descs: "",
-  title: "",
+  adv_descs: '',
+  title: '',
   style: {},
-  pict: "",
-  currency: "",
-  price: "",
-  avatar: "",
+  pict: '',
+  currency: '',
+  price: '',
+  avatar: '',
   user: {},
-  publish_date: "",
+  publish_date: '',
   image: Images.home,
-  costPrice: "",
-  salePrice: "",
-  salePercent: "",
+  costPrice: '',
+  salePrice: '',
+  salePercent: '',
   onPress: () => {},
   isFavorite: false,
 };

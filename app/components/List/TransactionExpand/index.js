@@ -1,51 +1,53 @@
-import { Text, Button } from "@components";
-import ListTransaction from "@components/List/Transaction";
-import PropTypes from "prop-types";
-import React, { useState, Fragment, useEffect } from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
-import styles from "./styles";
-import { useTheme } from "@config";
-import numFormat from "../../numFormat";
-import { useNavigation, useRoute } from "@react-navigation/core";
-import Modal from "react-native-modal";
-import { useTranslation } from "react-i18next";
-import axios from "axios";
-import { ActivityIndicator } from "react-native-paper";
-import numFormattanpaRupiah from "../../numFormattanpaRupiah";
-import { API_URL_LOKAL } from "@env";
+import { Text, Button } from '@components';
+import ListTransaction from '@components/List/Transaction';
+import PropTypes from 'prop-types';
+import React, { useState, Fragment, useEffect } from 'react';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import styles from './styles';
+import { useTheme } from '@config';
+import numFormat from '../../numFormat';
+import { useNavigation, useRoute } from '@react-navigation/core';
+import Modal from 'react-native-modal';
+import { useTranslation } from 'react-i18next';
+import axios from 'axios';
+import { ActivityIndicator } from 'react-native-paper';
+import numFormattanpaRupiah from '../../numFormattanpaRupiah';
+import { API_URL_LOKAL } from '@env';
+import getUser from '../../../selectors/UserSelectors';
+import { useDispatch, useSelector } from 'react-redux';
 
 const TransactionExpand = ({
   style = {
     paddingTop: 5,
   },
-  tradingPairTitle = "",
-  tradingPairValue = "",
-  priceTitle = "",
-  price = "",
-  name = "",
-  doc_no = "",
-  descs = "",
-  mbal_amt = "",
-  trx_type = "",
-  due_date = "",
-  doc_date = "",
-  tower = "",
-  lot_no = "",
-  feeTitle = "",
-  feeValue = "",
-  costTitle = "",
-  costValue = "",
-  changeTitle = "",
-  changeValue = "",
-  currentTitle = "",
-  currentValue = "",
-  debtor_acct = "",
-  entity_cd = "",
-  project_no = "",
-  email = "",
-  tab_id = "",
+  tradingPairTitle = '',
+  tradingPairValue = '',
+  priceTitle = '',
+  price = '',
+  name = '',
+  doc_no = '',
+  descs = '',
+  mbal_amt = '',
+  trx_type = '',
+  due_date = '',
+  doc_date = '',
+  tower = '',
+  lot_no = '',
+  feeTitle = '',
+  feeValue = '',
+  costTitle = '',
+  costValue = '',
+  changeTitle = '',
+  changeValue = '',
+  currentTitle = '',
+  currentValue = '',
+  debtor_acct = '',
+  entity_cd = '',
+  project_no = '',
+  email = '',
+  tab_id = '',
   ListTransactionProps = {
-    icon: "exchange-alt",
+    icon: 'exchange-alt',
     name: name,
     tower: tower,
     descs: descs,
@@ -66,29 +68,39 @@ const TransactionExpand = ({
   const [isExpand, setIsExpand] = useState(isExpandInit);
   const navigation = useNavigation();
   const [modalSuccessVisible, showModalSuccess] = useState(false);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
   const [hasError, setErrors] = useState(false);
   const { t } = useTranslation();
   const [datadetailDateDue, setDetailDateDue] = useState([]);
   const [datadetailNotDue, setDetailNotDue] = useState([]);
+  const user = useSelector((state) => getUser(state));
 
   const [loading, setLoading] = useState(true);
 
   const detailDateDue = async () => {
+    // /billing/detail-history/mgr@ifca.co.id/01/02/10206/UT24070048
     console.log(
-      "url getDataDue",
+      'url api detail date due',
       API_URL_LOKAL +
-        `/modules/billing/detail-history/${email}/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`
+        `/modules/billing/detail-history/${email}/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`,
     );
     try {
-      const res = await axios.get(
-        API_URL_LOKAL +
-          `/modules/billing/detail-history/${email}/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`
-      );
+      const config = {
+        method: 'get',
+        url:
+          API_URL_LOKAL +
+          `/modules/billing/detail-history/${email}/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`,
+        headers: {
+          'content-type': 'application/json',
+          Authorization: `Bearer ${user.Token}`,
+        },
+      };
+      const res = await axios(config);
       setDetailDateDue(res.data.data);
-      console.log("detail date due -->", res.data.data);
+      console.log('detail date due -->', res.data.data);
       setLoading(false);
     } catch (error) {
+      console.log('error detail date due -->', error);
       setErrors(error);
       // alert(hasError.toString());
     }
@@ -96,17 +108,19 @@ const TransactionExpand = ({
 
   const detailNotDue = async () => {
     try {
-      console.log(
-        "api not due detail",
-        API_URL_LOKAL +
-          `/modules/billing/detail-history/${email}/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`
-      );
-      const res = await axios.get(
-        API_URL_LOKAL +
-          `/modules/billing/detail-history/${email}/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`
-      );
+      const config = {
+        method: 'get',
+        url:
+          API_URL_LOKAL +
+          `/modules/billing/detail-history/${email}/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`,
+        headers: {
+          'content-type': 'application/json',
+          Authorization: `Bearer ${user.Token}`,
+        },
+      };
+      const res = await axios(config);
       setDetailNotDue(res.data.data);
-      console.log("detail not due -->", res.data);
+      console.log('detail not due -->', res.data);
       setLoading(false);
     } catch (error) {
       setErrors(error);
@@ -126,9 +140,9 @@ const TransactionExpand = ({
   const math_total = Math.floor(sumTotal);
   const replaceTotal = math_total
     .toFixed()
-    .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
-  console.log("sum detail mbal mont", sumTotal);
-  console.log("replace total", replaceTotal);
+    .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+  console.log('sum detail mbal mont', sumTotal);
+  console.log('replace total', replaceTotal);
 
   const datadetailNotDue_null = datadetailNotDue == null ? 0 : datadetailNotDue;
 
@@ -141,9 +155,9 @@ const TransactionExpand = ({
   const math_total_notdue = Math.floor(sumTotalNotDue);
   const replaceTotal_notdue = math_total_notdue
     .toFixed()
-    .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
-  console.log("sum detail mbal mont due date", math_total_notdue);
-  console.log("replace total due date", replaceTotal_notdue);
+    .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+  console.log('sum detail mbal mont due date', math_total_notdue);
+  console.log('replace total due date', replaceTotal_notdue);
 
   // useEffect(() => {
   //   detailDateDue();
@@ -162,8 +176,8 @@ const TransactionExpand = ({
       debtor_acct: debtor_acct,
       doc_no: doc_no,
     };
-    console.log("params for click attach", params);
-    navigation.navigate("AttachmentBilling", params);
+    console.log('params for click attach', params);
+    navigation.navigate('AttachmentBilling', params);
     // if (data.debtor_acct == '') {
     //   // alert('Please Choose Debtor First');
     //   setMessage('Please choose debtor first');
@@ -196,7 +210,7 @@ const TransactionExpand = ({
         onPress={() => clickExpand()}
       />
       <Button style={{ height: 35 }} onPress={() => clickAttachment()}>
-        <Text style={{ color: "#fff", fontSize: 14 }}>Attachment</Text>
+        <Text style={{ color: '#fff', fontSize: 14 }}>Attachment</Text>
       </Button>
       {isExpand && (
         <View
@@ -214,28 +228,28 @@ const TransactionExpand = ({
               color={colors.primary}
               style={{ marginTop: 20 }}
             />
-          ) : datadetailDateDue != 0 ? (
+          ) : tab_id == 1 && datadetailDateDue != 0 ? (
             <View>
               {datadetailDateDue.map((item, key) => (
                 <View key={key}>
                   <View
                     style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      width: "100%",
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      width: '100%',
                       // paddingHorizontal: 10,
                       paddingVertical: 5,
                     }}
                   >
-                    <View style={{ width: "50%", paddingLeft: 10 }}>
+                    <View style={{ width: '50%', paddingLeft: 10 }}>
                       <Text subhead>{item.descs}</Text>
                     </View>
                     <View
                       style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
 
-                        width: "35%",
+                        width: '35%',
                       }}
                     >
                       <Text>Rp. </Text>
@@ -251,78 +265,77 @@ const TransactionExpand = ({
               <View
                 style={{
                   borderTopWidth: 0.5,
-                  borderStyle: "dashed",
+                  borderStyle: 'dashed',
                   borderColor: colors.primary,
                   marginLeft: 9,
                 }}
               ></View>
               <View
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  width: "100%",
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  width: '100%',
                   // paddingHorizontal: 10,
                   paddingVertical: 5,
                 }}
               >
-                <View style={{ width: "50%", paddingLeft: 10 }}>
+                <View style={{ width: '50%', paddingLeft: 10 }}>
                   <Text subhead bold style={{ fontSize: 16 }}>
-                    Totals
+                    Total
                   </Text>
                 </View>
                 <View
                   style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
 
-                    width: "35%",
+                    width: '35%',
                   }}
                 >
                   <Text subhead bold style={{ fontSize: 16 }}>
-                    Rp.{" "}
+                    Rp.{' '}
                   </Text>
                   <Text subhead bold style={{ fontSize: 16 }}>
                     {replaceTotal}
-                    {/* 100.000.000.00 */}
                   </Text>
-                  {/* <Text subhead>{numFormat(item.mbal_amt)}</Text> */}
                 </View>
               </View>
             </View>
           ) : (
             tab_id == 1 && (
-              <View style={{ alignSelf: "center" }}>
+              <View style={{ alignSelf: 'center' }}>
                 <Text>Not have data detail </Text>
               </View>
             )
           )}
+
           {tab_id == 2 && loading ? (
             <ActivityIndicator
               color={colors.primary}
               style={{ marginTop: 20 }}
             />
-          ) : datadetailNotDue != null ? (
+          ) : tab_id == 2 && datadetailNotDue != null ? (
             <View>
               {datadetailNotDue.map((item, key) => (
                 <View key={key}>
                   <View
                     style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      width: "100%",
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      width: '100%',
                       // paddingHorizontal: 10,
                       paddingVertical: 5,
                     }}
                   >
-                    <View style={{ width: "50%", paddingLeft: 10 }}>
+                    <View style={{ width: '50%', paddingLeft: 10 }}>
                       <Text subhead>{item.descs_detail}</Text>
                     </View>
                     <View
                       style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
 
-                        width: "35%",
+                        width: '35%',
                       }}
                     >
                       <Text>Rp. </Text>
@@ -342,35 +355,35 @@ const TransactionExpand = ({
               <View
                 style={{
                   borderTopWidth: 0.5,
-                  borderStyle: "dashed",
+                  borderStyle: 'dashed',
                   borderColor: colors.primary,
                   marginLeft: 9,
                 }}
               ></View>
               <View
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  width: "100%",
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  width: '100%',
                   // paddingHorizontal: 10,
                   paddingVertical: 5,
                 }}
               >
-                <View style={{ width: "50%", paddingLeft: 10 }}>
+                <View style={{ width: '50%', paddingLeft: 10 }}>
                   <Text subhead bold style={{ fontSize: 16 }}>
-                    Totalss
+                    Total
                   </Text>
                 </View>
                 <View
                   style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
 
-                    width: "35%",
+                    width: '35%',
                   }}
                 >
                   <Text subhead bold style={{ fontSize: 16 }}>
-                    Rp.{" "}
+                    Rp.{' '}
                   </Text>
                   <Text subhead bold style={{ fontSize: 16 }}>
                     {replaceTotal_notdue}
@@ -383,7 +396,7 @@ const TransactionExpand = ({
           ) : (
             tab_id == 2 &&
             datadetailNotDue == null && (
-              <View style={{ alignSelf: "center" }}>
+              <View style={{ alignSelf: 'center' }}>
                 <Text>Not have data detail </Text>
               </View>
             )

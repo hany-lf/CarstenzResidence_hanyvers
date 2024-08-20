@@ -12,30 +12,30 @@ import {
   Tag,
   colors,
   PlaceItem,
-} from "@components";
-import { BaseStyle, useTheme } from "@config";
+} from '@components';
+import { BaseStyle, useTheme } from '@config';
 import {
   HomeChannelData,
   HomeListData,
   HomePopularData,
   HomeTopicData,
   PostListData,
-} from "@data";
-import { useRoute } from "@react-navigation/core";
-import axios from "axios";
-import moment from "moment";
-import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { FlatList, ScrollView, View, ActivityIndicator } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { ProductBlock } from "../../components";
-import numFormat from "../../components/numFormat";
-import List from "../../components/Product/List";
-import styles from "./styles";
-import { enableExperimental } from "@utils";
-import { API_URL_LOKAL } from "@env";
-import getUser from "../../selectors/UserSelectors";
-import { useSelector } from "react-redux";
+} from '@data';
+import { useRoute } from '@react-navigation/core';
+import axios from 'axios';
+import moment from 'moment';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FlatList, ScrollView, View, ActivityIndicator } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { ProductBlock } from '../../components';
+import numFormat from '../../components/numFormat';
+import List from '../../components/Product/List';
+import styles from './styles';
+import { enableExperimental } from '@utils';
+import { API_URL_LOKAL } from '@env';
+import getUser from '../../selectors/UserSelectors';
+import { useSelector } from 'react-redux';
 
 const Rent = (props) => {
   const { navigation } = props;
@@ -50,11 +50,11 @@ const Rent = (props) => {
   const TABS = [
     {
       id: 1,
-      title: t("Rent"),
+      title: t('Rent'),
     },
     {
       id: 2,
-      title: t("Sale"),
+      title: t('Sale'),
     },
   ];
   const [tab, setTab] = useState(TABS[0]);
@@ -78,19 +78,19 @@ const Rent = (props) => {
 
   const getDataSaleUnit = () => {
     const config = {
-      method: "get",
-      url: API_URL_LOKAL + "/modules/rs/sale-unit/",
+      method: 'get',
+      url: API_URL_LOKAL + '/modules/rs/sale-unit/',
       headers: {
-        "content-type": "application/json",
+        'content-type': 'application/json',
         Authorization: `Bearer ${user.Token}`,
       },
     };
 
     axios(config)
       .then(({ data }) => {
-        console.log("sale -> data", data);
+        console.log('sale -> data', data);
         setData(data.data);
-        console.log("data >", data[0].images);
+        console.log('data >', data[0].images);
       })
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
@@ -98,44 +98,44 @@ const Rent = (props) => {
 
   const getDataRentUnit = () => {
     const config = {
-      method: "get",
-      url: API_URL_LOKAL + "/modules/rs/rent-unit/",
+      method: 'get',
+      url: API_URL_LOKAL + '/modules/rs/rent-unit/',
       headers: {
-        "content-type": "application/json",
+        'content-type': 'application/json',
         Authorization: `Bearer ${user.Token}`,
       },
     };
 
     axios(config)
       .then(({ data }) => {
-        console.log("rent -> data", data.data);
+        console.log('rent -> data', data.data);
         setRent(data.data);
-        console.log("data >", data[0].images);
+        console.log('data >', data.data[0].images);
       })
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
   };
 
   const goPost = (item) => () => {
-    navigation.navigate("Post", { item: item });
+    navigation.navigate('Post', { item: item });
   };
   const goProductDetail = (item) => {
-    navigation.navigate("EProductDetail", { item: item });
+    navigation.navigate('EProductDetail', { item: item });
   };
   const goPostDetail = (item) => () => {
-    navigation.navigate("PostDetail", { item: item });
+    navigation.navigate('PostDetail', { item: item });
   };
 
   const goToCategory = () => {
-    navigation.navigate("Category");
+    navigation.navigate('Category');
   };
 
   const renderContent = () => {
     const mainNews = PostListData[0];
     return (
-      <SafeAreaView edges={["right", "top", "left"]}>
+      <SafeAreaView edges={['right', 'top', 'left']}>
         <Header
-          title={t("Rent or Sale")}
+          title={t('Rent or Sale')}
           renderLeft={() => {
             return (
               <Icon
@@ -151,7 +151,7 @@ const Rent = (props) => {
           }}
         />
         <ScrollView contentContainerStyle={styles.paddingSrollView}>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             {TABS.map((item, index) => (
               <View key={index} style={{ flex: 1, paddingHorizontal: 20 }}>
                 <Tag
@@ -199,7 +199,7 @@ const Rent = (props) => {
                     nett={item.nett}
                     semi_gross={item.semi_gross}
                     agent_name={item.agent_name}
-                    publish_date={moment(item.publish_date).format("H:mm:ss")}
+                    publish_date={moment(item.publish_date).format('H:mm:ss')}
                     // publish_date={moment(item.date_created).format("H:mm:ss")}
                     price_descs={item.price_descs}
                     onPress={() => goProductDetail(item)}
@@ -236,7 +236,7 @@ const Rent = (props) => {
                     nett={item.nett}
                     semi_gross={item.semi_gross}
                     agent_name={item.agent_name}
-                    publish_date={moment(item.publish_date).format("H:mm:ss")}
+                    publish_date={moment(item.publish_date).format('H:mm:ss')}
                     price_descs={item.price_descs}
                     onPress={() => goProductDetail(item)}
                     isFavorite={item.isFavorite}
@@ -283,7 +283,7 @@ const Rent = (props) => {
     <View style={{ flex: 1 }}>
       <SafeAreaView
         style={BaseStyle.safeAreaView}
-        edges={["right", "top", "left"]}
+        edges={['right', 'top', 'left']}
       >
         {renderContent()}
       </SafeAreaView>

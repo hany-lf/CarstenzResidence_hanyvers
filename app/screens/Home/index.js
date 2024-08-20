@@ -1225,33 +1225,23 @@ const Home = (props) => {
           <View
             style={{
               flexDirection: 'row',
-              //marginLeft: 35,
+              marginLeft: 35,
               marginTop: 10,
               marginBottom: 10,
-              //backgroundColor: "red",
-              //alignItems: "center",
-              justifyContent: 'center',
             }}
           >
+            {/* ---sementara dulu  */}
+
             <Image
+              source={fotoprofil}
               style={{
                 height: 60,
                 width: 60,
                 borderRadius: 30,
               }}
-              // source={require('../../assets/images/image-home/Main_Image.png')}
-              // source={user.pict != null ? { uri: repl } : fotoprofil}
-              source={fotoprofil}
-            ></Image>
-            <View
-              style={{
-                //alignSelf: "center",
-                //justifyContent: "center",
-                alignItems: 'center',
-                //backgroundColor: "blue",
-                //marginLeft: 10
-              }}
-            >
+            />
+
+            <View style={{ alignSelf: 'center', marginLeft: 10 }}>
               <View
                 style={{
                   flexDirection: 'row',
@@ -1269,7 +1259,6 @@ const Home = (props) => {
                     fontFamily: 'DMSerifDisplay',
                   }}
                 >
-                  {/* Nama pemilik */}
                   {name}
                 </Text>
                 <Icon
@@ -1285,7 +1274,7 @@ const Home = (props) => {
               {lotno.length != 0 ? (
                 <View
                   style={{
-                    backgroundColor: colors.primary, //"#315447",
+                    backgroundColor: '#315447',
                     height: 30,
                     // width: '100%',
                     width: 150,
@@ -1294,103 +1283,10 @@ const Home = (props) => {
                     borderRadius: 10,
                   }}
                 >
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      paddingLeft: 0,
-                    }}
-                  >
-                    <ModalSelector
-                      style={{
-                        justifyContent: 'center',
-                        alignSelf: 'center',
-                        //flex: 1,
-                      }}
-                      childrenContainerStyle={{
-                        color: '#CDB04A',
-                        alignSelf: 'center',
-                        fontSize: 16,
-                        // top: 10,
-                        // flex: 1,
-                        justifyContent: 'center',
-                        fontWeight: '800',
-                        fontFamily: 'KaiseiHarunoUmi',
-                        flexDirection: 'row',
-                      }}
-                      data={lotno}
-                      optionTextStyle={{ color: '#333' }}
-                      selectedItemTextStyle={{ color: '#3C85F1' }}
-                      accessible={true}
-                      keyExtractor={(item) => item}
-                      // initValue={'ahlo'}
-                      labelExtractor={(item) => item.lot_no} //khusus untuk lotno
-                      cancelButtonAccessibilityLabel={'Cancel Button'}
-                      cancelText={'Cancel'}
-                      onChange={(option) => {
-                        onChangelot(option);
-                      }}
-                    >
-                      <Text
-                        adjustsFontSizeToFit={true}
-                        allowFontScaling={true}
-                        style={{
-                          color: '#fff',
-                          alignSelf: 'center',
-                          fontSize: 14,
-                          justifyContent: 'center',
-                          paddingRight: 10,
-
-                          fontWeight: '800',
-                          fontFamily: 'KaiseiHarunoUmi',
-                        }}
-                      >
-                        Unit
-                      </Text>
-                      <Text
-                        style={{
-                          color: '#CDB04A',
-                          alignSelf: 'center',
-                          fontSize: 16,
-                          // top: 10,
-                          // flex: 1,
-                          justifyContent: 'center',
-                          fontWeight: '800',
-                          fontFamily: 'KaiseiHarunoUmi',
-                        }}
-                      >
-                        {text_lotno.lot_no}
-                      </Text>
-                      <Icon
-                        name="caret-down"
-                        solid
-                        size={26}
-                        // color={colors.primary}
-                        style={{ marginLeft: 5 }}
-                        color={'#CDB04A'}
-                      />
-                    </ModalSelector>
-                  </View>
-                </View>
-              ) : (
-                <View
-                  style={{
-                    backgroundColor: colors.primary, //"#315447",
-                    height: 30,
-                    // width: '100%',
-                    width: 150,
-                    justifyContent: 'center',
-                    paddingHorizontal: 10,
-                    borderRadius: 10,
-                  }}
-                >
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      paddingLeft: 10,
-                      justifyContent: 'center',
-                    }}
-                  >
+                  <View style={{ flexDirection: 'row', paddingLeft: 10 }}>
                     <Text
+                      adjustsFontSizeToFit={true}
+                      allowFontScaling={true}
                       style={{
                         color: '#fff',
                         alignSelf: 'center',
@@ -1402,7 +1298,7 @@ const Home = (props) => {
                         fontFamily: 'KaiseiHarunoUmi',
                       }}
                     >
-                      Unit not found
+                      Unit
                     </Text>
 
                     <ModalSelector
@@ -1421,7 +1317,87 @@ const Home = (props) => {
                       optionTextStyle={{ color: '#333' }}
                       selectedItemTextStyle={{ color: '#3C85F1' }}
                       accessible={true}
-                      keyExtractor={(item) => item}
+                      keyExtractor={(item) => item.lot_no}
+                      // initValue={'ahlo'}
+                      labelExtractor={(item) => item.lot_no} //khusus untuk lotno
+                      cancelButtonAccessibilityLabel={'Cancel Button'}
+                      cancelText={'Cancel'}
+                      onChange={(option) => {
+                        onChangelot(option);
+                      }}
+                    >
+                      <Text
+                        style={{
+                          color: '#CDB04A',
+                          alignSelf: 'center',
+                          fontSize: 16,
+                          // top: 10,
+                          // flex: 1,
+                          justifyContent: 'center',
+                          fontWeight: '800',
+                          fontFamily: 'KaiseiHarunoUmi',
+                        }}
+                      >
+                        {/* {lotno.lot_no} */}
+                        {text_lotno.lot_no}
+                        {/* 12312 */}
+                      </Text>
+                    </ModalSelector>
+                    <Icon
+                      name="caret-down"
+                      solid
+                      size={26}
+                      // color={colors.primary}
+                      style={{ marginLeft: 5 }}
+                      color={'#CDB04A'}
+                    />
+                  </View>
+                </View>
+              ) : (
+                <View
+                  style={{
+                    backgroundColor: '#315447',
+                    height: 30,
+                    // width: '100%',
+                    width: 150,
+                    justifyContent: 'center',
+                    paddingHorizontal: 10,
+                    borderRadius: 10,
+                  }}
+                >
+                  <View style={{ flexDirection: 'row', paddingLeft: 10 }}>
+                    <Text
+                      style={{
+                        color: '#fff',
+                        alignSelf: 'center',
+                        fontSize: 14,
+                        justifyContent: 'center',
+                        paddingRight: 10,
+
+                        fontWeight: '800',
+                        fontFamily: 'KaiseiHarunoUmi',
+                      }}
+                    >
+                      Unit
+                    </Text>
+
+                    <ModalSelector
+                      style={{ justifyContent: 'center', alignSelf: 'center' }}
+                      childrenContainerStyle={{
+                        color: '#CDB04A',
+                        alignSelf: 'center',
+                        fontSize: 16,
+                        // top: 10,
+                        // flex: 1,
+                        justifyContent: 'center',
+                        fontWeight: '800',
+                        fontFamily: 'KaiseiHarunoUmi',
+                      }}
+                      data={lotno}
+                      optionTextStyle={{ color: '#333' }}
+                      selectedItemTextStyle={{ color: '#3C85F1' }}
+                      accessible={true}
+                      keyExtractor={(item) => item.lot_no}
                       // initValue={'ahlo'}
                       labelExtractor={(item) => item.lot_no} //khusus untuk lotno
                       cancelButtonAccessibilityLabel={'Cancel Button'}
@@ -1445,6 +1421,14 @@ const Home = (props) => {
                         {/* Lot No Available */}
                       </Text>
                     </ModalSelector>
+                    <Icon
+                      name="caret-down"
+                      solid
+                      size={26}
+                      // color={colors.primary}
+                      style={{ marginLeft: 5 }}
+                      color={'#CDB04A'}
+                    />
                   </View>
                 </View>
               )}
