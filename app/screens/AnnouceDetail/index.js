@@ -8,13 +8,13 @@ import {
   StarRating,
   Tag,
   Text,
-} from "@components";
-import { BaseColor, BaseStyle, useTheme } from "@config";
-import { Images } from "@config";
-import { HomeListData, HomePopularData } from "@data";
-import * as Utils from "@utils";
-import React, { Fragment, useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
+} from '@components';
+import { BaseColor, BaseStyle, useTheme } from '@config';
+import { Images } from '@config';
+import { HomeListData, HomePopularData } from '@data';
+import * as Utils from '@utils';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Animated,
   FlatList,
@@ -23,10 +23,10 @@ import {
   Share,
   TouchableOpacity,
   View,
-} from "react-native";
-import styles from "./styles";
-import { PlaceholderLine, Placeholder } from "@components";
-import moment from "moment";
+} from 'react-native';
+import styles from './styles';
+import { PlaceholderLine, Placeholder } from '@components';
+import moment from 'moment';
 
 const AnnouceDetail = (props) => {
   const { navigation, route } = props;
@@ -39,7 +39,8 @@ const AnnouceDetail = (props) => {
   const [heightHeader, setHeightHeader] = useState(Utils.heightHeader());
   const scrollY = useRef(new Animated.Value(0)).current;
   const productData = { ...item };
-  // console.log('productData', productData.images);
+
+  console.log('productData', productData);
 
   const {
     style,
@@ -63,12 +64,13 @@ const AnnouceDetail = (props) => {
     }, 1000);
   }, []);
 
-  let ann = announce_file.replace("https", "http");
+  let ann = images;
   // const annoe = [...ann];
-  const annoe = [ann];
-  console.log("annoe", annoe);
+  const annoe = ann;
+
+  console.log('annoe', annoe);
   const goPostDetail = (item) => () => {
-    navigation.push("PostDetail", { item: item });
+    navigation.push('PostDetail', { item: item });
   };
 
   // const onShare = async () => {
@@ -97,7 +99,7 @@ const AnnouceDetail = (props) => {
   const headerBackgroundColor = scrollY.interpolate({
     inputRange: [0, 140],
     outputRange: [BaseColor.greyColor, colors.primary],
-    extrapolate: "clamp",
+    extrapolate: 'clamp',
     useNativeDriver: true,
   });
 
@@ -105,7 +107,7 @@ const AnnouceDetail = (props) => {
   const headerImageOpacity = scrollY.interpolate({
     inputRange: [0, 250 - heightHeader - 20],
     outputRange: [1, 0],
-    extrapolate: "clamp",
+    extrapolate: 'clamp',
     useNativeDriver: true,
   });
 
@@ -156,7 +158,7 @@ const AnnouceDetail = (props) => {
                       marginTop: 20,
                     }}
                     resizeMode="contain"
-                    source={{ uri: `${item}` }}
+                    source={{ uri: `${item.pict}` }}
                   />
                 </TouchableOpacity>
               );
@@ -168,7 +170,7 @@ const AnnouceDetail = (props) => {
             }}
           >
             <Text subhead light style={{ marginTop: 15 }}>
-              {moment(item.date).lang("en").startOf("hour").fromNow()}
+              {moment(item.date).lang('en').startOf('hour').fromNow()}
             </Text>
           </View>
           <View
@@ -200,12 +202,12 @@ const AnnouceDetail = (props) => {
     <View style={{ flex: 1 }}>
       <SafeAreaView
         style={[BaseStyle.safeAreaView]}
-        forceInset={{ top: "always", bottom: "always" }}
+        forceInset={{ top: 'always', bottom: 'always' }}
       >
         <Header
           style={{
-            width: "90%",
-            alignSelf: "center",
+            width: '90%',
+            alignSelf: 'center',
           }}
           _numberOfLines={0}
           // title={t('Announce')}
@@ -230,7 +232,7 @@ const AnnouceDetail = (props) => {
           }}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
-          overScrollMode={"never"}
+          overScrollMode={'never'}
           style={{ zIndex: 10 }}
           scrollEventThrottle={16}
           onScroll={Animated.event(
@@ -243,17 +245,17 @@ const AnnouceDetail = (props) => {
             ],
             {
               useNativeDriver: false,
-            }
+            },
           )}
         >
           {loading ? renderPlaceholder() : renderContent()}
         </ScrollView>
       </SafeAreaView>
 
-      <Animated.View style={[styles.headerStyle, { position: "absolute" }]}>
+      <Animated.View style={[styles.headerStyle, { position: 'absolute' }]}>
         <SafeAreaView
-          style={{ width: "100%" }}
-          forceInset={{ top: "always", bottom: "never" }}
+          style={{ width: '100%' }}
+          forceInset={{ top: 'always', bottom: 'never' }}
         >
           <Header
             title=""
@@ -276,20 +278,20 @@ const AnnouceDetail = (props) => {
                 />
               );
             }}
-            renderRight={() => {
-              return (
-                <Animated.Image
-                  resizeMode="contain"
-                  style={[
-                    styles.icon,
-                    {
-                      tintColor: headerBackgroundColor,
-                    },
-                  ]}
-                  // source={Images.shareAltSolid}
-                />
-              );
-            }}
+            // renderRight={() => {
+            //   return (
+            //     <Animated.Image
+            //       resizeMode="contain"
+            //       style={[
+            //         styles.icon,
+            //         {
+            //           tintColor: headerBackgroundColor,
+            //         },
+            //       ]}
+            //       // source={Images.shareAltSolid}
+            //     />
+            //   );
+            // }}
             onPressLeft={() => {
               navigation.goBack();
             }}

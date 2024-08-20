@@ -8,25 +8,25 @@ import {
   Header,
   Icon,
   colors,
-} from "@components";
-import { BaseStyle, useTheme } from "@config";
+} from '@components';
+import { BaseStyle, useTheme } from '@config';
 import {
   HomeChannelData,
   HomeListData,
   HomePopularData,
   HomeTopicData,
   PostListData,
-} from "@data";
-import axios from "axios";
-import moment from "moment";
-import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { FlatList, ScrollView, View, ActivityIndicator } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { NewsList, NotFound, CategoryGrid } from "../../components";
-import List from "../../components/Product/List";
-import styles from "./styles";
-import { CardReport01, CardReport08 } from "../../components";
+} from '@data';
+import axios from 'axios';
+import moment from 'moment';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FlatList, ScrollView, View, ActivityIndicator } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { NewsList, NotFound, CategoryGrid } from '../../components';
+import List from '../../components/Product/List';
+import styles from './styles';
+import { CardReport01, CardReport08 } from '../../components';
 
 const ClubFacilities = (props) => {
   const { navigation } = props;
@@ -37,28 +37,34 @@ const ClubFacilities = (props) => {
   const [loading, setLoading] = useState(true);
   const [hasError, setErrors] = useState(false);
   const [dataItems, setdataItems] = useState(route.params.items);
-  console.log("dataItems", dataItems);
+  console.log('dataItems', dataItems);
 
   const filterForPromo = dataItems
-    .filter((item) => item.category === "P")
+    .filter((item) => item.category === 'P')
     .map((items) => items);
 
-  const filterForClubFacilities = dataItems
-    .filter((item) => item.category === "CF")
+  const filterForClub = dataItems
+    .filter((item) => item.category === 'C')
+    .map((items) => items);
+  const filterForFacilities = dataItems
+    .filter((item) => item.category === 'F')
     .map((items) => items);
 
   const joinFilterDataPromoClubFac = [
     ...filterForPromo,
-    ...filterForClubFacilities,
+    ...filterForClub,
+    ...filterForFacilities,
   ];
 
   const arrayImagePromoClubFac = joinFilterDataPromoClubFac.map((item, key) => {
-    return {
-      ...item.images[0],
-    };
+    console.log('item event resto', item);
+    return { url_image: item.url_image, key: key };
+    // return {
+    //   ...item.images[0],
+    // };
   });
 
-  console.log("array image", arrayImagePromoClubFac);
+  console.log('array image', arrayImagePromoClubFac);
 
   useEffect(() => {
     setTimeout(() => {
@@ -71,10 +77,10 @@ const ClubFacilities = (props) => {
     return (
       <SafeAreaView
         style={[BaseStyle.safeAreaView, { flex: 1 }]}
-        edges={["right", "top", "left"]}
+        edges={['right', 'top', 'left']}
       >
         <Header
-          title={t("Event & Restaurant")}
+          title={t('Club & Facilities')}
           renderLeft={() => {
             return (
               <Icon
@@ -103,12 +109,12 @@ const ClubFacilities = (props) => {
             renderItem={({ item, index }) => (
               <CategoryGrid
                 onPress={() =>
-                  navigation.navigate("PreviewImageHome", {
-                    images: item.pict,
+                  navigation.navigate('PreviewImageHome', {
+                    images: item.url_image,
                   })
                 }
                 // style={{paddingHorizontal: 5}}
-                image={{ uri: item.pict }}
+                image={{ uri: item.url_image }}
                 //   title={item.descs} //bisa aja dimunculin, tapi harus deskripsi / textnya betul
               ></CategoryGrid>
             )}
@@ -129,7 +135,7 @@ const ClubFacilities = (props) => {
     <View style={{ flex: 1 }}>
       <SafeAreaView
         style={BaseStyle.safeAreaView}
-        edges={["right", "top", "left"]}
+        edges={['right', 'top', 'left']}
       >
         {renderContent()}
       </SafeAreaView>

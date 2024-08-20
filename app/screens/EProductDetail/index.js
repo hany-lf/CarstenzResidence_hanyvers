@@ -10,13 +10,13 @@ import {
   StarRating,
   Tag,
   Text,
-} from "@components";
-import { BaseColor, BaseStyle, Images, useTheme } from "@config";
-import { EFilterColors, EFilterSizes } from "@data";
-import * as Utils from "@utils";
-import React, { useRef, useState, useEffect } from "react";
-import { useTranslation } from "react-i18next";
-import PreviewImages from "../EProductDetail/PreviewImages";
+} from '@components';
+import { BaseColor, BaseStyle, Images, useTheme } from '@config';
+import { EFilterColors, EFilterSizes } from '@data';
+import * as Utils from '@utils';
+import React, { useRef, useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import PreviewImages from '../EProductDetail/PreviewImages';
 import {
   Animated,
   I18nManager,
@@ -26,17 +26,17 @@ import {
   View,
   Linking,
   Alert,
-} from "react-native";
-import ModalProduct from "./ModalProduct";
-import styles from "./styles";
-import Swiper from "react-native-swiper";
-import { PlaceholderLine, Placeholder } from "@components";
-import moment from "moment";
-import numFormat from "../../components/numFormat";
+} from 'react-native';
+import ModalProduct from './ModalProduct';
+import styles from './styles';
+import Swiper from 'react-native-swiper';
+import { PlaceholderLine, Placeholder } from '@components';
+import moment from 'moment';
+import numFormat from '../../components/numFormat';
 //import Mailer from 'react-native-mail';
-import getUser from "../../selectors/UserSelectors";
-import { useSelector } from "react-redux";
-import { ListThumbCircle } from "../../components";
+import getUser from '../../selectors/UserSelectors';
+import { useSelector } from 'react-redux';
+import { ListThumbCircle } from '../../components';
 
 const EProductDetail = (props) => {
   const { navigation, route } = props;
@@ -93,24 +93,24 @@ const EProductDetail = (props) => {
   } = productData;
 
   useEffect(() => {
-    console.log("texttdsadas", productData);
+    console.log('texttdsadas', productData);
     // console.log('liatttt', galery);
-    console.log("user for rent sell", user);
+    console.log('user for rent sell', user);
     setTimeout(() => {
       setLoading(false);
     }, 1000);
   }, []);
 
   const message =
-    "\n Advertising ID : " +
+    '\n Advertising ID : ' +
     productData.advID +
-    "\n Name : " +
+    '\n Name : ' +
     user.name +
-    "\n Email : " +
+    '\n Email : ' +
     user.user +
-    "\n Phone Number : " +
+    '\n Phone Number : ' +
     user.no_hp +
-    "\n Contact me for the details information.";
+    '\n Contact me for the details information.';
 
   // const sendEmail = () => {
   //   const datas = {
@@ -164,7 +164,7 @@ const EProductDetail = (props) => {
   const galery = [...images];
 
   const goPostDetail = (item) => () => {
-    navigation.push("PostDetail", { item: item });
+    navigation.push('PostDetail', { item: item });
   };
 
   // const onShare = async () => {
@@ -191,7 +191,7 @@ const EProductDetail = (props) => {
   const headerBackgroundColor = scrollY.interpolate({
     inputRange: [0, 140],
     outputRange: [BaseColor.whiteColor, colors.text],
-    extrapolate: "clamp",
+    extrapolate: 'clamp',
     useNativeDriver: true,
   });
 
@@ -199,7 +199,7 @@ const EProductDetail = (props) => {
   const headerImageOpacity = scrollY.interpolate({
     inputRange: [0, 250 - heightHeader - 20],
     outputRange: [1, 0],
-    extrapolate: "clamp",
+    extrapolate: 'clamp',
     useNativeDriver: true,
   });
 
@@ -232,9 +232,9 @@ const EProductDetail = (props) => {
         <View style={styles.contentDescription}>
           <View
             style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
               marginBottom: 4,
             }}
           >
@@ -244,37 +244,37 @@ const EProductDetail = (props) => {
             </Text>
           </View>
         </View>
-        <View style={{ flexDirection: "row", marginTop: 10 }}>
+        <View style={{ flexDirection: 'row', marginTop: 10 }}>
           <Icon
             name="bath"
             size={14}
-            style={{ flexDirection: "row", marginRight: 10 }}
+            style={{ flexDirection: 'row', marginRight: 10 }}
           >
-            {" "}
+            {' '}
             {qty_bathroom}
           </Icon>
           <Icon
             name="bed"
             size={14}
-            style={{ flexDirection: "row", marginRight: 10 }}
+            style={{ flexDirection: 'row', marginRight: 10 }}
           >
-            {" "}
+            {' '}
             {qty_bedroom}
           </Icon>
           <Icon
             name="building"
             size={14}
-            style={{ flexDirection: "row", marginRight: 10 }}
+            style={{ flexDirection: 'row', marginRight: 10 }}
           >
-            {" "}
+            {' '}
             {nett}
           </Icon>
           <Icon
             name="map"
             size={14}
-            style={{ flexDirection: "row", marginRight: 10 }}
+            style={{ flexDirection: 'row', marginRight: 10 }}
           >
-            {" "}
+            {' '}
             {semi_gross}
           </Icon>
           {/* <Icon
@@ -291,7 +291,7 @@ const EProductDetail = (props) => {
         </View>
         <View>
           <Text headline style={{ marginTop: 20 }}>
-            {t("Descriptions")}
+            {t('Descriptions')}
           </Text>
 
           <Text
@@ -305,7 +305,7 @@ const EProductDetail = (props) => {
         </View>
         <View>
           <Text headline style={{ marginTop: 20 }}>
-            {t("Type Market")}
+            {t('Type Market')}
           </Text>
           <Text subhead style={{ marginTop: 20, color: BaseColor.grayColor }}>
             {market_type}
@@ -313,50 +313,50 @@ const EProductDetail = (props) => {
         </View>
 
         <Text headline style={{ marginTop: 20 }}>
-          {t("specifications")}
+          {t('specifications')}
         </Text>
 
         <View style={styles.specifications}>
           <ProductSpecGrid
             style={{ flex: 1 }}
-            description={"Property Type"}
+            description={'Property Type'}
             title={property_type}
           />
           <ProductSpecGrid
             style={{ flex: 1 }}
-            description={"Price"}
+            description={'Price'}
             title={`${currency} ` + `${price}`}
           />
         </View>
         <View style={styles.specifications}>
           <ProductSpecGrid
             style={{ flex: 1 }}
-            description={"Bed Room"}
+            description={'Bed Room'}
             title={qty_bedroom}
           />
 
           <ProductSpecGrid
             style={{ flex: 1 }}
-            description={"Main Bedroom"}
+            description={'Main Bedroom'}
             title={qty_maid_bedroom}
           />
         </View>
         <View style={styles.specifications}>
           <ProductSpecGrid
             style={{ flex: 1 }}
-            description={"Semi Gross"}
+            description={'Semi Gross'}
             title={semi_gross}
           />
           <ProductSpecGrid
             style={{ flex: 1 }}
-            description={"Bathroom"}
+            description={'Bathroom'}
             title={qty_bathroom}
           />
         </View>
         <View style={styles.specifications}>
           <ProductSpecGrid
             style={{ flex: 1 }}
-            description={"Nett Area"}
+            description={'Nett Area'}
             title={nett}
           />
           {/* <ProductSpecGrid
@@ -368,24 +368,24 @@ const EProductDetail = (props) => {
         <View style={styles.specifications}>
           <ProductSpecGrid
             style={{ flex: 1 }}
-            description={"Certificate"}
+            description={'Certificate'}
             title={certificate}
           />
           <ProductSpecGrid
             style={{ flex: 1 }}
-            description={"Status"}
+            description={'Status'}
             title={status}
           />
         </View>
         <View style={styles.specifications}>
           <ProductSpecGrid
             style={{ flex: 1 }}
-            description={"Electrical Power"}
+            description={'Electrical Power'}
             title={electrical_power}
           />
           <ProductSpecGrid
             style={{ flex: 1 }}
-            description={"Parking"}
+            description={'Parking'}
             title={qty_parking}
           />
         </View>
@@ -411,7 +411,7 @@ const EProductDetail = (props) => {
     <View style={{ flex: 1 }}>
       <SafeAreaView
         style={[BaseStyle.safeAreaView]}
-        forceInset={{ top: "always", bottom: "always" }}
+        forceInset={{ top: 'always', bottom: 'always' }}
       >
         <Header title={adv_title} />
         <ScrollView
@@ -420,7 +420,7 @@ const EProductDetail = (props) => {
           }}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
-          overScrollMode={"never"}
+          overScrollMode={'never'}
           style={{ zIndex: 10 }}
           scrollEventThrottle={16}
           onScroll={Animated.event(
@@ -433,7 +433,7 @@ const EProductDetail = (props) => {
             ],
             {
               useNativeDriver: false,
-            }
+            },
           )}
         >
           <View style={{ height: 230 - heightHeader }} />
@@ -452,7 +452,7 @@ const EProductDetail = (props) => {
         </ScrollView>
         <View
           style={{
-            flexDirection: "row",
+            flexDirection: 'row',
             paddingHorizontal: 20,
           }}
         >
@@ -465,15 +465,15 @@ const EProductDetail = (props) => {
               marginTop: 10,
               marginBottom: 20,
               flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
             onPress={() =>
               user !== null
                 ? Linking.openURL(
-                    `mailto:${email}?subject=${adv_title}&body=${message}`
+                    `mailto:${email}?subject=${adv_title}&body=${message}`,
                   )
-                : navigation.navigate("SignIn")
+                : navigation.navigate('SignIn')
             }
           >
             <Icon
@@ -483,20 +483,20 @@ const EProductDetail = (props) => {
                 color: BaseColor.blueColor,
               }}
             />
-            <Text subheadline>{t("Send Email")}</Text>
+            <Text subheadline>{t('Send Email')}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={{
               marginTop: 10,
               marginBottom: 20,
               flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
             onPress={() =>
               user !== null
                 ? Linking.openURL(`tel:${no_wa}`)
-                : navigation.navigate("SignIn")
+                : navigation.navigate('SignIn')
             }
           >
             <Icon
@@ -506,7 +506,7 @@ const EProductDetail = (props) => {
                 color: BaseColor.blueColor,
               }}
             />
-            <Text subheadline>{t("Call Me")}</Text>
+            <Text subheadline>{t('Call Me')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -514,16 +514,16 @@ const EProductDetail = (props) => {
               marginTop: 10,
               marginBottom: 20,
               flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
             onPress={() =>
               user !== null
                 ? Linking.openURL(
                     // `mailto:${email}?subject=${subject}&body=Description`,
-                    `whatsapp://send?text=${adv_title}\n${message}&phone=${no_wa}`
+                    `whatsapp://send?text=${adv_title}\n${message}&phone=${no_wa}`,
                   )
-                : navigation.navigate("SignIn")
+                : navigation.navigate('SignIn')
             }
           >
             <Icon
@@ -533,7 +533,7 @@ const EProductDetail = (props) => {
                 color: BaseColor.blueColor,
               }}
             />
-            <Text subheadline>{t("Send Whatsapp")}</Text>
+            <Text subheadline>{t('Send Whatsapp')}</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -569,13 +569,13 @@ const EProductDetail = (props) => {
                 style={{ flex: 1 }}
                 activeOpacity={1}
                 onPress={() =>
-                  navigation.navigate("PreviewImages", { images: images })
+                  navigation.navigate('PreviewImages', { images: images })
                 }
               >
                 <Image
                   source={{ uri: `${item.pict}` }}
                   style={{
-                    width: "100%",
+                    width: '100%',
                     height: ((Utils.getWidthDevice() - 30) * 9) / 15,
                   }}
                   key={key}
@@ -585,10 +585,10 @@ const EProductDetail = (props) => {
           })}
         </Swiper>
       </Animated.View>
-      <Animated.View style={[styles.headerStyle, { position: "absolute" }]}>
+      <Animated.View style={[styles.headerStyle, { position: 'absolute' }]}>
         <SafeAreaView
-          style={{ width: "100%" }}
-          forceInset={{ top: "always", bottom: "never" }}
+          style={{ width: '100%' }}
+          forceInset={{ top: 'always', bottom: 'never' }}
         >
           <Header
             title=""
@@ -611,20 +611,20 @@ const EProductDetail = (props) => {
                 />
               );
             }}
-            renderRight={() => {
-              return (
-                <Animated.Image
-                  resizeMode="contain"
-                  // style={[
-                  //   styles.icon,
-                  //   {
-                  //     tintColor: headerBackgroundColor,
-                  //   },
-                  // ]}
-                  // source={Images.shareAltSolid}
-                />
-              );
-            }}
+            // renderRight={() => {
+            //   return (
+            //     <Animated.Image
+            //       resizeMode="contain"
+            //       // style={[
+            //       //   styles.icon,
+            //       //   {
+            //       //     tintColor: headerBackgroundColor,
+            //       //   },
+            //       // ]}
+            //       // source={Images.shareAltSolid}
+            //     />
+            //   );
+            // }}
             onPressLeft={() => {
               navigation.goBack();
             }}

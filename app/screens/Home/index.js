@@ -254,6 +254,7 @@ const Home = (props) => {
     );
     //    .then(() => setRefreshing(false));  // Ensure refreshing ends after data is fetched
     // }
+    dataPromoClubFacilities();
     wait(5000).then(() => {
       setRefreshing(false);
     });
@@ -580,6 +581,10 @@ const Home = (props) => {
   };
 
   const dataPromoClubFacilities = async () => {
+    const params = {
+      entity_cd: entity_cd,
+      project_no: project_no,
+    };
     const config = {
       method: 'get',
       // url: 'http://dev.ifca.co.id:8080/apiciputra/api/approval/groupMenu?approval_user=MGR',
@@ -590,34 +595,35 @@ const Home = (props) => {
         Authorization: `Bearer ${user.Token}`,
       },
       // params: {approval_user: user.userIDToken.UserId},
-      params: {},
+      params: params,
     };
 
     await axios(config)
       .then((res) => {
         // console.log("res promoclubfacilities", res.data.data);
         const datapromoclub = res.data.data;
+        console.log('data promo ada isinya ga', datapromoclub);
 
         // filter by category
 
         const filterForPromo = datapromoclub
-          .filter((item) => item.category === 'P')
+          .filter((item) => item.category === 'P') //promo
           .map((items) => items);
 
         const filterForClub = datapromoclub
-          .filter((item) => item.category === 'C')
+          .filter((item) => item.category === 'C') //club
           .map((items) => items);
 
         const filterForFacilities = datapromoclub
-          .filter((item) => item.category === 'F')
+          .filter((item) => item.category === 'F') //facility
           .map((items) => items);
 
         const filterForEvent = datapromoclub
-          .filter((item) => item.category == 'E')
+          .filter((item) => item.category == 'E') //event
           .map((items) => items);
 
         const filterForRestaurant = datapromoclub
-          .filter((item) => item.category == 'R')
+          .filter((item) => item.category == 'R') //restauran
           .map((items) => items);
 
         // join data atau data gabungan all per 2 category
@@ -638,13 +644,16 @@ const Home = (props) => {
         const slicedatapromoclubfac = joinFilterDataPromoClubFac.slice(0, 6);
         const slicedataeventresto = joinFilterDataEventRestaurant.slice(0, 6);
 
+        console.log('slicedataeventresto', slicedataeventresto);
+        console.log('slicedatapromoclubfac', slicedatapromoclubfac);
+
         // console.log('joinFilterDataPromoClubFac', joinFilterDataPromoClubFac);
 
         // pecah array images from data slice
 
         const arrayImagePromoClubFac = slicedatapromoclubfac.map(
           (item, key) => {
-            // console.log("item promo club fac", item.url_image);
+            console.log('item promo club fac', item.url_image);
             return { url_image: item.url_image, key: key };
             // return { url_image: `${item.url_image}`.replace('http://localhost/', 'https://ifca.carstensz.co.id/') , key: key };
             // item.url_image
@@ -655,11 +664,11 @@ const Home = (props) => {
         );
 
         const arrayImageEventResto = slicedataeventresto.map((item, key) => {
-          return { url_image: item.url_image };
+          return { url_image: item.url_image, key: key };
         });
 
         // const slicedatapromo = datapromoclub.slice(0, 6);
-        // console.log('slice data promo', slicedatapromo);
+        console.log('slice data promo', arrayImagePromoClubFac);
         // console.log('image promo club', datapromoclub.image);
 
         // const tes = slicedatapromo.map((item, key) => {
@@ -793,12 +802,12 @@ const Home = (props) => {
     return (
       <TouchableOpacity
         onPress={() =>
-          navigation.navigate('PreviewImageHome', { images: item.pict })
+          navigation.navigate('PreviewImageHome', { images: item.url_image })
         }
       >
         <View key={i} style={([styles.shadow], {})}>
           <Image
-            source={{ uri: item.pict }}
+            source={{ uri: item.url_image }}
             style={
               ([styles.shadow],
               {
@@ -1482,7 +1491,11 @@ const Home = (props) => {
                       onPress={() => goToMoreNewsAnnounce(newsannounce)}
                     >
                       <View
-                        style={{ alignSelf: 'center', flexDirection: 'row' }}
+                        style={{
+                          alignSelf: 'center',
+                          flexDirection: 'row',
+                          justifyContent: 'center',
+                        }}
                       >
                         <Text style={{ marginHorizontal: 5, fontSize: 14 }}>
                           More
@@ -1514,6 +1527,180 @@ const Home = (props) => {
             </View>
           </View>
           {/* ----- content news ----- */}
+
+          {/* ---- content event promo resto----  */}
+          <View style={{ marginBottom: 20, flex: 1 }}>
+            <View style={{ marginLeft: 30, marginTop: 20, marginBottom: 10 }}>
+              <Text
+                style={{
+                  fontSize: 24,
+                  // color: 'white',
+                  fontFamily: 'DMSerifDisplay',
+                }}
+              >
+                This Weekend
+              </Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginRight: 20,
+                }}
+              >
+                <Text>Event And Restaurant</Text>
+                {
+                  eventresto.length >= 5 ? (
+                    <TouchableOpacity
+                      onPress={() => goToEventResto(eventresto)}
+                    >
+                      <View
+                        style={{
+                          alignSelf: 'center',
+                          flexDirection: 'row',
+
+                          alignItems: 'center',
+                        }}
+                      >
+                        <Text
+                          style={{
+                            marginHorizontal: 5,
+                            fontSize: 14,
+                            alignItems: 'center',
+                          }}
+                        >
+                          More
+                        </Text>
+                        <Icon
+                          name="arrow-right"
+                          solid
+                          size={16}
+                          color={colors.primary}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                  ) : null
+                  // <Text>kurang dari 6</Text>
+                }
+              </View>
+            </View>
+
+            <View style={{ marginVertical: 10, marginHorizontal: 10 }}>
+              <ScrollView horizontal>
+                <MasonryList
+                  data={imageEventResto}
+                  // data={sliceArrEvent}
+                  style={{ alignSelf: 'stretch' }}
+                  showsHorizontalScrollIndicator={false}
+                  showsVerticalScrollIndicator={false}
+                  scrollEnabled={false}
+                  contentContainerStyle={{
+                    paddingHorizontal: 10,
+                    alignSelf: 'stretch',
+                    // alignSelf: 'flex-start',
+                  }}
+                  keyExtractor={(item, index) => index}
+                  numColumns={3}
+                  renderItem={CardItem}
+                />
+              </ScrollView>
+            </View>
+          </View>
+          {/* ---- content event promo resto---- */}
+
+          {/* ---- content facility club ----  */}
+          <View style={{ marginBottom: 20, flex: 1 }}>
+            <View style={{ marginLeft: 30, marginTop: 20, marginBottom: 10 }}>
+              <Text
+                style={{
+                  fontSize: 24,
+                  // color: 'white',
+                  fontFamily: 'DMSerifDisplay',
+                }}
+              >
+                Club And Facilities
+              </Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginRight: 20,
+                }}
+              >
+                <Text>Check Our Promo Here</Text>
+                {
+                  promoclubfac.length >= 3 ? (
+                    <TouchableOpacity
+                      onPress={() => goToPromoClubFac(promoclubfac)}
+                    >
+                      <View
+                        style={{
+                          alignSelf: 'center',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <Text style={{ marginHorizontal: 5, fontSize: 14 }}>
+                          More
+                        </Text>
+                        <Icon
+                          name="arrow-right"
+                          solid
+                          size={16}
+                          color={colors.primary}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                  ) : null
+                  // <Text>kurang dari 6</Text>
+                }
+              </View>
+            </View>
+            <View style={{ marginVertical: 10, marginHorizontal: 10 }}>
+              <ScrollView horizontal>
+                <FlatList
+                  pagingEnabled={true}
+                  decelerationRate="fast"
+                  bounces={false}
+                  data={imagePromoClubFac}
+                  numColumns={3}
+                  contentContainerStyle={{
+                    paddingHorizontal: 10,
+                  }}
+                  showsHorizontalScrollIndicator={false}
+                  showsVerticalScrollIndicator={false}
+                  renderItem={({ item, index }) => (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('PreviewImageHome', {
+                          images: item.url_image,
+                        })
+                      }
+                    >
+                      <View key={item.rowID} style={{}}>
+                        {/* <Text></Text> */}
+                        <Image
+                          source={{ uri: item.url_image }}
+                          style={
+                            ([styles.shadow],
+                            {
+                              height: 450,
+                              margin: 5,
+                              width: 250,
+                              borderRadius: 10,
+                            })
+                          }
+                          resizeMode={'cover'}
+                        ></Image>
+                      </View>
+                    </TouchableOpacity>
+                  )}
+                  // keyExtractor={(item, index) => item.toString() + index}
+                  keyExtractor={(item, index) => index}
+                />
+              </ScrollView>
+            </View>
+          </View>
+          {/* ---- content facility club ---- */}
         </ScrollView>
       </View>
     );

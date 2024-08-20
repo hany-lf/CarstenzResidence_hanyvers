@@ -205,7 +205,6 @@ const PostDetail = (props) => {
             }}
           /> */}
           <View style={{ marginBottom: 20 }}>
-            <Text>halo</Text>
             <TouchableOpacity
               activeOpacity={1}
               // onPress={() => console.log('halo', { images: reps })}
@@ -221,8 +220,8 @@ const PostDetail = (props) => {
                 style={{
                   // flex: 1,
                   // width: '100%',
-                  height: 500,
-                  marginTop: 20,
+                  height: 300,
+                  marginTop: 10,
                 }}
                 resizeMode="contain"
                 // source={{uri: `${announce_file}`}}
@@ -313,20 +312,20 @@ const PostDetail = (props) => {
                 />
               );
             }}
-            renderRight={() => {
-              return (
-                <Animated.Image
-                  resizeMode="contain"
-                  style={[
-                    styles.icon,
-                    {
-                      tintColor: headerBackgroundColor,
-                    },
-                  ]}
-                  // source={Images.shareAltSolid}
-                />
-              );
-            }}
+            // renderRight={() => {
+            //   return (
+            //     <Animated.Image
+            //       resizeMode="contain"
+            //       style={[
+            //         styles.icon,
+            //         {
+            //           tintColor: headerBackgroundColor,
+            //         },
+            //       ]}
+            //       // source={Images.shareAltSolid}
+            //     />
+            //   );
+            // }}
             onPressLeft={() => {
               navigation.goBack();
             }}
