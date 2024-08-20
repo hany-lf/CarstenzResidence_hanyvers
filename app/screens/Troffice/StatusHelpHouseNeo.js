@@ -10,47 +10,50 @@ import {
   Header,
   Icon,
   CategoryIconSoft,
-} from "@components";
-import { BaseColor, BaseStyle, useTheme } from "@config";
-import { CheckBox, Badge } from "react-native-elements";
-import { Image } from "react-native";
-import { parseHexTransparency } from "@utils";
-import { useNavigation } from "@react-navigation/native";
+} from '@components';
+import { BaseColor, BaseStyle, useTheme } from '@config';
+import { CheckBox, Badge } from 'react-native-elements';
+import { Image } from 'react-native';
+import { parseHexTransparency } from '@utils';
+import { useNavigation } from '@react-navigation/native';
 
-import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   FlatList,
   TouchableOpacity,
   View,
   Platform,
   TouchableHighlight,
-} from "react-native";
+} from 'react-native';
 
-import { useSelector } from "react-redux";
-import getUser from "../../selectors/UserSelectors";
-import axios from "axios";
-import client from "../../controllers/HttpClient";
-import styles from "./styles";
+import { useSelector } from 'react-redux';
+import getUser from '../../selectors/UserSelectors';
+import getProject from '../../selectors/ProjectSelector';
+import axios from 'axios';
+import client from '../../controllers/HttpClient';
+import styles from './styles';
 
-import { RadioButton } from "react-native-paper";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { API_URL_LOKAL } from "@env";
+import { RadioButton } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { API_URL_LOKAL } from '@env';
+import { Dropdown } from 'react-native-element-dropdown';
 export default function StatusHelpHouseNeo({ route }) {
   const { t, i18n } = useTranslation();
   const { colors } = useTheme();
-  const [keyword, setKeyword] = useState("");
+  const [keyword, setKeyword] = useState('');
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
 
   const [dataTowerUser, setdataTowerUser] = useState([]);
   const [arrDataTowerUser, setArrDataTowerUser] = useState([]);
   const users = useSelector((state) => getUser(state));
-  const [email, setEmail] = useState(users.user);
+  const project = useSelector((state) => getProject(state));
+  const [email, setEmail] = useState('');
   const [urlApi, seturlApi] = useState(client);
-  const [entity, setEntity] = useState("");
-  const [project_no, setProjectNo] = useState("");
-  const [db_profile, setDb_Profile] = useState("");
+  const [entity_cd, setEntity] = useState('');
+  const [project_no, setProjectNo] = useState('');
+  const [db_profile, setDb_Profile] = useState('');
   const [checkedEntity, setCheckedEntity] = useState(false);
   const [spinner, setSpinner] = useState(true);
   const [dataStatus, setDataStatus] = useState([]);
@@ -65,17 +68,42 @@ export default function StatusHelpHouseNeo({ route }) {
     ...styles.profileItem,
     borderBottomColor: colors.border,
   };
+
+  // --- useeffect untuk project
+  useEffect(() => {
+    if (project && project.data && project.data.length > 0) {
+      // console.log('entity useeffect di home', project.data[0].entity_cd);
+      setEntity(project.data[0].entity_cd);
+      setProjectNo(project.data[0].project_no);
+    }
+    getTicketStatus(project.data);
+  }, [project]);
+
+  useEffect(() => {
+    if (entity_cd && project_no) {
+      getTicketStatus({ entity_cd: entity_cd, project_no: project_no });
+    }
+  }, [entity_cd, project_no]);
+  // --- useeffect untuk project
+
+  // --- useeffect untuk update email/name
+  useEffect(() => {
+    setEmail(
+      users != null && users.userData != null ? users.userData.email : '',
+    );
+  }, [email]);
+  // --- useeffect untuk update email/name
   //-----FOR GET ENTITY & PROJJECT
   const getTower = async () => {
     const data = {
       email: email,
-      app: "O",
+      app: 'O',
     };
 
     const config = {
       headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
+        accept: 'application/json',
+        'Content-Type': 'application/json',
         // token: "",
       },
     };
@@ -101,7 +129,7 @@ export default function StatusHelpHouseNeo({ route }) {
             project_no: arrDataTower[0].project_no,
             db_profile: arrDataTower[0].db_profile,
           };
-          console.log("params for debtor tower default", params);
+          console.log('params for debtor tower default', params);
           // getDebtor(params);
           getTicketStatus(params);
           setShow(true);
@@ -117,20 +145,10 @@ export default function StatusHelpHouseNeo({ route }) {
         // return res.data;
       })
       .catch((error) => {
-        console.log("error get tower api", error);
+        console.log('error get tower api', error);
         // alert('error get');
       });
   };
-
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-      getTower();
-
-      // getCategoryHelp;
-      // setSpinner(false);
-    }, 3000);
-  }, []);
 
   const handleCheckChange = (index, data) => {
     setCheckedEntity(index);
@@ -143,7 +161,7 @@ export default function StatusHelpHouseNeo({ route }) {
   };
 
   const getTicketStatus = async (data) => {
-    console.log("data for status", data);
+    console.log('data for status', data);
     const dT = data;
 
     const formData = {
@@ -152,30 +170,30 @@ export default function StatusHelpHouseNeo({ route }) {
       email: email,
     };
 
-    console.log("formdata", formData);
+    console.log('formdata', formData);
     const config = {
       headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        token: "",
+        accept: 'application/json',
+        'Content-Type': 'application/json',
+        token: '',
       },
     };
 
     await axios
       .post(
-        API_URL_LOKAL + "/modules/troffice/ticket-status-count/IFCAPB",
+        API_URL_LOKAL + '/modules/troffice/ticket-status-count/IFCAPB',
         formData,
         {
           config,
-        }
+        },
       )
       .then((res) => {
         const datas = res.data;
 
-        console.log("data kategori", datas.success);
+        console.log('data kategori', datas.success);
         if (datas.success === true) {
           const datastatus = datas.data;
-          console.log("datastatus", datastatus);
+          console.log('datastatus', datastatus);
 
           if (datastatus.length > 1) {
             setDefaultStatus(false);
@@ -193,63 +211,63 @@ export default function StatusHelpHouseNeo({ route }) {
         // return res.data;
       })
       .catch((error) => {
-        console.log("error get status api", error.response);
+        console.log('error get status api', error.response);
         // alert('error get');
       });
   };
 
   const handleNavigation = (data, ticketStatus) => {
-    console.log("data where tiket statuss", data);
-    console.log("tikett status", ticketStatus);
+    console.log('data where tiket statuss', data);
+    console.log('tikett status', ticketStatus);
     setDisabled(true);
     getTicketWhereStatus(data, ticketStatus);
   };
   const getTicketWhereStatus = async (data, ticketStatus) => {
-    console.log("data where", data);
-    console.log("tiket state where", ticketStatus);
+    console.log('data where', data);
+    console.log('tiket state where', ticketStatus);
 
     const formData = {
       email: email,
       status: ticketStatus,
       category_cd: "'AC01','PL07'",
     };
-    console.log("formData", formData);
+    console.log('formData', formData);
     const config = {
       headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        token: "",
+        accept: 'application/json',
+        'Content-Type': 'application/json',
+        token: '',
       },
     };
     console.log(
-      "test get data > ",
+      'test get data > ',
 
       `http://apps.pakubuwono-residence.com/apiwebpbi/api/modules/troffice/ticket-by-status/IFCAPB?email=${formData.email}&status=${formData.status}&category_cd=${formData.category_cd}`,
       //   formData,
       {
         config,
-      }
+      },
     );
     await axios
       .post(
-        API_URL_LOKAL + "/modules/troffice/ticket-by-status/IFCAPB",
+        API_URL_LOKAL + '/modules/troffice/ticket-by-status/IFCAPB',
         // `http://apps.pakubuwono-residence.com/apiwebpbi/api/modules/troffice/ticket-by-status/IFCAPB?email=${formData.email}&status=${formData.status}&category_cd=${formData.category_cd}`,
         formData,
         {
           config,
-        }
+        },
       )
       .then((res) => {
         const datas = res.data;
 
-        console.log("data datastatuswhere", datas);
+        console.log('data datastatuswhere', datas);
         const datastatuswhere = datas.data;
         // navigation.navigate('ViewHistoryStatus', {datastatuswhere}); //sementara krn data 0
         if (datas.success === true) {
           const datastatuswhere = datas.data;
           // setDataStatus(datastatus);
-          navigation.navigate("ViewHistoryStatusTRO", datastatuswhere);
-          console.log("datastatuswhere", datastatuswhere);
+          navigation.navigate('ViewHistoryStatusTRO', datastatuswhere);
+          console.log('datastatuswhere', datastatuswhere);
         } else {
           setDisabled(false);
         }
@@ -258,8 +276,8 @@ export default function StatusHelpHouseNeo({ route }) {
         // return res.data;
       })
       .catch((error) => {
-        console.log("error get where status api", error.response);
-        alert("error get");
+        console.log('error get where status api', error.response);
+        alert('error get');
       });
   };
 
@@ -273,10 +291,10 @@ export default function StatusHelpHouseNeo({ route }) {
   return (
     <SafeAreaView
       style={BaseStyle.safeAreaView}
-      edges={["right", "top", "left"]}
+      edges={['right', 'top', 'left']}
     >
       <Header
-        title={t("status")} //belum dibuat lang
+        title={t('status')} //belum dibuat lang
         renderLeft={() => {
           return (
             <Icon
@@ -293,66 +311,57 @@ export default function StatusHelpHouseNeo({ route }) {
       />
       <View style={styles.wrap}>
         <Text title2>Ticket</Text>
-        <Text headline style={{ fontWeight: "normal" }}>
+        <Text headline style={{ fontWeight: 'normal' }}>
           Status Help TR Office
         </Text>
 
         <View style={[styles.subWrap, { paddingBottom: 0, marginBottom: 10 }]}>
-          <View>
-            <Text style={{ color: "#3f3b38", fontSize: 14 }}>
-              Choose Project
-            </Text>
-            {spinner ? (
-              <View>
-                {/* <Spinner visible={this.state.spinner} /> */}
-                <Placeholder
-                  style={{ marginVertical: 4, paddingHorizontal: 10 }}
-                >
-                  <PlaceholderLine
-                    width={100}
-                    noMargin
-                    style={{ height: 40 }}
-                  />
-                </Placeholder>
-              </View>
-            ) : defaulTower ? (
-              <CheckBox
-                checked={checkedEntity}
-                title={arrDataTowerUser[0].project_descs}
-                onPress={() => setCheckedEntity(!checkedEntity)}
-              ></CheckBox>
-            ) : (
-              arrDataTowerUser.map((data, index) => (
-                <CheckBox
-                  key={index}
-                  // checkedIcon="dot-circle-o"
-                  // uncheckedIcon="circle-o"
-                  title={data.project_descs}
-                  checked={checkedEntity === index}
-                  onPress={() => handleCheckChange(index, data)}
-                />
-              ))
-            )}
-          </View>
+          {showChooseProject ? (
+            <Dropdown
+              style={[
+                styles.dropdown,
+                isFocus && { borderColor: BaseColor.corn30 },
+              ]}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              inputSearchStyle={styles.inputSearchStyle}
+              iconStyle={styles.iconStyle}
+              itemTextStyle={styles.itemTextStyle}
+              containerStyle={{ borderRadius: 15, marginVertical: 5 }}
+              data={valueProject}
+              search
+              maxHeight={300}
+              labelField="label"
+              valueField="value"
+              placeholder={!isFocus ? 'Choose Project' : 'Choose Project'}
+              searchPlaceholder="Search..."
+              value={valueProjectSelected}
+              onFocus={() => setIsFocus(true)}
+              onBlur={() => setIsFocus(false)}
+              onChange={(item, index) => {
+                handleClickProject(item, index);
+              }}
+            />
+          ) : null}
 
           {show && checkedEntity === true ? (
             <View style={{ marginTop: 30, marginHorizontal: 10 }}>
               <TouchableOpacity
                 // onPress={() => handleNavigation(dataTowerUser, "'R'")}
-                onPress={() => handleNavigation(dataTowerUser, "R")}
+                onPress={() => handleNavigation(dataTowerUser, 'R')}
                 disabled={ds.cntopen == 0 ? true : false}
                 style={{
                   borderBottomWidth: 1,
-                  borderBottomColor: "#555",
+                  borderBottomColor: '#555',
                   //   paddingTop: 1,
                 }}
               >
                 <View
                   style={{
-                    justifyContent: "space-around",
-                    flexDirection: "row",
-                    alignContent: "center",
-                    alignItems: "center",
+                    justifyContent: 'space-around',
+                    flexDirection: 'row',
+                    alignContent: 'center',
+                    alignItems: 'center',
 
                     // alignSelf: 'center',
                   }}
@@ -371,17 +380,17 @@ export default function StatusHelpHouseNeo({ route }) {
                       width: 60,
                       height: 60,
                       // borderRadius: 8,
-                      alignItems: "center",
-                      justifyContent: "center",
+                      alignItems: 'center',
+                      justifyContent: 'center',
                       marginBottom: 10,
                       backgroundColor: parseHexTransparency(
                         colors.primary,
-                        100
+                        100,
                       ),
                     }}
                   >
                     <Icon
-                      name={"tasks"}
+                      name={'tasks'}
                       size={25}
                       color={BaseColor.whiteColor}
                       solid
@@ -393,9 +402,9 @@ export default function StatusHelpHouseNeo({ route }) {
                       style={styles.img}></Image> */}
                   <Text
                     style={{
-                      justifyContent: "center",
-                      alignItems: "center",
-                      alignSelf: "center",
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      alignSelf: 'center',
                       marginBottom: 10,
                     }}
                   >
@@ -407,19 +416,19 @@ export default function StatusHelpHouseNeo({ route }) {
                       width: 40,
                       height: 40,
                       borderRadius: 10,
-                      backgroundColor: "#42B649",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      alignSelf: "center",
+                      backgroundColor: '#42B649',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      alignSelf: 'center',
                       marginBottom: 5,
                     }}
                     value={
                       <Text
                         style={{
-                          color: "#fff",
-                          textAlign: "center",
-                          alignItems: "center",
-                          alignSelf: "center",
+                          color: '#fff',
+                          textAlign: 'center',
+                          alignItems: 'center',
+                          alignSelf: 'center',
                         }}
                       >
                         {ds.cntopen}
@@ -431,22 +440,22 @@ export default function StatusHelpHouseNeo({ route }) {
 
               <TouchableOpacity
                 onPress={
-                  () => handleNavigation(dataTowerUser, "P")
+                  () => handleNavigation(dataTowerUser, 'P')
                   //   handleNavigation(dataTowerUser, "'A','P','M','F','Y','Z'")
                 }
                 disabled={ds.cntprocces == 0 ? true : false}
                 style={{
                   borderBottomWidth: 1,
-                  borderBottomColor: "#555",
+                  borderBottomColor: '#555',
                   //   marginBottom: 10,
                 }}
               >
                 <View
                   style={{
-                    justifyContent: "space-around",
-                    flexDirection: "row",
-                    alignContent: "center",
-                    alignItems: "center",
+                    justifyContent: 'space-around',
+                    flexDirection: 'row',
+                    alignContent: 'center',
+                    alignItems: 'center',
                     // alignSelf: 'center',
                   }}
                 >
@@ -464,18 +473,18 @@ export default function StatusHelpHouseNeo({ route }) {
                       width: 60,
                       height: 60,
                       // borderRadius: 8,
-                      alignItems: "center",
-                      justifyContent: "center",
+                      alignItems: 'center',
+                      justifyContent: 'center',
                       marginTop: 10,
                       marginBottom: 10,
                       backgroundColor: parseHexTransparency(
                         colors.primary,
-                        100
+                        100,
                       ),
                     }}
                   >
                     <Icon
-                      name={"tasks"}
+                      name={'tasks'}
                       size={25}
                       color={BaseColor.whiteColor}
                       solid
@@ -486,9 +495,9 @@ export default function StatusHelpHouseNeo({ route }) {
                       style={styles.img}></Image> */}
                   <Text
                     style={{
-                      justifyContent: "center",
-                      alignItems: "center",
-                      alignSelf: "center",
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      alignSelf: 'center',
                       marginBottom: 10,
                     }}
                   >
@@ -500,19 +509,19 @@ export default function StatusHelpHouseNeo({ route }) {
                       width: 40,
                       height: 40,
                       borderRadius: 10,
-                      backgroundColor: "#42B649",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      alignSelf: "center",
+                      backgroundColor: '#42B649',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      alignSelf: 'center',
                       marginBottom: 5,
                     }}
                     value={
                       <Text
                         style={{
-                          color: "#fff",
-                          textAlign: "center",
-                          alignItems: "center",
-                          alignSelf: "center",
+                          color: '#fff',
+                          textAlign: 'center',
+                          alignItems: 'center',
+                          alignSelf: 'center',
                         }}
                       >
                         {ds.cntprocces}
@@ -522,20 +531,20 @@ export default function StatusHelpHouseNeo({ route }) {
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => handleNavigation(dataTowerUser, "X")}
+                onPress={() => handleNavigation(dataTowerUser, 'X')}
                 disabled={ds.cntcancel == 0 ? true : false}
                 style={{
                   borderBottomWidth: 1,
-                  borderBottomColor: "#555",
+                  borderBottomColor: '#555',
                   //   marginBottom: 10,
                 }}
               >
                 <View
                   style={{
-                    justifyContent: "space-around",
-                    flexDirection: "row",
-                    alignContent: "center",
-                    alignItems: "center",
+                    justifyContent: 'space-around',
+                    flexDirection: 'row',
+                    alignContent: 'center',
+                    alignItems: 'center',
                     // alignSelf: 'center',
                   }}
                 >
@@ -554,18 +563,18 @@ export default function StatusHelpHouseNeo({ route }) {
                       width: 60,
                       height: 60,
                       // borderRadius: 8,
-                      alignItems: "center",
-                      justifyContent: "center",
+                      alignItems: 'center',
+                      justifyContent: 'center',
                       marginTop: 10,
                       marginBottom: 10,
                       backgroundColor: parseHexTransparency(
                         colors.primary,
-                        100
+                        100,
                       ),
                     }}
                   >
                     <Icon
-                      name={"tasks"}
+                      name={'tasks'}
                       size={25}
                       color={BaseColor.whiteColor}
                       solid
@@ -577,9 +586,9 @@ export default function StatusHelpHouseNeo({ route }) {
                       style={styles.img}></Image> */}
                   <Text
                     style={{
-                      justifyContent: "center",
-                      alignItems: "center",
-                      alignSelf: "center",
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      alignSelf: 'center',
                       marginBottom: 10,
                     }}
                   >
@@ -591,19 +600,19 @@ export default function StatusHelpHouseNeo({ route }) {
                       width: 40,
                       height: 40,
                       borderRadius: 10,
-                      backgroundColor: "#42B649",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      alignSelf: "center",
+                      backgroundColor: '#42B649',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      alignSelf: 'center',
                       marginBottom: 5,
                     }}
                     value={
                       <Text
                         style={{
-                          color: "#fff",
-                          textAlign: "center",
-                          alignItems: "center",
-                          alignSelf: "center",
+                          color: '#fff',
+                          textAlign: 'center',
+                          alignItems: 'center',
+                          alignSelf: 'center',
                         }}
                       >
                         {ds.cntcancel}
@@ -617,16 +626,16 @@ export default function StatusHelpHouseNeo({ route }) {
                 disabled={ds.cntclose == 0 ? true : false}
                 style={{
                   borderBottomWidth: 1,
-                  borderBottomColor: "#555",
+                  borderBottomColor: '#555',
                   //   marginBottom: 10,
                 }}
               >
                 <View
                   style={{
-                    justifyContent: "space-around",
-                    flexDirection: "row",
-                    alignContent: "center",
-                    alignItems: "center",
+                    justifyContent: 'space-around',
+                    flexDirection: 'row',
+                    alignContent: 'center',
+                    alignItems: 'center',
                     // alignSelf: 'center',
                   }}
                 >
@@ -644,18 +653,18 @@ export default function StatusHelpHouseNeo({ route }) {
                       width: 60,
                       height: 60,
                       // borderRadius: 8,
-                      alignItems: "center",
-                      justifyContent: "center",
+                      alignItems: 'center',
+                      justifyContent: 'center',
                       marginTop: 10,
                       marginBottom: 10,
                       backgroundColor: parseHexTransparency(
                         colors.primary,
-                        100
+                        100,
                       ),
                     }}
                   >
                     <Icon
-                      name={"tasks"}
+                      name={'tasks'}
                       size={25}
                       color={BaseColor.whiteColor}
                       solid
@@ -666,9 +675,9 @@ export default function StatusHelpHouseNeo({ route }) {
                       style={styles.img}></Image> */}
                   <Text
                     style={{
-                      justifyContent: "center",
-                      alignItems: "center",
-                      alignSelf: "center",
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      alignSelf: 'center',
                       marginBottom: 10,
                     }}
                   >
@@ -680,19 +689,19 @@ export default function StatusHelpHouseNeo({ route }) {
                       width: 40,
                       height: 40,
                       borderRadius: 10,
-                      backgroundColor: "#42B649",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      alignSelf: "center",
+                      backgroundColor: '#42B649',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      alignSelf: 'center',
                       marginBottom: 5,
                     }}
                     value={
                       <Text
                         style={{
-                          color: "#fff",
-                          textAlign: "center",
-                          alignItems: "center",
-                          alignSelf: "center",
+                          color: '#fff',
+                          textAlign: 'center',
+                          alignItems: 'center',
+                          alignSelf: 'center',
                         }}
                       >
                         {ds.cntclose}

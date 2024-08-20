@@ -29,6 +29,7 @@ import {
 
 import { useSelector } from "react-redux";
 import getUser from "../../selectors/UserSelectors";
+import getProject from "../../selectors/ProjectSelector";
 import axios from "axios";
 import client from "../../controllers/HttpClient";
 import styles from "./styles";
@@ -37,6 +38,8 @@ import { RadioButton } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { API_URL_LOKAL } from "@env";
+
+import { Dropdown } from "react-native-element-dropdown";
 
 export default function StatusHelp({ route }) {
   const { t, i18n } = useTranslation();
@@ -48,9 +51,9 @@ export default function StatusHelp({ route }) {
   const [dataTowerUser, setdataTowerUser] = useState([]);
   const [arrDataTowerUser, setArrDataTowerUser] = useState([]);
   const users = useSelector((state) => getUser(state));
-  const [email, setEmail] = useState(users.user);
+  const [email, setEmail] = useState("");
   const [urlApi, seturlApi] = useState(client);
-  const [entity, setEntity] = useState("");
+  const [entity_cd, setEntity] = useState("");
   const [project_no, setProjectNo] = useState("");
   const [db_profile, setDb_Profile] = useState("");
   const [checkedEntity, setCheckedEntity] = useState(false);
@@ -62,118 +65,98 @@ export default function StatusHelp({ route }) {
   const [defaulTower, setDefaultTower] = useState(false);
   const [defaultStatus, setDefaultStatus] = useState(false);
 
+  const [showChooseProject, setShowChooseProject] = useState(false);
+  const [isFocus, setIsFocus] = useState(false);
+  const [valueProject, setValueProject] = useState([]);
+  const [valueProjectSelected, setValueProjectSelected] = useState(null);
+  const [projectData, setProjectData] = useState([]);
+  const project = useSelector((state) => getProject(state));
+
+    //  getTicketStatus(params);
+    //       setShow(true);
   //   console.log('passprop kategori help', passProp);
   const styleItem = {
     ...styles.profileItem,
     borderBottomColor: colors.border,
   };
-  //-----FOR GET ENTITY & PROJJECT
-  const getTower = async () => {
-    const data = {
-      email: email,
-      app: "O",
-    };
-
-    const config = {
-      headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        // token: "",
-      },
-    };
-
-    //https://dev.ifca.co.id/apiifcares/api/getData/mysql/martin7id@yahoo.com/O
-
-    await axios
-      .get(API_URL_LOKAL + `/getData/mysql/${data.email}/${data.app}`, {
-        config,
-      })
-      .then((res) => {
-        console.log("90 res: ", res);
-        const datas = res.data;
-
-        const arrDataTower = datas.data;
-        if (arrDataTower.length > 1) {
-          setDefaultTower(false);
-        } else {
-          setDefaultTower(true);
-          setCheckedEntity(true);
-          setEntity(arrDataTower[0].entity_cd);
-          setProjectNo(arrDataTower[0].project_no);
-          setDb_Profile(arrDataTower[0].db_profile);
-          const params = {
-            entity_cd: arrDataTower[0].entity_cd,
-            project_no: arrDataTower[0].project_no,
-            db_profile: arrDataTower[0].db_profile,
-          };
-          console.log("params for debtor tower default", params);
-          // getDebtor(params);
-          getTicketStatus(params);
-          setShow(true);
-        }
-        arrDataTower.map((dat) => {
-          if (dat) {
-            setdataTowerUser(dat);
-          }
-        });
-        setArrDataTowerUser(arrDataTower);
-        setSpinner(false);
-
-        // return res.data;
-      })
-      .catch((error) => {
-        console.log("error get tower api", error);
-        // alert('error get');
-      });
-  };
-
+  
+// --- useeffect untuk project
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-      getTower();
+      // getTower();
+      if (project && project.data && project.data.length > 0) {
+        // console.log('entity useeffect di home', project.data[0].entity_cd);
+        setEntity(project.data[0].entity_cd);
+        setProjectNo(project.data[0].project_no);
+        const projects = project.data.map((item, id) => ({
+          label: item.descs,
+          value: item.project_no,
+        }));
+        console.log("data di project", project);
+        setProjectData(project.data);
+        setValueProject(projects);
 
-      // getCategoryHelp;
-      // setSpinner(false);
+        getTicketStatus(project);
+        setShow(true);
+      }
+       
     }, 3000);
-  }, []);
+  }, [project]);
 
-  const handleCheckChange = (index, data) => {
-    setCheckedEntity(index);
-    setShow(true);
+    // --- useeffect untuk update email/name
+  useEffect(() => {
+    setEmail(users != null && users.userData != null ? users.userData.email : "");
+  }, [email]);
+  // --- useeffect untuk update email/name
 
-    setEntity(data.entity_cd);
-    setProjectNo(data.project_no);
-    setDb_Profile(data.db_profile);
-    getTicketStatus(data);
+ 
+
+  const handleClickProject = (item, index) => {
+    console.log("index", index);
+    setValueProjectSelected(item.value);
+
+    setIsFocus(!isFocus);
+    setShowChooseProject(!showChooseProject);
+
+    if (item.value != null) {
+      console.log("value project selected", item.value);
+      projectData.map((items, index) => {
+        console.log("items project data", items);
+        if (items.project_no === item.value) {
+          console.log("items choose project handle", items);
+          console.log("index", index);
+          // setProjectData(items);
+          setCheckedEntity(true);
+          // setShow(true);
+          getTicketStatus(items); // ini dikasih get apapun setelah pilih project
+        }
+      });
+    }
   };
 
   const getTicketStatus = async (data) => {
     console.log("data for status", data);
-    const dT = data;
+
 
     const formData = {
-      entity_cd: dT.entity_cd,
-      project_no: dT.project_no,
+      entity_cd: data.entity_cd,
+      project_no: data.project_no,
       email: email,
     };
 
     console.log("formdata", formData);
     const config = {
+      method: "get",
+      url: API_URL_LOKAL + "/modules/cs/ticket-status-count",
       headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        token: "",
+        "content-type": "application/json",
+        Authorization: `Bearer ${users.Token}`,
       },
+      params: formData,
     };
 
-    await axios
-      .post(
-        API_URL_LOKAL + "/modules/cs/ticket-status-count/IFCAPB",
-        formData,
-        {
-          config,
-        }
-      )
+    await axios(config)
       .then((res) => {
         const datas = res.data;
 
@@ -214,20 +197,19 @@ export default function StatusHelp({ route }) {
     console.log("tiket state where", ticketStatus);
 
     const formData = {
-      email: email,
-      status: ticketStatus,
-    };
+        email: email,
+        status: ticketStatus,
+      };
     const config = {
+      method: "get",
+      url: API_URL_LOKAL + "/modules/cs/ticket-by-status",
       headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        token: "",
+        "content-type": "application/json",
+        Authorization: `Bearer ${users.Token}`,
       },
-    };
-    await axios
-      .post(API_URL_LOKAL + "/modules/cs/ticket-by-status/IFCAPB", formData, {
-        config,
-      })
+      params: formData,
+    }
+    await axios(config)
       .then((res) => {
         const datas = res.data;
 
@@ -276,10 +258,53 @@ export default function StatusHelp({ route }) {
             />
           );
         }}
+         onPressRight={() => {
+          // alert('test')
+          // handleClickProject()
+          setShowChooseProject(!showChooseProject);
+          // navigation.navigate("ViewHistoryStatusTRO");
+        }}
+         renderRight={() => {
+          return (
+            <Icon
+              name="sync-alt"
+              size={20}
+              color={colors.primary}
+              enableRTL={true}
+            />
+          );
+        }}
         onPressLeft={() => {
           navigation.goBack();
         }}
       />
+       {showChooseProject ? (
+        <Dropdown
+          style={[
+            styles.dropdown,
+            isFocus && { borderColor: BaseColor.corn30 },
+          ]}
+          placeholderStyle={styles.placeholderStyle}
+          selectedTextStyle={styles.selectedTextStyle}
+          inputSearchStyle={styles.inputSearchStyle}
+          iconStyle={styles.iconStyle}
+          itemTextStyle={styles.itemTextStyle}
+          containerStyle={{ borderRadius: 15, marginVertical: 5 }}
+          data={valueProject}
+          search
+          maxHeight={300}
+          labelField="label"
+          valueField="value"
+          placeholder={!isFocus ? "Choose Project" : "Choose Project"}
+          searchPlaceholder="Search..."
+          value={valueProjectSelected}
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
+          onChange={(item, index) => {
+            handleClickProject(item, index);
+          }}
+        />
+      ) : null}
       <View style={styles.wrap}>
         <Text title2>Ticket</Text>
         <Text headline style={{ fontWeight: "normal" }}>
@@ -287,44 +312,7 @@ export default function StatusHelp({ route }) {
         </Text>
 
         <View style={[styles.subWrap, { paddingBottom: 0, marginBottom: 10 }]}>
-          <View>
-            <Text style={{ color: "#3f3b38", fontSize: 14 }}>
-              Choose Project
-            </Text>
-            {spinner ? (
-              <View>
-                {/* <Spinner visible={this.state.spinner} /> */}
-                <Placeholder
-                  style={{ marginVertical: 4, paddingHorizontal: 10 }}
-                >
-                  <PlaceholderLine
-                    width={100}
-                    noMargin
-                    style={{ height: 40 }}
-                  />
-                </Placeholder>
-              </View>
-            ) : defaulTower ? (
-              <CheckBox
-                disabled
-                checked={checkedEntity}
-                title={arrDataTowerUser[0].project_descs}
-                onPress={() => setCheckedEntity(!checkedEntity)}
-              ></CheckBox>
-            ) : (
-              arrDataTowerUser.map((data, index) => (
-                <CheckBox
-                  disabled
-                  key={index}
-                  // checkedIcon="dot-circle-o"
-                  // uncheckedIcon="circle-o"
-                  title={data.project_descs}
-                  checked={checkedEntity === index}
-                  onPress={() => handleCheckChange(index, data)}
-                />
-              ))
-            )}
-          </View>
+         
 
           {show && checkedEntity === true ? (
             <View style={{ marginTop: 30, marginHorizontal: 10 }}>

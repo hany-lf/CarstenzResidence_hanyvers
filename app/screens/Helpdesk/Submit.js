@@ -89,44 +89,7 @@ export default function SubmitHelpdesk({ route, props }) {
     ...styles.profileItem,
     borderBottomColor: colors.border,
   };
-  //-----FOR GET ENTITY & PROJJECT
-  const getTower = async () => {
-    const data = {
-      email: email,
-      app: "O",
-    };
-
-    const config = {
-      headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        // token: "",
-      },
-    };
-
-    await axios
-      .get(API_URL_LOKAL + `/getData/mysql/${data.email}/${data.app}`, {
-        config,
-      })
-      .then((res) => {
-        const datas = res.data;
-
-        const arrDataTower = datas.data;
-        arrDataTower.map((dat) => {
-          if (dat) {
-            setdataTowerUser(dat);
-          }
-        });
-        setArrDataTowerUser(arrDataTower);
-        setSpinner(false);
-
-        // return res.data;
-      })
-      .catch((error) => {
-        console.log("error get tower api", error);
-        // alert('error get');
-      });
-  };
+ 
 
   const getDataStorage = async () => {
     // --- get data storage all helpdesk dari depan form
@@ -167,7 +130,7 @@ export default function SubmitHelpdesk({ route, props }) {
     setTimeout(() => {
       setTextLocation("");
       setLoading(false);
-      getTower(users);
+   
       getDataStorage();
       //   getLocation();
       // setSpinner(false);
@@ -361,13 +324,16 @@ export default function SubmitHelpdesk({ route, props }) {
           type: "images/jpeg",
         })
       );
-      return fetch(API_URL_LOKAL + "/modules/cs/save", {
+      const config = {
         method: "post",
+        url: API_URL_LOKAL + "/modules/cs/save",
         headers: {
-          "Content-Type": "multipart/form-data",
+          "content-type": "multipart/form-data",
+          Authorization: `Bearer ${users.Token}`,
         },
-        body: bodyData,
-      })
+        params: bodyData,
+      };
+      return axios(config)
         .then((res) => {
           console.log("res", res);
           return res.json().then((resJson) => {

@@ -43,7 +43,7 @@ const Detail = (dataTiketPassProp) => {
   const [spinner, setSpinner] = useState(true);
   const [urlApi, seturlApi] = useState(client);
   const users = useSelector((state) => getUser(state));
-  const [email, setEmail] = useState(users.user);
+  const [email, setEmail] = useState("");
 
   const [dataTowerUser, setdataTowerUser] = useState([]);
   const [arrDataTowerUser, setArrDataTowerUser] = useState([]);
@@ -63,6 +63,12 @@ const Detail = (dataTiketPassProp) => {
     width: (deviceWidth * 2) / 5,
     // width: deviceWidth / 2,
   };
+
+      // --- useeffect untuk update email/name
+  useEffect(() => {
+    setEmail(users != null && users.userData != null ? users.userData.email : "");
+  }, [email]);
+  // --- useeffect untuk update email/name
 
   const filterCategory = (text) => {
     setKeyword(text);
@@ -132,21 +138,16 @@ const Detail = (dataTiketPassProp) => {
     // console.log('form data multi', formData);
 
     const config = {
+      method: "post",
+      url: API_URL_LOKAL + "/modules/cs/ticket-all-by-report",
       headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        token: "",
+        "content-type": "application/json",
+        Authorization: `Bearer ${users.Token}`,
       },
+      params: formData,
     };
 
-    await axios
-      .post(
-        API_URL_LOKAL + "/modules/cs/ticket-all-by-report/IFCAPB",
-        formData,
-        {
-          config,
-        }
-      )
+    await axios(config)
       .then((res) => {
         // console.log('res tiket multi', res.data);
         const resTiketMulti = res.data.data[0];
@@ -171,7 +172,7 @@ const Detail = (dataTiketPassProp) => {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-      getTower(users);
+      // getTower(users);
       setImageViewVisible(false); // getCategoryHelp;
       // setSpinner(false);
       //   console.log('routeparams', route.params);
@@ -574,7 +575,7 @@ const Feedback = () => {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-      getTower(users);
+      // getTower(users);
       setImageViewVisible(false); // getCategoryHelp;
       // setSpinner(false);
       //   console.log('routeparams', route.params);

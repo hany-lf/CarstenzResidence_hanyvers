@@ -30,6 +30,7 @@ import {
 
 import { useSelector } from "react-redux";
 import getUser from "../../selectors/UserSelectors";
+import getProject from "../../selectors/ProjectSelector";
 import axios from "axios";
 import client from "../../controllers/HttpClient";
 import styles from "./styles";
@@ -63,52 +64,43 @@ export default function SelectCategory({ route }) {
   //   console.log('passProps urutan ketiga', passProp);
   //   const [passProp, setPassProps] = useState();
   const [passPropStorage, setPassPropStorage] = useState();
+
+    const [showChooseProject, setShowChooseProject] = useState(false);
+  const [isFocus, setIsFocus] = useState(false);
+  const [valueProject, setValueProject] = useState([]);
+  const [valueProjectSelected, setValueProjectSelected] = useState(null);
+  const [projectData, setProjectData] = useState([]);
+  const project = useSelector((state) => getProject(state));
+
   console.log("passProp >", passProp);
   const styleItem = {
     ...styles.profileItem,
     borderBottomColor: colors.border,
   };
-  //-----FOR GET ENTITY & PROJJECT
-  const getTower = async () => {
-    console.log("email get tower", email);
-    const data = {
-      email: email,
-      app: "O",
-    };
+  
+  // --- useeffect untuk project
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+      // getTower();
+      if (project && project.data && project.data.length > 0) {
+        // console.log('entity useeffect di home', project.data[0].entity_cd);
+        setProjectData(project.data);
+        getSelectCategoryDetail(project.data);
+        setShow(true);
+      }
+       
+    }, 3000);
+  }, [project]);
 
-    const config = {
-      headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        // token: "",
-      },
-    };
-
-    await axios
-      .get(API_URL_LOKAL + `/getData/mysql/${data.email}/${data.app}`, {
-        config,
-      })
-      .then((res) => {
-        const datas = res.data;
-
-        const arrDataTower = datas.data;
-        console.log("get data tower", arrDataTower);
-        arrDataTower.map((dat) => {
-          if (dat) {
-            setdataTowerUser(dat);
-            getSelectCategoryDetail(dat);
-          }
-        });
-        setArrDataTowerUser(arrDataTower);
-        setSpinner(false);
-
-        // return res.data;
-      })
-      .catch((error) => {
-        console.log("error get tower api", error);
-        alert("error get");
-      });
-  };
+  //  // --- useeffect untuk project
+  // useEffect(() => {
+  //   if (project && project.data && project.data.length > 0) {
+  //     // console.log('entity useeffect di home', project.data[0].entity_cd);
+  //     setEntity(project.data[0].entity_cd);
+  //     setProjectNo(project.data[0].project_no);
+  //   }
+  // }, [project]);
 
   const getDataStorage = async () => {
     const value = await AsyncStorage.getItem("@helpdeskStorage");
@@ -121,7 +113,7 @@ export default function SelectCategory({ route }) {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-      getTower(users);
+
       getDataStorage();
       searchFilterFunction();
       setSpinner(false);
@@ -143,32 +135,17 @@ export default function SelectCategory({ route }) {
     console.log("params >", params);
 
     const config = {
+      method: "post",
+      url: API_URL_LOKAL + "/modules/cs/category-detail",
       headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        token: "",
+        "content-type": "application/json",
+        Authorization: `Bearer ${users.Token}`,
       },
+      params: params,
     };
 
-    const urlparams =
-      "?entity_cd=" +
-      params.entity +
-      "&" +
-      "project_no=" +
-      params.project +
-      "&" +
-      "location_type=" +
-      params.location_type +
-      "&" +
-      "category_group_cd=" +
-      params.category_group_cd;
 
-    // console.log('urlparams', urlApi + '/modules/cs/category-detail' + urlparams);
-
-    await axios
-      .post(API_URL_LOKAL + "/modules/cs/category-detail", params, {
-        config,
-      })
+    await axios(config)
       .then((res) => {
         // console.log('res detail', res);
         if (res.data.success == true) {

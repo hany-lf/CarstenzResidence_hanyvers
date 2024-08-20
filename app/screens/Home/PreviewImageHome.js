@@ -1,18 +1,18 @@
-import { Header, Icon, Image, SafeAreaView, Text } from "@components";
-import { BaseColor, BaseStyle, Images, useTheme } from "@config";
-import React, { useState } from "react";
-import { FlatList, TouchableOpacity, View } from "react-native";
-import Swiper from "react-native-swiper";
-import styles from "./styles";
+import { Header, Icon, Image, SafeAreaView, Text } from '@components';
+import { BaseColor, BaseStyle, Images, useTheme } from '@config';
+import React, { useEffect, useState } from 'react';
+import { FlatList, TouchableOpacity, View } from 'react-native';
+import Swiper from 'react-native-swiper';
+import styles from './styles';
 
 const imagesInit = [
-  { id: "1", image: Images.location1, selected: true },
-  { id: "2", image: Images.location2 },
-  { id: "3", image: Images.location3 },
-  { id: "4", image: Images.location4 },
-  { id: "5", image: Images.location5 },
-  { id: "6", image: Images.location6 },
-  { id: "7", image: Images.location7 },
+  { id: '1', image: Images.location1, selected: true },
+  { id: '2', image: Images.location2 },
+  { id: '3', image: Images.location3 },
+  { id: '4', image: Images.location4 },
+  { id: '5', image: Images.location5 },
+  { id: '6', image: Images.location6 },
+  { id: '7', image: Images.location7 },
 ];
 
 export default function PreviewImageHome({ navigation, route }) {
@@ -25,13 +25,18 @@ export default function PreviewImageHome({ navigation, route }) {
 
   const [indexSelected, setIndexSelected] = useState(0);
 
-  console.log("images preview", images);
+  console.log('images preview', images);
 
   /**
    * call when select image
    *
    * @param {*} indexSelected
    */
+
+  useEffect(() => {
+    console.log('images preview useefect', images);
+  }, [images]);
+
   const onSelect = (indexSelected) => {
     setIndexSelected(indexSelected);
     setImages(
@@ -47,7 +52,7 @@ export default function PreviewImageHome({ navigation, route }) {
             selected: false,
           };
         }
-      })
+      }),
     );
     flatListRef.scrollToIndex({
       animated: true,
@@ -69,11 +74,11 @@ export default function PreviewImageHome({ navigation, route }) {
 
   return (
     <SafeAreaView
-      style={[BaseStyle.safeAreaView, { backgroundColor: "black" }]}
-      edges={["right", "top", "left"]}
+      style={[BaseStyle.safeAreaView, { backgroundColor: 'black' }]}
+      edges={['right', 'top', 'left']}
     >
       <Header
-        style={{ backgroundColor: "black" }}
+        style={{ backgroundColor: 'black' }}
         title=""
         renderRight={() => {
           return <Icon name="times" size={20} color={BaseColor.whiteColor} />;
@@ -86,8 +91,8 @@ export default function PreviewImageHome({ navigation, route }) {
 
       <View>
         <Image
-          // key={key}
-          style={{ width: "100%", height: "95%" }}
+          key={images}
+          style={{ width: '100%', height: '95%' }}
           resizeMode="contain"
           source={{ uri: images }}
         />

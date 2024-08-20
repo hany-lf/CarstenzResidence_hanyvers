@@ -75,50 +75,10 @@ export default function ViewHistoryStatus({ route }) {
     ...styles.profileItem,
     borderBottomColor: colors.border,
   };
-  //-----FOR GET ENTITY & PROJJECT
-  const getTower = async () => {
-    const data = {
-      email: email,
-      app: "O",
-    };
-
-    const config = {
-      headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        // token: "",
-      },
-    };
-
-    await axios
-      .get(API_URL_LOKAL + `/getData/mysql/${data.email}/${data.app}`, {
-        config,
-      })
-      .then((res) => {
-        const datas = res.data;
-
-        const arrDataTower = datas.data;
-        arrDataTower.map((dat) => {
-          if (dat) {
-            setdataTowerUser(dat);
-          }
-        });
-        setArrDataTowerUser(arrDataTower);
-        setSpinner(false);
-
-        // return res.data;
-      })
-      .catch((error) => {
-        console.log("error get tower api", error);
-        // alert('error get');
-      });
-  };
-
+  
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-      getTower(users);
-
       // getCategoryHelp;
       // setSpinner(false);
       console.log("routeparams", route.params);

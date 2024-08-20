@@ -63,19 +63,17 @@ export default function ModalLocation(props) {
     }, 1000);
   }, []);
   const getLocation = async () => {
-    const config = {
-      headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        // token: "",
-      },
-    };
+   const config = {
+    method: "get",
+    url: API_URL_LOKAL + "/modules/cs/location",
+    headers: {
+      "content-type": "application/json",
+      Authorization: `Bearer ${users.Token}`,
+    },
+   }
     console.log("url api", urlApi);
 
-    await axios
-      .get(API_URL_LOKAL + "/modules/cs/location", {
-        config,
-      })
+    await axios(config)
       .then((res) => {
         console.log(res.data.success);
         if (res.data.success == true) {

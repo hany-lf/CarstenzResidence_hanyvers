@@ -4,8 +4,8 @@ import React, {
   useRef,
   useCallback,
   createRef,
-} from "react";
-import { useNavigation } from "@react-navigation/core";
+} from 'react';
+import { useNavigation } from '@react-navigation/core';
 import {
   FlatList,
   ScrollView,
@@ -18,25 +18,27 @@ import {
   StyleSheet,
   TouchableOpacity,
   Text,
-} from "react-native";
+} from 'react-native';
 
-import { Header, SafeAreaView, Icon } from "@components";
-import { BaseStyle, useTheme } from "@config";
-import { useTranslation } from "react-i18next";
-import axios from "axios";
+import { Header, SafeAreaView, Icon } from '@components';
+import { BaseStyle, useTheme } from '@config';
+import { useTranslation } from 'react-i18next';
+import axios from 'axios';
 
-import Carousel from "react-native-reanimated-carousel";
+import Carousel from 'react-native-reanimated-carousel';
 import Animated, {
   Extrapolate,
   interpolate,
   useAnimatedStyle,
   useSharedValue,
-} from "react-native-reanimated";
+} from 'react-native-reanimated';
 
-import { API_URL_LOKAL } from "@env";
+import { API_URL_LOKAL } from '@env';
+import getUser from '../../selectors/UserSelectors';
+import { useSelector, useDispatch } from 'react-redux';
 
 const SliderNews = ({
-  style = {},
+  // style = {},
   separatorWidth = 0,
   contentContainerStyle = {},
   data = [],
@@ -52,12 +54,14 @@ const SliderNews = ({
   const { colors } = useTheme();
   const slider = createRef();
   const navigation = useNavigation();
-  const itemWidth = Math.round(Dimensions.get("window").width);
+  const itemWidth = Math.round(Dimensions.get('window').width);
   //   const separatorWidth = separatorWidth;
   const totalItemWidth = itemWidth + separatorWidth;
 
-  const [index, setIndex] = useState("");
+  const [index, setIndex] = useState('');
   const progressValue = 0;
+  const user = useSelector((state) => getUser(state));
+
   //   const [data, setData] = useState([]);
 
   //   const onViewableItemsChanged = ({viewableItems, changed}) => {
@@ -78,7 +82,7 @@ const SliderNews = ({
   //     // }
   //   };
   const onViewableCall = () => {
-    console.log("onViewableItemsChanged Calling on Scroll...");
+    console.log('onViewableItemsChanged Calling on Scroll...');
   };
 
   const viewabilityConfig = {
@@ -86,42 +90,54 @@ const SliderNews = ({
   };
 
   const goPostDetail = (item) => {
-    console.log("for news", item);
+    console.log('for news', item);
 
-    item.category == "N" ? getNewsDetail(item) : getAnnounceDetail(item);
+    // getNewsDetail(item);
+    //  navigation.navigate('PostDetail', { item: res.data.data });
+    navigation.navigate('PostDetail', { item: item });
   };
 
   const getNewsDetail = async (item) => {
-    console.log("rowid for detail", item.rowID);
+    const config = {
+      url: API_URL_LOKAL + `/news/id/${item.rowID}`,
+      method: 'get',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${user.Token}`,
+        Accept: 'application/json',
+      },
+    };
+    console.log('config get news detail', config);
+    console.log('rowid for detail', item.rowID);
     await axios
       .get(API_URL_LOKAL + `/news/id/${item.rowID}`)
       .then((res) => {
-        console.log("res news detail", res.data.data);
+        console.log('res news detail', res.data.data);
 
-        navigation.navigate("PostDetail", { item: res.data.data });
+        navigation.navigate('PostDetail', { item: res.data.data });
       })
       .catch((error) => {
-        console.log("error get news announce detail", error);
+        console.log('error get news announce detail', error);
         // alert('error get');
       });
   };
 
   const getAnnounceDetail = async (item) => {
-    console.log("rowid for detail", item.rowID);
+    console.log('rowid for detail', item.rowID);
     await axios
       .get(API_URL_LOKAL + `/announce/id/${item.rowID}`)
       .then((res) => {
-        console.log("res announce detail", res.data.data);
+        console.log('res announce detail', res.data.data);
 
-        navigation.navigate("AnnounceDetailHome", { item: res.data.data });
+        navigation.navigate('AnnounceDetailHome', { item: res.data.data });
       })
       .catch((error) => {
-        console.log("error get news announce detail", error);
+        console.log('error get news announce detail', error);
         // alert('error get');
       });
   };
 
-  const width = Dimensions.get("window").width;
+  const width = Dimensions.get('window').width;
   // const width = Dimensions.get('window').width - 45;
   const IMAGE_WIDTH = 250;
   // const image_margin = 70; //70 pas slide ke 1 dan ke 4 bagus
@@ -212,8 +228,8 @@ const SliderNews = ({
             //   style={[styles.videoContainer]}
             style={{
               // backgroundColor: 'yellow',
-              justifyContent: "center",
-              alignItems: "center",
+              justifyContent: 'center',
+              alignItems: 'center',
               marginVertical: 10,
               // marginHorizontal: 10,
 
@@ -235,11 +251,11 @@ const SliderNews = ({
                   height: 450,
                   margin: 5,
                   width: 250,
-                  resizeMode: "cover",
+                  resizeMode: 'cover',
                   // marginHorizontal: 10,
                   borderRadius: 10,
                 }}
-                source={{ uri: item.url_image.replace("https", "http") }}
+                source={{ uri: item.url_image }}
                 // source={item.url_image}
                 //   source={local ? item.image : {uri: item.image}}
               />
@@ -258,15 +274,15 @@ const styles = StyleSheet.create({
   videoContainer: {
     width: 275,
     paddingVertical: 28,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     marginRight: 20,
   },
   videoPreview: {
     width: 275,
     // height: 155,
     borderRadius: 8,
-    resizeMode: "cover",
+    resizeMode: 'cover',
   },
   desc: {
     fontSize: 14,
@@ -275,14 +291,14 @@ const styles = StyleSheet.create({
     marginTop: 18,
   },
   imageContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
   },
   shadow: {
     ...Platform.select({
       ios: {
-        shadowColor: "black",
+        shadowColor: 'black',
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.1,
         shadowRadius: 5,

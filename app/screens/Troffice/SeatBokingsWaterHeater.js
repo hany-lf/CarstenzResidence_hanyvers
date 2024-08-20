@@ -11,17 +11,17 @@ import {
   Icon,
   Tag,
   ListOptionSelected,
-} from "@components";
-import IconFontisto from "react-native-vector-icons/Fontisto";
-import IconAnt from "react-native-vector-icons/AntDesign";
-import { enableExperimental } from "@utils";
-import { BaseColor, BaseStyle, useTheme } from "@config";
-import { CheckBox } from "react-native-elements";
+} from '@components';
+import IconFontisto from 'react-native-vector-icons/Fontisto';
+import IconAnt from 'react-native-vector-icons/AntDesign';
+import { enableExperimental } from '@utils';
+import { BaseColor, BaseStyle, useTheme } from '@config';
+import { CheckBox } from 'react-native-elements';
 
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation } from '@react-navigation/native';
 
-import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   FlatList,
   TouchableOpacity,
@@ -31,35 +31,34 @@ import {
   ScrollView,
   StyleSheet,
   Alert,
-} from "react-native";
-import { ProgressBar, MD3Colors, ToggleButton } from "react-native-paper";
-import Modal from "react-native-modal";
+} from 'react-native';
+import { ProgressBar, MD3Colors, ToggleButton } from 'react-native-paper';
+import Modal from 'react-native-modal';
 // import DatePicker from 'react-native-date-picker';
-import moment from "moment";
-import { useSelector } from "react-redux";
-import getUser from "../../selectors/UserSelectors";
-import axios from "axios";
-import client from "../../controllers/HttpClient";
-import styles from "./styles";
+import moment from 'moment';
+import { useSelector } from 'react-redux';
+import getUser from '../../selectors/UserSelectors';
+import getProject from '../../selectors/ProjectSelector';
+import axios from 'axios';
+import client from '../../controllers/HttpClient';
+import styles from './styles';
 
 //   import {RadioButton} from 'react-native-paper';
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { API_URL_LOKAL } from "@env";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { API_URL_LOKAL } from '@env';
 export default function SeatBooking(props) {
   const { t, i18n } = useTranslation();
   const { colors } = useTheme();
-  const [loading, setLoading] = useState(true);
+
   const navigation = useNavigation();
 
   const [dataTowerUser, setdataTowerUser] = useState([]);
-  const [entity, setEntity] = useState("");
-  const [project_no, setProjectNo] = useState("");
+
   const [arrDataTowerUser, setArrDataTowerUser] = useState([]);
   const users = useSelector((state) => getUser(state));
-  const [email, setEmail] = useState(users.user);
+
   const [urlApi, seturlApi] = useState(client);
 
-  const [spinner, setSpinner] = useState(true);
   const [spinnerHour, setSpinnerHours] = useState(true);
   const [dataCategory, setDataCategory] = useState([]);
 
@@ -85,31 +84,39 @@ export default function SeatBooking(props) {
   const [isIconUp, setIconUp] = useState(false);
 
   const [modalSuccessVisible, showModalSuccess] = useState(false);
-  const [message, setMessage] = useState("");
-  const [messageResult, setMessageResult] = useState("");
+  const [message, setMessage] = useState('');
+  const [messageResult, setMessageResult] = useState('');
   const [isActive, setIsActive] = useState(false);
   const [DateIsActive, setDateIsActive] = useState();
 
-  console.log("gethours", getHourOnClick);
-  console.log("passProp :", passProp);
-  console.log("parameter :", props.route.params);
-  console.log("parameter :", passPropStorage);
-  console.log("dataTowerUser", dataTowerUser);
-  console.log("arrDataTowerUser", arrDataTowerUser);
-  console.log("passProp", passProp);
-  console.log("passPropStorage", passPropStorage);
-  console.log("messageResult", messageResult);
+  const project = useSelector((state) => getProject(state));
+  const [email, setEmail] = useState('');
+  const [entity_cd, setEntity] = useState('');
+  const [project_no, setProjectNo] = useState('');
+  const [db_profile, setDb_Profile] = useState('');
+  const [spinner, setSpinner] = useState(true);
+  const [loading, setLoading] = useState(true);
+
+  console.log('gethours', getHourOnClick);
+  console.log('passProp :', passProp);
+  console.log('parameter :', props.route.params);
+  console.log('parameter :', passPropStorage);
+  console.log('dataTowerUser', dataTowerUser);
+  console.log('arrDataTowerUser', arrDataTowerUser);
+  console.log('passProp', passProp);
+  console.log('passPropStorage', passPropStorage);
+  console.log('messageResult', messageResult);
   const TABS = [
     {
-      id: "O",
-      title: t("Water Heater Overhaul"),
+      id: 'O',
+      title: t('Water Heater Overhaul'),
     },
   ];
 
-  console.log("Overhaul Clg", TABS[1]);
+  console.log('Overhaul Clg', TABS[1]);
   const [tab, setTab] = useState(TABS[0]);
 
-  console.log("bookdate", data[4]?.book_date);
+  console.log('bookdate', data[4]?.book_date);
   const TABSDATE = [
     {
       id: 1,
@@ -129,39 +136,75 @@ export default function SeatBooking(props) {
     },
   ];
   const [tabDate, setTabDate] = useState(TABSDATE[0]);
-  console.log("tabDate >", tabDate);
-  const tab1 = data.filter((x) => x.id == "1");
-  const tab2 = data.filter((x) => x.id == "2");
-  const tab3 = data.filter((x) => x.id == "3");
-  const tab4 = data.filter((x) => x.id == "4");
+  console.log('tabDate >', tabDate);
+  const tab1 = data.filter((x) => x.id == '1');
+  const tab2 = data.filter((x) => x.id == '2');
+  const tab3 = data.filter((x) => x.id == '3');
+  const tab4 = data.filter((x) => x.id == '4');
 
   useEffect(() => {
-    getDateBook(dataTowerUser);
-  }, [dataTowerUser]);
+    setTimeout(() => {
+      setLoading(false);
+      // getTower(users);
+      getDataStorage();
+      //func baru
+      getTime();
+      // getCategoryHelp;
+      // setSpinner(false);
+    }, 3000);
+  }, []);
+
+  // --- useeffect untuk project
+  useEffect(() => {
+    if (project && project.data && project.data.length > 0) {
+      // console.log('entity useeffect di home', project.data[0].entity_cd);
+      setEntity(project.data[0].entity_cd);
+      setProjectNo(project.data[0].project_no);
+    }
+    getDateBook(project);
+  }, [project]);
+
+  // --- useeffect untuk update email/name
+  useEffect(() => {
+    if (users && users.userData) {
+      // console.log('entity useeffect di home', user);
+      setEmail(users.userData.email);
+    }
+  }, [users]);
+  // --- useeffect untuk update email/name
+
+  useEffect(() => {
+    console.log('apakah ini terload', email);
+    if (email) {
+      console.log('email');
+    }
+  }, [email]);
 
   const getDateBook = async (datas) => {
-    const entity_cd = datas.entity_cd;
-    const project_no = datas.project_no;
     const category_cd = passProp.category_cd;
     console.log(
-      "test url >",
+      'test url >',
       `http://apps.pakubuwono-residence.com/apiwebpbi/api/modules/troffice/booking-hours?entity_cd=` +
         entity_cd +
         `&project_no=` +
         project_no +
         `&category_cd=` +
-        category_cd
+        category_cd,
     );
-    await axios
-      .get(
-        API_URL_LOKAL +
-          `/modules/troffice/booking-hours?entity_cd=` +
-          entity_cd +
-          `&project_no=` +
-          project_no +
-          `&category_cd=` +
-          category_cd
-      )
+    const config = {
+      method: 'get',
+      url: API_URL_LOKAL + '/modules/troffice/booking-hours',
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${users.Token}`,
+      },
+      params: {
+        entity_cd: entity_cd,
+        project_no: project_no,
+        category_cd: category_cd,
+      },
+    };
+    await axios(config)
       .then((res) => {
         // console.log('data get date book', res.data[0]);
         // console.log('datas nih dipake buat entity projek', datas);
@@ -175,92 +218,105 @@ export default function SeatBooking(props) {
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
   };
+
+  const createAxiosConfig = (endpoint, method = 'get', params = {}) => {
+    return {
+      method: method,
+      url: `${API_URL_LOKAL}${endpoint}`,
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${users.Token}`,
+      },
+      params: params,
+    };
+  };
+
   const getBooked = async (datas, databookdates) => {
-    const entity_cd = datas.entity_cd;
-    console.log("next abis tower", datas);
-    const project_no = datas.project_no;
+    const entity_cd = entity_cd;
+    console.log('next abis tower', datas);
+    const project_no = project_no;
     const category_cd = passProp.category_cd;
     // const databookdates = databookdate;
     // console.log('data obj_data', obj_data);
-    console.log("params :", category_cd);
-    console.log("data book date atas", databookdates);
-    console.log("next abis tower if", entity_cd);
+    console.log('params :', category_cd);
+    console.log('data book date atas', databookdates);
+    console.log('next abis tower if', entity_cd);
 
     // const databookdates = databookdate;
     // console.log('data obj_data', obj_data);
-    console.log("data book date if", databookdates);
+    console.log('data book date if', databookdates);
 
     // alert('undefined');
-    const params_api =
-      "?" +
-      "entity_cd=" +
-      entity_cd +
-      "&" +
-      "project_no=" +
-      project_no +
-      "&" +
-      "category_cd=" +
-      category_cd +
-      "&" +
-      "req_type=" +
-      tab.id;
 
-    console.log(
-      "url params",
-      "http://apps.pakubuwono-residence.com/apiwebpbi/api/modules/troffice/booking-hours_category" +
-        params_api +
-        "&" +
-        "book_date=" +
-        databookdates[2].book_date +
-        "&id=1"
-    );
-    let endpoints = [
-      API_URL_LOKAL +
-        `/modules/troffice/booking-hours_category` +
-        params_api +
-        "&" +
-        "book_date=" +
-        databookdates[0].book_date +
-        // '2021-12-15' +
-        `&id=1`,
-      API_URL_LOKAL +
-        `/modules/troffice/booking-hours_category` +
-        params_api +
-        "&" +
-        "book_date=" +
-        databookdates[1].book_date +
-        // '2021-12-15' +
-        `&id=2`,
-      API_URL_LOKAL +
-        `/modules/troffice/booking-hours_category` +
-        params_api +
-        "&" +
-        "book_date=" +
-        databookdates[2].book_date +
-        // '2021-12-15' +
-        `&id=3`,
-      API_URL_LOKAL +
-        `/modules/troffice/booking-hours_category` +
-        params_api +
-        "&" +
-        "book_date=" +
-        databookdates[3].book_date + // '2021-12-15' + // data[3]?.book_date +
-        `&id=4`,
+    const endpoints = [
+      createAxiosConfig(
+        `/modules/troffice/housekeeping-booking-status`,
+        'get',
+        {
+          entity_cd: entity_cd,
+          project_no: project_no,
+          category_cd: category_cd,
+          req_type: tab.id,
+          book_date: databookdates[0].book_date,
+          id: 1,
+        },
+      ),
+
+      createAxiosConfig(
+        `/modules/troffice/housekeeping-booking-status`,
+        'get',
+        {
+          entity_cd: entity_cd,
+          project_no: project_no,
+          category_cd: category_cd,
+          req_type: tab.id,
+          book_date: databookdates[1].book_date,
+          id: 2,
+        },
+      ),
+
+      createAxiosConfig(
+        `/modules/troffice/housekeeping-booking-status`,
+        'get',
+        {
+          entity_cd: entity_cd,
+          project_no: project_no,
+          category_cd: category_cd,
+          req_type: tab.id,
+          book_date: databookdates[2].book_date,
+          id: 3,
+        },
+      ),
+
+      createAxiosConfig(
+        `/modules/troffice/housekeeping-booking-status`,
+        'get',
+        {
+          entity_cd: entity_cd,
+          project_no: project_no,
+          category_cd: category_cd,
+          req_type: tab.id,
+          book_date: databookdates[3].book_date,
+          id: 4,
+        },
+      ),
     ];
+
+    console.log('endpoints', endpoints);
     axios
-      .all(endpoints.map((endpoint) => axios.get(endpoint)))
+      .all(endpoints.map((config) => axios(config)))
       .then(
         axios.spread(
           (
             { data: dataBooked1 },
             { data: dataBooked2 },
             { data: dataBooked3 },
-            { data: dataBooked4 }
+            { data: dataBooked4 },
           ) => {
-            console.log("res1: ", dataBooked1);
-            console.log("res2: ", dataBooked2);
-            console.log("res3: ", dataBooked3);
-            console.log("res4: ", dataBooked4);
+            console.log('res1: ', dataBooked1);
+            console.log('res2: ', dataBooked2);
+            console.log('res3: ', dataBooked3);
+            console.log('res4: ', dataBooked4);
 
             if (dataBooked1) {
               setDataBooked1(dataBooked1);
@@ -274,15 +330,65 @@ export default function SeatBooking(props) {
             if (dataBooked4) {
               setDataBooked4(dataBooked4);
             }
-          }
-        )
+          },
+        ),
       )
-      .catch((error) => console.error("ini error if getbooking", error))
+      .catch((error) => console.error('ini error if getbooking', error))
       .finally(
         () => setLoading(false),
         setSpinnerHours(false),
-        setSpinner(false)
+        setSpinner(false),
       );
+  };
+  const getTime = async () => {
+    const entity = entity_cd;
+    const project = project_no;
+
+    const config = {
+      method: 'get',
+      url: API_URL_LOKAL + `/modules/troffice/master-booking-time`,
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${users.Token}`,
+      },
+      params: { entity_cd: entity, project_no: project },
+    };
+    try {
+      await axios(config).then((res) => {
+        const datas = res.data.data;
+
+        let ans = datas.reduce((agg, curr) => {
+          console.log('agg', agg);
+          let found = agg.find((x) => x.hours === curr.hours);
+          if (found) {
+            found.subslot.push(curr.subslot);
+          } else {
+            agg.push({
+              hours: curr.hours,
+              subslot: [curr.subslot],
+            });
+          }
+          return agg;
+        }, []);
+
+        const result = ans.reduce((acc, curr) => {
+          if (acc[curr.hours] === undefined) acc[curr.hours] = 0;
+          curr.subslot.forEach((x) => (acc[curr.hours] += x.length));
+          return acc;
+        }, {});
+
+        console.log('counters datas >', datas);
+        console.log('counters >', result);
+
+        // setBookingTime(ans);
+        setBookingTime(ans);
+        console.log('ans >', ...ans);
+      });
+    } catch (error) {
+      console.log('Error from getTime', error);
+    }
+    // console.log('entity?', ...entity) //untuk pecahin array jadi object pake ...
+    // console.log('project?', ...project)
   };
 
   useEffect(() => {
@@ -292,40 +398,34 @@ export default function SeatBooking(props) {
   }, []);
 
   const setExpandIcon = (indexs) => {
-    console.log("indexs", indexs);
+    console.log('indexs', indexs);
     setIsExpand(!isExpand);
     setIconUp(indexs ? !isIconUp : isIconUp);
   };
 
-  // const setExpandIconReason = indexs => {
-  //   console.log('indexs', indexs);
-  //   // setIsExpandReason(!isExpandReason);
-  //   setIconUp(indexs ? !isIconUp : isIconUp);
-  // };
-
   const onBookingPress = (dtbook, jam_booking, slt) => {
-    console.log("dtbook", dtbook);
-    console.log("dtbook length", ...dtbook.slot_hours);
+    console.log('dtbook', dtbook);
+    console.log('dtbook length', ...dtbook.slot_hours);
     // const obj = {...dtbook.slot_hours};
     const obj = dtbook.slot_hours;
 
     obj.map(function (value, i) {
-      console.log("result dtbook loop", i, value);
+      console.log('result dtbook loop', i, value);
       return i, value;
     });
 
     const result = obj.filter(booked);
 
     function booked(book) {
-      return (book = dtbook.databook !== null || dtbook.databook !== "");
+      return (book = dtbook.databook !== null || dtbook.databook !== '');
     }
 
     // const booked = book => {
     //   return (book = dtbook.databook !== null || dtbook.databook !== '');
     // };
 
-    console.log("result filter databook", result);
-    console.log("obj databook", obj);
+    console.log('result filter databook', result);
+    console.log('obj databook', obj);
     // console.log('datab databook', datab);
     const item = {
       databook: dtbook,
@@ -361,67 +461,15 @@ export default function SeatBooking(props) {
     ...styles.profileItem,
     borderBottomColor: colors.border,
   };
-  //-----FOR GET ENTITY & PROJJECT
-  const getTower = async () => {
-    const data = {
-      email: email,
-      app: "O",
-    };
-
-    const config = {
-      headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        // token: "",
-      },
-    };
-
-    await axios
-      .get(API_URL_LOKAL + `/getData/mysql/${data.email}/${data.app}`, {
-        config,
-      })
-      .then((res) => {
-        const datas = res.data;
-
-        const arrDataTower = datas.data;
-        arrDataTower.map((dat) => {
-          if (dat) {
-            setdataTowerUser(dat);
-            setEntity(dat.entity_cd);
-            setProjectNo(dat.project_no);
-            getDateBook(dat);
-          }
-        });
-        setArrDataTowerUser(arrDataTower);
-        setSpinner(false);
-
-        // return res.data;
-      })
-      .catch((error) => {
-        console.log("error get tower api", error);
-        alert("error get");
-      });
-  };
 
   const getDataStorage = async () => {
-    const value = await AsyncStorage.getItem("@troStorage");
+    const value = await AsyncStorage.getItem('@troStorage');
     // const DataTower = await AsyncStorage.getItem('@DataTower');
 
     const passPropStorage = JSON.parse(value);
 
     setPassPropStorage(passPropStorage);
   };
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-      getTower(users);
-      getDataStorage();
-      //func baru
-      getTime();
-      // getCategoryHelp;
-      // setSpinner(false);
-    }, 3000);
-  }, []);
 
   useEffect(() => {
     setTimeout(() => {
@@ -430,10 +478,18 @@ export default function SeatBooking(props) {
   }, []);
 
   useEffect(() => {
-    axios
-      .get(API_URL_LOKAL + "/home/common-current-time")
+    const config = {
+      method: 'get',
+      url: API_URL_LOKAL + '/home/common-current-time',
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${users.Token}`,
+      },
+      params: {},
+    };
+    axios(config)
       .then((time) => {
-        console.log("time from server?", time.data);
+        console.log('time from server?', time.data);
         setTime(time.data);
       })
       // .catch(error => console.error(error))
@@ -450,13 +506,20 @@ export default function SeatBooking(props) {
   };
 
   useEffect(() => {
-    axios
-      .get(
+    const config = {
+      method: 'get',
+      url:
         API_URL_LOKAL +
-          `/modules/facilities/booking-hours-by-date?entity_cd=01&project_no=01&facility_cd=CA&book_date=2021-12-07&id=1`
-      )
+        `/modules/facilities/booking-hours-by-date?entity_cd=01&project_no=01&facility_cd=CA&book_date=2021-12-07&id=1`,
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${users.Token}`,
+      },
+      params: {},
+    };
+    axios(config)
       .then((data) => {
-        console.log("timedate", data.data);
+        console.log('timedate', data.data);
         setTimeDate(data[0]);
 
         setSpinner(false);
@@ -465,52 +528,6 @@ export default function SeatBooking(props) {
       .catch((error) => console.error(error.response.data))
       .finally(() => setLoading(false));
   }, []);
-
-  const getTime = async () => {
-    const entity = passProp.entity_cd;
-    const project = passProp.project_no;
-    try {
-      await axios
-        .get(
-          API_URL_LOKAL +
-            `/modules/troffice/master-booking-time?entity_cd=${entity}&project_no=${project}`
-        )
-        .then((res) => {
-          const datas = res.data.data;
-
-          let ans = datas.reduce((agg, curr) => {
-            console.log("agg", agg);
-            let found = agg.find((x) => x.hours === curr.hours);
-            if (found) {
-              found.subslot.push(curr.subslot);
-            } else {
-              agg.push({
-                hours: curr.hours,
-                subslot: [curr.subslot],
-              });
-            }
-            return agg;
-          }, []);
-
-          const result = ans.reduce((acc, curr) => {
-            if (acc[curr.hours] === undefined) acc[curr.hours] = 0;
-            curr.subslot.forEach((x) => (acc[curr.hours] += x.length));
-            return acc;
-          }, {});
-
-          console.log("counters datas >", datas);
-          console.log("counters >", result);
-
-          // setBookingTime(ans);
-          setBookingTime(ans);
-          console.log("ans >", ...ans);
-        });
-    } catch (error) {
-      console.log("Error from getTime", error);
-    }
-    // console.log('entity?', ...entity) //untuk pecahin array jadi object pake ...
-    // console.log('project?', ...project)
-  };
 
   // const handleGetSlot = (data, slot, hours) => {
   //   setDataOnClick(data);
@@ -521,163 +538,72 @@ export default function SeatBooking(props) {
   const getMasterHours = getBookingTime.map((data) => data.hours);
   const getMaster = getBookingTime.map((data) => data);
 
-  console.log("master", getMaster);
-  console.log("splice", getMasterHours);
+  console.log('master', getMaster);
+  console.log('splice', getMasterHours);
 
   const getMasterSlot = getBookingTime.map((data) => data.subslot);
   const getLoopSlot = [{ ...getMasterSlot }];
-  console.log("splice slot >", getMasterSlot);
-  console.log("loop", getLoopSlot);
-  // const handleSetRadio = (checked, type) => {
-  //   setSpinner(true);
-  //   // console.log('dataTowerUser', dataTowerUser);
-  //   // console.log('type', type);
-  //   // setTypeLocation(type);
-  //   if (type === 'P') {
-  //     //   console.log('type p');
-  //     //   getCategoryHelp();
-  //     setTypeLocation('P');
-  //     getTower(users);
-  //     getCategoryHelp(type);
-  //   } else {
-  //     setTypeLocation('U');
-  //     //   console.log('type u');
-  //     getTower(users);
-  //     getCategoryHelp(type);
-  //     //   getCategoryHelp(type);
-  //   }
-  // };
+  console.log('splice slot >', getMasterSlot);
+  console.log('loop', getLoopSlot);
 
-  // const getCategoryHelp = async type => {
-  //   const params = {
-  //     entity: dataTowerUser.entity_cd,
-  //     project: dataTowerUser.project_no,
-
-  //   };
-  //   console.log('params category', params);
-
-  //   const config = {
-  //     headers: {
-  //       accept: 'application/json',
-  //       'Content-Type': 'application/json',
-  //       token: '',
-  //     },
-  //   };
-
-  //   await axios
-  //     .post(
-  //       'http://apps.pakubuwono-residence.com/apiwebpbi/api/modules/cs/category-help',
-  //       params,
-  //       {
-  //         config,
-  //       },
-  //     )
-  //     .then(res => {
-  //       const datas = res.data;
-  //       const dataCategorys = datas.Data;
-  //       console.log('data kategori', dataCategorys);
-
-  //       setDataCategory(dataCategorys);
-  //       setSpinner(false);
-  //       // return res.data;
-  //     })
-  //     .catch(error => {
-  //       console.log('error get tower api', error.response);
-  //       alert('error get');
-  //     });
-  // };
-
-  // const handleClick = async (data, index) => {
-  //   console.log('category_grop_cd', data.category_group_cd);
-  //   console.log('loc_type', data.location_type);
-  //   console.log('passprops', passProp);
-  //   const saveParams = {
-  //     //   ...passPropStorage,
-  //     passProp,
-  //     category_group_cd: data.category_group_cd,
-  //     location_type: data.location_type,
-  //   };
-  //   const saveStorage = {
-  //     ...passPropStorage,
-  //     //   ...passProp,
-  //     category_group_cd: data.category_group_cd,
-  //     location_type: data.location_type,
-  //   };
-  //   console.log('urutan kedua props', saveStorage);
-  //   console.log('urutan kedua params', saveParams);
-
-  //   const jsonValue = JSON.stringify(saveStorage);
-  //   await AsyncStorage.setItem('@helpdeskStorage', jsonValue);
-
-  //   const jsonValueNullLocation = JSON.stringify('');
-  //   await AsyncStorage.setItem('@locationStorage', jsonValueNullLocation);
-
-  //   navigation.navigate('SelectCategory', {
-  //     // screen: 'Settings',
-  //     saveParams,
-  //   });
-  // };
-
-  //    const onCategoryPress = cat => {
-  //        this.setState({isDisabled: true}, () => {
-  //          this.goToScreen('screen.SelectCategory', cat);
-  //        });
-  //      };
-  console.log("slot checked : ", getSlotOnClick);
+  console.log('slot checked : ', getSlotOnClick);
 
   // console.log('aajam', moment(dataBooked3.slot_hours[0].jam).format());
   // console.log('aajams', dataBooked3.slot_hours[0].jam.substring(0, 5));
   function submitTicket() {
-    console.log("getdata storage,", passPropStorage);
+    console.log('getdata storage,', passPropStorage);
     const passProps = passProp;
-    console.log("passprops", passProps);
+    console.log('passprops', passProps);
     const body = passPropStorage;
 
     // const fileImg = image.uri.replace('file://', '');
 
     const bodyData = new FormData();
-    bodyData.append("entity_cd", passProp.entity_cd);
-    bodyData.append("project_no", passProp.project_no);
-    bodyData.append("debtor_acct", passProp.dataDebtor.debtor_acct);
-    bodyData.append("category_cd", passProp.category_cd);
-    bodyData.append("work_requested", passProp.workRequested);
-    bodyData.append("hours", getHourOnClick);
-    bodyData.append("req_date", getDateOnClick);
-    bodyData.append("subslot", getSlotOnClick);
-    bodyData.append("reported_by", "MGR");
-    bodyData.append("serv_req_by", passProp.reportName);
-    bodyData.append("contact_no", passProp.contactNo);
-    bodyData.append("complain_source", "MOBILE");
-    bodyData.append("lot_no", passProp.select_lot_no);
-    bodyData.append("req_email", passProp.dataDebtor.email);
-    bodyData.append("respond_time", "");
-    bodyData.append("req_type", tab.id);
-    bodyData.append("zone_cd", passProp.zone_cd);
-    bodyData.append("audit_user", "MGR");
+    bodyData.append('entity_cd', passProp.entity_cd);
+    bodyData.append('project_no', passProp.project_no);
+    bodyData.append('debtor_acct', passProp.dataDebtor.debtor_acct);
+    bodyData.append('category_cd', passProp.category_cd);
+    bodyData.append('work_requested', passProp.workRequested);
+    bodyData.append('hours', getHourOnClick);
+    bodyData.append('req_date', getDateOnClick);
+    bodyData.append('subslot', getSlotOnClick);
+    bodyData.append('reported_by', 'MGR');
+    bodyData.append('serv_req_by', passProp.reportName);
+    bodyData.append('contact_no', passProp.contactNo);
+    bodyData.append('complain_source', 'MOBILE');
+    bodyData.append('lot_no', passProp.select_lot_no);
+    bodyData.append('req_email', passProp.dataDebtor.email);
+    bodyData.append('respond_time', '');
+    bodyData.append('req_type', tab.id);
+    bodyData.append('zone_cd', passProp.zone_cd);
+    bodyData.append('audit_user', 'MGR');
     // bodyData.append('audit_user', passProp.reportName);
     // bodyData.append('reportdate', '04 Nov 2021 08:47');
     bodyData.append(
-      "reported_date",
-      moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
+      'reported_date',
+      moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
     );
     bodyData.append(
-      "audit_date",
-      moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
+      'audit_date',
+      moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
     );
 
-    console.log("liatbody", bodyData);
-    return fetch(API_URL_LOKAL + "/modules/troffice/save-maintenance", {
-      method: "post",
+    const config = {
+      method: 'post',
+      url: API_URL_LOKAL + '/modules/troffice/save-maintenance',
       headers: {
-        "Content-Type": "multipart/form-data",
+        'content-type': 'application/json',
+        Authorization: `Bearer ${users.Token}`,
       },
-      body: bodyData,
-    })
+      params: bodyData,
+    };
+    console.log('liatbody', bodyData);
+    return axios(config)
       .then((res) => {
-        console.log("res >", res);
+        console.log('res >', res);
         return res.json().then((resJson) => {
           // alert(resJson.Pesan);
-          console.log("resKsspn", resJson);
+          console.log('resKsspn', resJson);
           setMessage(resJson.Pesan);
           setMessageResult(resJson.Result);
           showModalSuccess(true);
@@ -690,16 +616,16 @@ export default function SeatBooking(props) {
 
   const onCloseModal = () => {
     showModalSuccess(false);
-    navigation.navigate("SpecTrofficeWaterHeater");
+    navigation.navigate('SpecTrofficeWaterHeater');
   };
 
   return (
     <SafeAreaView
       style={BaseStyle.safeAreaView}
-      edges={["right", "top", "left"]}
+      edges={['right', 'top', 'left']}
     >
       <Header
-        title={t("category_tro")} //belum dibuat lang
+        title={t('category_tro')} //belum dibuat lang
         renderLeft={() => {
           return (
             <Icon
@@ -720,7 +646,7 @@ export default function SeatBooking(props) {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingHorizontal: 20 }}
       >
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           {TABS.map((item, index) => (
             <View key={index} style={{ flex: 1, paddingHorizontal: 10 }}>
               <Tag
@@ -757,9 +683,9 @@ export default function SeatBooking(props) {
 
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignContent: "space-between",
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignContent: 'space-between',
             borderRadius: 15,
             borderColor: colors.dark,
             borderBottomWidth: 1,
@@ -796,8 +722,8 @@ export default function SeatBooking(props) {
 
         <View>
           {/* REGULER */}
-          {tab.id == "O" ? (
-            <View style={{ flexDirection: "column" }}>
+          {tab.id == 'O' ? (
+            <View style={{ flexDirection: 'column' }}>
               {loadingTab ? (
                 <View style={{ marginTop: 10 }}>
                   {/* <Spinner visible={this.state.spinner} /> */}
@@ -812,7 +738,7 @@ export default function SeatBooking(props) {
                 </View>
               ) : (
                 <View>
-                  <View style={{ flexDirection: "row" }}>
+                  <View style={{ flexDirection: 'row' }}>
                     {TABSDATE.map((item, index) => (
                       <View
                         key={index}
@@ -825,7 +751,7 @@ export default function SeatBooking(props) {
                             width: 60,
                             marginBottom: 20,
 
-                            flexDirection: "column",
+                            flexDirection: 'column',
                             backgroundColor:
                               tabDate.id == item.id
                                 ? colors.primary
@@ -839,7 +765,7 @@ export default function SeatBooking(props) {
                           <View
                             style={{
                               flexGrow: 1,
-                              flexDirection: "row",
+                              flexDirection: 'row',
                             }}
                           >
                             <Text
@@ -847,12 +773,12 @@ export default function SeatBooking(props) {
                               body1={tabDate.id != item.id}
                               light={tabDate.id != item.id}
                               whiteColor={tabDate.id == item.id}
-                              style={{ textAlign: "center", fontSize: 14 }}
+                              style={{ textAlign: 'center', fontSize: 14 }}
                             >
                               {moment(item.title)
-                                .locale("en")
-                                .format("ddd DD")
-                                .replace(" ", "\n")}
+                                .locale('en')
+                                .format('ddd DD')
+                                .replace(' ', '\n')}
                             </Text>
                           </View>
                         </Tag>
@@ -871,13 +797,13 @@ export default function SeatBooking(props) {
                     >
                       {/*SLOT B*/}
                       {tabDate.id == 1 && (
-                        <Text style={{ fontStyle: "italic" }}>
-                          Open Booking : {dataBooked1.open_book} -{" "}
+                        <Text style={{ fontStyle: 'italic' }}>
+                          Open Booking : {dataBooked1.open_book} -{' '}
                           {dataBooked1.close_book}
                         </Text>
                       )}
 
-                      {tabDate.id == 1 && dataBooked1.close_status == "Y"
+                      {tabDate.id == 1 && dataBooked1.close_status == 'Y'
                         ? dataBooked1?.slot_hours.map &&
                           dataBooked1?.slot_hours.map((items, indexs) => (
                             <View
@@ -885,11 +811,11 @@ export default function SeatBooking(props) {
                               style={StyleSheet.flatten([
                                 {
                                   paddingVertical: 15,
-                                  flexDirection: "row",
-                                  justifyContent: "space-between",
-                                  alignContent: "space-between",
+                                  flexDirection: 'row',
+                                  justifyContent: 'space-between',
+                                  alignContent: 'space-between',
                                   borderRadius: 15,
-                                  borderColor: "#dbdbdb",
+                                  borderColor: '#dbdbdb',
                                   borderBottomWidth: 1,
                                 },
                                 !isExpand && {
@@ -899,14 +825,14 @@ export default function SeatBooking(props) {
                                 },
                               ])}
                             >
-                              <View style={{ flexDirection: "column" }}>
+                              <View style={{ flexDirection: 'column' }}>
                                 <Text key={items.id} bold>
                                   {items.jam.substring(0, 5)}
                                 </Text>
                                 <Text
                                   key={items.id}
                                   bold
-                                  style={{ justifyContent: "center" }}
+                                  style={{ justifyContent: 'center' }}
                                 >
                                   Slot : {items.subslot}
                                 </Text>
@@ -917,7 +843,7 @@ export default function SeatBooking(props) {
                           : 'kurang dari jam'}
                       </Text> */}
                               <View>
-                                {items.databook != ""
+                                {items.databook != ''
                                   ? items.databook.map((itemdatabook, keys) => (
                                       <View key={keys}>
                                         <Text
@@ -935,12 +861,12 @@ export default function SeatBooking(props) {
 
                                 {isExpand && (
                                   <View key={indexs}>
-                                    {items.databook !== ""
+                                    {items.databook !== ''
                                       ? items.databook.map(
                                           (itemdatabook, keys) => (
                                             <View
                                               key={keys}
-                                              style={{ width: "100%" }}
+                                              style={{ width: '100%' }}
                                             >
                                               <Text>
                                                 {/* Created date :{' '}
@@ -949,33 +875,33 @@ export default function SeatBooking(props) {
                                                 ).format(
                                                   'DD MMM YYYY HH:mm:ss',
                                                 )} */}
-                                                Report No :{" "}
+                                                Report No :{' '}
                                                 {itemdatabook.report_no}
                                               </Text>
                                               <Text>
-                                                Category :{" "}
+                                                Category :{' '}
                                                 {itemdatabook.category_cd}
                                               </Text>
                                             </View>
-                                          )
+                                          ),
                                         )
                                       : null}
                                   </View>
                                 )}
                               </View>
-                              {items.status_avail == "Y" ||
-                              items.databook == "" ||
+                              {items.status_avail == 'Y' ||
+                              items.databook == '' ||
                               dataBooked1.open_book > items.jam ||
                               dataBooked1.close_book < items.jam ? (
                                 <TouchableOpacity
                                   key={indexs}
                                   disabled={
-                                    items.status_avail != "Y"
+                                    items.status_avail != 'Y'
                                       ? // ||
                                         // time.jam > items.jam
 
                                         true
-                                      : (false && items.databook == "") ||
+                                      : (false && items.databook == '') ||
                                         items.databook == null ||
                                         dataBooked1.open_book > items.jam
                                       ? true
@@ -986,7 +912,7 @@ export default function SeatBooking(props) {
                                     onBookingPress(
                                       dataBooked1,
                                       items.jam,
-                                      items.subslot
+                                      items.subslot,
                                     );
                                     handleClick(items.jam, tabDate.id);
                                   }}
@@ -1003,25 +929,25 @@ export default function SeatBooking(props) {
                                         //   : BaseColor.redColor
                                         isActive == items.jam &&
                                         DateIsActive == tabDate.id
-                                          ? "salmon"
+                                          ? 'salmon'
                                           : colors.primary,
                                       padding: 15,
                                       borderRadius: 15,
-                                      justifyContent: "center",
+                                      justifyContent: 'center',
                                     },
                                     isExpand && {
                                       height: 50,
                                       backgroundColor:
-                                        items.status_avail == "Y"
+                                        items.status_avail == 'Y'
                                           ? // &&
                                             // time.jam < items.jam
                                             colors.primary
-                                          : items.databook[0].status == "O"
+                                          : items.databook[0].status == 'O'
                                           ? BaseColor.orangeColor
                                           : BaseColor.redColor,
                                       padding: 15,
                                       borderRadius: 15,
-                                      justifyContent: "center",
+                                      justifyContent: 'center',
                                     },
                                   ])}
                                 >
@@ -1042,18 +968,18 @@ export default function SeatBooking(props) {
                                       height: 25,
                                       borderRadius: 10,
                                       backgroundColor: colors.primary,
-                                      alignSelf: "center",
-                                      alignItems: "center",
-                                      alignContent: "center",
-                                      justifyContent: "center",
+                                      alignSelf: 'center',
+                                      alignItems: 'center',
+                                      alignContent: 'center',
+                                      justifyContent: 'center',
                                     }}
                                   >
                                     <Icon
                                       name={
-                                        "chevron-down"
+                                        'chevron-down'
                                         // isIconUp ? 'chevron-up' : 'chevron-down'
                                       }
-                                      color={"#fff"}
+                                      color={'#fff'}
                                     ></Icon>
                                   </View>
                                 </TouchableOpacity>
@@ -1061,11 +987,11 @@ export default function SeatBooking(props) {
                             </View>
                           ))
                         : tabDate.id == 1 &&
-                          dataBooked1.close_status == "N" && (
+                          dataBooked1.close_status == 'N' && (
                             <View
                               style={{
                                 flex: 1,
-                                marginTop: "50%",
+                                marginTop: '50%',
                               }}
                             >
                               <IconFontisto
@@ -1073,18 +999,18 @@ export default function SeatBooking(props) {
                                 size={40}
                                 color={colors.primary}
                                 style={{
-                                  justifyContent: "center",
-                                  alignContent: "center",
-                                  alignItems: "center",
-                                  alignSelf: "center",
+                                  justifyContent: 'center',
+                                  alignContent: 'center',
+                                  alignItems: 'center',
+                                  alignSelf: 'center',
                                 }}
                               ></IconFontisto>
                               <Text
                                 style={{
-                                  justifyContent: "center",
-                                  alignContent: "center",
-                                  alignItems: "center",
-                                  alignSelf: "center",
+                                  justifyContent: 'center',
+                                  alignContent: 'center',
+                                  alignItems: 'center',
+                                  alignSelf: 'center',
                                   fontSize: 16,
                                   marginTop: 10,
                                 }}
@@ -1106,12 +1032,12 @@ export default function SeatBooking(props) {
                   ) : (
                     <View style={{ flex: 1, paddingHorizontal: 5 }}>
                       {tabDate.id == 2 && (
-                        <Text style={{ fontStyle: "italic" }}>
-                          Open Booking : {dataBooked2.open_book} -{" "}
+                        <Text style={{ fontStyle: 'italic' }}>
+                          Open Booking : {dataBooked2.open_book} -{' '}
                           {dataBooked2.close_book}
                         </Text>
                       )}
-                      {tabDate.id == 2 && dataBooked2.close_status == "Y"
+                      {tabDate.id == 2 && dataBooked2.close_status == 'Y'
                         ? dataBooked2.slot_hours.map &&
                           dataBooked2.slot_hours.map((items, indexs) => (
                             <View
@@ -1119,11 +1045,11 @@ export default function SeatBooking(props) {
                               style={StyleSheet.flatten([
                                 {
                                   paddingVertical: 15,
-                                  flexDirection: "row",
-                                  justifyContent: "space-between",
-                                  alignContent: "space-between",
+                                  flexDirection: 'row',
+                                  justifyContent: 'space-between',
+                                  alignContent: 'space-between',
                                   borderRadius: 15,
-                                  borderColor: "#dbdbdb",
+                                  borderColor: '#dbdbdb',
                                   borderBottomWidth: 1,
                                 },
                                 !isExpand && {
@@ -1132,21 +1058,21 @@ export default function SeatBooking(props) {
                                 },
                               ])}
                             >
-                              <View style={{ flexDirection: "column" }}>
+                              <View style={{ flexDirection: 'column' }}>
                                 <Text key={items.id} bold>
                                   {items.jam.substring(0, 5)}
                                 </Text>
                                 <Text
                                   key={items.id}
                                   bold
-                                  style={{ justifyContent: "center" }}
+                                  style={{ justifyContent: 'center' }}
                                 >
                                   Slot : {items.subslot}
                                 </Text>
                               </View>
 
                               <View>
-                                {items.databook != ""
+                                {items.databook != ''
                                   ? items.databook.map((itemdatabook, keys) => (
                                       <View key={keys}>
                                         <Text
@@ -1164,36 +1090,36 @@ export default function SeatBooking(props) {
 
                                 {isExpand && (
                                   <View>
-                                    {items.databook != ""
+                                    {items.databook != ''
                                       ? items.databook.map(
                                           (itemdatabook, keys) => (
                                             <View
                                               key={keys}
-                                              style={{ width: "100%" }}
+                                              style={{ width: '100%' }}
                                             >
                                               <Text>
-                                                Report No :{" "}
+                                                Report No :{' '}
                                                 {itemdatabook.report_no}
                                               </Text>
                                               <Text>
-                                                Category :{" "}
+                                                Category :{' '}
                                                 {itemdatabook.category_cd}
                                               </Text>
                                             </View>
-                                          )
+                                          ),
                                         )
                                       : null}
                                   </View>
                                 )}
                               </View>
 
-                              {items.status_avail == "Y" ||
-                              items.databook == "" ||
+                              {items.status_avail == 'Y' ||
+                              items.databook == '' ||
                               dataBooked2.open_book > items.jam ||
                               dataBooked2.close_book < items.jam ? (
                                 <TouchableOpacity
                                   disabled={
-                                    items.status_avail != "Y"
+                                    items.status_avail != 'Y'
                                       ? true
                                       : false ||
                                         dataBooked2.open_book > items.jam
@@ -1207,7 +1133,7 @@ export default function SeatBooking(props) {
                                     onBookingPress(
                                       dataBooked2,
                                       items.jam,
-                                      items.subslot
+                                      items.subslot,
                                     );
                                     handleClick(items.jam, tabDate.id);
                                   }}
@@ -1215,7 +1141,7 @@ export default function SeatBooking(props) {
                                     backgroundColor:
                                       isActive == items.jam &&
                                       DateIsActive == tabDate.id
-                                        ? "salmon"
+                                        ? 'salmon'
                                         : colors.primary,
                                     // items.status_avail == 'Y'
                                     //   ? colors.primary
@@ -1224,7 +1150,7 @@ export default function SeatBooking(props) {
                                     //   : BaseColor.redColor,
                                     padding: 15,
                                     borderRadius: 15,
-                                    justifyContent: "center",
+                                    justifyContent: 'center',
                                   }}
                                 >
                                   <Text whiteColor subheadline bold>
@@ -1244,18 +1170,18 @@ export default function SeatBooking(props) {
                                       height: 25,
                                       borderRadius: 10,
                                       backgroundColor: colors.primary,
-                                      alignSelf: "center",
-                                      alignItems: "center",
-                                      alignContent: "center",
-                                      justifyContent: "center",
+                                      alignSelf: 'center',
+                                      alignItems: 'center',
+                                      alignContent: 'center',
+                                      justifyContent: 'center',
                                     }}
                                   >
                                     <Icon
                                       name={
-                                        "chevron-down"
+                                        'chevron-down'
                                         // isIconUp ? 'chevron-up' : 'chevron-down'
                                       }
-                                      color={"#fff"}
+                                      color={'#fff'}
                                     ></Icon>
                                   </View>
                                 </TouchableOpacity>
@@ -1263,11 +1189,11 @@ export default function SeatBooking(props) {
                             </View>
                           ))
                         : tabDate.id == 2 &&
-                          dataBooked2.close_status == "N" && (
+                          dataBooked2.close_status == 'N' && (
                             <View
                               style={{
                                 flex: 1,
-                                marginTop: "50%",
+                                marginTop: '50%',
                               }}
                             >
                               <IconFontisto
@@ -1275,18 +1201,18 @@ export default function SeatBooking(props) {
                                 size={40}
                                 color={colors.primary}
                                 style={{
-                                  justifyContent: "center",
-                                  alignContent: "center",
-                                  alignItems: "center",
-                                  alignSelf: "center",
+                                  justifyContent: 'center',
+                                  alignContent: 'center',
+                                  alignItems: 'center',
+                                  alignSelf: 'center',
                                 }}
                               ></IconFontisto>
                               <Text
                                 style={{
-                                  justifyContent: "center",
-                                  alignContent: "center",
-                                  alignItems: "center",
-                                  alignSelf: "center",
+                                  justifyContent: 'center',
+                                  alignContent: 'center',
+                                  alignItems: 'center',
+                                  alignSelf: 'center',
                                   fontSize: 16,
                                   marginTop: 10,
                                 }}
@@ -1308,12 +1234,12 @@ export default function SeatBooking(props) {
                   ) : (
                     <View style={{ flex: 1, paddingHorizontal: 5 }}>
                       {tabDate.id == 3 && (
-                        <Text style={{ fontStyle: "italic" }}>
-                          Open Booking : {dataBooked3.open_book} -{" "}
+                        <Text style={{ fontStyle: 'italic' }}>
+                          Open Booking : {dataBooked3.open_book} -{' '}
                           {dataBooked3.close_book}
                         </Text>
                       )}
-                      {tabDate.id == 3 && dataBooked3.close_status == "Y"
+                      {tabDate.id == 3 && dataBooked3.close_status == 'Y'
                         ? dataBooked3.slot_hours.map &&
                           dataBooked3.slot_hours.map((items, indexs) => (
                             <View
@@ -1321,11 +1247,11 @@ export default function SeatBooking(props) {
                               style={StyleSheet.flatten([
                                 {
                                   paddingVertical: 15,
-                                  flexDirection: "row",
-                                  justifyContent: "space-between",
-                                  alignContent: "space-between",
+                                  flexDirection: 'row',
+                                  justifyContent: 'space-between',
+                                  alignContent: 'space-between',
                                   borderRadius: 15,
-                                  borderColor: "#dbdbdb",
+                                  borderColor: '#dbdbdb',
                                   borderBottomWidth: 1,
                                 },
                                 !isExpand && {
@@ -1334,21 +1260,21 @@ export default function SeatBooking(props) {
                                 },
                               ])}
                             >
-                              <View style={{ flexDirection: "column" }}>
+                              <View style={{ flexDirection: 'column' }}>
                                 <Text key={items.id} bold>
                                   {items.jam.substring(0, 5)}
                                 </Text>
                                 <Text
                                   key={items.id}
                                   bold
-                                  style={{ justifyContent: "center" }}
+                                  style={{ justifyContent: 'center' }}
                                 >
                                   Slot : {items.subslot}
                                 </Text>
                               </View>
 
                               <View>
-                                {items.databook != ""
+                                {items.databook != ''
                                   ? items.databook.map((itemdatabook, keys) => {
                                       return (
                                         <View key={keys}>
@@ -1388,36 +1314,36 @@ export default function SeatBooking(props) {
 
                                 {isExpand && (
                                   <View>
-                                    {items.databook != ""
+                                    {items.databook != ''
                                       ? items.databook.map(
                                           (itemdatabook, keys) => (
                                             <View
                                               key={keys}
-                                              style={{ width: "100%" }}
+                                              style={{ width: '100%' }}
                                             >
                                               <Text>
-                                                Report No :{" "}
+                                                Report No :{' '}
                                                 {itemdatabook.report_no}
                                               </Text>
                                               <Text>
-                                                Category :{" "}
+                                                Category :{' '}
                                                 {itemdatabook.category_cd}
                                               </Text>
                                             </View>
-                                          )
+                                          ),
                                         )
                                       : null}
                                   </View>
                                 )}
                               </View>
 
-                              {items.status_avail == "Y" ||
-                              items.databook == "" ||
+                              {items.status_avail == 'Y' ||
+                              items.databook == '' ||
                               dataBooked3.open_book > items.jam ||
                               dataBooked3.close_book < items.jam ? (
                                 <TouchableOpacity
                                   disabled={
-                                    items.status_avail != "Y"
+                                    items.status_avail != 'Y'
                                       ? true
                                       : false ||
                                         dataBooked3.open_book > items.jam
@@ -1431,7 +1357,7 @@ export default function SeatBooking(props) {
                                     onBookingPress(
                                       dataBooked3,
                                       items.jam,
-                                      items.subslot
+                                      items.subslot,
                                     );
                                     handleClick(items.jam, tabDate.id);
                                   }}
@@ -1439,7 +1365,7 @@ export default function SeatBooking(props) {
                                     backgroundColor:
                                       isActive == items.jam &&
                                       DateIsActive == tabDate.id
-                                        ? "salmon"
+                                        ? 'salmon'
                                         : colors.primary,
                                     // items.status_avail == 'Y'
                                     //   ? colors.primary
@@ -1448,7 +1374,7 @@ export default function SeatBooking(props) {
                                     //   : BaseColor.redColor,
                                     padding: 15,
                                     borderRadius: 15,
-                                    justifyContent: "center",
+                                    justifyContent: 'center',
                                   }}
                                 >
                                   <Text whiteColor subheadline bold>
@@ -1468,18 +1394,18 @@ export default function SeatBooking(props) {
                                       height: 25,
                                       borderRadius: 10,
                                       backgroundColor: colors.primary,
-                                      alignSelf: "center",
-                                      alignItems: "center",
-                                      alignContent: "center",
-                                      justifyContent: "center",
+                                      alignSelf: 'center',
+                                      alignItems: 'center',
+                                      alignContent: 'center',
+                                      justifyContent: 'center',
                                     }}
                                   >
                                     <Icon
                                       name={
-                                        "chevron-down"
+                                        'chevron-down'
                                         // isIconUp ? 'chevron-up' : 'chevron-down'
                                       }
-                                      color={"#fff"}
+                                      color={'#fff'}
                                     ></Icon>
                                   </View>
                                 </TouchableOpacity>
@@ -1487,11 +1413,11 @@ export default function SeatBooking(props) {
                             </View>
                           ))
                         : tabDate.id == 3 &&
-                          dataBooked3.close_status == "N" && (
+                          dataBooked3.close_status == 'N' && (
                             <View
                               style={{
                                 flex: 1,
-                                marginTop: "50%",
+                                marginTop: '50%',
                               }}
                             >
                               <IconFontisto
@@ -1499,18 +1425,18 @@ export default function SeatBooking(props) {
                                 size={40}
                                 color={colors.primary}
                                 style={{
-                                  justifyContent: "center",
-                                  alignContent: "center",
-                                  alignItems: "center",
-                                  alignSelf: "center",
+                                  justifyContent: 'center',
+                                  alignContent: 'center',
+                                  alignItems: 'center',
+                                  alignSelf: 'center',
                                 }}
                               ></IconFontisto>
                               <Text
                                 style={{
-                                  justifyContent: "center",
-                                  alignContent: "center",
-                                  alignItems: "center",
-                                  alignSelf: "center",
+                                  justifyContent: 'center',
+                                  alignContent: 'center',
+                                  alignItems: 'center',
+                                  alignSelf: 'center',
                                   fontSize: 16,
                                   marginTop: 10,
                                 }}
@@ -1532,12 +1458,12 @@ export default function SeatBooking(props) {
                   ) : (
                     <View style={{ flex: 1, paddingHorizontal: 5 }}>
                       {tabDate.id == 4 && (
-                        <Text style={{ fontStyle: "italic" }}>
-                          Open Booking : {dataBooked4.open_book} -{" "}
+                        <Text style={{ fontStyle: 'italic' }}>
+                          Open Booking : {dataBooked4.open_book} -{' '}
                           {dataBooked4.close_book}
                         </Text>
                       )}
-                      {tabDate.id == 4 && dataBooked4.close_status == "Y"
+                      {tabDate.id == 4 && dataBooked4.close_status == 'Y'
                         ? dataBooked4.slot_hours.map &&
                           dataBooked4.slot_hours.map((items, indexs) => (
                             <View
@@ -1545,11 +1471,11 @@ export default function SeatBooking(props) {
                               style={StyleSheet.flatten([
                                 {
                                   paddingVertical: 15,
-                                  flexDirection: "row",
-                                  justifyContent: "space-between",
-                                  alignContent: "space-between",
+                                  flexDirection: 'row',
+                                  justifyContent: 'space-between',
+                                  alignContent: 'space-between',
                                   borderRadius: 15,
-                                  borderColor: "#dbdbdb",
+                                  borderColor: '#dbdbdb',
                                   borderBottomWidth: 1,
                                 },
                                 !isExpand && {
@@ -1559,21 +1485,21 @@ export default function SeatBooking(props) {
                                 },
                               ])}
                             >
-                              <View style={{ flexDirection: "column" }}>
+                              <View style={{ flexDirection: 'column' }}>
                                 <Text key={items.id} bold>
                                   {items.jam.substring(0, 5)}
                                 </Text>
                                 <Text
                                   key={items.id}
                                   bold
-                                  style={{ justifyContent: "center" }}
+                                  style={{ justifyContent: 'center' }}
                                 >
                                   Slot : {items.subslot}
                                 </Text>
                               </View>
 
                               <View>
-                                {items.databook != ""
+                                {items.databook != ''
                                   ? items.databook.map((itemdatabook, keys) => (
                                       <View key={keys}>
                                         <Text
@@ -1591,35 +1517,35 @@ export default function SeatBooking(props) {
 
                                 {isExpand && (
                                   <View>
-                                    {items.databook != ""
+                                    {items.databook != ''
                                       ? items.databook.map(
                                           (itemdatabook, keys) => (
                                             <View
                                               key={keys}
-                                              style={{ width: "100%" }}
+                                              style={{ width: '100%' }}
                                             >
                                               <Text>
-                                                Report No :{" "}
+                                                Report No :{' '}
                                                 {itemdatabook.report_no}
                                               </Text>
                                               <Text>
-                                                Category :{" "}
+                                                Category :{' '}
                                                 {itemdatabook.category_cd}
                                               </Text>
                                             </View>
-                                          )
+                                          ),
                                         )
                                       : null}
                                   </View>
                                 )}
                               </View>
 
-                              {items.status_avail == "Y" ||
+                              {items.status_avail == 'Y' ||
                               dataBooked4.open_book > items.jam ||
                               dataBooked4.close_book < items.jam ? (
                                 <TouchableOpacity
                                   disabled={
-                                    items.status_avail != "Y"
+                                    items.status_avail != 'Y'
                                       ? true
                                       : false ||
                                         dataBooked4.open_book > items.jam
@@ -1633,7 +1559,7 @@ export default function SeatBooking(props) {
                                     onBookingPress(
                                       dataBooked4,
                                       items.jam,
-                                      items.subslot
+                                      items.subslot,
                                     );
                                     handleClick(items.jam, tabDate.id);
                                   }}
@@ -1641,7 +1567,7 @@ export default function SeatBooking(props) {
                                     backgroundColor:
                                       isActive == items.jam &&
                                       DateIsActive == tabDate.id
-                                        ? "salmon"
+                                        ? 'salmon'
                                         : colors.primary,
                                     // items.status_avail == 'Y'
                                     //   ? colors.primary
@@ -1650,7 +1576,7 @@ export default function SeatBooking(props) {
                                     //   : BaseColor.redColor,
                                     padding: 15,
                                     borderRadius: 15,
-                                    justifyContent: "center",
+                                    justifyContent: 'center',
                                   }}
                                 >
                                   <Text whiteColor subheadline bold>
@@ -1670,18 +1596,18 @@ export default function SeatBooking(props) {
                                       height: 25,
                                       borderRadius: 10,
                                       backgroundColor: colors.primary,
-                                      alignSelf: "center",
-                                      alignItems: "center",
-                                      alignContent: "center",
-                                      justifyContent: "center",
+                                      alignSelf: 'center',
+                                      alignItems: 'center',
+                                      alignContent: 'center',
+                                      justifyContent: 'center',
                                     }}
                                   >
                                     <Icon
                                       name={
-                                        "chevron-down"
+                                        'chevron-down'
                                         // isIconUp ? 'chevron-up' : 'chevron-down'
                                       }
-                                      color={"#fff"}
+                                      color={'#fff'}
                                     ></Icon>
                                   </View>
                                 </TouchableOpacity>
@@ -1689,11 +1615,11 @@ export default function SeatBooking(props) {
                             </View>
                           ))
                         : tabDate.id == 4 &&
-                          dataBooked4.close_status == "N" && (
+                          dataBooked4.close_status == 'N' && (
                             <View
                               style={{
                                 flex: 1,
-                                marginTop: "50%",
+                                marginTop: '50%',
                               }}
                             >
                               <IconFontisto
@@ -1701,18 +1627,18 @@ export default function SeatBooking(props) {
                                 size={40}
                                 color={colors.primary}
                                 style={{
-                                  justifyContent: "center",
-                                  alignContent: "center",
-                                  alignItems: "center",
-                                  alignSelf: "center",
+                                  justifyContent: 'center',
+                                  alignContent: 'center',
+                                  alignItems: 'center',
+                                  alignSelf: 'center',
                                 }}
                               ></IconFontisto>
                               <Text
                                 style={{
-                                  justifyContent: "center",
-                                  alignContent: "center",
-                                  alignItems: "center",
-                                  alignSelf: "center",
+                                  justifyContent: 'center',
+                                  alignContent: 'center',
+                                  alignItems: 'center',
+                                  alignSelf: 'center',
                                   fontSize: 16,
                                   marginTop: 10,
                                 }}
@@ -1732,20 +1658,20 @@ export default function SeatBooking(props) {
 
       <View
         style={{
-          flexDirection: "row",
-          width: "100%",
-          height: "17%",
+          flexDirection: 'row',
+          width: '100%',
+          height: '17%',
           borderWidth: 1,
-          borderStyle: "solid",
+          borderStyle: 'solid',
           borderTopEndRadius: 15,
           borderTopLeftRadius: 15,
-          justifyContent: "center",
+          justifyContent: 'center',
           // flex: 1,
         }}
       >
         <View
           style={{
-            alignItems: "center",
+            alignItems: 'center',
             borderRightWidth: 2,
             borderRightColor: colors.primary,
           }}
@@ -1753,8 +1679,8 @@ export default function SeatBooking(props) {
           <View
             style={{
               marginBottom: 15,
-              marginLeft: "15%",
-              marginRight: "15%",
+              marginLeft: '15%',
+              marginRight: '15%',
               marginTop: 8,
             }}
           >
@@ -1764,7 +1690,7 @@ export default function SeatBooking(props) {
                   <Text>{data}</Text>
                 ))}  */}
           <Text>
-            Date : {moment(getDateOnClick).locale("en").format("DD ddd")}
+            Date : {moment(getDateOnClick).locale('en').format('DD ddd')}
           </Text>
           <Text>
             Hours : {getHourOnClick} - Slot : {getSlotOnClick}
@@ -1801,13 +1727,13 @@ export default function SeatBooking(props) {
                     {t('Back To Schedule')}
                   </Text>
                 </Button> */}
-        {getHourOnClick == null || getHourOnClick == "" ? (
+        {getHourOnClick == null || getHourOnClick == '' ? (
           <Button
             disabled
             medium
             style={{
               marginTop: 35,
-              marginHorizontal: "auto",
+              marginHorizontal: 'auto',
               marginLeft: 20,
               marginRight: 20,
               marginBottom: 20,
@@ -1815,11 +1741,11 @@ export default function SeatBooking(props) {
             }}
             onPress={() => {
               submitTicket();
-              navigation.navigate("SpecTrofficeWaterHeater");
+              navigation.navigate('SpecTrofficeWaterHeater');
             }}
           >
-            <Text style={{ textAlign: "center", color: "black", fontSize: 14 }}>
-              {t("Booking")}
+            <Text style={{ textAlign: 'center', color: 'black', fontSize: 14 }}>
+              {t('Booking')}
             </Text>
           </Button>
         ) : (
@@ -1827,7 +1753,7 @@ export default function SeatBooking(props) {
             medium
             style={{
               marginTop: 35,
-              marginHorizontal: "auto",
+              marginHorizontal: 'auto',
               marginLeft: 20,
               marginRight: 20,
               marginBottom: 20,
@@ -1837,8 +1763,8 @@ export default function SeatBooking(props) {
               submitTicket();
             }}
           >
-            <Text style={{ textAlign: "center", color: "white", fontSize: 14 }}>
-              {t("Booking")}
+            <Text style={{ textAlign: 'center', color: 'white', fontSize: 14 }}>
+              {t('Booking')}
             </Text>
           </Button>
         )}
@@ -1847,7 +1773,7 @@ export default function SeatBooking(props) {
       <View>
         <Modal
           isVisible={modalSuccessVisible}
-          style={{ height: "100%" }}
+          style={{ height: '100%' }}
           onBackdropPress={() => showModalSuccess(false)}
         >
           <View
@@ -1856,16 +1782,16 @@ export default function SeatBooking(props) {
 
               // alignContent: 'center',
               padding: 10,
-              backgroundColor: "#fff",
+              backgroundColor: '#fff',
               // height: ,
               borderRadius: 8,
             }}
           >
-            <View style={{ alignItems: "center" }}>
+            <View style={{ alignItems: 'center' }}>
               <Text
                 style={{
                   fontSize: 16,
-                  fontWeight: "bold",
+                  fontWeight: 'bold',
                   color: colors.primary,
                   marginBottom: 10,
                 }}
@@ -1884,8 +1810,8 @@ export default function SeatBooking(props) {
             </View>
             <View
               style={{
-                flexDirection: "row",
-                justifyContent: "flex-end",
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
               }}
             >
               <Button
@@ -1900,7 +1826,7 @@ export default function SeatBooking(props) {
                   onCloseModal();
                 }}
               >
-                <Text style={{ fontSize: 13 }}>{t("OK")}</Text>
+                <Text style={{ fontSize: 13 }}>{t('OK')}</Text>
               </Button>
             </View>
           </View>

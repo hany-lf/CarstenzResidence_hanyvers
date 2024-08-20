@@ -57,7 +57,7 @@ export default function ViewHistoryDetail({ route }) {
   const [dataTowerUser, setdataTowerUser] = useState([]);
   const [arrDataTowerUser, setArrDataTowerUser] = useState([]);
   const users = useSelector((state) => getUser(state));
-  const [email, setEmail] = useState(users.user);
+  const [email, setEmail] = useState("");
   const [name, setName] = useState(users.name);
   const [urlApi, seturlApi] = useState(client);
 
@@ -140,6 +140,12 @@ export default function ViewHistoryDetail({ route }) {
     });
   }, [route?.params?.id]);
 
+    // --- useeffect untuk update email/name
+  useEffect(() => {
+    setEmail(users != null && users.userData != null ? users.userData.email : "");
+  }, [email]);
+  // --- useeffect untuk update email/name
+
   //   console.log('images dummy', imagesDummy[0].image);
   //-----FOR GET ENTITY & PROJJECT
   const getTower = async () => {
@@ -191,21 +197,16 @@ export default function ViewHistoryDetail({ route }) {
     console.log("form data multi", formData);
 
     const config = {
+      method: "post",
+      url: API_URL_LOKAL + "/modules/cs/ticket-all-by-report",
       headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        token: "",
+        "content-type": "application/json",
+        Authorization: `Bearer ${users.Token}`,
       },
+      params: formData,
     };
 
-    await axios
-      .post(
-        API_URL_LOKAL + "/modules/cs/ticket-all-by-report/IFCAPB",
-        formData,
-        {
-          config,
-        }
-      )
+    await axios(config)
       .then((res) => {
         // console.log('res tiket multi', res.data);
         const resTiketMulti = res.data.data[0];
@@ -259,15 +260,16 @@ export default function ViewHistoryDetail({ route }) {
     // console.log('form data multi', formData);
 
     const config = {
+      method: "post",
+      url: API_URL_LOKAL + "/modules/cs/solved-picture",
       headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        token: "",
+        "content-type": "application/json",
+        Authorization: `Bearer ${users.Token}`,
       },
+      params: formData,
     };
 
-    await axios
-      .post(API_URL_LOKAL + "/modules/cs/solved-picture", formData, { config })
+    await axios(config)
       .then((res) => {
         // console.log('res tiket multi', res.data);
         const resGalleryService = res.data;
@@ -287,7 +289,7 @@ export default function ViewHistoryDetail({ route }) {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-      getTower(users);
+      // getTower(users);
       setImageViewVisible(false); // getCategoryHelp;
       // setSpinner(false);
       //   console.log('routeparams', route.params);

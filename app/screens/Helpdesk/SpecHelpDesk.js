@@ -51,7 +51,7 @@ export default function SpecHelpDesk() {
   const [db_profile, setDb_Profile] = useState("");
   const [spinner, setSpinner] = useState(true);
 
-   const [showChooseProject, setShowChooseProject] = useState(false);
+  const [showChooseProject, setShowChooseProject] = useState(false);
   const [isFocus, setIsFocus] = useState(false);
   const [valueProject, setValueProject] = useState([]);
   const [valueProjectSelected, setValueProjectSelected] = useState(null);
@@ -115,7 +115,7 @@ export default function SpecHelpDesk() {
   }, [email]);
   // --- useeffect untuk update email/name
 
-    const handleClickProject = (item, index) => {
+  const handleClickProject = (item, index) => {
     console.log("index", index);
     setValueProjectSelected(item.value);
 

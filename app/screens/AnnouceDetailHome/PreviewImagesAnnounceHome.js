@@ -1,18 +1,18 @@
-import { Header, Icon, SafeAreaView, Text } from "@components";
-import { BaseColor, BaseStyle, Images, useTheme } from "@config";
-import React, { useState } from "react";
-import { FlatList, TouchableOpacity, View, Image } from "react-native";
-import Swiper from "react-native-swiper";
-import styles from "./styles";
+import { Header, Icon, SafeAreaView, Text } from '@components';
+import { BaseColor, BaseStyle, Images, useTheme } from '@config';
+import React, { useState } from 'react';
+import { FlatList, TouchableOpacity, View, Image } from 'react-native';
+import Swiper from 'react-native-swiper';
+import styles from './styles';
 
 const imagesInit = [
-  { id: "1", image: Images.location1, selected: true },
-  { id: "2", image: Images.location2 },
-  { id: "3", image: Images.location3 },
-  { id: "4", image: Images.location4 },
-  { id: "5", image: Images.location5 },
-  { id: "6", image: Images.location6 },
-  { id: "7", image: Images.location7 },
+  { id: '1', image: Images.location1, selected: true },
+  { id: '2', image: Images.location2 },
+  { id: '3', image: Images.location3 },
+  { id: '4', image: Images.location4 },
+  { id: '5', image: Images.location5 },
+  { id: '6', image: Images.location6 },
+  { id: '7', image: Images.location7 },
 ];
 
 export default function PreviewImagesAnnounceHome({ navigation, route }) {
@@ -20,17 +20,17 @@ export default function PreviewImagesAnnounceHome({ navigation, route }) {
   const imagesParam = route?.params?.images ?? imagesInit;
   let flatListRef = null;
   let swiperRef = null;
-  console.log("imgparm", imagesParam);
-  const reps = imagesParam.replace("https", "http");
+  console.log('imgparm', imagesParam);
+  const reps = imagesParam;
 
-  console.log("reps", reps);
+  console.log('reps', reps);
 
   const [images, setImages] = useState(imagesParam);
-  console.log("image set", images);
+  console.log('image set', images);
   const [imagesArray, setImagesArray] = useState([{ imagesParam }]);
-  console.log("image array", imagesArray);
+  console.log('image array', imagesArray);
   const [indexSelected, setIndexSelected] = useState(0);
-  console.log("indexx", indexSelected);
+  console.log('indexx', indexSelected);
 
   /**
    * call when select image
@@ -52,7 +52,7 @@ export default function PreviewImagesAnnounceHome({ navigation, route }) {
             selected: false,
           };
         }
-      })
+      }),
     );
     flatListRef.scrollToIndex({
       animated: true,
@@ -74,11 +74,11 @@ export default function PreviewImagesAnnounceHome({ navigation, route }) {
 
   return (
     <SafeAreaView
-      style={[BaseStyle.safeAreaView, { backgroundColor: "black" }]}
-      edges={["right", "top", "left"]}
+      style={[BaseStyle.safeAreaView, { backgroundColor: 'black' }]}
+      edges={['right', 'top', 'left']}
     >
       <Header
-        style={{ backgroundColor: "black" }}
+        style={{ backgroundColor: 'black' }}
         title=""
         renderRight={() => {
           return <Icon name="times" size={20} color={BaseColor.whiteColor} />;
@@ -113,7 +113,7 @@ export default function PreviewImagesAnnounceHome({ navigation, route }) {
         })} */}
         <Image
           // key={key}
-          style={{ width: "100%", height: "100%" }}
+          style={{ width: '100%', height: '100%' }}
           resizeMode="contain"
           source={{ uri: images }}
         />
@@ -138,7 +138,7 @@ export default function PreviewImagesAnnounceHome({ navigation, route }) {
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           data={imagesArray}
-          keyExtractor={(item, index) => item.reps}
+          keyExtractor={(item, index) => item.imagesParam}
           renderItem={({ item, index }) => (
             <TouchableOpacity
               onPress={() => {
@@ -158,9 +158,9 @@ export default function PreviewImagesAnnounceHome({ navigation, route }) {
                       : BaseColor.grayColor,
                   borderWidth: 1,
                 }}
-                source={{ uri: item.reps }}
+                source={{ uri: item.imagesParam }}
               />
-              {/* <Text>{item.pict}</Text> */}
+              {/* <Text style={{ color: 'white' }}>{item.imagesParam}</Text> */}
             </TouchableOpacity>
           )}
         />

@@ -1867,17 +1867,16 @@ const SignatureAfter = (props) => {
     };
 
     console.log("data save signature", data);
-    const config = {
+   const config = {
+      method: "post",
+      url: API_URL_LOKAL + "/modules/cs/save-signature",
       headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        token: "",
+        "content-type": "application/json",
+        Authorization: `Bearer ${users.Token}`,
       },
+      params: data,
     };
-    await axios
-      .post(API_URL_LOKAL + "/modules/cs/save-signature", data, {
-        config,
-      })
+    await axios(config)
       .then((res) => {
         console.log("res save signature", res.data);
         setMessage(res.data.message);
