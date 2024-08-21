@@ -238,7 +238,7 @@ const TransactionExpand = ({
                       justifyContent: 'space-between',
                       width: '100%',
                       // paddingHorizontal: 10,
-                      paddingVertical: 5,
+                      paddingVertical: 10,
                     }}
                   >
                     <View style={{ width: '50%', paddingLeft: 10 }}>

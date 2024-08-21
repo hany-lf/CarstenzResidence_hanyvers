@@ -89,6 +89,9 @@ import { color } from 'react-native-reanimated';
 import { useFocusEffect } from '@react-navigation/native';
 
 import { fontPixel, pixelSizeVertical } from './normalize';
+// import { MenuBar } from '../../components/Svg';
+import AlertSvg from '../../components/Svg/home/eye.svg'; // Mengimpor SVG sebagai komponen
+import { Alert2 } from '../../components/Svg';
 
 import { API_URL_LOKAL } from '@env';
 const wait = (timeout) => {
@@ -97,6 +100,7 @@ const wait = (timeout) => {
 
 const Home = (props) => {
   console.log('hah ini api url dari env??', API_URL_LOKAL);
+  console.log('alert svg', AlertSvg);
   const { navigation, route } = props;
   const { t } = useTranslation();
   const { colors } = useTheme();
@@ -1118,13 +1122,13 @@ const Home = (props) => {
         >
           {/* <View style={{flex: 1}}> */}
           <ImageBackground
-            // source={require('../../assets/images/image-home/Main_Image.png')}
-            source={require('../../assets/images/image-home/carstensz.webp')}
+            source={require('../../assets/images/image-home/Main_Image.png')}
+            // source={require('../../assets/images/image-home/carstensz.webp')}
             imageStyle={{
               height: 400,
               width: '100%',
-              // borderBottomLeftRadius: 175,
-              // borderBottomRightRadius: 175,
+              borderBottomLeftRadius: 200,
+              borderBottomRightRadius: 200,
             }}
           >
             <LinearGradient
@@ -1140,8 +1144,8 @@ const Home = (props) => {
                 // flex: 1,
                 justifyContent: 'center',
                 // top: 30,
-                // borderBottomLeftRadius: 175,
-                // borderBottomRightRadius: 175,
+                borderBottomLeftRadius: 200,
+                borderBottomRightRadius: 200,
               }}
             >
               <View
@@ -1275,6 +1279,8 @@ const Home = (props) => {
                 >
                   {name}
                 </Text>
+                {/* <Text>{MenuBar}</Text> */}
+
                 <Icon
                   name="star"
                   solid
@@ -1285,6 +1291,15 @@ const Home = (props) => {
               </View>
               {/* <Text>{lotno.length}</Text> */}
 
+              <View>
+                <Alert2 width={100} height={100} />
+              </View>
+              {/* <View>
+                <Image
+                  source={{ uri: AlertSvg }}
+                  style={{ width: 50, height: 50 }}
+                />
+              </View> */}
               {lotno.length != 0 ? (
                 <View
                   style={{

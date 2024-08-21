@@ -1,147 +1,147 @@
-import { createStackNavigator } from "@react-navigation/stack";
-import React from "react";
-import { View, Text } from "react-native";
-import HomeScreen from "../screens/Home";
-import ProfileScreen from "../screens/Profile";
-import AboutUs from "@screens/AboutUs";
-import ResetScreen from "../screens/ResetPassword";
-import ChangeLanguage from "@screens/ChangeLanguage";
-import ChangePassword from "@screens/ChangePassword";
-import Setting from "@screens/Setting";
-import ImageDetail from "@screens/ImageDetail";
-import ContactUs from "@screens/ContactUs";
-import ThemeSetting from "@screens/ThemeSetting";
-import ProfileEdit from "@screens/ProfileEdit";
-import Review from "@screens/Review";
-import SelectFontOption from "@screens/SelectFontOption";
-import FCategory from "@screens/FCategory";
+import { createStackNavigator } from '@react-navigation/stack';
+import React from 'react';
+import { View, Text } from 'react-native';
+import HomeScreen from '../screens/Home';
+import ProfileScreen from '../screens/Profile';
+import AboutUs from '@screens/AboutUs';
+import ResetScreen from '../screens/ResetPassword';
+import ChangeLanguage from '@screens/ChangeLanguage';
+import ChangePassword from '@screens/ChangePassword';
+import Setting from '@screens/Setting';
+import ImageDetail from '@screens/ImageDetail';
+import ContactUs from '@screens/ContactUs';
+import ThemeSetting from '@screens/ThemeSetting';
+import ProfileEdit from '@screens/ProfileEdit';
+import Review from '@screens/Review';
+import SelectFontOption from '@screens/SelectFontOption';
+import FCategory from '@screens/FCategory';
 
-import { BottomTabNavigatorMazi, tabBarIcon } from "./components";
-import Billing from "../screens/Billing";
-import AttachmentBilling from "../screens/Billing/AttachmentBilling";
-import BillingHistory from "../screens/BillingHistory";
-import HistoryBilling from "../screens/BillingHistory/HistoryBilling";
-import PDFAttach from "../screens/Billing/PDFAttach";
-import Facility from "../screens/Facility";
-import Announce from "../screens/Announce";
-import AnnounceDetail from "../screens/AnnouceDetail";
-import PreviewImages from "../screens/AnnouceDetail/PreviewImages";
-import News from "../screens/News";
-import Rent from "../screens/Rent";
-import EProductDetail from "../screens/EProductDetail";
-import PostDetail from "../screens/PostDetail";
-import MeterInfo from "../screens/MeterInfo";
-import MeterInfoX from "../screens/MeterInfoX";
-import Search from "../screens/Search";
-import PreviewImage from "../screens/PreviewImage";
-import NewsAnnounce from "../screens/NewsAnnouncement";
+import { BottomTabNavigatorMazi, tabBarIcon } from './components';
+import Billing from '../screens/Billing';
+import AttachmentBilling from '../screens/Billing/AttachmentBilling';
+import BillingHistory from '../screens/BillingHistory';
+import HistoryBilling from '../screens/BillingHistory/HistoryBilling';
+import PDFAttach from '../screens/Billing/PDFAttach';
+import Facility from '../screens/Facility';
+import Announce from '../screens/Announce';
+import AnnounceDetail from '../screens/AnnouceDetail';
+import PreviewImages from '../screens/AnnouceDetail/PreviewImages';
+import News from '../screens/News';
+import Rent from '../screens/Rent';
+import EProductDetail from '../screens/EProductDetail';
+import PostDetail from '../screens/PostDetail';
+import MeterInfo from '../screens/MeterInfo';
+import MeterInfoX from '../screens/MeterInfoX';
+import Search from '../screens/Search';
+import PreviewImage from '../screens/PreviewImage';
+import NewsAnnounce from '../screens/NewsAnnouncement';
 
-import SelectDarkOption from "../screens/SelectDarkOption";
-import EProductPageNotFound from "../screens/EProductPageNotFound";
+import SelectDarkOption from '../screens/SelectDarkOption';
+import EProductPageNotFound from '../screens/EProductPageNotFound';
 
-import ModalLocation from "../screens/Helpdesk/ModalLocation";
-import Package from "../screens/Package";
-import PackageDetail from "../screens/Package/PackageDetail";
-import Privacy from "../screens/Privacy";
-import Skip from "../screens/Skip";
-import Emergency from "../screens/Emergency";
+import ModalLocation from '../screens/Helpdesk/ModalLocation';
+import Package from '../screens/Package';
+import PackageDetail from '../screens/Package/PackageDetail';
+import Privacy from '../screens/Privacy';
+import Skip from '../screens/Skip';
+import Emergency from '../screens/Emergency';
 
-import Helpdesk from "@screens/Helpdesk";
-import SpecHelpDesk from "@screens/Helpdesk/SpecHelpDesk";
-import CategoryHelp from "@screens/Helpdesk/CategoryHelp";
-import SelectCategory from "@screens/Helpdesk/SelectCategory";
-import SubmitHelpdesk from "../screens/Helpdesk/Submit";
-import StatusHelp from "../screens/Helpdesk/StatusHelp";
-import ViewHistoryStatus from "../screens/Helpdesk/ViewHistoryStatus";
-import ViewHistoryDetail from "../screens/Helpdesk/ViewHistoryDetail";
-import PreviewImageHelpdesk from "../screens/Helpdesk/PreviewImageHelpdesk";
+import Helpdesk from '@screens/Helpdesk';
+import SpecHelpDesk from '@screens/Helpdesk/SpecHelpDesk';
+import CategoryHelp from '@screens/Helpdesk/CategoryHelp';
+import SelectCategory from '@screens/Helpdesk/SelectCategory';
+import SubmitHelpdesk from '../screens/Helpdesk/Submit';
+import StatusHelp from '../screens/Helpdesk/StatusHelp';
+import ViewHistoryStatus from '../screens/Helpdesk/ViewHistoryStatus';
+import ViewHistoryDetail from '../screens/Helpdesk/ViewHistoryDetail';
+import PreviewImageHelpdesk from '../screens/Helpdesk/PreviewImageHelpdesk';
 
-import HouseRoles from "../screens/HouseRoles";
+import HouseRoles from '../screens/HouseRoles';
 
-import Notification from "@screens/Notification";
-import NotificationDetail from "../screens/Notification/notifDetail";
-import DetailFacility from "../screens/Facility/DetailFacility";
-import BookingFacility from "../screens/Facility/BookingFacility";
-import BookingDetail from "../screens/Facility/BookingDetail";
-import FSendMoney from "../screens/FSendMoney";
-import ModalProduct from "../screens/Facility/ModalProduct";
-import TermsConditions from "../screens/Facility/TermsCondition";
+import Notification from '@screens/Notification';
+import NotificationDetail from '../screens/Notification/notifDetail';
+import DetailFacility from '../screens/Facility/DetailFacility';
+import BookingFacility from '../screens/Facility/BookingFacility';
+import BookingDetail from '../screens/Facility/BookingDetail';
+import FSendMoney from '../screens/FSendMoney';
+import ModalProduct from '../screens/Facility/ModalProduct';
+import TermsConditions from '../screens/Facility/TermsCondition';
 
-import BookingList from "../screens/Facility/BookingList";
-import BookingListDetail from "../screens/Facility/BookingListDetail";
+import BookingList from '../screens/Facility/BookingList';
+import BookingListDetail from '../screens/Facility/BookingListDetail';
 
-import ChoosePartner from "../screens/Facility/ChoosePartner";
-import ChooseEditPartner from "../screens/Facility/ChooseEditPartner";
+import ChoosePartner from '../screens/Facility/ChoosePartner';
+import ChooseEditPartner from '../screens/Facility/ChooseEditPartner';
 
-import { tabBarIconHaveNoty } from "./components";
-import ScreenSignature from "../screens/Helpdesk/ScreenSignature";
-import Store from "../screens/Store";
-import EProduct from "../screens/EProduct";
-import ECart from "../screens/ECart";
-import EShipping from "../screens/EShipping";
-import EPayment from "../screens/EPayment";
-import EConfirmed from "../screens/EConfirmed";
-import EMyOrder from "../screens/EMyOrder";
+import { tabBarIconHaveNoty } from './components';
+import ScreenSignature from '../screens/Helpdesk/ScreenSignature';
+import Store from '../screens/Store';
+import EProduct from '../screens/EProduct';
+import ECart from '../screens/ECart';
+import EShipping from '../screens/EShipping';
+import EPayment from '../screens/EPayment';
+import EConfirmed from '../screens/EConfirmed';
+import EMyOrder from '../screens/EMyOrder';
 
-import EProductDetailStore from "../screens/EProductDetailStore";
-import PreviewImageHome from "../screens/Home/PreviewImageHome";
-import AnnounceDetailHome from "../screens/AnnouceDetailHome";
-import PreviewImagesAnnounceHome from "../screens/AnnouceDetailHome/PreviewImagesAnnounceHome";
-import PinchZoom from "../screens/Home/PinchZoom";
+import EProductDetailStore from '../screens/EProductDetailStore';
+import PreviewImageHome from '../screens/Home/PreviewImageHome';
+import AnnounceDetailHome from '../screens/AnnouceDetailHome';
+import PreviewImagesAnnounceHome from '../screens/AnnouceDetailHome/PreviewImagesAnnounceHome';
+import PinchZoom from '../screens/Home/PinchZoom';
 
-import ComingSoon from "../screens/ComingSoon";
-import EventResto from "../screens/EventResto";
-import ClubFacilities from "../screens/ClubFacilities";
+import ComingSoon from '../screens/ComingSoon';
+import EventResto from '../screens/EventResto';
+import ClubFacilities from '../screens/ClubFacilities';
 
-import ItemStore from "../screens/Store/ItemStore";
-import CartStore from "../screens/Store/CartStore";
-import DeliveryAndPayment from "../screens/Store/DeliveryAndPayment";
-import RiwayatPesanan from "../screens/Store/RiawayatPesanan";
-import FChooseFriend from "../screens/FChooseFriend";
-import Troffice from "../screens/Troffice";
-import SpecTroffice from "../screens/Troffice/SpecTroffice";
-import SpecTrofficeHouse from "../screens/Troffice/SpecTrofficeHouse";
-import SpecTrofficeWaterHeater from "../screens/Troffice/SpecTrofficeWaterHeater";
-import StatusHelpTROffice from "../screens/Troffice/StatusHelpTROffice";
-import StatusHelpHouse from "../screens/Troffice/StatusHelpHouse";
-import StatusHelpHouseNeo from "../screens/Troffice/StatusHelpHouseNeo";
-import ViewHistoryDetailTRO from "../screens/Troffice/ViewHistoryDetailTRO";
-import ViewHistoryStatusTRO from "../screens/Troffice/ViewHistoryStatusTRO";
-import SeatBooking from "../screens/Troffice/SeatBooking";
-import SeatBokings from "../screens/Troffice/SeatBokings";
-import SeatBokingsWaterHeater from "../screens/Troffice/SeatBokingsWaterHeater";
-import ScreenSignatureTRO from "../screens/Troffice/ScreenSignatureTRO";
-import SelectType from "../screens/Troffice/SelectType";
-import SpecTrofficeUnitCleaning from "../screens/Troffice/HouseKeeping/SpecTrofficeUnitCleaning";
-import PriceList from "../screens/Troffice/HouseKeeping/PriceList";
-import TermsCondition from "../screens/Troffice/HouseKeeping/TermsCondition";
-import SeatBokingsPest from "../screens/Troffice/PestControl/SeatBokingsPest";
-import SpecTrofficePestControl from "../screens/Troffice/PestControl/SpecTrofficePestControl";
-import PriceListPest from "../screens/Troffice/PestControl/PriceListPest";
-import PDFAttachStore from "../screens/Store/RiawayatPesanan/PDFAttachStore";
+import ItemStore from '../screens/Store/ItemStore';
+import CartStore from '../screens/Store/CartStore';
+import DeliveryAndPayment from '../screens/Store/DeliveryAndPayment';
+import RiwayatPesanan from '../screens/Store/RiawayatPesanan';
+import FChooseFriend from '../screens/FChooseFriend';
+import Troffice from '../screens/Troffice';
+import SpecTroffice from '../screens/Troffice/SpecTroffice';
+import SpecTrofficeHouse from '../screens/Troffice/SpecTrofficeHouse';
+import SpecTrofficeWaterHeater from '../screens/Troffice/SpecTrofficeWaterHeater';
+import StatusHelpTROffice from '../screens/Troffice/StatusHelpTROffice';
+import StatusHelpHouse from '../screens/Troffice/StatusHelpHouse';
+import StatusHelpHouseNeo from '../screens/Troffice/StatusHelpHouseNeo';
+import ViewHistoryDetailTRO from '../screens/Troffice/ViewHistoryDetailTRO';
+import ViewHistoryStatusTRO from '../screens/Troffice/ViewHistoryStatusTRO';
+import SeatBooking from '../screens/Troffice/SeatBooking';
+import SeatBokings from '../screens/Troffice/SeatBokings';
+import SeatBokingsWaterHeater from '../screens/Troffice/SeatBokingsWaterHeater';
+import ScreenSignatureTRO from '../screens/Troffice/ScreenSignatureTRO';
+import SelectType from '../screens/Troffice/SelectType';
+import SpecTrofficeUnitCleaning from '../screens/Troffice/HouseKeeping/SpecTrofficeUnitCleaning';
+import PriceList from '../screens/Troffice/HouseKeeping/PriceList';
+import TermsCondition from '../screens/Troffice/HouseKeeping/TermsCondition';
+import SeatBokingsPest from '../screens/Troffice/PestControl/SeatBokingsPest';
+import SpecTrofficePestControl from '../screens/Troffice/PestControl/SpecTrofficePestControl';
+import PriceListPest from '../screens/Troffice/PestControl/PriceListPest';
+import PDFAttachStore from '../screens/Store/RiawayatPesanan/PDFAttachStore';
 
-import TableBeforeSignatureWO from "../screens/Helpdesk/TableBeforeSignatureWO";
-import TableAfterSignatureWO from "../screens/Helpdesk/TableAfterSignatureWO";
+import TableBeforeSignatureWO from '../screens/Helpdesk/TableBeforeSignatureWO';
+import TableAfterSignatureWO from '../screens/Helpdesk/TableAfterSignatureWO';
 
-import LegalManagement from "@screens/LegalManagement";
-import RenovationPermit from "@screens/LegalManagement/Renovation";
-import FitOut from "@screens/LegalManagement/FitOut";
-import EntryExit from "@screens/LegalManagement/EntryExit";
-import FormPermitRenovation from "@screens/LegalManagement/Renovation/Form";
-import FormPermitFitOut from "@screens/LegalManagement/FitOut/Form";
-import FormPermitEntryExit from "@screens/LegalManagement/EntryExit/Form";
-import TenantInformation from "@screens/LegalManagement/FitOut/Form/TenantInformation";
-import TrackPermit from "@screens/LegalManagement/FitOut/Permit";
-import ContractorPermit from "@screens/LegalManagement/Renovation/Form/Contract";
-import TrackPermitRenov from "@screens/LegalManagement/Renovation/Permit";
-import ContractorPermitExit from "@screens/LegalManagement/EntryExit/Form/Contract";
-import TrackExitEntry from "@screens/LegalManagement/EntryExit/Permit";
-import AttachExitEntry from "@screens/LegalManagement/EntryExit/Permit/PDFAttach";
-import AttachFitOut from "@screens/LegalManagement/FitOut/Permit/PDFAttach";
-import AttachRenov from "@screens/LegalManagement/Renovation/Permit/PDFAttach";
+import LegalManagement from '@screens/LegalManagement';
+import RenovationPermit from '@screens/LegalManagement/Renovation';
+import FitOut from '@screens/LegalManagement/FitOut';
+import EntryExit from '@screens/LegalManagement/EntryExit';
+import FormPermitRenovation from '@screens/LegalManagement/Renovation/Form';
+import FormPermitFitOut from '@screens/LegalManagement/FitOut/Form';
+import FormPermitEntryExit from '@screens/LegalManagement/EntryExit/Form';
+import TenantInformation from '@screens/LegalManagement/FitOut/Form/TenantInformation';
+import TrackPermit from '@screens/LegalManagement/FitOut/Permit';
+import ContractorPermit from '@screens/LegalManagement/Renovation/Form/Contract';
+import TrackPermitRenov from '@screens/LegalManagement/Renovation/Permit';
+import ContractorPermitExit from '@screens/LegalManagement/EntryExit/Form/Contract';
+import TrackExitEntry from '@screens/LegalManagement/EntryExit/Permit';
+import AttachExitEntry from '@screens/LegalManagement/EntryExit/Permit/PDFAttach';
+import AttachFitOut from '@screens/LegalManagement/FitOut/Permit/PDFAttach';
+import AttachRenov from '@screens/LegalManagement/Renovation/Permit/PDFAttach';
 
-import SuratIzinKerja from "@screens/LegalManagement/SuratIzinKerja";
-import SuratIzinKeluarMasukBarang from "@screens/LegalManagement/SuratIzinKeluarMasukBarang";
+import SuratIzinKerja from '@screens/LegalManagement/SuratIzinKerja';
+import SuratIzinKeluarMasukBarang from '@screens/LegalManagement/SuratIzinKeluarMasukBarang';
 
 const Stack = createStackNavigator();
 
@@ -149,29 +149,30 @@ export const WalletTabScreens = {
   HomeScreen: {
     component: HomeScreen,
     options: {
-      title: "home",
-      tabBarIcon: ({ color }) => tabBarIcon({ color, name: "home" }),
+      title: 'home',
+      tabBarIcon: ({ color }) => tabBarIcon({ color, iconName: 'home' }),
     },
   },
   EmegerncyScreen: {
     component: Emergency,
     options: {
-      title: "Emergency",
-      tabBarIcon: ({ color }) => tabBarIcon({ color, name: "phone" }),
+      title: 'Emergency',
+      tabBarIcon: ({ color }) => tabBarIcon({ color, iconName: 'phone' }),
     },
   },
   NotificationScreen: {
     component: Notification,
     options: {
-      title: "Notification",
-      tabBarIcon: ({ color }) => tabBarIconHaveNoty({ color, name: "bell" }),
+      title: 'Notification',
+      tabBarIcon: ({ color }) =>
+        tabBarIconHaveNoty({ color, iconName: 'bell' }),
     },
   },
   ProfileScreen: {
     component: ProfileScreen,
     options: {
-      title: "account",
-      tabBarIcon: ({ color }) => tabBarIcon({ color, name: "cog" }),
+      title: 'account',
+      tabBarIcon: ({ color }) => tabBarIcon({ color, iconName: 'account' }),
     },
   },
 };
@@ -201,7 +202,7 @@ function MainStack() {
         name="Profile"
         component={ProfileScreen}
         options={{ headerShown: false }}
-        creenOptions={{ presentation: "modal" }}
+        creenOptions={{ presentation: 'modal' }}
       />
       <Stack.Screen
         name="ContactUs"

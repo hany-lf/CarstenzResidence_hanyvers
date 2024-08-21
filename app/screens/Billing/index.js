@@ -12,17 +12,17 @@ import {
   Price3Col,
   ListTransactionExpand,
   Button,
-} from "@components";
-import { BaseStyle, useTheme } from "@config";
-import { FRecentTransactions, FHotNews } from "@data";
-import { useNavigation, useRoute } from "@react-navigation/core";
-import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { enableExperimental } from "@utils";
+} from '@components';
+import { BaseStyle, useTheme } from '@config';
+import { FRecentTransactions, FHotNews } from '@data';
+import { useNavigation, useRoute } from '@react-navigation/core';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { enableExperimental } from '@utils';
 
-import moment from "moment";
-import Modal from "react-native-modal";
-import { API_URL_LOKAL } from "@env";
+import moment from 'moment';
+import Modal from 'react-native-modal';
+import { API_URL_LOKAL } from '@env';
 
 import {
   ScrollView,
@@ -30,18 +30,18 @@ import {
   TouchableOpacity,
   FlatList,
   StyleSheet,
-} from "react-native";
-import HeaderHome from "./HeaderHome";
-import styles from "./styles";
-import HeaderCard from "./HeaderCard";
-import getUser from "../../selectors/UserSelectors";
-import getProject from "../../selectors/ProjectSelector";
-import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
-import numFormat from "../../components/numFormat";
-import CurrencyFormatter from "../../components/CurrencyFormatter";
-import ModalDropdown_debtor from "@components/ModalDropdown_debtor";
-import { ActivityIndicator } from "react-native-paper";
+} from 'react-native';
+import HeaderHome from './HeaderHome';
+import styles from './styles';
+import HeaderCard from './HeaderCard';
+import getUser from '../../selectors/UserSelectors';
+import getProject from '../../selectors/ProjectSelector';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import numFormat from '../../components/numFormat';
+import CurrencyFormatter from '../../components/CurrencyFormatter';
+import ModalDropdown_debtor from '@components/ModalDropdown_debtor';
+import { ActivityIndicator } from 'react-native-paper';
 
 const Billing = ({
   isCenter = false,
@@ -65,20 +65,20 @@ const Billing = ({
   const [dataTowerUser, setdataTowerUser] = useState([]);
   const [arrDataTowerUser, setArrDataTowerUser] = useState([]);
 
-  const [email, setEmail] = useState("");
-  const [entity_cd, setEntity] = useState("");
-  const [project_no, setProjectNo] = useState("");
-  const [db_profile, setDb_Profile] = useState("");
+  const [email, setEmail] = useState('');
+  const [entity_cd, setEntity] = useState('');
+  const [project_no, setProjectNo] = useState('');
+  const [db_profile, setDb_Profile] = useState('');
   const [spinner, setSpinner] = useState(true);
   const [loading, setLoading] = useState(true);
   const TABS = [
     {
       id: 1,
-      title: t("Due Date"),
+      title: t('Due Date'),
     },
     {
       id: 2,
-      title: t("Not Due"),
+      title: t('Not Due'),
     },
   ];
   const [tab, setTab] = useState(TABS[0]);
@@ -111,7 +111,7 @@ const Billing = ({
   // --- useeffect untuk update email/name
 
   useEffect(() => {
-    console.log("apakah ini terload", email);
+    console.log('apakah ini terload', email);
     if (email) {
       fetchData();
       fetchDataCurrent();
@@ -123,13 +123,13 @@ const Billing = ({
     const data = {
       email: email,
       //   email: 'haniyya.ulfah@ifca.co.id',
-      app: "O",
+      app: 'O',
     };
 
     const config = {
       headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
+        accept: 'application/json',
+        'Content-Type': 'application/json',
         // token: "",
       },
     };
@@ -140,7 +140,7 @@ const Billing = ({
         API_URL_LOKAL + `/getData/mysql/${data.email}/${data.app}`,
         {
           config,
-        }
+        },
       )
       .then((res) => {
         const datas = res.data;
@@ -149,7 +149,7 @@ const Billing = ({
         // let dataArr = {};
         arrDataTower.map((dat) => {
           if (dat) {
-            console.log("data trower", dat.entity_cd);
+            console.log('data trower', dat.entity_cd);
             setdataTowerUser(dat);
             setEntity(dat.entity_cd);
             setProjectNo(dat.project_no);
@@ -167,8 +167,8 @@ const Billing = ({
         // return res.data;
       })
       .catch((error) => {
-        console.log("error get tower api", error);
-        alert("error get");
+        console.log('error get tower api', error);
+        alert('error get');
       });
   };
 
@@ -184,21 +184,21 @@ const Billing = ({
   // Make function to call the api
   async function fetchData() {
     console.log(
-      "api due sumary",
-      API_URL_LOKAL + `/modules/billing/due-summary/${email}`
+      'api due sumary',
+      API_URL_LOKAL + `/modules/billing/due-summary/${email}`,
     );
     const config = {
-      method: "get",
+      method: 'get',
       url: API_URL_LOKAL + `/modules/billing/due-summary/${email}`,
       headers: {
-        "content-type": "application/json",
+        'content-type': 'application/json',
         Authorization: `Bearer ${user.Token}`,
       },
     };
     try {
       const res = await axios(config);
       setDataCurrent(res.data.data);
-      console.log("DATA DUE DATE -->", res.data.data);
+      console.log('DATA DUE DATE -->', res.data.data);
       setLoading(false);
     } catch (error) {
       setErrors(error.response.data);
@@ -208,24 +208,24 @@ const Billing = ({
 
   async function fetchDataCurrent() {
     console.log(
-      "api current sumary",
-      API_URL_LOKAL + `/modules/billing/current-summary/${email}`
+      'api current sumary',
+      API_URL_LOKAL + `/modules/billing/current-summary/${email}`,
     );
     const config = {
-      method: "get",
+      method: 'get',
       url: API_URL_LOKAL + `/modules/billing/current-summary/${email}`,
       headers: {
-        "content-type": "application/json",
+        'content-type': 'application/json',
         Authorization: `Bearer ${user.Token}`,
       },
     };
     try {
       const res = await axios(config);
       setData(res.data.data);
-      console.log("data current", res.data.data);
+      console.log('data current', res.data.data);
       setLoading(false);
     } catch (error) {
-      console.log("error fetch data current", error.response);
+      console.log('error fetch data current', error.response);
       setErrors(error.response.data);
       // alert(hasError.toString());
     }
@@ -238,15 +238,15 @@ const Billing = ({
           return (max += parseInt(bills.mbal_amt));
         }, 0)
       : null;
-  console.log("sum", sum);
+  console.log('sum', sum);
 
   return (
     <SafeAreaView
       style={[BaseStyle.safeAreaView, { flex: 1 }]}
-      edges={["right", "top", "left"]}
+      edges={['right', 'top', 'left']}
     >
       <Header
-        title={t("Invoice")}
+        title={t('Invoice')}
         renderLeft={() => {
           return (
             <Icon
@@ -265,7 +265,7 @@ const Billing = ({
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
       >
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           {TABS.map((item, index) => (
             <View key={index} style={{ flex: 1, paddingHorizontal: 20 }}>
               <Tag
@@ -297,16 +297,16 @@ const Billing = ({
             {tab.id == 1 && dataCurrent != 0 && dataCurrent.length > 0
               ? dataCurrent.map((item, key) => (
                   <ListTransactionExpand
-                    onPress={() => navigation.navigate("FHistoryDetail")}
+                    onPress={() => navigation.navigate('FHistoryDetail')}
                     // key={item.id}
                     key={key}
                     tower={item.tower}
                     name={item.name}
                     trx_type={item.trx_type}
                     doc_no={item.doc_no}
-                    doc_date={moment(item.doc_date).format("DD MMMM YYYY")}
+                    doc_date={moment(item.doc_date).format('DD MMMM YYYY')}
                     descs={item.descs}
-                    due_date={moment(item.due_date).format("DD MMMM YYYY")}
+                    due_date={moment(item.due_date).format('DD MMMM YYYY')}
                     mbal_amt={`${numFormat(`${item.mbal_amt}`)}`}
                     lot_no={item.lot_no}
                     debtor_acct={item.debtor_acct}
@@ -322,7 +322,7 @@ const Billing = ({
                     style={{
                       flex: 1,
                       // height: '100%',
-                      marginTop: "70%",
+                      marginTop: '70%',
                       // justifyContent: 'center',
                       // alignContent: 'center',
                       // alignItems: 'center',
@@ -341,10 +341,10 @@ const Billing = ({
                     }}></IconFontisto> */}
                     <Text
                       style={{
-                        justifyContent: "center",
-                        alignContent: "center",
-                        alignItems: "center",
-                        alignSelf: "center",
+                        justifyContent: 'center',
+                        alignContent: 'center',
+                        alignItems: 'center',
+                        alignSelf: 'center',
                         fontSize: 16,
                         marginTop: 10,
                       }}
@@ -360,16 +360,16 @@ const Billing = ({
           {tab.id == 2 && data != null && data.length > 0
             ? data.map((item, key) => (
                 <ListTransactionExpand
-                  onPress={() => navigation.navigate("FHistoryDetail")}
+                  onPress={() => navigation.navigate('FHistoryDetail')}
                   // key={item.id}
                   key={key}
                   tower={item.tower}
                   name={item.name}
                   trx_type={item.trx_type}
                   doc_no={item.doc_no}
-                  doc_date={moment(item.doc_date).format("DD MMMM YYYY")}
+                  doc_date={moment(item.doc_date).format('DD MMMM YYYY')}
                   descs={item.descs}
-                  due_date={moment(item.due_date).format("DD MMMM YYYY")}
+                  due_date={moment(item.due_date).format('DD MMMM YYYY')}
                   mbal_amt={`${numFormat(`${item.mbal_amt}`)}`}
                   lot_no={item.lot_no}
                   debtor_acct={item.debtor_acct}
@@ -384,7 +384,7 @@ const Billing = ({
                   style={{
                     flex: 1,
                     // height: '100%',
-                    marginTop: "70%",
+                    marginTop: '70%',
                     // justifyContent: 'center',
                     // alignContent: 'center',
                     // alignItems: 'center',
@@ -403,10 +403,10 @@ const Billing = ({
                     }}></IconFontisto> */}
                   <Text
                     style={{
-                      justifyContent: "center",
-                      alignContent: "center",
-                      alignItems: "center",
-                      alignSelf: "center",
+                      justifyContent: 'center',
+                      alignContent: 'center',
+                      alignItems: 'center',
+                      alignSelf: 'center',
                       fontSize: 16,
                       marginTop: 10,
                     }}

@@ -1,47 +1,71 @@
 /** @format */
 
-import React from "react";
-import { Icon, Text } from "@components";
-import { View } from "react-native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { useTranslation } from "react-i18next";
-import { BaseColor, BaseStyle, useTheme } from "@config";
-import getNotifRed from "../../selectors/NotifSelectors";
-import { useSelector } from "react-redux";
+import React from 'react';
+import { Icon, Text } from '@components';
+import { View } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useTranslation } from 'react-i18next';
+import { BaseColor, BaseStyle, useTheme } from '@config';
+import getNotifRed from '../../selectors/NotifSelectors';
+import { useSelector } from 'react-redux';
+import { Home, BellHome, PhoneHome, UserHome } from '../../components/Svg';
 
-export const tabBarIcon = ({ color, name }) => (
-  <Icon name={name} size={20} solid color={color} />
-);
+// export const tabBarIcon = ({ color, NameSvg }) => (
+//   <NameSvg width={20} height={20} fill={color} />
+// );
 
-export const tabBarIconHaveNoty = ({ color, name }) => {
+// Define the tabBarIcon function
+export const tabBarIcon = ({ color, iconName }) => {
+  console.log('iconName tab bar icon', iconName);
+  const icons = {
+    home: Home,
+    phone: PhoneHome,
+    bell: BellHome,
+    account: UserHome,
+    // Tambahkan ikon lainnya jika diperlukan
+  };
+
+  const IconComponent = icons[iconName];
+
+  return IconComponent ? (
+    <IconComponent
+      width={20}
+      height={20}
+      stroke={color}
+      //fill={color} //kalo mau di fill svg nya pake ini, kalo ngga pake stroke aja
+    />
+  ) : null;
+};
+
+export const tabBarIconHaveNoty = ({ color, iconName }) => {
   // const notifData_FromRed = useSelector(state => getNotifRed(state));
-  // console.log('buat badge notifg', notifData_FromRed);
+  console.log('icon name di icon haveduty', iconName);
 
   const data = useSelector((state) => state.apiReducer.data);
-  console.log("data di tabbar", data);
+  console.log('data di tabbar', data);
   let sum = 0;
   // data != null || data != undefined || data.length > 0 ? data.map((item, index) => {
   //   sum += parseInt(item.IsRead);
   // }) : sum = 0;
 
   const counter = useSelector((state) => state.counter);
-  console.log("counter badge di tabbar", counter);
+  console.log('counter badge di tabbar', counter);
   const total = data.length;
   const finalCount = total - sum;
 
   return (
     <View>
-      {tabBarIcon({ color, name })}
+      {tabBarIcon({ color, iconName })}
       <View
         style={{
           borderWidth: 1,
           borderColor: BaseColor.whiteColor,
-          justifyContent: "center",
-          alignItems: "center",
-          position: "absolute",
+          justifyContent: 'center',
+          alignItems: 'center',
+          position: 'absolute',
           width: 20,
           height: 20,
-          backgroundColor: "red",
+          backgroundColor: 'red',
           top: -5,
           right: -12,
           borderRadius: 10,
@@ -68,8 +92,8 @@ export const BottomTabNavigatorMazi = ({ tabScreens = {} }) => {
         showIcon: true,
         showLabel: true, //untuk menghide title pada navigasi bottom bar
         // activeTintColor: BaseColor.whiteColor,
-        activeTintColor: colors.primary != "#FDC60A" ? "yellow" : "white",
-        inactiveTintColor: colors.primary != "#FDC60A" ? "white" : "gray", //BaseColor.grayColor,
+        activeTintColor: colors.primary != '#FDC60A' ? 'yellow' : 'white',
+        inactiveTintColor: colors.primary != '#FDC60A' ? 'white' : 'gray', //BaseColor.grayColor,
         // inactiveTintColor: '#969696',
         // style: BaseStyle.tabBar,
         style: {

@@ -1,5 +1,14 @@
 {
-  "extends": "@tsconfig/react-native/tsconfig.json"
+  
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    // ... opsi lainnya
+  },
+
+  "extends": "@tsconfig/react-native/tsconfig.json",
+ 
   // "compilerOptions": {
   //   "typeRoots": ["./src/types"]
   // }
