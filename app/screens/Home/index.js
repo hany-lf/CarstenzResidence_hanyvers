@@ -1291,15 +1291,6 @@ const Home = (props) => {
               </View>
               {/* <Text>{lotno.length}</Text> */}
 
-              <View>
-                <Alert2 width={100} height={100} />
-              </View>
-              {/* <View>
-                <Image
-                  source={{ uri: AlertSvg }}
-                  style={{ width: 50, height: 50 }}
-                />
-              </View> */}
               {lotno.length != 0 ? (
                 <View
                   style={{

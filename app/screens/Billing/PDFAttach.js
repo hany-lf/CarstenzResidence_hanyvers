@@ -4,11 +4,11 @@ import {
   ListThumbCircleNotif,
   SafeAreaView,
   Text,
-} from "@components";
-import { BaseColor, BaseStyle, useTheme } from "@config";
+} from '@components';
+import { BaseColor, BaseStyle, useTheme } from '@config';
 // Load sample data
 // import {NotificationData} from '@data';
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   FlatList,
   RefreshControl,
@@ -17,22 +17,22 @@ import {
   StyleSheet,
   Dimensions,
   Platform,
-} from "react-native";
-import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+} from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 // import getUser from '../../selectors/UserSelectors';
-import Pdf from "react-native-pdf";
-import ReactNativeBlobUtil from "react-native-blob-util";
+import Pdf from 'react-native-pdf';
+import ReactNativeBlobUtil from 'react-native-blob-util';
 // import RNFetchBlob from 'rn-fetch-blob';
 
 const PDFAttach = (props) => {
   const { navigation, route } = props;
-  console.log("route params", route);
+  console.log('route params', route);
   const paramsItem = route.params;
   const { t } = useTranslation();
   const { colors } = useTheme();
-  const repl = paramsItem.link_url.replace("https", "http");
-  console.log("repl", repl);
+  const repl = paramsItem.link_url;
+  console.log('repl', repl);
   const source = {
     uri: repl,
     cache: true,
@@ -43,26 +43,27 @@ const PDFAttach = (props) => {
 
     const url = items.link_url;
     // Extract the filename from the URL
-    const filenameWithExtension = url.split("/").pop();
+    const filenameWithExtension = url.split('/').pop();
+    console.log('filenamewith', filenameWithExtension);
 
     // Remove the .pdf extension (case insensitive)
-    const filename = filenameWithExtension.replace(/\.pdf$/i, "");
+    const filename = filenameWithExtension.replace(/\.pdf$/i, '');
     const path =
-      ReactNativeBlobUtil.fs.dirs.DocumentDir + "/" + filename + ".pdf";
+      ReactNativeBlobUtil.fs.dirs.DocumentDir + '/' + filename + '.pdf';
     const response = await ReactNativeBlobUtil.config({
       fileCache: true,
-      appendExt: "pdf",
+      appendExt: 'pdf',
       path,
     })
-      .fetch("GET", url, {
-        Accept: "application/pdf",
-        "Content-Type": "application/pdf",
+      .fetch('GET', url, {
+        Accept: 'application/pdf',
+        'Content-Type': 'application/pdf',
       })
       .progress((received, total) => {
-        console.log("progress", received / total);
+        console.log('progress', received / total);
       })
       .then(async (res) => {
-        console.log("The file saved to ", res.path());
+        console.log('The file saved to ', res.path());
       });
 
     ReactNativeBlobUtil.ios.previewDocument(path); //ini untuk memunculkan menu preview document di ios
@@ -71,8 +72,9 @@ const PDFAttach = (props) => {
 
   const downloadFile = () => {
     const item = paramsItem;
+    console.log('item params download file', item);
 
-    if (Platform.OS === "ios") {
+    if (Platform.OS === 'ios') {
       downloadForIOS(item);
     } else {
       // let destPathIos =
@@ -81,20 +83,29 @@ const PDFAttach = (props) => {
         // dirs: {DownloadDir, DocumentDir},
         dirs: { PictureDir, DocumentDir },
       } = ReactNativeBlobUtil.fs;
-      const fileDirPathAndroid = "/storage/emulated/0/Download";
+      const fileDirPathAndroid = '/storage/emulated/0/Download';
       const aPath = Platform.select({
         ios: DocumentDir,
         android: fileDirPathAndroid,
       });
       // console.log('apath', aPath);
-      const fPath = `${aPath}/` + item.doc_no + `.pdf`;
-      // console.log('fpath', fPath);
+      const url = item.link_url;
+      // Extract the filename from the URL
+      const filenameWithExtension = url.split('/').pop();
+      console.log('filenamewith', filenameWithExtension);
+
+      // Remove the .pdf extension (case insensitive)
+      const filename = filenameWithExtension.replace(/\.pdf$/i, '');
+      console.log('filename', filename);
+      const fPath = `${aPath}/` + filename + `.pdf`;
+
+      console.log('fpath', fPath);
       const configOptions = Platform.select({
         ios: {
           fileCache: true,
           // path: fPath,
           notification: true,
-          appendExt: "pdf",
+          appendExt: 'pdf',
 
           path: fPath,
         },
@@ -105,11 +116,11 @@ const PDFAttach = (props) => {
             notification: true,
             path: fPath,
 
-            mime: "application/pdf",
+            mime: 'application/pdf',
             mediaScannable: true,
 
-            description: "Downloading...",
-            title: "Download pdf",
+            description: 'Downloading...',
+            title: 'Download pdf',
           },
           // appendExt: 'png',
           indicator: true,
@@ -121,7 +132,7 @@ const PDFAttach = (props) => {
         },
       });
       ReactNativeBlobUtil.config(
-        configOptions
+        configOptions,
         //     {
         //     fileCache : true,
         //     addAndroidDownloads: {
@@ -135,18 +146,18 @@ const PDFAttach = (props) => {
         //     }
         // }
       )
-        .fetch("GET", item.link_url, {
-          Accept: "application/pdf",
-          "Content-Type": "application/pdf",
+        .fetch('GET', item.link_url, {
+          Accept: 'application/pdf',
+          'Content-Type': 'application/pdf',
         })
         .progress((received, total) => {
-          console.log("progress", received / total);
+          console.log('progress', received / total);
           // setToastVisible(true);
         })
         .then(async (res) => {
-          console.log("The file saved to ", res.path());
+          console.log('The file saved to ', res.path());
 
-          alert("Saved at : " + res.path());
+          alert('Saved at : ' + res.path());
           // android.actionViewIntent(res.path(), 'application/pdf')
           // android.actionViewIntent(RNFetchBlob.fs.dirs.SDCardDir +'/Download/laporan.pdf','application/pdf')
         });
@@ -199,10 +210,10 @@ const PDFAttach = (props) => {
   return (
     <SafeAreaView
       style={BaseStyle.safeAreaView}
-      edges={["right", "top", "left"]}
+      edges={['right', 'top', 'left']}
     >
       <Header
-        title={t("Attachment Invoice")}
+        title={t('Attachment Invoice')}
         renderLeft={() => {
           return (
             <Icon
@@ -254,6 +265,7 @@ const PDFAttach = (props) => {
           fitWidth={true}
         /> */}
         <Pdf
+          trustAllCerts={false}
           source={source}
           onLoadComplete={(numberOfPages, filePath) => {
             console.log(`Number of pages: ${numberOfPages}`);
@@ -267,7 +279,7 @@ const PDFAttach = (props) => {
           onPressLink={(uri) => {
             console.log(`Link pressed: ${uri}`);
           }}
-          password={"220359"}
+          // password={'220359'}
           style={stylesCurrent.pdf}
         />
         {/* <Text>{paramsItem.link_url}</Text> */}
@@ -281,13 +293,13 @@ export default PDFAttach;
 const stylesCurrent = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "flex-start",
-    alignItems: "center",
+    justifyContent: 'flex-start',
+    alignItems: 'center',
     marginTop: 25,
   },
   pdf: {
     flex: 1,
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
   },
 });

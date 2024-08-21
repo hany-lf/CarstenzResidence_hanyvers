@@ -1,19 +1,30 @@
-import Icon from "@components/Icon";
-import Text from "@components/Text";
-import { BaseColor, useTheme } from "@config";
-import PropTypes from "prop-types";
-import React from "react";
-import { useTranslation } from "react-i18next";
-import { TouchableOpacity, View, StyleSheet } from "react-native";
-import styles from "./styles";
-import { parseHexTransparency } from "@utils";
-import Loading from "./Loading";
-import { Image } from "react-native-elements";
+import Icon from '@components/Icon';
+import Text from '@components/Text';
+import { BaseColor, useTheme } from '@config';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { TouchableOpacity, View, StyleSheet } from 'react-native';
+import styles from './styles';
+import { parseHexTransparency } from '@utils';
+import Loading from './Loading';
+import { Image } from 'react-native-elements';
+import {
+  Home,
+  BellHome,
+  PhoneHome,
+  UserHome,
+  Handshake,
+  Megaphone,
+  Barbel,
+  Repair,
+} from '../../../components/Svg';
+
 export default function CategoryIconSoft({
-  style = "",
-  icon = "",
-  icon_url = "",
-  title = "",
+  style = '',
+  icon = '',
+  icon_url = '',
+  title = '',
   onPress = () => {},
   loading = false,
   isNormal = true,
@@ -35,6 +46,27 @@ export default function CategoryIconSoft({
       return colors.text;
     }
     return BaseColor.whiteColor;
+  };
+
+  const iconMapper = {
+    'credit-card': Home,
+    handshake: Handshake,
+    phone: PhoneHome,
+    'table-tennis': Barbel,
+    tools: Repair,
+    bolt: UserHome,
+    bullhorn: Megaphone,
+    // Tambahkan pemetaan ikon lainnya sesuai kebutuhan
+  };
+  console.log('iconMapper[icon]', iconMapper);
+  console.log('icon', icon);
+
+  const IconComponent = ({ iconClass, size, color }) => {
+    const SvgIcon = iconMapper[iconClass]; // Ambil komponen SVG berdasarkan IconClass
+    console.log('SvgIcon', SvgIcon);
+    return SvgIcon ? (
+      <SvgIcon width={size} height={size} stroke={color} />
+    ) : null;
   };
 
   return (
@@ -65,15 +97,23 @@ export default function CategoryIconSoft({
         {/* <Image
           source={icon_url}
           style={{borderRadius: 12, width: 75, height: 75}}></Image> */}
-        <Icon
+        {/* <Icon
           name={icon}
           size={isRound ? 29 : 32}
           color={getIconColor()}
           solid
+        /> */}
+
+        <IconComponent
+          width={28}
+          height={28}
+          iconClass={icon}
+          size={isRound ? 29 : 32}
+          color={getIconColor()}
         />
       </View>
       <View style={{ marginTop: 15, maxWidth: maxWidth }}>
-        <Text footnote numberOfLines={1} style={{ textAlign: "center" }}>
+        <Text footnote numberOfLines={1} style={{ textAlign: 'center' }}>
           {title}
         </Text>
       </View>
@@ -91,8 +131,8 @@ CategoryIconSoft.propTypes = {
 
 CategoryIconSoft.defaultProps = {
   style: {},
-  icon: "",
-  icon_url: "",
-  title: "",
+  icon: '',
+  icon_url: '',
+  title: '',
   onPress: () => {},
 };
