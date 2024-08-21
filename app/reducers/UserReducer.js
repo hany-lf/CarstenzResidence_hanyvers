@@ -1,4 +1,4 @@
-import { actionTypes } from "../actions/UserActions";
+import { actionTypes } from '../actions/UserActions';
 
 const initialState = {
   user: null,
@@ -26,7 +26,18 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         // ...user,
-        pict: action.edits,
+        // pict: action.edits, //ini yg sebelumnya
+        // user: {
+        //   ...state.user,
+        //   pict: action.edits,
+        // },
+        user: {
+          ...state.user,
+          userData: {
+            ...state.user.userData, // Memastikan objek userData yang ada tidak diganti
+            pict: action.edits.pict, // Mengupdate properti pict saja
+          },
+        },
 
         // pict: action.edits.pict,
       };

@@ -1,26 +1,26 @@
-import UserController from "../controllers/UserController";
+import UserController from '../controllers/UserController';
 
 export const actionTypes = {
-  LOGIN: "LOGIN",
-  LOGIN_REQUEST: "LOGIN_REQUEST",
-  LOGIN_ERROR: "LOGIN_ERROR",
-  LOGIN_SUCCESS: "LOGIN_SUCCESS",
-  LOGOUT: "LOGOUT",
+  LOGIN: 'LOGIN',
+  LOGIN_REQUEST: 'LOGIN_REQUEST',
+  LOGIN_ERROR: 'LOGIN_ERROR',
+  LOGIN_SUCCESS: 'LOGIN_SUCCESS',
+  LOGOUT: 'LOGOUT',
 
-  RESETPASS: "RESETPASS",
-  RESETPASS_REQUEST: "RESETPASS_REQUEST",
-  RESETPASS_ERROR: "RESETPASS_ERROR",
-  RESETPASS_SUCCESS: "RESETPASS_SUCCESS",
+  RESETPASS: 'RESETPASS',
+  RESETPASS_REQUEST: 'RESETPASS_REQUEST',
+  RESETPASS_ERROR: 'RESETPASS_ERROR',
+  RESETPASS_SUCCESS: 'RESETPASS_SUCCESS',
 
-  CHANGEPASS: "CHANGEPASS",
-  CHANGEPASS_REQUEST: "CHANGEPASS_REQUEST",
-  CHANGEPASS_ERROR: "CHANGEPASS_ERROR",
-  CHANGEPASS_SUCCESS: "CHANGEPASS_SUCCESS",
+  CHANGEPASS: 'CHANGEPASS',
+  CHANGEPASS_REQUEST: 'CHANGEPASS_REQUEST',
+  CHANGEPASS_ERROR: 'CHANGEPASS_ERROR',
+  CHANGEPASS_SUCCESS: 'CHANGEPASS_SUCCESS',
 
-  EDIT: "EDIT",
-  CHANGE_FOTO: "CHANGE_FOTO",
+  EDIT: 'EDIT',
+  CHANGE_FOTO: 'CHANGE_FOTO',
 
-  REMOVE_USER: "REMOVE_USER",
+  REMOVE_USER: 'REMOVE_USER',
 
   // LOAD_LOTNO: 'LOAD_LOTNO'
 };
@@ -93,16 +93,16 @@ const removeUser = (user) => ({
 
 export const login = (email, password, token_firebase) => async (dispatch) => {
   dispatch(loginRequest());
-  console.log("login action", email);
+  console.log('login action', email);
   try {
-    console.log("try login action", email);
+    console.log('try login action', email);
     const user = await UserController.login(email, password, token_firebase);
     dispatch(loginSuccess(user.data));
-    console.log("99 userrrrr", user);
+    console.log('99 userrrrr', user);
     // alert("JSON.stringify(user)");
   } catch (error) {
     // alert('error di login user action',error);
-    console.log("103 ini konsol eror", error.response);
+    console.log('103 ini konsol eror', error.response);
     // dispatch(loginError(error));
   }
 };
@@ -113,7 +113,7 @@ export const reset = (newPass, conPass, email) => async (dispatch) => {
     const user = await UserController.resetPassword(newPass, conPass, email);
     console.log(user);
 
-    alert("Please Back to Login");
+    alert('Please Back to Login');
     dispatch(resetPassSuccess(user.data));
     dispatch(logout());
   } catch (error) {
@@ -131,18 +131,25 @@ export const logout = () => async (dispatch) => {
 };
 
 export const saveProfile = (data) => async (dispatch) => {
-  console.log("user action save profile", data);
+  console.log('user action save profile', data);
   const edits = await UserController.saveProfile(data);
-  console.log("res save profil", edits);
-  alert(edits.Pesan);
+  console.log('res save profil', edits);
+  alert(edits.message);
   dispatch(editRequest(edits.data));
 };
 
+// export const saveFotoProfil = (data) => async (dispatch) => {
+//   console.log("image change profil action save profile", data);
+//   const foto = await UserController.saveFotoProfil(data);
+//   console.log("res save profil", foto);
+//   alert(foto.Pesan);
+//   dispatch(changeFoto(foto.data));
+// };
 export const saveFotoProfil = (data) => async (dispatch) => {
-  console.log("image change profil action save profile", data);
+  console.log('image change profil action save profile', data);
   const foto = await UserController.saveFotoProfil(data);
-  console.log("res save profil", foto);
-  alert(foto.Pesan);
+  console.log('res save foto profil', foto);
+  // alert(foto.Pesan);
   dispatch(changeFoto(foto.data));
 };
 

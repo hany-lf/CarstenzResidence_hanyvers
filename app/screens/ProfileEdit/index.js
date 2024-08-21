@@ -6,24 +6,26 @@ import {
   SafeAreaView,
   Text,
   TextInput,
-} from "@components";
-import { BaseColor, BaseStyle, useTheme } from "@config";
+} from '@components';
+import { BaseColor, BaseStyle, useTheme } from '@config';
 // Load sample data
-import { UserData } from "@data";
-import React, { useState, useEffect, useCallback } from "react";
-import { ScrollView, View, Alert } from "react-native";
-import styles from "./styles";
-import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import getUser from "../../selectors/UserSelectors";
+import { UserData } from '@data';
+import React, { useState, useEffect, useCallback } from 'react';
+import { ScrollView, View, Alert } from 'react-native';
+import styles from './styles';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import getUser from '../../selectors/UserSelectors';
 import {
   saveProfile,
   actionTypes,
   saveFotoProfil,
-} from "../../actions/UserActions";
-import { TouchableOpacity } from "react-native";
-import ImagePicker from "react-native-image-crop-picker";
-import ReactNativeBlobUtil from "react-native-blob-util";
+} from '../../actions/UserActions';
+import { TouchableOpacity } from 'react-native';
+import ImagePicker from 'react-native-image-crop-picker';
+import ReactNativeBlobUtil from 'react-native-blob-util';
+import { useFocusEffect } from '@react-navigation/native';
+import { API_URL_LOKAL } from '@env';
 
 const ProfileEdit = (props) => {
   const { navigation } = props;
@@ -34,74 +36,126 @@ const ProfileEdit = (props) => {
   const [images, setImage] = useState([]);
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => getUser(state));
-  console.log("user di profil", user);
-  const [name, setName] = useState(user.name);
-  const [phone, setPhone] = useState(user.Handphone || user.handphone);
-  const [emailuser, setEmail] = useState(user.user);
+  console.log('user di profil', user);
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
   const [datas, setData] = useState();
   const saveProfilerResult = useCallback(
     () => dispatch(saveProfile()),
-    [dispatch]
+    [dispatch],
   );
+  const [imagesCek, setImagesCek] = useState('');
+
+  useEffect(() => {
+    if (user != null && user.userData != null && user.userData.pict != null) {
+      setImagesCek(user.userData.pict);
+    } else {
+      setImagesCek(API_URL_LOKAL + '/public/storage/photo_resident/user.png');
+    }
+    console.log('User state updated: profil edit', user);
+  }, [user]);
+
+  // --- useeffect untuk update email/name
+  useEffect(() => {
+    setName(user != null && user.userData != null ? user.userData.name : '');
+  }, [name]);
+  // --- useeffect untuk update email/name
+  // --- useeffect untuk update email/name
+  useEffect(() => {
+    setPhone(
+      user != null && user.userData != null ? user.userData.Handphone : '',
+    );
+  }, [phone]);
+  // --- useeffect untuk update email/name
+
+  useFocusEffect(
+    React.useCallback(() => {
+      console.log('Profile screen is focused');
+      if (user != null && user.userData != null && user.userData.pict != null) {
+        setImagesCek(user.userData.pict);
+      } else {
+        setImagesCek(API_URL_LOKAL + '/public/storage/photo_resident/user.png');
+      }
+    }, [user]), // Removed fotoprofil from the dependency array
+  );
+
+  // --- useeffect untuk update email/name
+  useEffect(() => {
+    setEmail(user != null && user.userData != null ? user.userData.email : '');
+  }, [email]);
+  // --- useeffect untuk update email/name
 
   useEffect(() => {
     if (user === null) {
-      props.navigation.navigate("Auth");
+      props.navigation.navigate('Auth');
     }
   });
-
-  //   const onLogOut = useCallback(() => {
-  //   Alert.alert(
-  //     'Are you sure ?',
-  //     'Press Ok if you want to log out!',
-  //     [
-  //       {
-  //         text: 'Cancel',
-  //         style: 'cancel',
-  //       },
-  //       {text: 'OK', onPress: () => logoutUser()},
-  //     ],
-  //     {cancelable: false},
-  //   );
-  // }, [dispatch]);
 
   const saveProfiles = useCallback(
     () =>
       dispatch(
         saveProfile({
-          emails: user.user,
+          emails: email,
           name,
           phone,
-          genders: "Male",
-        })
+          genders: 'Male',
+        }),
       ),
     // console.log('You clicked ', event);
-    [{ emails: user.user, name, phone, genders: "Male" }, dispatch]
+    [{ emails: email, name, phone, genders: 'Male' }, dispatch],
   );
 
   const handphonechanged = useCallback((value) => setPhone(value), []);
   const namechanged = useCallback((value) => setName(value), []);
 
-  const savePhoto = useCallback(() =>
-    dispatch(saveFotoProfil({ image: images, email: user.user }))
-  );
+  const savePhoto = useCallback(() => {
+    dispatch(
+      saveFotoProfil({
+        image: imagesCek,
+        email: email,
+        token_firebase: user.Token,
+      }),
+    );
+    // dispatch(saveFotoProfil(images));
+
+    // dispatch(saveFotoProfilCek({image: images, email: user.user}));
+    console.log('images', imagesCek);
+    setTimeout(() => {
+      // navigation.push('Profile');
+      navigation.navigate('Home');
+    }, 3000);
+  }, [
+    { image: imagesCek, email: email, token_firebase: user.Token },
+    user,
+    imagesCek,
+    dispatch,
+  ]);
+  // }, [dispatch, images, navigation, user]);
 
   const handlePhotoPick = () => {
-    console.log("datImage", images);
-    Alert.alert(
-      "Select a Photo",
-      "Choose the place where you want to get a photo",
-      [
-        { text: "Gallery", onPress: () => fromGallery() },
-        { text: "Camera", onPress: () => fromCamera() },
-        {
-          text: "Cancel",
-          onPress: () => console.log("User Cancel"),
-          style: "cancel",
-        },
-      ],
-      { cancelable: false }
-    );
+    ImagePicker.clean()
+      .then(() => {
+        console.log('datImage', images);
+        Alert.alert(
+          'Select a Photo',
+          'Choose the place where you want to get a photo',
+          [
+            { text: 'Gallery', onPress: () => fromGallery() },
+            { text: 'Camera', onPress: () => fromCamera() },
+            {
+              text: 'Cancel',
+              onPress: () => console.log('User Cancel'),
+              style: 'cancel',
+            },
+          ],
+          { cancelable: false },
+        );
+      })
+      .catch((e) => {
+        console.log('error cache clean fotoprofil', e);
+        // alert(e);
+      });
   };
 
   const fromCamera = () => {
@@ -110,17 +164,19 @@ const ProfileEdit = (props) => {
       height: 500,
       cropping: false,
     })
-      .then((images) => {
-        console.log("received image", images);
+      .then((image) => {
+        console.log('received image', images);
 
-        setImage([
+        const newImage = [
           {
-            uri: images.path,
-            width: images.width,
-            height: images.height,
-            mime: images.mime,
+            uri: image.path,
+            width: image.width,
+            height: image.height,
+            mime: image.mime,
           },
-        ]);
+        ];
+        setImage(newImage);
+        setImagesCek(image.path); // Update imagesCek with the new image path
         // savePhoto();
         // uploadPhoto();
         // setImage(prevState => ({
@@ -135,10 +191,10 @@ const ProfileEdit = (props) => {
         //   ],
         // }));
       })
-      .catch((e) => console.log("tag", e));
+      .catch((e) => console.log('tag', e));
   };
 
-  const fromGallery = (cropping, mediaType = "photo") => {
+  const fromGallery = (cropping, mediaType = 'photo') => {
     // let imageList = [];
 
     ImagePicker.openPicker({
@@ -147,16 +203,18 @@ const ProfileEdit = (props) => {
 
       multiple: false,
     })
-      .then((images) => {
-        console.log("received images", images);
-        setImage([
+      .then((image) => {
+        console.log('received images', images);
+        const newImage = [
           {
-            uri: images.path,
-            width: images.width,
-            height: images.height,
-            mime: images.mime,
+            uri: image.path,
+            width: image.width,
+            height: image.height,
+            mime: image.mime,
           },
-        ]);
+        ];
+        setImage(newImage);
+        setImagesCek(image.path); // Update imagesCek with the new image path
         // savePhoto();
         // uploadPhoto();
         // image.map(image => {
@@ -183,42 +241,25 @@ const ProfileEdit = (props) => {
         //   });
         // }
       })
-      .catch((e) => console.log("tag", e));
+      .catch((e) => console.log('tag', e));
   };
 
   useEffect(() => {
-    images.length != 0 ? savePhoto() : null;
-  }, [images]);
-
-  const uploadPhoto = async () => {
-    console.log("isi images", images[0].uri);
-    let fileName = "profile.png";
-    let fileImg = ReactNativeBlobUtil.wrap(
-      images[0].uri.replace("file://", "")
-    );
-    console.log("fileimg", fileImg);
-    ReactNativeBlobUtil.fetch(
-      "POST",
-      urlApi + "/c_profil/upload/" + this.state.email,
-      {
-        "Content-Type": "multipart/form-data",
-        Token: this.state.token,
-      },
-      [{ name: "photo", filename: fileName, data: fileImg }]
-    ).then((resp) => {
-      let res = JSON.stringify(resp.data);
-      console.log("res", resp);
-      _storeData("@ProfileUpdate", true);
-    });
-  };
+    if (images.length !== 0) {
+      console.log('jalanin savephoto');
+      savePhoto();
+      // setImagesCek(user.pict);
+      // setImagesCek(images.path); // Update imagesCek with the new image path
+    }
+  }, [imagesCek, user]);
 
   return (
     <SafeAreaView
       style={BaseStyle.safeAreaView}
-      edges={["right", "top", "left"]}
+      edges={['right', 'top', 'left']}
     >
       <Header
-        title={t("edit_profile")}
+        title={t('edit_profile')}
         renderLeft={() => {
           return (
             <Icon
@@ -247,7 +288,11 @@ const ProfileEdit = (props) => {
             </View>
           </TouchableOpacity>
           <View>
-            <Image source={{ uri: `${user.pict}` }} style={styles.thumb} />
+            <Image
+              key={imagesCek}
+              source={{ uri: imagesCek }}
+              style={styles.thumb}
+            />
           </View>
 
           {/* <View style={styles.contentTitle}>
@@ -267,7 +312,7 @@ const ProfileEdit = (props) => {
           /> */}
           <View style={styles.contentTitle}>
             <Text headline semibold>
-              {t("name")}
+              {t('name')}
             </Text>
           </View>
           <TextInput
@@ -275,14 +320,14 @@ const ProfileEdit = (props) => {
             // onChangeText={text => setName(text)}
             onChangeText={namechanged}
             autoCorrect={false}
-            placeholder={t("input_name")}
+            placeholder={t('input_name')}
             placeholderTextColor={BaseColor.grayColor}
             value={name}
             selectionColor={colors.primary}
           />
           <View style={styles.contentTitle}>
             <Text headline semibold>
-              {t("email")}
+              {t('email')}
             </Text>
           </View>
           <TextInput
@@ -291,14 +336,14 @@ const ProfileEdit = (props) => {
             autoCorrect={false}
             editable={false}
             selectTextOnFocus={false}
-            placeholder={t("input_email")}
+            placeholder={t('input_email')}
             placeholderTextColor={BaseColor.grayColor}
-            value={user.user}
+            value={email}
             // value={emailuser}
           />
           <View style={styles.contentTitle}>
             <Text headline semibold>
-              {t("Handphone")}
+              {t('Handphone')}
             </Text>
           </View>
           <TextInput
@@ -306,7 +351,7 @@ const ProfileEdit = (props) => {
             // onChangeText={text => setPhone(text)}
             onChangeText={handphonechanged}
             autoCorrect={false}
-            placeholder={t("input_address")}
+            placeholder={t('input_address')}
             placeholderTextColor={BaseColor.grayColor}
             value={phone}
             selectionColor={colors.primary}
@@ -326,7 +371,7 @@ const ProfileEdit = (props) => {
           // }}
           onPress={() => saveProfiles()}
         >
-          {t("confirm")}
+          {t('confirm')}
         </Button>
       </View>
     </SafeAreaView>

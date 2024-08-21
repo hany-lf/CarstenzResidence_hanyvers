@@ -120,11 +120,13 @@ const Home = (props) => {
   );
   // console.log('usr di home', user)
   // console.log('pict user', user.userData.pict)
-  const [fotoprofil, setFotoProfil] = useState(
-    user != null && user.userData != null
-      ? { uri: user.userData.pict }
-      : { uri: `https://dev.ifca.co.id/no-image.png` },
-  );
+  // const [fotoprofil, setFotoProfil] = useState(
+  //   user != null && user.userData != null
+  //     ? { uri: user.userData.pict }
+  //     : { uri: `https://dev.ifca.co.id/no-image.png` },
+  // );
+  const [fotoprofil, setFotoProfil] = useState('');
+  console.log('fotoprofil cek home', fotoprofil);
   const [name, setName] = useState('');
   const [heightHeader, setHeightHeader] = useState(Utils.heightHeader());
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -229,11 +231,19 @@ const Home = (props) => {
       );
       // }
 
+      console.log('Profile screen is focused');
+      if (user != null && user.userData != null && user.userData.pict != null) {
+        setFotoProfil(user.userData.pict);
+      } else {
+        setFotoProfil('https://dev.ifca.co.id/no-image.png');
+      }
+
       return () => {
         console.log('Screen unfocused or cleanup');
       };
     }, [user, dispatch]),
   );
+  // --- useeffect untuk update image pict
 
   const dispatch = useDispatch();
   // --- onrefresh ini berfungsi jika ketika ditarik reload, maka update dispatch(ambil data terbaru) menu dari database
@@ -506,7 +516,7 @@ const Home = (props) => {
   }
 
   async function fetchDataNotDue() {
-    console.log('email di home untuk fetchdatanotdue', email);
+    // console.log('email di home untuk fetchdatanotdue', email);
     const config = {
       method: 'get',
       url: API_URL_LOKAL + `/modules/billing/current-summary/${email}`,
@@ -602,7 +612,7 @@ const Home = (props) => {
       .then((res) => {
         // console.log("res promoclubfacilities", res.data.data);
         const datapromoclub = res.data.data;
-        console.log('data promo ada isinya ga', datapromoclub);
+        // console.log('data promo ada isinya ga', datapromoclub);
 
         // filter by category
 
@@ -644,8 +654,8 @@ const Home = (props) => {
         const slicedatapromoclubfac = joinFilterDataPromoClubFac.slice(0, 6);
         const slicedataeventresto = joinFilterDataEventRestaurant.slice(0, 6);
 
-        console.log('slicedataeventresto', slicedataeventresto);
-        console.log('slicedatapromoclubfac', slicedatapromoclubfac);
+        // console.log('slicedataeventresto', slicedataeventresto);
+        // console.log('slicedatapromoclubfac', slicedatapromoclubfac);
 
         // console.log('joinFilterDataPromoClubFac', joinFilterDataPromoClubFac);
 
@@ -653,7 +663,7 @@ const Home = (props) => {
 
         const arrayImagePromoClubFac = slicedatapromoclubfac.map(
           (item, key) => {
-            console.log('item promo club fac', item.url_image);
+            // console.log('item promo club fac', item.url_image);
             return { url_image: item.url_image, key: key };
             // return { url_image: `${item.url_image}`.replace('http://localhost/', 'https://ifca.carstensz.co.id/') , key: key };
             // item.url_image
@@ -668,7 +678,7 @@ const Home = (props) => {
         });
 
         // const slicedatapromo = datapromoclub.slice(0, 6);
-        console.log('slice data promo', arrayImagePromoClubFac);
+        // console.log('slice data promo', arrayImagePromoClubFac);
         // console.log('image promo club', datapromoclub.image);
 
         // const tes = slicedatapromo.map((item, key) => {
@@ -742,13 +752,13 @@ const Home = (props) => {
   console.log('total_outstanding', total_outstanding);
 
   useEffect(() => {
-    console.log('galery', galery);
-    // dataImage();
+    // console.log('galery', galery);
+
     dataNewsAnnounce();
     dataPromoClubFacilities();
 
-    console.log('datauser', user);
-    console.log('about', data);
+    // console.log('datauser', user);
+    // console.log('about', data);
     fetchDataDue();
     fetchDataNotDue();
     fetchDataHistory();
@@ -756,11 +766,14 @@ const Home = (props) => {
     // getLotNo();
     notifUser();
     setLoading(false);
-  }, [user, dataMenus]);
 
-  useEffect(() => {
-    // getNewsAnnounce();
-  }, []);
+    if (user != null && user.userData != null && user.userData.pict != null) {
+      setFotoProfil(user.userData.pict);
+    } else {
+      setFotoProfil('https://dev.ifca.co.id/no-image.png');
+    }
+    console.log('User state updated: home', user);
+  }, [user, dataMenus]);
 
   const goPostDetail = (item) => () => {
     navigation.navigate('PostDetail', { item: item });
@@ -1233,7 +1246,8 @@ const Home = (props) => {
             {/* ---sementara dulu  */}
 
             <Image
-              source={fotoprofil}
+              // source={fotoprofil}
+              source={{ uri: fotoprofil }}
               style={{
                 height: 60,
                 width: 60,

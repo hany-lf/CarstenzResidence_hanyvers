@@ -1,11 +1,13 @@
-import Icon from "@components/Icon";
-import Image from "@components/Image";
-import Text from "@components/Text";
-import { BaseColor, useTheme } from "@config";
-import PropTypes from "prop-types";
-import React from "react";
-import { TouchableOpacity, View } from "react-native";
-import styles from "./styles";
+import Icon from '@components/Icon';
+import Image from '@components/Image';
+import Text from '@components/Text';
+import { BaseColor, useTheme } from '@config';
+import PropTypes from 'prop-types';
+
+import { TouchableOpacity, View } from 'react-native';
+import styles from './styles';
+import { useFocusEffect } from '@react-navigation/native';
+import React, { useCallback, useState, useEffect } from 'react';
 
 export default function ProfileDetail(props) {
   const { colors } = useTheme();
@@ -22,7 +24,18 @@ export default function ProfileDetail(props) {
     textThird,
     icon,
   } = props;
-  console.log("image di profil detil", image);
+  console.log('image di profil detil', image);
+  const [uniqueImageurl, setUniqueImageurl] = useState(null);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      // Optionally perform any action needed when the screen is focused
+      console.log('Profile screen is focused di detail');
+      console.log('User state updated: detail -> profil', image);
+      const uniqueImageurl = `${image}?${Date.now()}`;
+      setUniqueImageurl(uniqueImageurl);
+    }, [image]),
+  );
   return (
     <TouchableOpacity
       style={[styles.contain, style]}
@@ -32,6 +45,16 @@ export default function ProfileDetail(props) {
       <View style={[styles.contentLeft, styleLeft]}>
         <View>
           <Image
+            key={uniqueImageurl}
+            source={
+              image != null
+                ? { uri: uniqueImageurl }
+                : // ../ ../../assets/images/image-home/Main_Image.png
+                  require('../../../assets/images/image-home/Main_Image.png')
+            }
+            style={[styles.thumb, styleThumb]}
+          />
+          {/* <Image
             source={
               image != null
                 ? { uri: image }
@@ -39,7 +62,7 @@ export default function ProfileDetail(props) {
                   require("../../../assets/images/image-home/Main_Image.png")
             }
             style={[styles.thumb, styleThumb]}
-          />
+          /> */}
           <View
             style={[styles.point, { backgroundColor: colors.primaryLight }]}
           >
@@ -48,7 +71,7 @@ export default function ProfileDetail(props) {
             </Text>
           </View>
         </View>
-        <View style={{ alignItems: "flex-start" }}>
+        <View style={{ alignItems: 'flex-start' }}>
           <Text headline semibold numberOfLines={1}>
             {textFirst}
           </Text>
@@ -96,11 +119,11 @@ ProfileDetail.propTypes = {
 };
 
 ProfileDetail.defaultProps = {
-  image: "",
-  textFirst: "",
-  textSecond: "",
+  image: '',
+  textFirst: '',
+  textSecond: '',
   icon: true,
-  point: "",
+  point: '',
   style: {},
   styleLeft: {},
   styleThumb: {},

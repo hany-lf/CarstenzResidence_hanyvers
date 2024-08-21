@@ -1,8 +1,8 @@
-import axios from "axios";
-import { setAuthStorage } from "../config/Storage";
-import httpClient from "./HttpClient";
-import ReactNativeBlobUtil from "react-native-blob-util";
-import { API_URL_LOKAL as API_URL_LOKAL } from "@env";
+import axios from 'axios';
+import { setAuthStorage } from '../config/Storage';
+import httpClient from './HttpClient';
+import ReactNativeBlobUtil from 'react-native-blob-util';
+import { API_URL_LOKAL } from '@env';
 
 class UserController {
   constructor() {
@@ -21,41 +21,41 @@ class UserController {
     //   "\n token_firebase:",
     //   token_firebase
     // );
-    console.log(" login user controller", email);
+    console.log(' login user controller', email);
     try {
       // console.log("25 try controller login begin");
       // console.log("API: " + API_URL_LOKAL);
-      console.log("try login user controller", email);
+      console.log('try login user controller', email);
       const result = await httpClient.request({
-        url: "/auth/login",
-        method: "POST",
+        url: '/auth/login',
+        method: 'POST',
         data: {
           email: email,
           password: password,
 
-          device: "ios",
-          mac: "",
+          device: 'ios',
+          mac: '',
           token_firebase: token_firebase,
-          apps_type: "S",
+          apps_type: 'S',
         },
         headers: {
           Authorization: `Bearer ${token_firebase}`,
         },
       });
-      console.log("result login user controller", result);
+      console.log('result login user controller', result);
       // // alert(result.Pesan);
       // console.log("39 after try");
       // console.log("31 login response -->", result);
       // // ini ada isreset dalemnya, sementara dihilangin, buat biar ga nyangkut insert token firebase
       if (result.success) {
-        console.log("37 if succes", result);
+        console.log('37 if succes', result);
         return result;
       } else {
-        console.log("34 first pesan", result.message);
+        console.log('34 first pesan', result.message);
         return Promise.reject(result.message);
       }
     } catch (error) {
-      console.log("41 if errorz", error.response);
+      console.log('41 if errorz', error.response);
       return Promise.reject(error);
     }
   };
@@ -65,7 +65,7 @@ class UserController {
       const result = await httpClient.request({
         url: `${this.basePath}/auth/reset-pass`,
 
-        method: "POST",
+        method: 'POST',
         data: {
           conpass: conPass,
           newpass: newPass,
@@ -99,7 +99,7 @@ class UserController {
       //  } else {
       //    return result;
       //  }
-      console.log("logout");
+      console.log('logout');
     } catch (error) {
       return Promise.reject(error);
     }
@@ -108,12 +108,12 @@ class UserController {
   // logout = () => null;
 
   saveProfile = async (data) => {
-    console.log("save profile daata controler", data);
+    console.log('save profile daata controler', data);
     try {
       const result = await httpClient.request({
         url: API_URL_LOKAL + `/auth/change-profile`,
 
-        method: "POST",
+        method: 'POST',
         data: {
           email: data.emails,
           name: data.name,
@@ -128,53 +128,30 @@ class UserController {
   };
 
   saveFotoProfil = async (data) => {
-    console.log("data akan save foto profil", data);
-    console.log("isi images", data.image[0].uri);
-    let fileName = "profile.png";
-    let fileImg = ReactNativeBlobUtil.wrap(
-      data.image[0].uri.replace("file://", "")
-    );
-    // const b64 = fileImg.base64;
-    const b64 = await ReactNativeBlobUtil.fs.readFile(
-      data.image[0].uri,
-      "base64"
-    );
-    console.log("fileimg", fileImg);
-    // console.log('yeyeyelalala', b64);
+    console.log('data akan save foto profil', data);
+    // const tempImageDate = data.image + new Date().getTime();
+    console.log('isi images', data.image);
+    let fileName = 'profile.png';
 
-    // const data_tes = [{email: data.email, dataPhoto: b64}];
-    // console.log('daata_tes', data_tes);
-    // ReactNativeBlobUtil.fetch(
-    //   'POST',
-    //   'http://apps.pakubuwono-residence.com/apiwebpbi/api/changephoto_mobile',
-    //   {
-    //     'Content-Type': 'application/octet-stream',
-    //     // Token: this.state.token,
-    //   },
-    //   [{email: data.email, dataPhoto: b64}],
-    // )
-    //   .then(resp => {
-    //     let res = JSON.stringify(resp.data);
-    //     console.log('res', resp);
-    //   })
-    //   .catch(error => {
-    //     console.log('error api save foto profil', error);
-    //     // alert('error get');
-    //   });
-    // console.log('save foto profil data controler', data);
+    const b64 = await ReactNativeBlobUtil.fs.readFile(data.image, 'base64');
+
     try {
       const result = await httpClient.request({
-        url: API_URL_LOKAL + `/auth/change-photo`,
+        url: `/auth/change-photo`,
         // url: `/changephoto_mobile`,
-        method: "POST",
+        method: 'POST',
         data: {
-          dataPhoto: "data:image/png;base64," + b64,
+          dataPhoto: 'data:image/png;base64,' + b64,
           email: data.email,
+        },
+        headers: {
+          Authorization: `Bearer ${data.token_firebase}`,
         },
       });
 
       return result;
     } catch (error) {
+      console.log('error save foto profil', error.response);
       return Promise.reject(error);
     }
   };

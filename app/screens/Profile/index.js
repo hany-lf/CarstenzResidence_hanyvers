@@ -1,4 +1,4 @@
-import { AuthActions } from "@actions";
+import { AuthActions } from '@actions';
 import {
   Button,
   Icon,
@@ -8,17 +8,19 @@ import {
   Tag,
   Text,
   Header,
-} from "@components";
-import { BaseStyle, useTheme } from "@config";
+} from '@components';
+import { BaseStyle, useTheme } from '@config';
 // Load sample data
-import { UserData } from "@data";
-import React, { useCallback, useState, useEffect } from "react";
-import { useTranslation } from "react-i18next";
-import { ScrollView, TouchableOpacity, View, Alert } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-import styles from "./styles";
-import { actionTypes, login, logout } from "../../actions/UserActions";
-import getUser from "../../selectors/UserSelectors";
+import { UserData } from '@data';
+import React, { useCallback, useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { ScrollView, TouchableOpacity, View, Alert } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import styles from './styles';
+import { actionTypes, login, logout } from '../../actions/UserActions';
+import getUser from '../../selectors/UserSelectors';
+import { useFocusEffect } from '@react-navigation/native';
+import { API_URL_LOKAL } from '@env';
 
 const { authentication } = AuthActions;
 
@@ -30,14 +32,17 @@ const Profile = (props) => {
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState(UserData[0]);
   const user = useSelector((state) => getUser(state));
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   // const [fotoprofil, setFotoProfil] = useState(
   //   user.pict != null ? user.pict.replace('https', 'http') : null,
   // );
-  const [fotoprofil, setFotoProfil] = useState(user != null ? user.pict : null);
-  console.log("profiles", user.pict);
+  const [fotoprofil, setFotoProfil] = useState(null);
+  console.log('profiles', user.pict);
 
   const logoutUser = useCallback(() => dispatch(logout()), [dispatch]);
 
+  const [imagesCek, setImagesCek] = useState(user.userData.pict);
   // ------ coba dari youtube
 
   /**
@@ -50,33 +55,64 @@ const Profile = (props) => {
   // };
   useEffect(() => {
     if (user == null) {
-      props.navigation.navigate("SignIn");
+      props.navigation.navigate('SignIn');
     }
   });
 
   useEffect(() => {
-    user;
-  });
+    if (user != null && user.userData != null && user.userData.pict != null) {
+      setFotoProfil(user.userData.pict);
+    } else {
+      setFotoProfil(API_URL_LOKAL + '/public/storage/photo_resident/user.png');
+    }
+    console.log('User state updated: profil useffect', user);
+  }, [user]);
+
+  // --- useeffect untuk update email/name
+  useEffect(() => {
+    setName(user != null && user.userData != null ? user.userData.name : '');
+  }, [name]);
+  // --- useeffect untuk update email/name
+
+  // --- useeffect untuk update email/name
+  useEffect(() => {
+    setEmail(user != null && user.userData != null ? user.userData.email : '');
+  }, [email]);
+  // --- useeffect untuk update email/name
+
+  useFocusEffect(
+    React.useCallback(() => {
+      console.log('Profile screen is focused');
+      console.log('User state updated: usefocuse profil', user);
+      if (user != null && user.userData != null && user.userData.pict != null) {
+        setFotoProfil(user.userData.pict);
+      } else {
+        setFotoProfil(
+          API_URL_LOKAL + '/public/storage/photo_resident/user.png',
+        );
+      }
+    }, [user]), // Removed fotoprofil from the dependency array
+  );
 
   const onLogOut = useCallback(() => {
     Alert.alert(
-      "Are you sure ?",
-      "Press Ok if you want to log out!",
+      'Are you sure ?',
+      'Press Ok if you want to log out!',
       [
         {
-          text: "Cancel",
-          style: "cancel",
+          text: 'Cancel',
+          style: 'cancel',
         },
-        { text: "OK", onPress: () => logoutUser() },
+        { text: 'OK', onPress: () => logoutUser() },
       ],
-      { cancelable: false }
+      { cancelable: false },
     );
   }, [dispatch]);
 
   // const
 
   const onLogIn = () => {
-    navigation.navigate("SignIn");
+    navigation.navigate('SignIn');
   };
 
   const styleItem = {
@@ -87,10 +123,10 @@ const Profile = (props) => {
   return (
     <SafeAreaView
       style={BaseStyle.safeAreaView}
-      edges={["right", "top", "left"]}
+      edges={['right', 'top', 'left']}
     >
       <Header
-        title={t("setting")}
+        title={t('setting')}
         renderLeft={() => {
           return (
             <Icon
@@ -117,22 +153,22 @@ const Profile = (props) => {
               // image={user.pict}
               image={fotoprofil}
               // image={{uri: `${user.pict}`}}
-              textFirst={user.name}
-              textSecond={user.user}
-              onPress={() => {
-                navigation.navigate("ImageDetail", fotoprofil);
-              }}
+              textFirst={name}
+              textSecond={email}
+              // onPress={() => {
+              //   navigation.navigate('ImageDetail', fotoprofil);
+              // }}
             />
           )}
 
-          <View style={{ width: "100%" }}>
+          <View style={{ width: '100%' }}>
             <TouchableOpacity
               style={styleItem}
               onPress={() => {
-                navigation.navigate("Setting");
+                navigation.navigate('Setting');
               }}
             >
-              <Text body1>{t("setting")}</Text>
+              <Text body1>{t('setting')}</Text>
               <Icon
                 name="angle-right"
                 size={18}
@@ -145,10 +181,10 @@ const Profile = (props) => {
               <TouchableOpacity
                 style={styleItem}
                 onPress={() => {
-                  navigation.navigate("ProfileEdit");
+                  navigation.navigate('ProfileEdit');
                 }}
               >
-                <Text body1>{t("edit_profile")}</Text>
+                <Text body1>{t('edit_profile')}</Text>
                 <Icon
                   name="angle-right"
                   size={18}
@@ -162,10 +198,10 @@ const Profile = (props) => {
               <TouchableOpacity
                 style={styleItem}
                 onPress={() => {
-                  navigation.navigate("ChangePassword");
+                  navigation.navigate('ChangePassword');
                 }}
               >
-                <Text body1>{t("change_password")}</Text>
+                <Text body1>{t('change_password')}</Text>
                 <Icon
                   name="angle-right"
                   size={18}
@@ -258,10 +294,10 @@ const Profile = (props) => {
             <TouchableOpacity
               style={styleItem}
               onPress={() => {
-                navigation.navigate("AboutUs");
+                navigation.navigate('AboutUs');
               }}
             >
-              <Text body1>{t("about_us")}</Text>
+              <Text body1>{t('about_us')}</Text>
               <Icon
                 name="angle-right"
                 size={18}
@@ -273,10 +309,10 @@ const Profile = (props) => {
             <TouchableOpacity
               style={styleItem}
               onPress={() => {
-                navigation.navigate("Privacy");
+                navigation.navigate('Privacy');
               }}
             >
-              <Text body1>{t("Privacy Policy")}</Text>
+              <Text body1>{t('Privacy Policy')}</Text>
               <Icon
                 name="angle-right"
                 size={18}
@@ -290,7 +326,7 @@ const Profile = (props) => {
       </View>
       <View style={{ padding: 10 }}>
         <Button full loading={loading} onPress={() => onLogOut()}>
-          {t("sign_out")}
+          {t('sign_out')}
         </Button>
       </View>
     </SafeAreaView>
