@@ -40,12 +40,12 @@ export default function CategoryIconSoft({
 
   const getIconColor = () => {
     if (isWhite) {
-      return BaseColor.whiteColor;
+      return BaseColor.goldColor;
     }
     if (isBlack) {
       return colors.text;
     }
-    return BaseColor.whiteColor;
+    return BaseColor.goldColor;
   };
 
   const iconMapper = {

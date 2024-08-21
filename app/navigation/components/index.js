@@ -1,6 +1,6 @@
 /** @format */
 
-import React from 'react';
+import React, { act } from 'react';
 import { Icon, Text } from '@components';
 import { View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -92,8 +92,9 @@ export const BottomTabNavigatorMazi = ({ tabScreens = {} }) => {
         showIcon: true,
         showLabel: true, //untuk menghide title pada navigasi bottom bar
         // activeTintColor: BaseColor.whiteColor,
-        activeTintColor: colors.primary != '#FDC60A' ? 'yellow' : 'white',
-        inactiveTintColor: colors.primary != '#FDC60A' ? 'white' : 'gray', //BaseColor.grayColor,
+        // activeTintColor: colors.primary != '#FDC60A' ? 'yellow' : 'white',
+        activeTintColor: BaseColor.goldColor,
+        inactiveTintColor: BaseColor.grayColor,
         // inactiveTintColor: '#969696',
         // style: BaseStyle.tabBar,
         style: {
