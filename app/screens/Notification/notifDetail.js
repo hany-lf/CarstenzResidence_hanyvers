@@ -4,23 +4,23 @@ import {
   Text,
   ListThumbCircleNotif,
   SafeAreaView,
-} from "@components";
-import { BaseColor, BaseStyle, useTheme } from "@config";
+} from '@components';
+import { BaseColor, BaseStyle, useTheme } from '@config';
 // Load sample data
-import { NotificationData } from "@data";
-import React, { useState, useEffect } from "react";
-import { FlatList, RefreshControl, TouchableOpacity, View } from "react-native";
-import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import getUser from "../../selectors/UserSelectors";
-import axios from "axios";
-import styles from "./styles";
-import moment from "moment";
+import { NotificationData } from '@data';
+import React, { useState, useEffect } from 'react';
+import { FlatList, RefreshControl, TouchableOpacity, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
+import getUser from '../../selectors/UserSelectors';
+import axios from 'axios';
+import styles from './styles';
+import moment from 'moment';
 
 const NotificationDetail = (props) => {
   //   const {navigation} = props;
   const { navigation, route } = props;
-  console.log("route paarams", route?.params?.item);
+  console.log('route paarams', route?.params?.item);
   const paramsDataNotif = route?.params?.item;
   const { t } = useTranslation();
   const { colors } = useTheme();
@@ -46,10 +46,10 @@ const NotificationDetail = (props) => {
   return (
     <SafeAreaView
       style={BaseStyle.safeAreaView}
-      edges={["right", "top", "left"]}
+      edges={['right', 'top', 'left']}
     >
       <Header
-        title={t("Notification Detail")}
+        title={t('Notification Detail')}
         renderLeft={() => {
           return (
             <Icon
@@ -76,17 +76,17 @@ const NotificationDetail = (props) => {
           <Text>{paramsDataNotif.NotificationCd}</Text>
           <Text>{paramsDataNotif.Email_addr}</Text>
         </View> */}
-      <View style={{ justifyContent: "center", margin: 20 }}>
+      <View style={{ justifyContent: 'center', margin: 20 }}>
         <View style={styles.content}>
           <View style={styles.left}>
             <Text text2 semibold numberOfLines={1}>
-              {paramsDataNotif.Report_no} - {paramsDataNotif.NotificationCd}
+              {paramsDataNotif.report_no} - {paramsDataNotif.notification_cd}
             </Text>
           </View>
           <View style={styles.right}>
             <Text caption2 grayColor numberOfLines={1}>
-              {moment(paramsDataNotif.NotificationDate).format(
-                "DD MMMM YYYY hh:mm:ss"
+              {moment(paramsDataNotif.notification_date).format(
+                'DD MMMM YYYY hh:mm:ss',
               )}
             </Text>
           </View>
@@ -99,7 +99,7 @@ const NotificationDetail = (props) => {
             grayColor
             style={{ paddingTop: 5 }}
           >
-            {paramsDataNotif.Remarks}
+            {paramsDataNotif.remarks}
           </Text>
         </View>
       </View>

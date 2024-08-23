@@ -1294,7 +1294,8 @@ const Home = (props) => {
               {lotno.length != 0 ? (
                 <View
                   style={{
-                    backgroundColor: '#315447',
+                    // backgroundColor: '#141F40',
+                    backgroundColor: colors.primary,
                     height: 30,
                     // width: '100%',
                     width: 150,
@@ -1324,7 +1325,7 @@ const Home = (props) => {
                     <ModalSelector
                       style={{ justifyContent: 'center', alignSelf: 'center' }}
                       childrenContainerStyle={{
-                        color: '#CDB04A',
+                        color: '#141F40',
                         alignSelf: 'center',
                         fontSize: 16,
                         // top: 10,
@@ -1335,7 +1336,7 @@ const Home = (props) => {
                       }}
                       data={lotno}
                       optionTextStyle={{ color: '#333' }}
-                      selectedItemTextStyle={{ color: '#3C85F1' }}
+                      selectedItemTextStyle={{ color: '#141F40' }}
                       accessible={true}
                       keyExtractor={(item) => item.lot_no}
                       // initValue={'ahlo'}
@@ -1376,7 +1377,7 @@ const Home = (props) => {
               ) : (
                 <View
                   style={{
-                    backgroundColor: '#315447',
+                    backgroundColor: colors.primary,
                     height: 30,
                     // width: '100%',
                     width: 150,

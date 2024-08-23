@@ -8,18 +8,18 @@ import {
   Header,
   Icon,
   ModalFilterLocation,
-} from "@components";
-import { BaseColor, BaseStyle, useTheme } from "@config";
-import { CheckBox } from "react-native-elements";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+} from '@components';
+import { BaseColor, BaseStyle, useTheme } from '@config';
+import { CheckBox } from 'react-native-elements';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import React, {
   useCallback,
   useEffect,
   useLayoutEffect,
   useMemo,
   useState,
-} from "react";
-import { useTranslation } from "react-i18next";
+} from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   FlatList,
   TouchableOpacity,
@@ -29,24 +29,25 @@ import {
   TextInput,
   Alert,
   Image,
-} from "react-native";
-import { useSelector } from "react-redux";
-import getUser from "../../selectors/UserSelectors";
-import axios from "axios";
-import { API_URL } from "@env";
-import styles from "./styles";
-import { RadioButton } from "react-native-paper";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import moment from "moment";
-import ImagePicker from "react-native-image-crop-picker";
+} from 'react-native';
+import { useSelector } from 'react-redux';
+import getUser from '../../selectors/UserSelectors';
+import axios from 'axios';
+import { API_URL } from '@env';
+import styles from './styles';
+import { RadioButton } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import moment from 'moment';
+import ImagePicker from 'react-native-image-crop-picker';
 // import RNFetchBlob from 'rn-fetch-blob';
-import mime from "mime";
-import Modal from "react-native-modal";
-import { API_URL_LOKAL } from "@env";
+import mime from 'mime';
+import Modal from 'react-native-modal';
+import { API_URL_LOKAL } from '@env';
+import ReactNativeBlobUtil from 'react-native-blob-util';
 export default function SubmitHelpdesk({ route, props }) {
   const { t, i18n } = useTranslation();
   const { colors } = useTheme();
-  const [keyword, setKeyword] = useState("");
+  const [keyword, setKeyword] = useState('');
   const [loading, setLoading] = useState(false);
   const [disable, setDisable] = useState(false);
   const navigation = useNavigation();
@@ -62,19 +63,19 @@ export default function SubmitHelpdesk({ route, props }) {
 
   const [dataCategory, setDataCategory] = useState([]);
 
-  const [typeLocation, setTypeLocation] = useState("");
+  const [typeLocation, setTypeLocation] = useState('');
   const [passPropStorage, setPassPropStorage] = useState();
   const [passProp, setPassProp] = useState(route.params.saveStorage);
-  console.log("urutan ke empat props", passProp);
-  const [titles, setTitles] = useState("");
-  const [textLocation, setTextLocation] = useState("");
-  const [textLocationCode, setTextLocationCode] = useState("");
-  const [textContact, setTextContact] = useState("");
-  const [textDescs, setTextDescs] = useState("");
+  console.log('urutan ke empat props', passProp);
+  const [titles, setTitles] = useState('');
+  const [textLocation, setTextLocation] = useState('');
+  const [textLocationCode, setTextLocationCode] = useState('');
+  const [textContact, setTextContact] = useState('');
+  const [textDescs, setTextDescs] = useState('');
   // const [images, setImage] = useState('');
   const [images, setImage] = useState([]);
-  const [groupCd, setGroupCd] = useState("");
-  const [reportDate, setReportDate] = useState("");
+  const [groupCd, setGroupCd] = useState('');
+  const [reportDate, setReportDate] = useState('');
   const [_isMount, set_isMount] = useState(false);
   const [dataLocation, setLocation] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -82,33 +83,32 @@ export default function SubmitHelpdesk({ route, props }) {
 
   const [modalSuccessVisible, showModalSuccess] = useState(false);
   const [modalErrorVisible, showModalError] = useState(false);
-  const [message, setMessage] = useState("");
-  const [errorz, setError] = useState("");
+  const [message, setMessage] = useState('');
+  const [errorz, setError] = useState('');
 
   const styleItem = {
     ...styles.profileItem,
     borderBottomColor: colors.border,
   };
- 
 
   const getDataStorage = async () => {
     // --- get data storage all helpdesk dari depan form
-    const value = await AsyncStorage.getItem("@helpdeskStorage");
+    const value = await AsyncStorage.getItem('@helpdeskStorage');
     const passPropStorage = JSON.parse(value);
-    console.log("getdata storage,", passPropStorage);
+    console.log('getdata storage,', passPropStorage);
     setPassPropStorage(passPropStorage);
 
     //   -- get data storage location
-    const loc = await AsyncStorage.getItem("@locationStorage");
+    const loc = await AsyncStorage.getItem('@locationStorage');
     const passLocStorage = JSON.parse(loc);
-    console.log("getdata passLocStorage,", passLocStorage);
+    console.log('getdata passLocStorage,', passLocStorage);
 
     setTextLocation(passLocStorage.descs);
     setTextLocationCode(passLocStorage.location_cd);
   };
 
   useEffect(() => {
-    navigation.addListener("focus", () => {
+    navigation.addListener('focus', () => {
       // if (!route.params.passLocation) {
       //   setTextLocation('');
       //   setTextLocationCode('');
@@ -123,14 +123,14 @@ export default function SubmitHelpdesk({ route, props }) {
   }, []);
 
   const onSelect = (data) => {
-    console.log("data from onselect modal", data);
+    console.log('data from onselect modal', data);
   };
 
   useEffect(() => {
     setTimeout(() => {
-      setTextLocation("");
+      setTextLocation('');
       setLoading(false);
-   
+
       getDataStorage();
       //   getLocation();
       // setSpinner(false);
@@ -141,20 +141,20 @@ export default function SubmitHelpdesk({ route, props }) {
     // getDataStorage();
     setTimeout(() => {
       const passProps = passProp;
-      console.log("props dari select category ke submit", passProps);
-      let titles = "";
-      if (passProps.complain_type == "C") {
-        titles = "Complain";
-      } else if (passProps.complain_type == "R") {
-        titles = "Request";
+      console.log('props dari select category ke submit', passProps);
+      let titles = '';
+      if (passProps.complain_type == 'C') {
+        titles = 'Complain';
+      } else if (passProps.complain_type == 'R') {
+        titles = 'Request';
       } else {
-        titles = "Application";
+        titles = 'Application';
       }
       const group_cd = users.Group;
-      const reportdate = moment(new Date()).format("DD MMMM YYYY h:mm");
-      console.log("group_cd", group_cd);
+      const reportdate = moment(new Date()).format('DD MMMM YYYY h:mm');
+      console.log('group_cd', group_cd);
 
-      console.log("porprs", submitTicket);
+      console.log('porprs', submitTicket);
 
       setTitles(titles);
       setGroupCd(group_cd);
@@ -179,20 +179,20 @@ export default function SubmitHelpdesk({ route, props }) {
   //   );
 
   const handlePhotoPick = () => {
-    console.log("datImage", images);
+    console.log('datImage', images);
     Alert.alert(
-      "Select a Photo",
-      "Choose the place where you want to get a photo",
+      'Select a Photo',
+      'Choose the place where you want to get a photo',
       [
-        { text: "Gallery", onPress: () => fromGallery() },
-        { text: "Camera", onPress: () => fromCamera() },
+        { text: 'Gallery', onPress: () => fromGallery() },
+        { text: 'Camera', onPress: () => fromCamera() },
         {
-          text: "Cancel",
-          onPress: () => console.log("User Cancel"),
-          style: "cancel",
+          text: 'Cancel',
+          onPress: () => console.log('User Cancel'),
+          style: 'cancel',
         },
       ],
-      { cancelable: false }
+      { cancelable: false },
     );
   };
 
@@ -203,7 +203,7 @@ export default function SubmitHelpdesk({ route, props }) {
       cropping: false,
     })
       .then((images) => {
-        console.log("received image", images);
+        console.log('received image', images);
 
         setImage([
           {
@@ -225,10 +225,10 @@ export default function SubmitHelpdesk({ route, props }) {
         //   ],
         // }));
       })
-      .catch((e) => console.log("tag", e));
+      .catch((e) => console.log('tag', e));
   };
 
-  const fromGallery = (cropping, mediaType = "photo") => {
+  const fromGallery = (cropping, mediaType = 'photo') => {
     let imageList = [];
 
     ImagePicker.openPicker({
@@ -238,7 +238,7 @@ export default function SubmitHelpdesk({ route, props }) {
       multiple: true,
     })
       .then((image) => {
-        console.log("received images", image);
+        console.log('received images', image);
         image.map((image) => {
           imageList.push({
             uri: image.path,
@@ -247,8 +247,8 @@ export default function SubmitHelpdesk({ route, props }) {
             mime: image.mime,
           });
         });
-        console.log("received images", image);
-        console.log("received images >", imageList);
+        console.log('received images', image);
+        console.log('received images >', imageList);
         setImage(imageList);
         // for (var i = 0; i < image.length; i++) {
         //   setImage({
@@ -263,98 +263,143 @@ export default function SubmitHelpdesk({ route, props }) {
         //   });
         // }
       })
-      .catch((e) => console.log("tag", e));
+      .catch((e) => console.log('tag', e));
   };
 
   const modalBankMaster = () => {
-    navigation.navigate("ModalLocation");
+    navigation.navigate('ModalLocation');
   };
 
-  function submitTicket() {
-    if (images == 0 || images == "" || images == null) {
-      alert("Please Select Photo");
+  const submitTicket = async () => {
+    console.log('images submit', images[0].uri);
+    if (images == 0 || images == '' || images == null) {
+      alert('Please Select Photo');
     } else {
-      console.log("getdata storage,", passPropStorage);
+      const b64 = await ReactNativeBlobUtil.fs.readFile(
+        images[0].uri,
+        'base64',
+      );
+      // console.log('getdata storage,', passPropStorage);
       const passProps = passProp;
-      console.log("passprops", passProps);
+      // console.log('passprops', passProps);
       const body = passPropStorage;
 
       // const fileImg = image.uri.replace('file://', '');
       setLoading(true);
       setDisable(true);
       const fileUpload = singleFile;
-      const bodyData = new FormData();
-      bodyData.append("email", passProp.dataDebtor.email);
-      bodyData.append("entity_cd", passProp.entity_cd);
-      bodyData.append("project_no", passProp.project_no);
-      // bodyData.append('reportdate', '04 Nov 2021 08:47');
-      bodyData.append(
-        "reportdate",
-        moment(new Date()).format("DD/MM/YYYY h:mm")
-      );
-      bodyData.append("takenby", "MOBILE");
-      bodyData.append("lotno", passProp.lot_no.lot_no);
-      bodyData.append("debtoracct", passProp.dataDebtor.debtor_acct);
-      bodyData.append("category", passProp.data.category_cd);
-      bodyData.append("floor", passProp.floor);
-      bodyData.append(
-        "location_unit",
-        textLocationCode == undefined ? "null" : textLocationCode
-      );
-      bodyData.append("reqtype", passProp.location_type);
-      bodyData.append("workreq", textDescs);
-      bodyData.append("reqby", passProp.reportName);
-      bodyData.append("contactno", passProp.contactNo);
-      bodyData.append("audit_user", passProp.data.audit_user);
-      bodyData.append(
-        "responddate",
-        moment(new Date()).format("DD/MM/YYYY h:mm")
-      );
-      // bodyData.append('userfile', {
-      //   uri: images[0].uri,
-      //   name: 'images.jpg',
-      //   type: 'images/jpeg',
-      // });
-      console.log("liatbody", bodyData);
-      console.log(
-        "liatbody userfile",
-        bodyData.append("userfile", {
-          uri: images[0].uri,
-          name: "images.jpg",
-          type: "images/jpeg",
-        })
-      );
+
+      const loc_code =
+        textLocationCode == undefined ? 'null' : textLocationCode;
+
+      // const bodyData = new FormData();
+
+      const bodyData = {
+        email: passProp.dataDebtor.email,
+        entity_cd: passProp.entity_cd,
+        project_no: passProp.project_no,
+
+        // userfile: images[0].uri,
+        userfile: 'data:image/png;base64,' + b64,
+        report_date: moment(new Date()).format('DD/MM/YYYY h:mm'),
+        taken_by: 'MOBILE',
+        lot_no: passProp.lot_no.lot_no,
+        debtor_acct: passProp.dataDebtor.debtor_acct,
+        category: passProp.data.category_cd,
+        category_cd: passProp.data.category_cd,
+        floor: passProp.floor,
+        location: loc_code,
+        request_type: passProp.location_type,
+        work_requested: textDescs,
+        request_by: passProp.reportName,
+        contact_no: passProp.contactNo,
+        audit_user: passProp.data.audit_user,
+        response_date: moment(new Date()).format('DD/MM/YYYY h:mm'),
+      };
+
+      // bodyData.append('email', passProp.dataDebtor.email);
+      // bodyData.append('entity_cd', passProp.entity_cd);
+      // bodyData.append('project_no', passProp.project_no);
+      // // bodyData.append('reportdate', '04 Nov 2021 08:47');
+      // bodyData.append(
+      //   'reportdate',
+      //   moment(new Date()).format('DD/MM/YYYY h:mm'),
+      // );
+      // bodyData.append('takenby', 'MOBILE');
+      // bodyData.append('lotno', passProp.lot_no.lot_no);
+      // bodyData.append('debtoracct', passProp.dataDebtor.debtor_acct);
+      // bodyData.append('category', passProp.data.category_cd);
+      // bodyData.append('floor', passProp.floor);
+      // bodyData.append(
+      //   'location_unit',
+      //   textLocationCode == undefined ? 'null' : textLocationCode,
+      // );
+      // bodyData.append('reqtype', passProp.location_type);
+      // bodyData.append('workreq', textDescs);
+      // bodyData.append('reqby', passProp.reportName);
+      // bodyData.append('contactno', passProp.contactNo);
+      // bodyData.append('audit_user', passProp.data.audit_user);
+      // bodyData.append(
+      //   'responddate',
+      //   moment(new Date()).format('DD/MM/YYYY h:mm'),
+      // );
+      // bodyData.append('userfile', 'data:image/png;base64,' + b64);
+
+      // const data ={
+      //   dataPhoto: 'data:image/png;base64,' + b64,
+      //   email: passProp.dataDebtor.email,
+      // }
+
+      //    data: {
+      //   dataPhoto: 'data:image/png;base64,' + b64,
+      //   email: data.email,
+      // },
+      console.log('liatbody', bodyData);
+      // console.log(
+      //   'liatbody userfile',
+      //   bodyData.append('userfile', {
+      //     uri: images.uri,
+      //     name: 'images.jpg',
+      //     type: 'images/jpeg',
+      //   }),
+      // );
+
       const config = {
-        method: "post",
-        url: API_URL_LOKAL + "/modules/cs/save",
+        method: 'post',
+        url: API_URL_LOKAL + '/modules/cs/save',
         headers: {
-          "content-type": "multipart/form-data",
+          // 'content-type': 'multipart/form-data',
+          // 'content-type': 'application/json',
           Authorization: `Bearer ${users.Token}`,
         },
-        params: bodyData,
+        data: bodyData,
       };
+      // console.log('liatconfig', config);
       return axios(config)
         .then((res) => {
-          console.log("res", res);
-          return res.json().then((resJson) => {
-            // alert(resJson.Pesan);
-            console.log("resKsspn", resJson);
-            setMessage(resJson.Pesan);
-            showModalSuccess(true);
-            setLoading(false);
-            // setDisable(false);
-          });
+          console.log('res', res);
+          setMessage(res.data.message);
+          showModalSuccess(true);
+          setLoading(false);
+          //   return res.json().then((resJson) => {
+          //     // alert(resJson.Pesan);
+          //     console.log('resKsspn', resJson);
+          //     setMessage(resJson.Pesan);
+          //     showModalSuccess(true);
+          //     setLoading(false);
+          //     // setDisable(false);
+          //   });
         })
         .catch((err) => {
           showModalError(true);
-          setError(err);
-          console.log("errz", err);
+          // setError(err);
+          console.log('errz', err);
         });
     }
-  }
+  };
 
   const removePhoto = async (key) => {
-    console.log("key remove", key);
+    console.log('key remove', key);
     let imageArray = [...images];
     imageArray.splice(key, 1);
     setImage(imageArray);
@@ -377,7 +422,7 @@ export default function SubmitHelpdesk({ route, props }) {
   };
 
   const onSelectFilter = (selected) => {
-    console.log("selected filter", selected);
+    console.log('selected filter', selected);
     // setSortOption(
     //   sortOption.map(item => {
     //     return {
@@ -390,16 +435,16 @@ export default function SubmitHelpdesk({ route, props }) {
 
   const onCloseModal = () => {
     showModalSuccess(false);
-    navigation.navigate("Helpdesk");
+    navigation.navigate('Helpdesk');
   };
 
   return (
     <SafeAreaView
       style={BaseStyle.safeAreaView}
-      edges={["right", "top", "left"]}
+      edges={['right', 'top', 'left']}
     >
       <Header
-        title={t("category_help")} //belum dibuat lang
+        title={t('category_helpss')} //belum dibuat lang
         renderLeft={() => {
           return (
             <Icon
@@ -425,9 +470,9 @@ export default function SubmitHelpdesk({ route, props }) {
           editable={false}
           value={textLocation}
           style={{
-            color: "#171717",
+            color: '#171717',
             fontSize: 14,
-            borderColor: "#000",
+            borderColor: '#000',
             borderWidth: 0.5,
             borderRadius: 10,
             marginHorizontal: 20,
@@ -438,7 +483,7 @@ export default function SubmitHelpdesk({ route, props }) {
       <View style={{ marginHorizontal: 20, marginTop: 20 }}>
         <Text
           style={{
-            color: "#171717",
+            color: '#171717',
             fontSize: 14,
             marginBottom: 0,
             paddingBottom: 0,
@@ -463,7 +508,7 @@ export default function SubmitHelpdesk({ route, props }) {
         {images.length === 0 ? (
           <TouchableOpacity
             onPress={() => handlePhotoPick()}
-            style={[styles.sel, { marginBottom: 20, alignSelf: "center" }]}
+            style={[styles.sel, { marginBottom: 20, alignSelf: 'center' }]}
           >
             <Text>Select a photo</Text>
           </TouchableOpacity>
@@ -473,7 +518,7 @@ export default function SubmitHelpdesk({ route, props }) {
               <TouchableOpacity
                 key={key}
                 style={styles.avatarContainer}
-                onPress={() => console.log("Photo Tapped")}
+                onPress={() => console.log('Photo Tapped')}
               >
                 <View>
                   <Image style={styles.avatar} source={images[key]} />
@@ -498,13 +543,13 @@ export default function SubmitHelpdesk({ route, props }) {
         disable={disable}
         onPress={() => submitTicket()}
       >
-        <Text style={{ color: "#FFF" }}>Submit</Text>
+        <Text style={{ color: '#FFF' }}>Submit</Text>
       </Button>
 
       <View>
         <Modal
           isVisible={modalSuccessVisible}
-          style={{ height: "100%" }}
+          style={{ height: '100%' }}
           // onBackdropPress={() => showModalSuccess(false)}>
           onBackdropPress={() => showModalSuccess(true)}
         >
@@ -514,28 +559,29 @@ export default function SubmitHelpdesk({ route, props }) {
 
               // alignContent: 'center',
               padding: 10,
-              backgroundColor: "#fff",
+              backgroundColor: '#fff',
               // height: ,
               borderRadius: 8,
             }}
           >
-            <View style={{ alignItems: "center" }}>
+            <View style={{ alignItems: 'center' }}>
               <Text
                 style={{
                   fontSize: 16,
-                  fontWeight: "bold",
+                  fontWeight: 'bold',
                   color: colors.primary,
                   marginBottom: 10,
                 }}
               >
-                {"Thank You!"}
+                {'Success!'}
               </Text>
               <Text>{message}</Text>
+              <Text>Please check your notification page</Text>
             </View>
             <View
               style={{
-                flexDirection: "row",
-                justifyContent: "flex-end",
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
               }}
             >
               <Button
@@ -548,7 +594,7 @@ export default function SubmitHelpdesk({ route, props }) {
                 }}
                 onPress={() => onCloseModal()}
               >
-                <Text style={{ fontSize: 13, color: "#FFF" }}>{t("OK")}</Text>
+                <Text style={{ fontSize: 13, color: '#FFF' }}>{t('OK')}</Text>
               </Button>
             </View>
           </View>
@@ -557,7 +603,7 @@ export default function SubmitHelpdesk({ route, props }) {
       <View>
         <Modal
           isVisible={modalErrorVisible}
-          style={{ height: "100%" }}
+          style={{ height: '100%' }}
           // onBackdropPress={() => showModalSuccess(false)}>
           onBackdropPress={() => showModalError(true)}
         >
@@ -567,28 +613,28 @@ export default function SubmitHelpdesk({ route, props }) {
 
               // alignContent: 'center',
               padding: 10,
-              backgroundColor: "#fff",
+              backgroundColor: '#fff',
               // height: ,
               borderRadius: 8,
             }}
           >
-            <View style={{ alignItems: "center" }}>
+            <View style={{ alignItems: 'center' }}>
               <Text
                 style={{
                   fontSize: 16,
-                  fontWeight: "bold",
-                  color: "salmon",
+                  fontWeight: 'bold',
+                  color: 'salmon',
                   marginBottom: 10,
                 }}
               >
-                {"Error!"}
+                {'Error!'}
               </Text>
               <Text>{errorz}</Text>
             </View>
             <View
               style={{
-                flexDirection: "row",
-                justifyContent: "flex-end",
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
               }}
             >
               <Button
@@ -596,13 +642,13 @@ export default function SubmitHelpdesk({ route, props }) {
                   marginTop: 10,
                   // marginBottom: 10,
                   // colors: 'salmon',
-                  backgroundColor: "salmon",
+                  backgroundColor: 'salmon',
                   width: 70,
                   height: 40,
                 }}
                 onPress={() => onCloseModal()}
               >
-                <Text style={{ fontSize: 13, color: "#FFF" }}>{t("OK")}</Text>
+                <Text style={{ fontSize: 13, color: '#FFF' }}>{t('OK')}</Text>
               </Button>
             </View>
           </View>

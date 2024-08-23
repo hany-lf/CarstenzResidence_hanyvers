@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { act } from 'react';
+import React, { act, useEffect } from 'react';
 import { Icon, Text } from '@components';
 import { View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -42,14 +42,25 @@ export const tabBarIconHaveNoty = ({ color, iconName }) => {
   console.log('icon name di icon haveduty', iconName);
 
   const data = useSelector((state) => state.apiReducer.data);
-  console.log('data di tabbar', data);
-  let sum = 0;
-  // data != null || data != undefined || data.length > 0 ? data.map((item, index) => {
-  //   sum += parseInt(item.IsRead);
-  // }) : sum = 0;
 
-  const counter = useSelector((state) => state.counter);
-  console.log('counter badge di tabbar', counter);
+  useEffect(() => {
+    console.log('data di tabbar', data);
+  }, [data]);
+
+  // const finalCount =
+  //   data && data.length > 0
+  //     ? data.reduce((sum, item) => sum + parseInt(item.isRead), 0)
+  //     : 0;
+  // console.log('data di tabbar', data);
+  let sum = 0;
+  data != null || data != undefined || data.length > 0
+    ? data.map((item, index) => {
+        sum += parseInt(item.isRead);
+      })
+    : (sum = 0);
+
+  // const counter = useSelector((state) => state.counter);
+  // console.log('counter badge di tabbar', finalCount);
   const total = data.length;
   const finalCount = total - sum;
 

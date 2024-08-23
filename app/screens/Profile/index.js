@@ -42,7 +42,6 @@ const Profile = (props) => {
 
   const logoutUser = useCallback(() => dispatch(logout()), [dispatch]);
 
-  const [imagesCek, setImagesCek] = useState(user.userData.pict);
   // ------ coba dari youtube
 
   /**

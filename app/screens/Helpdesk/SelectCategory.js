@@ -9,14 +9,14 @@ import {
   // RefreshControl,
   Header,
   Icon,
-} from "@components";
-import { BaseColor, BaseStyle, useTheme } from "@config";
-import { CheckBox } from "react-native-elements";
+} from '@components';
+import { BaseColor, BaseStyle, useTheme } from '@config';
+import { CheckBox } from 'react-native-elements';
 
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation } from '@react-navigation/native';
 
-import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   FlatList,
   TouchableOpacity,
@@ -26,23 +26,23 @@ import {
   ScrollView,
   TextInput,
   RefreshControl,
-} from "react-native";
+} from 'react-native';
 
-import { useSelector } from "react-redux";
-import getUser from "../../selectors/UserSelectors";
-import getProject from "../../selectors/ProjectSelector";
-import axios from "axios";
-import client from "../../controllers/HttpClient";
-import styles from "./styles";
+import { useSelector } from 'react-redux';
+import getUser from '../../selectors/UserSelectors';
+import getProject from '../../selectors/ProjectSelector';
+import axios from 'axios';
+import client from '../../controllers/HttpClient';
+import styles from './styles';
 
-import { RadioButton } from "react-native-paper";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { API_URL_LOKAL } from "@env";
+import { RadioButton } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { API_URL_LOKAL } from '@env';
 
 export default function SelectCategory({ route }) {
   const { t, i18n } = useTranslation();
   const { colors } = useTheme();
-  const [keyword, setKeyword] = useState("");
+  const [keyword, setKeyword] = useState('');
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
 
@@ -59,25 +59,26 @@ export default function SelectCategory({ route }) {
   const [dataCategoryDetail, setDataCategoryDetail] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
-  const [typeLocation, setTypeLocation] = useState("");
+  const [typeLocation, setTypeLocation] = useState('');
   const [passProp, setpassProp] = useState(route.params.saveParams);
   //   console.log('passProps urutan ketiga', passProp);
   //   const [passProp, setPassProps] = useState();
   const [passPropStorage, setPassPropStorage] = useState();
 
-    const [showChooseProject, setShowChooseProject] = useState(false);
+  const [showChooseProject, setShowChooseProject] = useState(false);
   const [isFocus, setIsFocus] = useState(false);
   const [valueProject, setValueProject] = useState([]);
   const [valueProjectSelected, setValueProjectSelected] = useState(null);
   const [projectData, setProjectData] = useState([]);
   const project = useSelector((state) => getProject(state));
+  // const [show, setShow] = useState(false);
 
-  console.log("passProp >", passProp);
+  console.log('passProp >', passProp);
   const styleItem = {
     ...styles.profileItem,
     borderBottomColor: colors.border,
   };
-  
+
   // --- useeffect untuk project
   useEffect(() => {
     setTimeout(() => {
@@ -87,9 +88,8 @@ export default function SelectCategory({ route }) {
         // console.log('entity useeffect di home', project.data[0].entity_cd);
         setProjectData(project.data);
         getSelectCategoryDetail(project.data);
-        setShow(true);
+        // setShow(true);
       }
-       
     }, 3000);
   }, [project]);
 
@@ -103,7 +103,7 @@ export default function SelectCategory({ route }) {
   // }, [project]);
 
   const getDataStorage = async () => {
-    const value = await AsyncStorage.getItem("@helpdeskStorage");
+    const value = await AsyncStorage.getItem('@helpdeskStorage');
 
     const passPropStorage = JSON.parse(value);
 
@@ -122,28 +122,27 @@ export default function SelectCategory({ route }) {
   }, []);
 
   const getSelectCategoryDetail = async (data) => {
-    // console.log('passProp', passProp);
+    console.log('passProp', data);
     const params = {
-      entity_cd: data.entity_cd,
-      project_no: data.project_no,
+      entity_cd: data[0].entity_cd,
+      project_no: data[0].project_no,
       //   category_group: 'CS',
       //   location_type: 'U', //ini nanti pake radiobutton
       category_group_cd: passProp.category_group_cd,
       // group_cd: passProp.category_group_cd, //hanya beda kolom sajaa, tetapi isi sama
       location_type: passProp.location_type, //ini nanti pake radiobutton
     };
-    console.log("params >", params);
+    console.log('params >', params);
 
     const config = {
-      method: "post",
-      url: API_URL_LOKAL + "/modules/cs/category-detail",
+      method: 'get',
+      url: API_URL_LOKAL + '/modules/cs/category-detail',
       headers: {
-        "content-type": "application/json",
+        'content-type': 'application/json',
         Authorization: `Bearer ${users.Token}`,
       },
       params: params,
     };
-
 
     await axios(config)
       .then((res) => {
@@ -151,7 +150,7 @@ export default function SelectCategory({ route }) {
         if (res.data.success == true) {
           const datas = res.data;
           const dataCategoryDetails = datas.data;
-          console.log("data kategori", dataCategoryDetails);
+          console.log('data kategori', dataCategoryDetails);
 
           setDataCategoryDetail(dataCategoryDetails);
           setSpinner(false);
@@ -163,27 +162,27 @@ export default function SelectCategory({ route }) {
           setSpinner(false);
           alert(res.data.message);
         }
-        console.log("ini isinya sama ga?", res.data.data);
+        console.log('ini isinya sama ga?', res.data.data);
         setArrayHolder(res.data.data);
         setSpinner(false);
         // return res.data;
       })
       .catch((error) => {
-        console.log("error get detail api", error.response);
-        alert("error get");
+        console.log('error get detail api', error.response);
+        alert('error get');
       });
   };
 
   const searchFilterFunction = (text) => {
     setSpinner(true);
-    console.log("text", text);
+    console.log('text', text);
 
     const newData = arrayholder.filter((item) => {
       const itemData = `${item.descs.toUpperCase()}`;
       const textData = text;
       return itemData.indexOf(textData) > -1;
     });
-    console.log("new data", newData);
+    console.log('new data', newData);
     setDataCategoryDetail(newData);
     setSpinner(false);
   };
@@ -192,24 +191,24 @@ export default function SelectCategory({ route }) {
     // const value = await AsyncStorage.getItem('@helpdeskStorage');
 
     // const passPropStorage = JSON.parse(value);
-    console.log("params for submit storage", passPropStorage);
-    console.log("params for submit passProp", passProp);
+    console.log('params for submit storage', passPropStorage);
+    console.log('params for submit passProp', passProp);
 
-    console.log("data select category", data);
+    console.log('data select category', data);
     const saveStorage = {
       ...passPropStorage,
       data,
     };
 
     const jsonValue = JSON.stringify(saveStorage);
-    await AsyncStorage.setItem("@helpdeskStorage", jsonValue);
-    console.log("params select category", saveStorage);
+    await AsyncStorage.setItem('@helpdeskStorage', jsonValue);
+    console.log('params select category', saveStorage);
     //    console.log('loc_type', data.location_type);
     //    const passProp = {
     //      category_group_cd: data.category_group_cd,
     //      location_type: data.location_type,
     //    };
-    navigation.navigate("SubmitHelpdesk", { saveStorage });
+    navigation.navigate('SubmitHelpdesk', { saveStorage });
     //    navigation.navigate('SelectCategory', {
     //      // screen: 'Settings',
     //      params: passProp,
@@ -219,10 +218,10 @@ export default function SelectCategory({ route }) {
   return (
     <SafeAreaView
       style={BaseStyle.safeAreaView}
-      edges={["right", "top", "left"]}
+      edges={['right', 'top', 'left']}
     >
       <Header
-        title={t("select_category")} //belum dibuat lang
+        title={t('select_category')} //belum dibuat lang
         renderLeft={() => {
           return (
             <Icon
@@ -248,7 +247,7 @@ export default function SelectCategory({ route }) {
         <ScrollView>
           <View style={styles.wrap}>
             <Text title2>Ticket</Text>
-            <Text headline style={{ fontWeight: "normal" }}>
+            <Text headline style={{ fontWeight: 'normal' }}>
               Select Category Details
             </Text>
             {dataCategoryDetail ? (
@@ -257,9 +256,9 @@ export default function SelectCategory({ route }) {
                 <TextInput
                   placeholder="Search Category"
                   style={{
-                    color: "#555",
+                    color: '#555',
                     fontSize: 14,
-                    borderColor: "#000",
+                    borderColor: '#000',
                     borderWidth: 0.5,
                     borderRadius: 10,
                   }}

@@ -22,6 +22,7 @@ export const BaseColor = {
   redColor: 'red',
   blackColor: '#000',
   goldColor: '#AA7D46',
+  primary: '#141F40',
 };
 
 /**
@@ -98,7 +99,7 @@ export const ThemeSupport = [
         background: 'white',
         card: '#F5F5F5',
         text: '#212121',
-        border: '#c7c7cc',
+        border: '#F2F2F2',
       },
     },
     dark: {
@@ -111,7 +112,7 @@ export const ThemeSupport = [
         background: '#010101',
         card: '#121212',
         text: '#e5e5e7',
-        border: '#272729',
+        border: '#F2F2F2',
       },
     },
   },
@@ -181,33 +182,31 @@ export const ThemeSupport = [
  * Define default theme use for whole application
  */
 export const DefaultTheme = {
-  theme: 'green',
+  theme: 'blue',
   light: {
     dark: false,
     colors: {
-      // primary: '#068444',
-      primary: '#315447',
-      primaryDark: '#388E3C',
-      primaryLight: '#C8E6C9',
-      accent: '#607D8B',
+      primary: '#141F40',
+      primaryDark: '#1281ac',
+      primaryLight: '#68c9ef',
+      accent: '#FF8A65',
       background: 'white',
       card: '#F5F5F5',
       text: '#212121',
-      border: '#c7c7cc',
+      border: '#F2F2F2',
     },
   },
   dark: {
     dark: true,
     colors: {
-      // primary: '#068444',
-      primary: '#315447',
-      primaryDark: '#388E3C',
-      primaryLight: '#C8E6C9',
-      accent: '#607D8B',
-      background: 'white',
-      card: '#F5F5F5',
-      text: '#212121',
-      border: '#c7c7cc',
+      primary: '#141F40',
+      primaryDark: '#1281ac',
+      primaryLight: '#68c9ef',
+      accent: '#FF8A65',
+      background: '#010101',
+      card: '#121212',
+      text: '#e5e5e7',
+      border: '#F2F2F2',
     },
   },
 };
