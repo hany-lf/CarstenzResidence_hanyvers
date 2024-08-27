@@ -2,8 +2,18 @@ export { default as VerticalSvg } from './layout/vertical.svg';
 export { default as HorizontalSvg } from './layout/horizontal.svg';
 export { default as SemiBoxSvg } from './layout/semibox.svg';
 
+//for menu home
+export { default as Others } from './home/menu/others.svg';
+export { default as News } from './home/menu/news.svg';
+export { default as Event } from './home/menu/event.svg';
+export { default as Announcement } from './home/menu/announcement.svg';
+export { default as Facilities } from './home/menu/facilities.svg';
+export { default as RentOrSale } from './home/menu/rent_or_sale.svg';
+export { default as Repair } from './home/menu/repair.svg';
+export { default as TROffice } from './home/menu/tr_office.svg';
+export { default as Package } from './home/menu/package.svg';
+export { default as Billing } from './home/menu/billing.svg';
 //  dual tone icon
-
 export { default as DSearch } from './duel-tone/dsearch.svg';
 export { default as Home } from './home/home.svg';
 export { default as PhoneHome } from './home/phone_home.svg';
@@ -11,7 +21,7 @@ export { default as BellHome } from './home/bell.svg';
 export { default as Handshake } from './home/handshake.svg';
 export { default as Megaphone } from './home/megaphone.svg';
 export { default as Barbel } from './home/barbel.svg';
-export { default as Repair } from './home/repair.svg';
+// export { default as Repair } from './home/repair.svg';
 export { default as UserHome } from './home/user.svg';
 export { default as Session } from './home/session.svg';
 export { default as Eye } from './home/eye.svg';

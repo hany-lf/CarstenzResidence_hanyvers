@@ -26,6 +26,7 @@ import {
   Typography,
   FontWeight,
 } from '@config';
+import Fonts from '../../config/Fonts';
 import {
   HomeChannelData,
   HomeListData,
@@ -100,7 +101,7 @@ const wait = (timeout) => {
 
 const Home = (props) => {
   console.log('hah ini api url dari env??', API_URL_LOKAL);
-  console.log('alert svg', AlertSvg);
+  console.log('fonts', Fonts);
   const { navigation, route } = props;
   const { t } = useTranslation();
   const { colors } = useTheme();
@@ -113,7 +114,7 @@ const Home = (props) => {
   const notif = useSelector((state) => getNotifRed(state));
   const project = useSelector((state) => getProject(state));
   const dataMenus = useSelector((state) => getMenu(state));
-  console.log('project di home', project);
+  // console.log('project di home', project);
   // console.log(
   //   "99 state",
   //   useSelector((state) => state)
@@ -1153,11 +1154,11 @@ const Home = (props) => {
                   flexDirection: 'column',
                   flex: 1,
                   justifyContent: 'center',
-                  top: 30,
+                  top: 0,
                 }}
               >
                 {/* ------- TEXT WELCOME HOME ------- */}
-                <View
+                {/* <View
                   style={{
                     // flex: 1,
                     alignItems: 'center',
@@ -1180,7 +1181,7 @@ const Home = (props) => {
                     {'\n'}
                     {name}
                   </Text>
-                </View>
+                </View> */}
                 {/* ------- CLOSE TEXT WELCOME HOME ------- */}
 
                 {/* ----- SEARCH INPUT ----- */}
@@ -1211,7 +1212,7 @@ const Home = (props) => {
                       }
                     />
                   </View> */}
-                <View style={{ alignItems: 'center', top: 20 }}>
+                <View style={{ alignItems: 'center', top: 0 }}>
                   <Text
                     style={{
                       color: 'white',
@@ -1222,16 +1223,40 @@ const Home = (props) => {
                     {/* Once Upon Your Lifetime */}
                   </Text>
                 </View>
-                <View style={{ alignItems: 'center', top: 10 }}>
+                <View style={{ alignItems: 'center', top: 0 }}>
                   <Image
                     style={{
                       height: 100,
-                      width: '90%',
+                      width: '80%',
                       //padding: 100,
                       resizeMode: 'contain',
                     }}
-                    source={require('../../assets/images/image-home/vector-logo-carstensz.webp')}
+                    source={require('../../assets/images/image-home/vector-logo-carstensz.png')}
                   ></Image>
+                </View>
+
+                {/* ---- tagline carstensz */}
+                <View
+                  style={{
+                    // flex: 1,
+                    alignItems: 'center',
+
+                    left: 47,
+                    justifyContent: 'center',
+
+                    width: '80%',
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      color: 'white',
+                      fontFamily: Fonts.type.Zocial,
+                      // lineHeight: 10,
+                    }}
+                  >
+                    Iconic Living at BSD - Gading Serpong
+                  </Text>
                 </View>
               </View>
             </LinearGradient>

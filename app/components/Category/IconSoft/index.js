@@ -18,6 +18,15 @@ import {
   Megaphone,
   Barbel,
   Repair,
+  Billing,
+  Announcement,
+  RentOrSale,
+  TROffice,
+  Facilities,
+  Others,
+  Package,
+  News,
+  Event,
 } from '../../../components/Svg';
 
 export default function CategoryIconSoft({
@@ -48,14 +57,19 @@ export default function CategoryIconSoft({
     return BaseColor.goldColor;
   };
 
+  //cara penggunaannya = nama IconClass di database: nama file svg
   const iconMapper = {
-    'credit-card': Home,
-    handshake: Handshake,
-    phone: PhoneHome,
-    'table-tennis': Barbel,
-    tools: Repair,
-    bolt: UserHome,
-    bullhorn: Megaphone,
+    billing: Billing,
+    announcement: Announcement,
+    rent_or_sale: RentOrSale,
+    tr_office: TROffice,
+    // package: Package,
+    repair: Repair,
+    facilities: Facilities,
+    meter: Others,
+    event: Event,
+    // package: Package,
+    news: News,
     // Tambahkan pemetaan ikon lainnya sesuai kebutuhan
   };
   console.log('iconMapper[icon]', iconMapper);

@@ -1,21 +1,21 @@
-import { CategoryIconSoft, Text, Icon } from "@components";
-import { FCategories } from "@data";
-import React, { useState } from "react";
+import { CategoryIconSoft, Text, Icon } from '@components';
+import { FCategories } from '@data';
+import React, { useState } from 'react';
 import {
   FlatList,
   View,
   Button,
   TouchableHighlight,
   TouchableOpacity,
-} from "react-native";
-import { useNavigation } from "@react-navigation/core";
-import { useTranslation } from "react-i18next";
-import Modal from "react-native-modal";
-import styles from "./styles";
-import getUser from "../../selectors/UserSelectors";
-import { useSelector } from "react-redux";
-import * as Utils from "@utils";
-import { BaseColor, BaseStyle, Images, useTheme } from "@config";
+} from 'react-native';
+import { useNavigation } from '@react-navigation/core';
+import { useTranslation } from 'react-i18next';
+import Modal from 'react-native-modal';
+import styles from './styles';
+import getUser from '../../selectors/UserSelectors';
+import { useSelector } from 'react-redux';
+import * as Utils from '@utils';
+import { BaseColor, BaseStyle, Images, useTheme } from '@config';
 
 const Categories = ({ style = {}, dataMenus }) => {
   const navigation = useNavigation();
@@ -24,7 +24,7 @@ const Categories = ({ style = {}, dataMenus }) => {
   const goToScreen = (name) => name && navigation.navigate(name);
   const [expand, setExpand] = useState(false);
   const user = useSelector((state) => getUser(state));
-  // console.log("user for user faccility ->", user);
+  // console.log('user for user faccility ->', user);
   //   console.log("user for user Pesan_Facility ->", user.Pesan_Facility);
   // console.log('data menus di categories', dataMenus)
   // "Pesan_Facility": "Facility Not Available"
@@ -39,7 +39,7 @@ const Categories = ({ style = {}, dataMenus }) => {
 
   return (
     <View>
-      <View style={[{ flexDirection: "row" }, style]}>
+      <View style={[{ flexDirection: 'row' }, style]}>
         <FlatList
           data={dataMenus}
           renderItem={({ item, key }) => (
@@ -86,10 +86,10 @@ const Categories = ({ style = {}, dataMenus }) => {
                 // onPress={() => console.log('coba di categories', item.Screen)}
                 onPress={() =>
                   user.userData.facility_booking == item.User_Facility ||
-                  item.User_Menu == "Y"
+                  item.User_Menu == 'Y'
                     ? goToScreen(item.Screen)
                     : onExpand(
-                        "User tidak memiliki izin untuk booking fasilitas"
+                        'User tidak memiliki izin untuk booking fasilitas',
                       )
                 }
               />
@@ -106,12 +106,12 @@ const Categories = ({ style = {}, dataMenus }) => {
           <View
             style={{
               // flex: 1,
-              backgroundColor: "#fff",
+              backgroundColor: '#fff',
               height: 150,
-              width: "90%",
-              alignItems: "center",
-              justifyContent: "center",
-              alignSelf: "center",
+              width: '90%',
+              alignItems: 'center',
+              justifyContent: 'center',
+              alignSelf: 'center',
               borderRadius: 8,
             }}
           >
@@ -126,7 +126,7 @@ const Categories = ({ style = {}, dataMenus }) => {
 
             <View
               style={{
-                position: "absolute",
+                position: 'absolute',
                 right: 25,
                 bottom: 15,
               }}
