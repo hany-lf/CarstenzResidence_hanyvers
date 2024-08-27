@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { View, TouchableOpacity, Switch, ScrollView } from "react-native";
-import { BaseStyle, useTheme } from "@config";
-import { BaseSetting } from "@config";
-import { Header, SafeAreaView, Icon, Text } from "@components";
-import { useTranslation } from "react-i18next";
-import * as Utils from "@utils";
-import styles from "./styles";
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { View, TouchableOpacity, Switch, ScrollView } from 'react-native';
+import { BaseStyle, useTheme } from '@config';
+import { BaseSetting } from '@config';
+import { Header, SafeAreaView, Icon, Text } from '@components';
+import { useTranslation } from 'react-i18next';
+import * as Utils from '@utils';
+import styles from './styles';
 
 export default function Setting({ navigation }) {
   const { t, i18n } = useTranslation();
@@ -23,21 +23,21 @@ export default function Setting({ navigation }) {
     setReminders(value);
   };
 
-  console.log("26 darkOption: ", forceDark);
+  console.log('26 darkOption: ', forceDark);
 
   const darkOption = forceDark
-    ? t("always_on")
+    ? t('always_on')
     : forceDark != null
-    ? t("always_off")
-    : t("dynamic_system");
+    ? t('always_off')
+    : t('dynamic_system');
 
   return (
     <SafeAreaView
       style={BaseStyle.safeAreaView}
-      edges={["right", "top", "left"]}
+      edges={['right', 'top', 'left']}
     >
       <Header
-        title={t("setting")}
+        title={t('setting')}
         renderLeft={() => {
           return (
             <Icon
@@ -62,14 +62,14 @@ export default function Setting({ navigation }) {
             },
           ]}
           onPress={() => {
-            // navigation.navigate("ChangeLanguage");
+            navigation.navigate('ChangeLanguage');
           }}
         >
-          <Text body1>{t("language")}</Text>
+          <Text body1>{t('language')}</Text>
           <View
             style={{
-              flexDirection: "row",
-              alignItems: "center",
+              flexDirection: 'row',
+              alignItems: 'center',
             }}
           >
             <Text body1 grayColor>
@@ -84,7 +84,7 @@ export default function Setting({ navigation }) {
             />
           </View>
         </TouchableOpacity>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={[
             styles.profileItem,
             {
@@ -93,15 +93,15 @@ export default function Setting({ navigation }) {
             },
           ]}
           onPress={() => {
-            navigation.navigate("ThemeSetting");
+            navigation.navigate('ThemeSetting');
           }}
         >
-          <Text body1>{t("theme")}</Text>
+          <Text body1>{t('theme')}</Text>
           <View
             style={[styles.themeIcon, { backgroundColor: colors.primary }]}
           />
-        </TouchableOpacity>
-        <TouchableOpacity
+        </TouchableOpacity> */}
+        {/* <TouchableOpacity
           style={[
             styles.profileItem,
             {
@@ -109,17 +109,17 @@ export default function Setting({ navigation }) {
               borderBottomWidth: 1,
             },
           ]}
-          onPress={() => navigation.navigate("SelectFontOption")}
+          onPress={() => navigation.navigate('SelectFontOption')}
         >
-          <Text body1>{t("font")}</Text>
+          <Text body1>{t('font')}</Text>
           <View
             style={{
-              flexDirection: "row",
-              alignItems: "center",
+              flexDirection: 'row',
+              alignItems: 'center',
             }}
           >
             <Text body1 grayColor>
-              {font ?? t("default")}
+              {font ?? t('default')}
             </Text>
             <Icon
               name="angle-right"
@@ -139,14 +139,14 @@ export default function Setting({ navigation }) {
             },
           ]}
           onPress={() => {
-            navigation.navigate("SelectDarkOption");
+            navigation.navigate('SelectDarkOption');
           }}
         >
-          <Text body1>{t("dark_theme")}</Text>
+          <Text body1>{t('dark_theme')}</Text>
           <View
             style={{
-              flexDirection: "row",
-              alignItems: "center",
+              flexDirection: 'row',
+              alignItems: 'center',
             }}
           >
             <Text body1 grayColor>
@@ -171,16 +171,16 @@ export default function Setting({ navigation }) {
             { paddingVertical: 15 },
           ]}
         >
-          <Text body1>{t("notification")}</Text>
+          <Text body1>{t('notification')}</Text>
           <Switch
-            thumbColor={reminders ? colors.primary : "#D3D3D3"}
+            thumbColor={reminders ? colors.primary : '#D3D3D3'}
             size={18}
             onValueChange={toggleSwitch}
             value={reminders}
           />
-        </View>
+        </View> */}
         <View style={styles.profileItem}>
-          <Text body1>{t("app_version")}</Text>
+          <Text body1>{t('app_version')}</Text>
           <Text body1 grayColor>
             {BaseSetting.appVersion}
           </Text>

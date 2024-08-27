@@ -150,29 +150,32 @@ export const WalletTabScreens = {
     component: HomeScreen,
     options: {
       title: 'home',
-      tabBarIcon: ({ color }) => tabBarIcon({ color, iconName: 'home' }),
+      tabBarIcon: ({ color, focused }) =>
+        tabBarIcon({ color, iconName: 'home', isFocused: focused }),
     },
   },
   EmegerncyScreen: {
     component: Emergency,
     options: {
       title: 'Emergency',
-      tabBarIcon: ({ color }) => tabBarIcon({ color, iconName: 'phone' }),
+      tabBarIcon: ({ color, focused }) =>
+        tabBarIcon({ color, iconName: 'phone', isFocused: focused }),
     },
   },
   NotificationScreen: {
     component: Notification,
     options: {
       title: 'Notification',
-      tabBarIcon: ({ color }) =>
-        tabBarIconHaveNoty({ color, iconName: 'bell' }),
+      tabBarIcon: ({ color, focused }) =>
+        tabBarIconHaveNoty({ color, iconName: 'bell', isFocused: focused }),
     },
   },
   ProfileScreen: {
     component: ProfileScreen,
     options: {
       title: 'account',
-      tabBarIcon: ({ color }) => tabBarIcon({ color, iconName: 'account' }),
+      tabBarIcon: ({ color, focused }) =>
+        tabBarIcon({ color, iconName: 'account', isFocused: focused }),
     },
   },
 };

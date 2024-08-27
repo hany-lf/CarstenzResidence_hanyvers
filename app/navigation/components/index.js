@@ -8,20 +8,26 @@ import { useTranslation } from 'react-i18next';
 import { BaseColor, BaseStyle, useTheme } from '@config';
 import getNotifRed from '../../selectors/NotifSelectors';
 import { useSelector } from 'react-redux';
-import { Home, BellHome, PhoneHome, UserHome } from '../../components/Svg';
+import {
+  NavHome,
+  NavEmergency,
+  NavAnnouncement,
+  NavAccount,
+} from '../../components/Svg';
 
 // export const tabBarIcon = ({ color, NameSvg }) => (
 //   <NameSvg width={20} height={20} fill={color} />
 // );
 
 // Define the tabBarIcon function
-export const tabBarIcon = ({ color, iconName }) => {
+export const tabBarIcon = ({ color, iconName, isFocused }) => {
   console.log('iconName tab bar icon', iconName);
+  console.log('isFocused tab bar icon', isFocused);
   const icons = {
-    home: Home,
-    phone: PhoneHome,
-    bell: BellHome,
-    account: UserHome,
+    home: NavHome,
+    phone: NavEmergency,
+    bell: NavAnnouncement,
+    account: NavAccount,
     // Tambahkan ikon lainnya jika diperlukan
   };
 
@@ -29,10 +35,10 @@ export const tabBarIcon = ({ color, iconName }) => {
 
   return IconComponent ? (
     <IconComponent
-      width={20}
-      height={20}
+      width={25}
+      height={25}
       stroke={color}
-      //fill={color} //kalo mau di fill svg nya pake ini, kalo ngga pake stroke aja
+      fill={isFocused ? BaseColor.goldColor : BaseColor.grayColor} //kalo mau di fill svg nya pake ini, kalo ngga pake stroke aja
     />
   ) : null;
 };
@@ -77,7 +83,7 @@ export const tabBarIconHaveNoty = ({ color, iconName }) => {
           width: 20,
           height: 20,
           backgroundColor: 'red',
-          top: -5,
+          top: -7,
           right: -12,
           borderRadius: 10,
         }}
@@ -99,28 +105,33 @@ export const BottomTabNavigatorMazi = ({ tabScreens = {} }) => {
   return (
     <BottomTab.Navigator
       initialRouteName="Home"
-      tabBarOptions={{
+      screenOptions={{
+        tabBarStyle: {
+          backgroundColor: colors.primary,
+          paddingTop: 2,
+          paddingBottom: 8,
+          height: 60,
+        },
+        //   tabBarBackground: "red",
+        headerShown: false,
         showIcon: true,
         showLabel: true, //untuk menghide title pada navigasi bottom bar
         // activeTintColor: BaseColor.whiteColor,
         // activeTintColor: colors.primary != '#FDC60A' ? 'yellow' : 'white',
         activeTintColor: BaseColor.goldColor,
         inactiveTintColor: BaseColor.grayColor,
+        tabBarInactiveTintColor: BaseColor.grayColor,
+        tabBarActiveTintColor: BaseColor.goldColor,
         // inactiveTintColor: '#969696',
         // style: BaseStyle.tabBar,
         style: {
           //backgroundColor: "red", //colors.primary,
-          paddingTop: 8,
+          // paddingTop: 3,
         },
         labelStyle: {
-          fontSize: 12,
-          paddingBottom: 3,
+          fontSize: 10,
+          paddingBottom: 8,
         },
-      }}
-      screenOptions={{
-        tabBarStyle: { backgroundColor: colors.primary },
-        //   tabBarBackground: "red",
-        headerShown: false,
       }}
     >
       {Object.keys(tabScreens).map((name, index) => {

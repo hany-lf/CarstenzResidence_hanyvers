@@ -13,6 +13,13 @@ export { default as Repair } from './home/menu/repair.svg';
 export { default as TROffice } from './home/menu/tr_office.svg';
 export { default as Package } from './home/menu/package.svg';
 export { default as Billing } from './home/menu/billing.svg';
+
+//for nav bottom
+export { default as NavAccount } from './home/nav_account.svg';
+export { default as NavAnnouncement } from './home/nav_announcement.svg';
+export { default as NavEmergency } from './home/nav_emergency.svg';
+export { default as NavHome } from './home/nav_home.svg';
+
 //  dual tone icon
 export { default as DSearch } from './duel-tone/dsearch.svg';
 export { default as Home } from './home/home.svg';

@@ -119,10 +119,11 @@ export default function CategoryIconSoft({
         /> */}
 
         <IconComponent
-          width={28}
-          height={28}
+          width={50}
+          height={50}
           iconClass={icon}
-          size={isRound ? 29 : 32}
+          // size={isRound ? 29 : 32}
+          size={isRound ? 40 : 32}
           color={getIconColor()}
         />
       </View>

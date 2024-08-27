@@ -1,11 +1,11 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 /**
  * Common basic style defines
  */
 export const BaseStyle = StyleSheet.create({
   tabBar: {
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 5,
@@ -22,12 +22,12 @@ export const BaseStyle = StyleSheet.create({
   },
   textInput: {
     height: 46,
-    borderRadius: 5,
+    borderRadius: 2,
     paddingHorizontal: 10,
-    width: "100%",
-    justifyContent: "space-between",
-    alignItems: "center",
-    flexDirection: "row",
+    width: '100%',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
   },
   safeAreaView: {
     flex: 1,

@@ -1,4 +1,4 @@
-import { AuthActions } from "@actions";
+import { AuthActions } from '@actions';
 import {
   Button,
   Header,
@@ -6,10 +6,10 @@ import {
   SafeAreaView,
   Text,
   TextInput,
-} from "@components";
-import { BaseColor, BaseStyle, useTheme } from "@config";
-import { Images } from "@config";
-import React, { useCallback, useEffect, useState } from "react";
+} from '@components';
+import { BaseColor, BaseStyle, useTheme } from '@config';
+import { Images } from '@config';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   ScrollView,
   TouchableOpacity,
@@ -19,21 +19,21 @@ import {
   KeyboardAvoidingView,
   Platform,
   Alert,
-} from "react-native";
-import PropTypes from "prop-types";
-import { useSelector, useDispatch } from "react-redux";
-import styles from "./styles";
-import { useTranslation } from "react-i18next";
-import getUser from "../../selectors/UserSelectors";
-import getProject from "../../selectors/ProjectSelector";
-import errorsSelector from "../../selectors/ErrorSelectors";
-import { isLoadingSelector } from "../../selectors/StatusSelectors";
-import { login, actionTypes } from "../../actions/UserActions";
-import { data_project } from "../../actions/ProjectActions";
+} from 'react-native';
+import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
+import styles from './styles';
+import { useTranslation } from 'react-i18next';
+import getUser from '../../selectors/UserSelectors';
+import getProject from '../../selectors/ProjectSelector';
+import errorsSelector from '../../selectors/ErrorSelectors';
+import { isLoadingSelector } from '../../selectors/StatusSelectors';
+import { login, actionTypes } from '../../actions/UserActions';
+import { data_project } from '../../actions/ProjectActions';
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import messaging from "@react-native-firebase/messaging";
-import { API_URL_LOKAL } from "@env";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import messaging from '@react-native-firebase/messaging';
+import { API_URL_LOKAL } from '@env';
 
 const SignIn = (props) => {
   const { navigation } = props;
@@ -41,12 +41,12 @@ const SignIn = (props) => {
   const { colors } = useTheme();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [hidePass, setHidePass] = useState(true);
 
-  const [token_firebase, setTokenFirebase] = useState("");
-  const [token, setTokenBasic] = useState("");
+  const [token_firebase, setTokenFirebase] = useState('');
+  const [token, setTokenBasic] = useState('');
 
   const user = useSelector((state) => getUser(state));
   const project = useSelector((state) => getProject(state));
@@ -58,19 +58,19 @@ const SignIn = (props) => {
   //   errorsSelector([actionTypes.LOGIN], state)
   // );
   const loginklik = () => {
-    console.log("54 run loginKlik");
+    console.log('54 run loginKlik');
     loginUser();
     loadProject();
   };
   const loginUser = useCallback(
     () => dispatch(login(email, password, token_firebase)),
-    [email, password, token_firebase, dispatch]
+    [email, password, token_firebase, dispatch],
   );
 
   const loadProject = useCallback(
     () =>
       dispatch(data_project({ emails: email, token_firebase: token_firebase })),
-    [{ emails: email, token_firebase: token_firebase }, dispatch]
+    [{ emails: email, token_firebase: token_firebase }, dispatch],
   );
 
   // const loadProject = useCallback(
@@ -82,11 +82,11 @@ const SignIn = (props) => {
   const emailChanged = useCallback((value) => setEmail(value), []);
 
   useEffect(() => {
-    console.log("user for reset? ", user);
-    console.log("project di useeffect signin -->", project);
+    console.log('user for reset? ', user);
+    console.log('project di useeffect signin -->', project);
     if (user !== null && project !== null && user.length < 0) {
       // loadProject();
-      props.navigation.navigate("MainStack");
+      props.navigation.navigate('MainStack');
       // navigation.navigate('MainStack');
     }
   });
@@ -103,7 +103,7 @@ const SignIn = (props) => {
 
     if (enabled) {
       getFcmToken();
-      console.log("Authorization status:", authStatus);
+      console.log('Authorization status:', authStatus);
     }
   };
 
@@ -111,10 +111,10 @@ const SignIn = (props) => {
     const fcmToken = await messaging().getToken();
     if (fcmToken) {
       console.log(fcmToken);
-      console.log("Your Firebase Token is:", fcmToken);
+      console.log('Your Firebase Token is:', fcmToken);
       setTokenFirebase(fcmToken);
     } else {
-      console.log("Failed", "No token received");
+      console.log('Failed', 'No token received');
     }
   };
 
@@ -126,7 +126,7 @@ const SignIn = (props) => {
   return (
     <KeyboardAvoidingView
       keyboardVerticalOffset="100"
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{
         flex: 1,
       }}
@@ -136,36 +136,46 @@ const SignIn = (props) => {
         edges={["right", "top", "left"]}
       > */}
       <View style={{ marginVertical: 50 }} />
-      <View></View>
-      <View style={styles.contain}>
+      <View>
         <Image
           // source={require('../../assets/images/pakubuwono.png')}
           //source={require("../../assets/images/Default-Black.webp")}
-          source={require("../../assets/images/Logo-Carstensz.png")}
+          // source={require("../../assets/images/Logo-Carstensz.png")}
+          source={require('../../assets/images/image-home/vector-logo-carstensz-navy.png')}
           style={{
-            height: 300,
-            width: "100%",
-            alignSelf: "center",
-            marginHorizontal: 100,
-            marginBottom: 40,
+            height: 70,
+            width: '100%',
+            alignSelf: 'center',
+            // marginHorizontal: 100,
+            // marginBottom: 40,
             //marginTop: 10,
-            flexDirection: "row",
-            resizeMode: "contain",
+            flexDirection: 'row',
+            resizeMode: 'contain',
           }}
         />
+      </View>
+
+      <View style={styles.contain}>
         <TextInput
-          style={[BaseStyle.textInput]}
+          style={[
+            BaseStyle.textInput,
+            { backgroundColor: colors.border, fontSize: 10 },
+          ]}
+          placeholderTextColor={colors.text}
           onChangeText={emailChanged}
           autoCorrect={false}
-          placeholder={t("input_id")}
+          placeholder={t('input_id')}
           value={email}
           selectionColor={colors.primary}
         />
         <TextInput
-          style={[BaseStyle.textInput, { marginTop: 10 }]}
+          style={[
+            BaseStyle.textInput,
+            { marginTop: 10, backgroundColor: colors.border },
+          ]}
           onChangeText={passwordChanged}
           autoCorrect={false}
-          placeholder={t("input_password")}
+          placeholder={t('input_password')}
           secureTextEntry={hidePass}
           value={password}
           selectionColor={colors.primary}
@@ -173,13 +183,13 @@ const SignIn = (props) => {
             <Icon
               onPress={() => setHidePass(!hidePass)}
               active
-              name={hidePass ? "eye-slash" : "eye"}
+              name={hidePass ? 'eye-slash' : 'eye'}
               size={20}
               color={colors.text}
             />
           }
         />
-        <View style={{ width: "100%", marginVertical: 16 }}>
+        <View style={{ width: '100%', marginVertical: 16 }}>
           <Button
             full
             loading={loading}
@@ -187,21 +197,21 @@ const SignIn = (props) => {
             // onPress={loginUser}
             onPress={loginklik}
           >
-            {t("sign_in")}
+            {t('sign_in')}
           </Button>
         </View>
         <View style={styles.contentActionBottom}>
           <TouchableOpacity
-            onPress={() => navigation.navigate("ResetPassword")}
+            onPress={() => navigation.navigate('ResetPassword')}
           >
             <Text body2 grayColor>
-              {t("forgot_your_password")}
+              {t('forgot_your_password')}
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => navigation.navigate("Skip")}>
+          <TouchableOpacity onPress={() => navigation.navigate('Skip')}>
             <Text body2 primaryColor>
-              {t("Skip Login")}
+              {t('Skip Login')}
             </Text>
           </TouchableOpacity>
         </View>

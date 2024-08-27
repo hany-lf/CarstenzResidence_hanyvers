@@ -101,7 +101,7 @@ const wait = (timeout) => {
 
 const Home = (props) => {
   console.log('hah ini api url dari env??', API_URL_LOKAL);
-  console.log('fonts', Fonts);
+
   const { navigation, route } = props;
   const { t } = useTranslation();
   const { colors } = useTheme();
