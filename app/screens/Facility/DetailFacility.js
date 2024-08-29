@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
+import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   FlatList,
   ScrollView,
@@ -10,8 +10,8 @@ import {
   Picker,
   Text,
   useWindowDimensions,
-} from "react-native";
-import styles from "./styles";
+} from 'react-native';
+import styles from './styles';
 import {
   CardChannelGrid,
   CardSlide,
@@ -27,22 +27,24 @@ import {
   colors,
   PlaceholderLine,
   Placeholder,
-} from "@components";
-import axios from "axios";
-import Swiper from "react-native-swiper";
-import { BaseColor, BaseStyle, Images, useTheme } from "@config";
-import * as Utils from "@utils";
-import RNPickerSelect from "@react-native-picker/picker";
-import { Button } from "../../components";
+} from '@components';
+import axios from 'axios';
+import Swiper from 'react-native-swiper';
+import { BaseColor, BaseStyle, Images, useTheme } from '@config';
+import * as Utils from '@utils';
+import RNPickerSelect from '@react-native-picker/picker';
+import { Button } from '../../components';
 
-import { useSelector } from "react-redux";
-import getUser from "../../selectors/UserSelectors";
-import RenderHtml from "react-native-render-html";
-import { API_URL_LOKAL } from "@env";
+import { useSelector } from 'react-redux';
+import getUser from '../../selectors/UserSelectors';
+import RenderHtml from 'react-native-render-html';
+import { API_URL_LOKAL } from '@env';
+import getProject from '../../selectors/ProjectSelector';
+
 const DetailFacility = (props) => {
   const { navigation, route } = props;
   // const {params} = props;
-  console.log("routes from facility menu", route.params);
+  console.log('routes from facility menu', route.params);
   const { t } = useTranslation();
   const { colors } = useTheme();
   const { width } = useWindowDimensions();
@@ -51,7 +53,7 @@ const DetailFacility = (props) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hasError, setErrors] = useState(false);
-  const [selectedValue, setSelectedValue] = useState("");
+  const [selectedValue, setSelectedValue] = useState('');
 
   const users = useSelector((state) => getUser(state));
   const [email, setEmail] = useState(users.user);
@@ -62,89 +64,52 @@ const DetailFacility = (props) => {
   const [spinner, setSpinner] = useState(true);
   const [terms, setDataTerms] = useState([]);
   const onSelect = (indexSelected) => {};
-  // --- for get tower
-  const getTower = async () => {
-    const data = {
-      email: email,
-      app: "O",
-    };
 
-    const config = {
-      headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        // token: "",
-      },
-    };
-    axios
-      .get(API_URL_LOKAL + `/getData/mysql/${data.email}/${data.app}`, {
-        config,
-      })
-      .then((res) => {
-        const datas = res.data;
-        // console.log('tower entity projek', datas);
-        const arrDataTower = datas.data;
-        arrDataTower.map((dat) => {
-          if (dat) {
-            // console.log('map arrdatatower', dat);
-            setdataTowerUser(dat);
-          }
-        });
-        setArrDataTowerUser(arrDataTower);
+  const project = useSelector((state) => getProject(state));
+  console.log('project di facility', project);
+  const [entity_cd, setEntity] = useState('');
+  const [project_no, setProjectNo] = useState('');
 
-        setSpinner(false);
-      })
-      .catch((error) => console.error(error))
-      .finally(() => setLoading(false));
-  };
+  // --- useeffect untuk project
+  useEffect(() => {
+    if (project && project.data && project.data.length > 0) {
+      // console.log('entity useeffect di home', project.data[0].entity_cd);
+      setEntity(project.data[0].entity_cd);
+      setProjectNo(project.data[0].project_no);
+    }
+  }, [project]);
 
   useEffect(() => {
-    getTower();
-    // getData();
-  }, []);
-
-  // useEffect(() => {
-  //   console.log('arrdatatower', dataTowerUser);
-  // }, [dataTowerUser]);
-
-  useEffect(() => {
-    // getTower();
-    getData();
-    getTermsConditions();
-  }, [dataTowerUser]);
-
-  useEffect(() => {}, []);
+    if (entity_cd && project_no) {
+      getData();
+      getTermsConditions();
+    }
+  }, [entity_cd, project_no]);
+  // --- useeffect untuk project
 
   const getData = async () => {
-    console.log("dataTowerUser", dataTowerUser);
-    const entity_cd = dataTowerUser.entity_cd;
-    const project_no = dataTowerUser.project_no;
     const facility_cd = route.params.facility_cd;
-    console.log(
-      "url data detail facility",
-      API_URL_LOKAL +
-        "/modules/facilities/facility-detail/" +
-        entity_cd +
-        "/" +
-        project_no +
-        "/" +
-        facility_cd
-    );
-    const response = await axios(
-      API_URL_LOKAL +
-        "/modules/facilities/facility-detail/" +
-        entity_cd +
-        "/" +
-        project_no +
-        "/" +
-        facility_cd
-    );
-    console.log("response fasility detail: ", response.data);
-    setData(response.data);
+
+    const config = {
+      method: 'GET',
+      url: API_URL_LOKAL + '/modules/facilities/facility-detail',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + users.Token,
+      },
+      params: {
+        entity_cd: entity_cd,
+        project_no: project_no,
+        facility_cd: facility_cd,
+      },
+    };
+
+    const response = await axios(config);
+
+    setData(response.data.data);
 
     // const dataArr = response.data[0];
-    const dataAll = response.data;
-    console.log("data all", dataAll);
+    const dataAll = response.data.data;
 
     // const imagefor = dataAll.forEach((image, i) => {
     //   console.log('images foreach', image.images);
@@ -152,26 +117,30 @@ const DetailFacility = (props) => {
     //   setArrayImage(image.images);
     // });
     const arrImage = dataAll.map((imgs, keyimgs) => {
-      console.log("imgs[0", imgs.images);
       return imgs.images;
     });
-    console.log("coba arrimages isinya", ...arrImage);
+
     setArrayImage(...arrImage);
 
-    setSpinner(arrImage != "" ? false : true);
+    setSpinner(arrImage != '' ? false : true);
   };
 
   const getTermsConditions = async () => {
-    const entity_cd = dataTowerUser.entity_cd;
-    const project_no = dataTowerUser.project_no;
-    const response = await axios(
-      API_URL_LOKAL +
-        "/modules/facilities/facility-tnc/" +
-        entity_cd +
-        "/" +
-        project_no
-    );
-    console.log("response terms data: ", response.data);
+    const config = {
+      method: 'GET',
+      url: API_URL_LOKAL + '/modules/facilities/facility-tnc',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + users.Token,
+      },
+      params: {
+        entity_cd: entity_cd,
+        project_no: project_no,
+      },
+    };
+
+    const response = await axios(config);
+
     setDataTerms(response.data.data);
     setSpinner(false);
   };
@@ -179,7 +148,7 @@ const DetailFacility = (props) => {
   const headerBackgroundColor = scrollY.interpolate({
     inputRange: [0, 140],
     outputRange: [BaseColor.whiteColor, colors.text],
-    extrapolate: "clamp",
+    extrapolate: 'clamp',
     useNativeDriver: true,
   });
 
@@ -187,7 +156,7 @@ const DetailFacility = (props) => {
   const headerImageOpacity = scrollY.interpolate({
     inputRange: [0, 250 - heightHeader - 20],
     outputRange: [1, 0],
-    extrapolate: "clamp",
+    extrapolate: 'clamp',
     useNativeDriver: true,
   });
 
@@ -197,12 +166,13 @@ const DetailFacility = (props) => {
     outputRange: [250, heightHeader],
     useNativeDriver: true,
   });
+
   const detail = data?.map((post) => {
     return (
       <View key={post.id}>
         <Text
           headline
-          style={{ marginTop: 0, fontSize: 20, fontWeight: "bold" }}
+          style={{ marginTop: 0, fontSize: 20, fontWeight: 'bold' }}
         >
           {post.title}
         </Text>
@@ -227,7 +197,7 @@ const DetailFacility = (props) => {
         </View> */}
 
         <View style={[styles.specifications, { marginTop: 10 }]}>
-          <View style={{ flexDirection: "column" }}>
+          <View style={{ flexDirection: 'column' }}>
             <Text style={{ fontSize: 16, color: BaseColor.grayColor }}>
               Phone
             </Text>
@@ -235,7 +205,7 @@ const DetailFacility = (props) => {
               style={{
                 fontSize: 16,
                 color: colors.primary,
-                fontWeight: "bold",
+                fontWeight: 'bold',
               }}
             >
               {post.phone}
@@ -260,19 +230,19 @@ const DetailFacility = (props) => {
           </Text>
           <Text
             style={{
-              textAlign: "justify",
-              width: "100%",
+              textAlign: 'justify',
+              width: '100%',
               color: colors.primary,
-              fontWeight: "bold",
+              fontWeight: 'bold',
               fontSize: 16,
             }}
           >
-            {post.description.replace(/<\/?[^>]+(>|$;)/gi, "")}
+            {post.description.replace(/<\/?[^>]+(>|$;)/gi, '')}
           </Text>
           {/* <Text style={{textAlign: 'justify'}}>{post.description}</Text> */}
         </View>
         <View style={styles.specifications}>
-          <View style={{ flexDirection: "column" }}>
+          <View style={{ flexDirection: 'column' }}>
             <Text style={{ flex: 1, fontSize: 16, color: BaseColor.grayColor }}>
               Location
             </Text>
@@ -280,7 +250,7 @@ const DetailFacility = (props) => {
               style={{
                 fontSize: 16,
                 color: colors.primary,
-                fontWeight: "bold",
+                fontWeight: 'bold',
               }}
             >
               {post.location}
@@ -307,7 +277,7 @@ const DetailFacility = (props) => {
             {terms.map((dataTerms, index) => (
               <View
                 key={index}
-                style={{ marginRight: 20, textAlign: "justify" }}
+                style={{ marginRight: 20, textAlign: 'justify' }}
               >
                 <RenderHtml
                   source={{ html: dataTerms.description }}
@@ -340,10 +310,10 @@ const DetailFacility = (props) => {
   return (
     <SafeAreaView
       style={[BaseStyle.safeAreaView, { flex: 1 }]}
-      edges={["right", "top", "left"]}
+      edges={['right', 'top', 'left']}
     >
       <Header
-        title={t("Detail")}
+        title={t('Detail')}
         renderLeft={() => {
           return (
             <Icon
@@ -368,7 +338,7 @@ const DetailFacility = (props) => {
       ) : (
         <ScrollView
           // contentContainerStyle={styles.paddingSrollView}
-          height={"100%"}
+          height={'100%'}
         >
           <Animated.View
             style={[
@@ -407,7 +377,7 @@ const DetailFacility = (props) => {
                       style={{ flex: 1, padding: 0 }}
                       activeOpacity={1}
                       onPress={() =>
-                        navigation.navigate("PreviewImages", {
+                        navigation.navigate('PreviewImages', {
                           images: arrImages,
                         })
                       }
@@ -417,7 +387,7 @@ const DetailFacility = (props) => {
                         <Image
                           key={key}
                           style={{
-                            width: "100%",
+                            width: '100%',
                             height: Utils.scaleWithPixel(250),
                           }}
                           source={{ uri: `${item.pict}` }}
@@ -447,19 +417,19 @@ const DetailFacility = (props) => {
       )}
 
       <TouchableOpacity
-        onPress={() => navigation.navigate("BookingFacility", route.params)}
+        onPress={() => navigation.navigate('BookingFacility', route.params)}
       >
         <View
           style={{
             // flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
+            justifyContent: 'center',
+            alignItems: 'center',
             padding: 10,
             height: 70,
             backgroundColor: colors.primary,
           }}
         >
-          <Text style={{ fontWeight: "bold", fontSize: 16, color: "#FFF" }}>
+          <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#FFF' }}>
             View Schedule
           </Text>
         </View>

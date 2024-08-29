@@ -10,6 +10,7 @@ module.exports = {
     ios: {},
     android: {},
   },
-  //   assets: ['./android/app/src/main/assets/fonts/'],
+  // assets: ['./android/app/src/main/assets/fonts/'],
   assets: ['./app/assets/fonts/'],
+  // assets: ['./assets/fonts/'],
 };

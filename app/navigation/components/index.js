@@ -21,8 +21,8 @@ import {
 
 // Define the tabBarIcon function
 export const tabBarIcon = ({ color, iconName, isFocused }) => {
-  console.log('iconName tab bar icon', iconName);
-  console.log('isFocused tab bar icon', isFocused);
+  // console.log('iconName tab bar icon', iconName);
+  // console.log('isFocused tab bar icon', isFocused);
   const icons = {
     home: NavHome,
     phone: NavEmergency,

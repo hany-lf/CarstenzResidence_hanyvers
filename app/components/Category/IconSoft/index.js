@@ -28,6 +28,7 @@ import {
   News,
   Event,
 } from '../../../components/Svg';
+import Fonts from '@config/Fonts';
 
 export default function CategoryIconSoft({
   style = '',
@@ -56,6 +57,7 @@ export default function CategoryIconSoft({
     }
     return BaseColor.goldColor;
   };
+  // console.log('font', Fonts);
 
   //cara penggunaannya = nama IconClass di database: nama file svg
   const iconMapper = {
@@ -72,12 +74,12 @@ export default function CategoryIconSoft({
     news: News,
     // Tambahkan pemetaan ikon lainnya sesuai kebutuhan
   };
-  console.log('iconMapper[icon]', iconMapper);
-  console.log('icon', icon);
+  // console.log('iconMapper[icon]', iconMapper);
+  // console.log('icon', icon);
 
   const IconComponent = ({ iconClass, size, color }) => {
     const SvgIcon = iconMapper[iconClass]; // Ambil komponen SVG berdasarkan IconClass
-    console.log('SvgIcon', SvgIcon);
+    // console.log('SvgIcon', SvgIcon);
     return SvgIcon ? (
       <SvgIcon width={size} height={size} stroke={color} />
     ) : null;
@@ -127,8 +129,18 @@ export default function CategoryIconSoft({
           color={getIconColor()}
         />
       </View>
-      <View style={{ marginTop: 15, maxWidth: maxWidth }}>
-        <Text footnote numberOfLines={1} style={{ textAlign: 'center' }}>
+      <View style={{ marginTop: 8, maxWidth: maxWidth }}>
+        <Text
+          footnote
+          numberOfLines={1}
+          style={{
+            textAlign: 'center',
+            fontSize: 11,
+            // fontWeight: 'bold',
+            color: colors.text,
+            fontFamily: Fonts.type.ProximaNovaBold,
+          }}
+        >
           {title}
         </Text>
       </View>
