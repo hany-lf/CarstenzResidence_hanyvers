@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { API_URL_LOKAL } from '@env'; // Sesuaikan path jika diperlukan
-import EndPoint from './EndPoint';
+import EndPoint from '../EndPoint';
 
 export const getDataAboutUs = async (token) => {
   //   console.log('token getdata endpoint', token);

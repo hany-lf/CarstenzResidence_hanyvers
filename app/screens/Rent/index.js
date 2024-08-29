@@ -36,6 +36,10 @@ import { enableExperimental } from '@utils';
 import { API_URL_LOKAL } from '@env';
 import getUser from '../../selectors/UserSelectors';
 import { useSelector } from 'react-redux';
+import {
+  getDataSaleUnit,
+  getDataRentUnit,
+} from '@config/ApiServices/RentSale/GetData';
 
 const Rent = (props) => {
   const { navigation } = props;
@@ -76,58 +80,38 @@ const Rent = (props) => {
     }, 1000);
   }, [user]);
 
-  const getDataSaleUnit = () => {
-    const config = {
-      method: 'get',
-      url: API_URL_LOKAL + '/modules/rs/sale-unit/',
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${user.Token}`,
-      },
+  // --- ini adalah contoh memakai endpoint yang one line
+  useEffect(() => {
+    const token = user.Token;
+    // console.log('token', token);
+    const fetchDataSale = async () => {
+      try {
+        const _getDataSaleUnit = await getDataSaleUnit(token);
+        // console.log('getDataAboutUs', _getDataAboutUs);
+        setData(_getDataSaleUnit);
+      } catch (error) {
+        console.error('Failed to fetch sale unit data', error);
+      }
     };
-
-    axios(config)
-      .then(({ data }) => {
-        console.log('sale -> data', data);
-        setData(data.data);
-        console.log('data >', data[0].images);
-      })
-      .catch((error) => console.error(error))
-      .finally(() => setLoading(false));
-  };
-
-  const getDataRentUnit = () => {
-    const config = {
-      method: 'get',
-      url: API_URL_LOKAL + '/modules/rs/rent-unit/',
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${user.Token}`,
-      },
+    const fetchDataRent = async () => {
+      try {
+        const _getDataRentUnit = await getDataRentUnit(token);
+        // console.log('getDataAboutUs', _getDataAboutUs);
+        setRent(_getDataRentUnit);
+      } catch (error) {
+        console.error('Failed to fetch rent unit data', error);
+      }
     };
+    setTimeout(() => {
+      setLoading(false);
+      fetchDataSale();
+      fetchDataRent();
+    }, 1000);
+  }, []);
+  // --- ini adalah contoh memakai endpoint yang one line
 
-    axios(config)
-      .then(({ data }) => {
-        console.log('rent -> data', data.data);
-        setRent(data.data);
-        console.log('data >', data.data[0].images);
-      })
-      .catch((error) => console.error(error))
-      .finally(() => setLoading(false));
-  };
-
-  const goPost = (item) => () => {
-    navigation.navigate('Post', { item: item });
-  };
   const goProductDetail = (item) => {
     navigation.navigate('EProductDetail', { item: item });
-  };
-  const goPostDetail = (item) => () => {
-    navigation.navigate('PostDetail', { item: item });
-  };
-
-  const goToCategory = () => {
-    navigation.navigate('Category');
   };
 
   const renderContent = () => {

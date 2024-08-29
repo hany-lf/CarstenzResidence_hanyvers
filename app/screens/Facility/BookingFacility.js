@@ -107,10 +107,13 @@ function BookingFacility({ route }) {
       setProjectNo(project.data[0].project_no);
     }
     getDateBook();
+    getBooked();
   }, [project]);
 
   useEffect(() => {
     if (entity_cd && project_no) {
+      getDateBook();
+      getBooked();
     }
   }, [entity_cd, project_no]);
   // --- useeffect untuk project
@@ -582,12 +585,12 @@ function BookingFacility({ route }) {
           <Text>{time.tanggal}</Text>
           {/* <Text>{datatime.daily}</Text> */}
 
-          <Icon
+          {/* <Icon
             name="calendar-week"
             size={20}
             color={colors.primary}
             enableRTL={true}
-          />
+          /> */}
         </View>
 
         <ScrollView
