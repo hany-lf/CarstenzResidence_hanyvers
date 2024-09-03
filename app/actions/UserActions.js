@@ -1,4 +1,6 @@
 import UserController from '../controllers/UserController';
+import { Alert } from 'react-native';
+import { Platform } from 'react-native';
 
 export const actionTypes = {
   LOGIN: 'LOGIN',
@@ -101,8 +103,13 @@ export const login = (email, password, token_firebase) => async (dispatch) => {
     console.log('99 userrrrr', user);
     // alert("JSON.stringify(user)");
   } catch (error) {
+    const msgPesan = error.response.data.message;
+    Platform.OS == 'android'
+      ? Alert.alert('Sorry!', msgPesan)
+      : Alert.prompt('Sorry!', msgPesan);
     // alert('error di login user action',error);
-    console.log('103 ini konsol eror', error.response);
+    console.log('103 ini konsol eror', error.response.data);
+
     // dispatch(loginError(error));
   }
 };

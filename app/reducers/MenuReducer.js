@@ -1,11 +1,11 @@
-import { actionTypes } from "../actions/MenuActions";
+import { actionTypes } from '../actions/MenuActions';
 
 const initialState = {
   menus: [],
 };
 
 const MenuReducer = (state = initialState, { type, payload }) => {
-  console.log("payload menu reducer", payload);
+  // console.log("payload menu reducer", payload);
   switch (type) {
     case actionTypes.MENU_REQUEST:
       return {

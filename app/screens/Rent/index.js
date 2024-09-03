@@ -12,6 +12,8 @@ import {
   Tag,
   colors,
   PlaceItem,
+  Placeholder,
+  PlaceholderLine,
 } from '@components';
 import { BaseStyle, useTheme } from '@config';
 import {
@@ -160,42 +162,58 @@ const Rent = (props) => {
               </View>
             ))}
           </View>
-          <View style={{ flex: 1 }}>
-            {tab.id == 1 && (
-              <FlatList
-                scrollEnabled={false}
-                contentContainerStyle={styles.paddingFlatList}
-                data={rent}
-                keyExtractor={(item, index) => item.rowID}
-                renderItem={({ item, index }) => (
-                  <ProductBlock
-                    key={index}
-                    loading={loading}
-                    adv_descs={item.adv_descs}
-                    adv_title={item.adv_title}
-                    style={{ marginVertical: 8 }}
-                    // images={item.images[0].pict}
-                    images={item.images}
-                    avatar={item.avatar}
-                    email={item.email}
-                    qty_bathroom={item.qty_bathroom}
-                    qty_bedroom={item.qty_bedroom}
-                    nett={item.nett}
-                    semi_gross={item.semi_gross}
-                    agent_name={item.agent_name}
-                    publish_date={moment(item.publish_date).format('H:mm:ss')}
-                    // publish_date={moment(item.date_created).format("H:mm:ss")}
-                    price_descs={item.price_descs}
-                    onPress={() => goProductDetail(item)}
-                    isFavorite={item.isFavorite}
-                    salePercent={item.salePercent}
-                    currency={item.currency}
-                    price={item.price}
+          {loading ? (
+            <View>
+              <View>
+                <Placeholder
+                  style={{ marginVertical: 4, paddingHorizontal: 10 }}
+                >
+                  <PlaceholderLine
+                    width={100}
+                    noMargin
+                    style={{ height: 40 }}
                   />
-                )}
-              />
-            )}
-          </View>
+                </Placeholder>
+              </View>
+            </View>
+          ) : (
+            <View style={{ flex: 1 }}>
+              {tab.id == 1 && (
+                <FlatList
+                  scrollEnabled={false}
+                  contentContainerStyle={styles.paddingFlatList}
+                  data={rent}
+                  keyExtractor={(item, index) => item.rowID}
+                  renderItem={({ item, index }) => (
+                    <ProductBlock
+                      key={index}
+                      loading={loading}
+                      adv_descs={item.adv_descs}
+                      adv_title={item.adv_title}
+                      style={{ marginVertical: 8 }}
+                      // images={item.images[0].pict}
+                      images={item.images}
+                      avatar={item.avatar}
+                      email={item.email}
+                      qty_bathroom={item.qty_bathroom}
+                      qty_bedroom={item.qty_bedroom}
+                      nett={item.nett}
+                      semi_gross={item.semi_gross}
+                      agent_name={item.agent_name}
+                      publish_date={moment(item.publish_date).format('H:mm:ss')}
+                      // publish_date={moment(item.date_created).format("H:mm:ss")}
+                      price_descs={item.price_descs}
+                      onPress={() => goProductDetail(item)}
+                      isFavorite={item.isFavorite}
+                      salePercent={item.salePercent}
+                      currency={item.currency}
+                      price={item.price}
+                    />
+                  )}
+                />
+              )}
+            </View>
+          )}
           <View style={{ flex: 1 }}>
             {tab.id == 2 && (
               <FlatList

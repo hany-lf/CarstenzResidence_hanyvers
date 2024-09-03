@@ -36,8 +36,7 @@ export default function SpecTroffice(props) {
   const [keyword, setKeyword] = useState('');
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
-  console.log('propzzz', props);
-  console.log('pecah data props', props.route.params);
+
   const [dataCategory, setDataCategory] = useState(props.route.params.data);
   const [indexCategory, setIndexCategory] = useState(props.route.params.index);
 
@@ -81,78 +80,6 @@ export default function SpecTroffice(props) {
 
   const project = useSelector((state) => getProject(state));
 
-  //-----FOR GET ENTITY & PROJJECT
-  const getTower = async () => {
-    const data = {
-      email: email,
-      //   email: 'haniyya.ulfah@ifca.co.id',
-      app: 'O',
-    };
-
-    const config = {
-      headers: {
-        accept: 'application/json',
-        'Content-Type': 'application/json',
-        // token: "",
-      },
-    };
-
-    await axios
-      .get(
-        // `http://apps.pakubuwono-residence.com/apisysadmin/api/getProject/${data.email}`,
-        API_URL_LOKAL + `/getData/mysql/${data.email}/${data.app}`,
-        {
-          config,
-        },
-      )
-      .then((res) => {
-        const datas = res.data;
-
-        const arrDataTower = datas.data;
-        console.log('data tower ada berapa', arrDataTower.length);
-
-        // arrDataTower.length > 1
-        if (arrDataTower.length > 1) {
-          setDefaultTower(false);
-        } else {
-          setDefaultTower(true);
-          setCheckedEntity(true);
-          setEntity(arrDataTower[0].entity_cd);
-          setProjectNo(arrDataTower[0].project_no);
-          setDb_Profile(arrDataTower[0].db_profile);
-          const params = {
-            entity_cd: arrDataTower[0].entity_cd,
-            project_no: arrDataTower[0].project_no,
-            db_profile: arrDataTower[0].db_profile,
-          };
-          console.log('params for debtor tower default', params);
-          getDebtor(params);
-        }
-
-        arrDataTower.map((dat) => {
-          if (dat) {
-            setdataTowerUser(dat);
-            // const jsonValue = JSON.stringify(dat);
-            //   setdataFormHelp(saveStorage);
-            // console.log('storage', saveStorage);
-            // dataArr.push(jsonValue);
-          }
-        });
-        // console.log('arrdatatower yang 1 aja default', arrDataTower);
-        setArrDataTowerUser(arrDataTower);
-
-        setSpinner(false);
-        // let dataArr = {};
-
-        // return res.data;
-      })
-      .catch((error) => {
-        console.log('error get tower api', error);
-        // alert('error get');
-      });
-  };
-
-  // --- useeffect untuk project
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
@@ -168,11 +95,49 @@ export default function SpecTroffice(props) {
         console.log('data di project', project);
         setProjectData(project.data);
         setValueProject(projects);
+        getDebtor();
       }
       // getCategoryHelp;
       // setSpinner(false);
-      getDebtor();
     }, 3000);
+  }, [project]);
+
+  useEffect(() => {
+    if (entity_cd && project_no) {
+      getDebtor();
+    }
+  }, [entity_cd, project_no]);
+  // --- useeffect untuk project
+
+  // --- useeffect untuk update email/name
+  useEffect(() => {
+    setEmail(
+      users != null && users.userData != null ? users.userData.email : '',
+    );
+  }, [email]);
+  // --- useeffect untuk update email/name
+  // --- useeffect untuk project
+  useEffect(() => {
+    // setTimeout(() => {
+
+    // }, 3000);
+    setLoading(false);
+    // getTower();
+    if (project && project.data && project.data.length > 0) {
+      // console.log('entity useeffect di home', project.data[0].entity_cd);
+      setEntity(project.data[0].entity_cd);
+      setProjectNo(project.data[0].project_no);
+      const projects = project.data.map((item, id) => ({
+        label: item.descs,
+        value: item.project_no,
+      }));
+      console.log('data di project', project);
+      setProjectData(project.data);
+      setValueProject(projects);
+    }
+    // getCategoryHelp;
+    // setSpinner(false);
+    getDebtor();
   }, [project]);
 
   // useEffect(() => {
@@ -267,7 +232,7 @@ export default function SpecTroffice(props) {
           console.log('index', index);
           // setProjectData(items);
           setCheckedEntity(true);
-          setShow(true);
+          // setShow(true);
           getDebtor(items); // ini dikasih get apapun setelah pilih project
         }
       });

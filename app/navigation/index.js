@@ -1,36 +1,36 @@
 /** @format */
 
-import { ApplicationActions } from "@actions";
-import { AssistiveTouch } from "@components";
-import { BaseSetting, useTheme } from "@config";
+import { ApplicationActions } from '@actions';
+import { AssistiveTouch } from '@components';
+import { BaseSetting, useTheme } from '@config';
 // import { NavigationContainer } from '@react-navigation/native';
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 
-import { createStackNavigator } from "@react-navigation/stack";
-import { languageSelect } from "@selectors";
-import * as Utils from "@utils";
-import i18n from "i18next";
-import React, { useEffect, useRef, useState } from "react";
-import { initReactI18next } from "react-i18next";
-import { Platform, StatusBar, View } from "react-native";
+import { createStackNavigator } from '@react-navigation/stack';
+import { languageSelect } from '@selectors';
+import * as Utils from '@utils';
+import i18n from 'i18next';
+import React, { useEffect, useRef, useState } from 'react';
+import { initReactI18next } from 'react-i18next';
+import { Platform, StatusBar, View } from 'react-native';
 //import { DarkModeProvider, useDarkMode } from "react-native-dark-mode";
-import SplashScreen from "react-native-splash-screen";
-import { useDispatch, useSelector } from "react-redux";
-import { AllScreens, ModalScreens } from "./config";
-import Profile from "@screens/Profile";
-import SignIn from "../screens/SignIn";
-import Loading from "../screens/Loading";
+import SplashScreen from 'react-native-splash-screen';
+import { useDispatch, useSelector } from 'react-redux';
+import { AllScreens, ModalScreens } from './config';
+import Profile from '@screens/Profile';
+import SignIn from '../screens/SignIn';
+import Loading from '../screens/Loading';
 
 const RootStack = createStackNavigator();
-import { StackActions } from "@react-navigation/native";
-import MainStack from "./MainStack";
-import Notification from "../screens/Notification";
-import getUser from "../selectors/UserSelectors";
-import Skip from "../screens/Skip";
-import EProductDetail from "../screens/EProductDetail";
-import messaging from "@react-native-firebase/messaging";
-import Home from "../screens/Home";
-import ResetPassword from "../screens/ResetPassword";
+import { StackActions } from '@react-navigation/native';
+import MainStack from './MainStack';
+import Notification from '../screens/Notification';
+import getUser from '../selectors/UserSelectors';
+import Skip from '../screens/Skip';
+import EProductDetail from '../screens/EProductDetail';
+import messaging from '@react-native-firebase/messaging';
+import Home from '../screens/Home';
+import ResetPassword from '../screens/ResetPassword';
 
 const Navigator = (props) => {
   const { theme, colors } = useTheme();
@@ -38,37 +38,37 @@ const Navigator = (props) => {
   const language = useSelector(languageSelect);
   const { navigation, route } = props;
   // const {route} = props;
-  console.log("navigation from app for notif", props);
+  console.log('navigation from app for notif', props);
   // const navigation = useNavigation();
-  console.log("route from app for notif", route);
+  console.log('route from app for notif', route);
 
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const navigationRef = useRef(null);
   const user = useSelector((state) => getUser(state));
-  const [initialRoute, setInitialRoute] = useState("MainStack");
+  const [initialRoute, setInitialRoute] = useState('MainStack');
   const [dataNotif, setDataNotif] = useState(false);
   const [isidataNotif, setisidataNotif] = useState([]);
   const [noti, setNoti] = useState(false);
 
-  console.log("user null ?? ", user);
+  console.log('user null ?? ', user);
 
   useEffect(() => {
     // Hide screen loading
     SplashScreen.hide();
 
     // Config status bar
-    if (Platform.OS == "android") {
+    if (Platform.OS == 'android') {
       StatusBar.setBackgroundColor(colors.primary, true);
     }
-    StatusBar.setBarStyle(isDarkMode ? "light-content" : "dark-content", true);
+    StatusBar.setBarStyle(isDarkMode ? 'light-content' : 'dark-content', true);
     const onProcess = async () => {
       // Get current language of device
       const languageCode = language ?? BaseSetting.defaultLanguage;
       dispatch(ApplicationActions.onChangeLanguage(languageCode));
       // Config language for app
       await i18n.use(initReactI18next).init({
-        compatibilityJSON: "v3", // <--- add this line for error pluralresolver
+        compatibilityJSON: 'v3', // <--- add this line for error pluralresolver
         resources: BaseSetting.resourcesLanguage,
         lng: languageCode,
         fallbackLng: languageCode,
@@ -169,7 +169,7 @@ const Navigator = (props) => {
   // };
 
   return (
-    <View style={{ flex: 1, position: "relative" }}>
+    <View style={{ flex: 1, position: 'relative' }}>
       {/* <DarkModeProvider> */}
       <NavigationContainer theme={theme} ref={navigationRef}>
         <RootStack.Navigator
@@ -180,16 +180,19 @@ const Navigator = (props) => {
         >
           {loading ? (
             <RootStack.Screen name="Loading" component={Loading} />
-          ) : user == null || user == "" || user == 0 ? (
+          ) : user == null || user == '' || user == 0 ? (
             <RootStack.Screen name="SignIn" component={SignIn} />
+          ) : user.isResetPass == 1 ? (
+            <RootStack.Screen name="ResetPassword" component={ResetPassword} />
           ) : (
             <RootStack.Screen name="MainStack" component={MainStack} />
           )}
+
           {/* <RootStack.Screen name="MainStack" component={MainStack} /> */}
           <RootStack.Screen name="Notification" component={Notification} />
           {/* <RootStack.Screen name="Home" component={Home} /> */}
           <RootStack.Screen name="Skip" component={Skip} />
-          <RootStack.Screen name="ResetPassword" component={ResetPassword} />
+
           <RootStack.Screen name="EProductDetail" component={EProductDetail} />
         </RootStack.Navigator>
       </NavigationContainer>

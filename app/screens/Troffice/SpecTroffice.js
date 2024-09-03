@@ -20,6 +20,7 @@ import { FlatList, TouchableOpacity, View, ScrollView } from 'react-native';
 
 import { useSelector } from 'react-redux';
 import getUser from '../../selectors/UserSelectors';
+import getProject from '../../selectors/ProjectSelector';
 import axios from 'axios';
 import client from '../../controllers/HttpClient';
 import styles from './styles';
@@ -29,14 +30,14 @@ import ModalDropdown_lotno from '@components/ModalDropdown_lotno';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Dropdown } from 'react-native-element-dropdown';
 import { API_URL_LOKAL } from '@env';
+
 export default function SpecTroffice(props) {
   const { t, i18n } = useTranslation();
   const { colors } = useTheme();
   const [keyword, setKeyword] = useState('');
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
-  console.log('propzzz', props);
-  console.log('pecah data props', props.route.params);
+
   const [dataCategory, setDataCategory] = useState(props.route.params.data);
   const [indexCategory, setIndexCategory] = useState(props.route.params.index);
 
@@ -71,13 +72,42 @@ export default function SpecTroffice(props) {
   const [defaultDebtor, setDefaultDebtor] = useState(false);
   const [defaultLotNo, setDefaultLotNo] = useState(false);
   const [workRequested, setworkRequested] = useState('');
+  const project = useSelector((state) => getProject(state));
+  const [showChooseProject, setShowChooseProject] = useState(false);
+  const [isFocus, setIsFocus] = useState(false);
+  const [projectData, setProjectData] = useState([]);
 
+  const [valueProject, setValueProject] = useState([]);
+  const [valueProjectSelected, setValueProjectSelected] = useState(null);
+  // const [valueProject, setValueProject] = useState([]);
+
+  // useEffect(() => {
+  //   if (project && project.data && project.data.length > 0) {
+  //     // console.log('entity useeffect di home', project.data[0].entity_cd);
+  //     setEntity(project.data[0].entity_cd);
+  //     setProjectNo(project.data[0].project_no);
+  //   }
+  //      setValueProject(projects);
+  // }, [project]);
   useEffect(() => {
-    if (project && project.data && project.data.length > 0) {
-      // console.log('entity useeffect di home', project.data[0].entity_cd);
-      setEntity(project.data[0].entity_cd);
-      setProjectNo(project.data[0].project_no);
-    }
+    setTimeout(() => {
+      setLoading(false);
+      // getTower();
+      if (project && project.data && project.data.length > 0) {
+        // console.log('entity useeffect di home', project.data[0].entity_cd);
+        setEntity(project.data[0].entity_cd);
+        setProjectNo(project.data[0].project_no);
+        const projects = project.data.map((item, id) => ({
+          label: item.descs,
+          value: item.project_no,
+        }));
+        console.log('data di project', project);
+        setProjectData(project.data);
+        setValueProject(projects);
+      }
+      // getCategoryHelp;
+      // setSpinner(false);
+    }, 3000);
   }, [project]);
 
   useEffect(() => {
@@ -177,7 +207,7 @@ export default function SpecTroffice(props) {
           console.log('index', index);
           // setProjectData(items);
           setCheckedEntity(true);
-          setShow(true);
+          // setShow(true);
           getDebtor(items); // ini dikasih get apapun setelah pilih project
         }
       });
@@ -215,7 +245,7 @@ export default function SpecTroffice(props) {
       headers: {
         accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${user.Token}`,
+        Authorization: `Bearer ${users.Token}`,
       },
       params: params,
     };
@@ -279,7 +309,7 @@ export default function SpecTroffice(props) {
       headers: {
         accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${user.Token}`,
+        Authorization: `Bearer ${users.Token}`,
       },
       params: params,
     };
@@ -374,6 +404,33 @@ export default function SpecTroffice(props) {
           );
         }}
       />
+      {showChooseProject ? (
+        <Dropdown
+          style={[
+            styles.dropdown,
+            isFocus && { borderColor: BaseColor.corn30 },
+          ]}
+          placeholderStyle={styles.placeholderStyle}
+          selectedTextStyle={styles.selectedTextStyle}
+          inputSearchStyle={styles.inputSearchStyle}
+          iconStyle={styles.iconStyle}
+          itemTextStyle={styles.itemTextStyle}
+          containerStyle={{ borderRadius: 15, marginVertical: 5 }}
+          data={valueProject}
+          search
+          maxHeight={300}
+          labelField="label"
+          valueField="value"
+          placeholder={!isFocus ? 'Choose Project' : 'Choose Project'}
+          searchPlaceholder="Search..."
+          value={valueProjectSelected}
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
+          onChange={(item, index) => {
+            handleClickProject(item, index);
+          }}
+        />
+      ) : null}
       <View style={styles.wrap}>
         <Text title>Ticket</Text>
         <Text headline style={{ fontWeight: 'normal' }}>
@@ -383,41 +440,24 @@ export default function SpecTroffice(props) {
         {/* {dataCategory.descs.includes('AC') ? <Text>ini klik ac</Text> : <Text>ini klik water</Text>} */}
         {/* {indexCategory == 0 ? <Text>ini klik ac</Text> : <Text>ini klik water</Text>} */}
 
-        {showChooseProject ? (
-          <Dropdown
-            style={[
-              styles.dropdown,
-              isFocus && { borderColor: BaseColor.corn30 },
-            ]}
-            placeholderStyle={styles.placeholderStyle}
-            selectedTextStyle={styles.selectedTextStyle}
-            inputSearchStyle={styles.inputSearchStyle}
-            iconStyle={styles.iconStyle}
-            itemTextStyle={styles.itemTextStyle}
-            containerStyle={{ borderRadius: 15, marginVertical: 5 }}
-            data={valueProject}
-            search
-            maxHeight={300}
-            labelField="label"
-            valueField="value"
-            placeholder={!isFocus ? 'Choose Project' : 'Choose Project'}
-            searchPlaceholder="Search..."
-            value={valueProjectSelected}
-            onFocus={() => setIsFocus(true)}
-            onBlur={() => setIsFocus(false)}
-            onChange={(item, index) => {
-              handleClickProject(item, index);
-            }}
-          />
-        ) : null}
-        {checkedEntity === false ? null : (
+        {checkedEntity === false ? (
+          <View
+            style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
+          >
+            <Text style={{ color: BaseColor.text }}>
+              Choose Project at top right
+            </Text>
+          </View>
+        ) : (
           <ScrollView
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{ paddingHorizontal: 20 }}
           >
             <View>
-              <View style={{ marginBottom: 5, paddingBottom: 0, marginTop: 5 }}>
+              <View
+                style={{ marginBottom: 5, paddingBottom: 0, marginTop: 15 }}
+              >
                 <ModalDropdown_debtor
                   label="Debtor"
                   data={dataDebtor}

@@ -747,12 +747,12 @@ const Home = (props) => {
 
   const onChangelot = (lot) => {
     setDefaultLotno(false);
-    console.log('lot', lot);
+    // console.log('lot', lot);
     setTextLotno(lot);
   };
 
   const goToMoreNewsAnnounce = (item) => {
-    console.log('item go to', item.length);
+    // console.log('item go to', item.length);
     navigation.navigate('NewsAnnounce', { items: item });
   };
 
@@ -762,13 +762,13 @@ const Home = (props) => {
   };
 
   const goToPromoClubFac = (item) => {
-    console.log('item go to', item.length);
+    // console.log('item go to', item.length);
     navigation.navigate('ClubFacilities', { items: item });
   };
 
   const CardItem = ({ i, item }) => {
-    console.log('key card item', i);
-    console.log('item card', item);
+    // console.log('key card item', i);
+    // console.log('item card', item);
     return (
       <TouchableOpacity
         onPress={() =>

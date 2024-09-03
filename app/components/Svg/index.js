@@ -13,6 +13,7 @@ export { default as Repair } from './home/menu/repair.svg';
 export { default as TROffice } from './home/menu/tr_office.svg';
 export { default as Package } from './home/menu/package.svg';
 export { default as Billing } from './home/menu/billing.svg';
+export { default as Carts } from './home/menu/cart.svg';
 
 //for nav bottom
 export { default as NavAccount } from './home/nav_account.svg';

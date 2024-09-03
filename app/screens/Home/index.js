@@ -100,7 +100,7 @@ const wait = (timeout) => {
 };
 
 const Home = (props) => {
-  console.log('hah ini api url dari env??', API_URL_LOKAL);
+  // console.log('hah ini api url dari env??', API_URL_LOKAL);
 
   const { navigation, route } = props;
   const { t } = useTranslation();
@@ -131,7 +131,7 @@ const Home = (props) => {
   //     : { uri: `https://dev.ifca.co.id/no-image.png` },
   // );
   const [fotoprofil, setFotoProfil] = useState('');
-  console.log('fotoprofil cek home', fotoprofil);
+  // console.log('fotoprofil cek home', fotoprofil);
   const [name, setName] = useState('');
   const [heightHeader, setHeightHeader] = useState(Utils.heightHeader());
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -150,8 +150,8 @@ const Home = (props) => {
   // const [entity_cd, setEntity] = useState(project.Data[0].entity_cd);
   // const [project_no, setProjectNo] = useState(project.Data[0].project_no);
   const [lotno, setLotno] = useState([]);
-  console.log('lotno array 0', lotno.lot_no);
-  console.log('fotoprofil >', fotoprofil);
+  // console.log('lotno array 0', lotno.lot_no);
+  // console.log('fotoprofil >', fotoprofil);
   const repl =
     user != null && user.userData != null
       ? fotoprofil.uri
@@ -201,11 +201,14 @@ const Home = (props) => {
       setEntity(project.data[0].entity_cd);
       setProjectNo(project.data[0].project_no);
     }
+    getLotNo();
+    notifUser();
   }, [project]);
 
   useEffect(() => {
     if (entity_cd && project_no) {
       getLotNo();
+      notifUser();
     }
   }, [entity_cd, project_no]);
   // --- useeffect untuk project
@@ -368,11 +371,10 @@ const Home = (props) => {
     //   `http://apps.pakubuwono-residence.com/apiwebpbi/api/first_login_Get/` + email,
     // );
     await axios(config)
-      // .get(API_URL_LOKAL + `/home/greetings`)
       .then((res) => {
         // console.log('res greetings', res.data.data);
         const image_greetings = res.data.data;
-        console.log('image_greetings', image_greetings);
+        // console.log('image_greetings', image_greetings);
         setImageGreetings(image_greetings);
         setLoadNews(false);
         // return res.data;
@@ -469,7 +471,7 @@ const Home = (props) => {
   }
 
   const notifUser = useCallback(
-    (entity_cd, project_no) =>
+    (entity_cd, project_no, email) =>
       dispatch(notifikasi_nbadge(email, entity_cd, project_no)),
     [email, entity_cd, project_no, dispatch],
   );
@@ -580,7 +582,7 @@ const Home = (props) => {
     console.log('config news', config);
     await axios(config)
       .then((res) => {
-        console.log('res news', res.data.data);
+        // console.log('res news', res.data.data);
         const datanews = res.data.data;
         const slicedatanews = datanews.slice(0, 6);
         // console.log("slice data", slicedatanews);
@@ -722,7 +724,7 @@ const Home = (props) => {
           return (max += parseInt(bills.mbal_amt));
         }, 0);
 
-  console.log('sum', sum);
+  // console.log('sum', sum);
 
   //TOTAL DATE NOT DUE
   const sumNotDue =
@@ -732,29 +734,29 @@ const Home = (props) => {
           return (max += parseInt(bills.mbal_amt));
         }, 0);
 
-  console.log('sumNotDue', sumNotDue);
+  // console.log('sumNotDue', sumNotDue);
 
   const math_total = Math.floor(sumNotDue) + Math.floor(sum);
-  console.log('math total', math_total);
+  // console.log('math total', math_total);
 
   const unique =
     getDataDue == 0 ? 0 : [...new Set(getDataDue.map((item) => item.doc_no))];
-  console.log('unique', unique);
+  // console.log('unique', unique);
 
   const uniqueNotDue =
     getDataNotDue == 0 || getDataNotDue == null
       ? 0
       : [...new Set(getDataNotDue.map((item) => item.doc_no))];
-  console.log('uniqueNotDue', uniqueNotDue);
+  // console.log('uniqueNotDue', uniqueNotDue);
 
   const invoice = unique == 0 ? 0 : unique.length;
-  console.log('invoice', invoice);
+  // console.log('invoice', invoice);
 
   const invoiceNotDue = uniqueNotDue == 0 ? 0 : uniqueNotDue.length;
-  console.log('invoiceNotDue', invoiceNotDue);
+  // console.log('invoiceNotDue', invoiceNotDue);
 
   const total_outstanding = Math.floor(invoice) + Math.floor(invoiceNotDue);
-  console.log('total_outstanding', total_outstanding);
+  // console.log('total_outstanding', total_outstanding);
 
   useEffect(() => {
     // console.log('galery', galery);
@@ -769,7 +771,7 @@ const Home = (props) => {
     fetchDataHistory();
 
     // getLotNo();
-    notifUser();
+
     setLoading(false);
 
     if (user != null && user.userData != null && user.userData.pict != null) {
@@ -777,7 +779,7 @@ const Home = (props) => {
     } else {
       setFotoProfil('https://dev.ifca.co.id/no-image.png');
     }
-    console.log('User state updated: home', user);
+    // console.log('User state updated: home', user);
   }, [user, dataMenus]);
 
   const goPostDetail = (item) => () => {
@@ -795,12 +797,12 @@ const Home = (props) => {
 
   const onChangelot = (lot) => {
     setDefaultLotno(false);
-    console.log('lot', lot);
+    // console.log('lot', lot);
     setTextLotno(lot);
   };
 
   const goToMoreNewsAnnounce = (item) => {
-    console.log('item go to', item.length);
+    // console.log('item go to', item.length);
     // navigation.navigate('NewsAnnounce', { items: item });
   };
 
@@ -810,13 +812,13 @@ const Home = (props) => {
   };
 
   const goToPromoClubFac = (item) => {
-    console.log('item go to', item.length);
+    // console.log('item go to', item.length);
     navigation.navigate('ClubFacilities', { items: item });
   };
 
   const CardItem = ({ i, item }) => {
-    console.log('key card item', i);
-    console.log('item card', item);
+    // console.log('key card item', i);
+    // console.log('item card', item);
     return (
       <TouchableOpacity
         onPress={() =>
@@ -1123,7 +1125,7 @@ const Home = (props) => {
         >
           {/* <View style={{flex: 1}}> */}
           <ImageBackground
-            source={require('../../assets/images/image-home/Main_Image.png')}
+            source={require('../../assets/images/image-home/bgHome-cartenz.png')}
             // source={require('../../assets/images/image-home/carstensz.webp')}
             imageStyle={{
               height: 400,

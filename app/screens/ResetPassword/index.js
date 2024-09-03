@@ -5,13 +5,18 @@ import {
   SafeAreaView,
   TextInput,
   Text,
-} from "@components";
-import { BaseColor, BaseStyle, useTheme } from "@config";
-import React, { useState } from "react";
-import { ScrollView, View } from "react-native";
-import { useTranslation } from "react-i18next";
-import Modal from "react-native-modal";
-import { API_URL_LOKAL } from "@env";
+} from '@components';
+import { BaseColor, BaseStyle, useTheme } from '@config';
+import React, { useState } from 'react';
+import { ScrollView, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import Modal from 'react-native-modal';
+import { API_URL_LOKAL } from '@env';
+import getUser from '../../selectors/UserSelectors';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
+import { useEffect } from 'react';
+
 const successInit = {
   email: true,
 };
@@ -19,16 +24,20 @@ const ResetPassword = (props) => {
   const { navigation } = props;
   const { t } = useTranslation();
   const { colors } = useTheme();
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(successInit);
   const [requiredEmail, setRequiredEmail] = useState(true);
   const [Alert_Visibility, setAlertVisibility] = useState(false);
-  const [pesan, setPesan] = useState("");
+  const [pesan, setPesan] = useState('');
   const [error, setError] = useState();
+  const [password, setPassword] = useState('');
+  const [hidePass, setHidePass] = useState(true);
+  const user = useSelector((state) => getUser(state));
+  console.log('user', user);
 
   const onReset = () => {
-    if (email == "") {
+    if (email == '') {
       setSuccess({
         ...success,
         email: false,
@@ -37,34 +46,44 @@ const ResetPassword = (props) => {
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
-        navigation.navigate("SignIn");
+        navigation.navigate('SignIn');
       }, 500);
     }
   };
 
-  const btnSend = () => {
+  // --- useeffect untuk update email/name
+  useEffect(() => {
+    setEmail(user != null ? user.email : '');
+  }, [email]);
+  // --- useeffect untuk update email/name
+  const btnSend_ = () => {
     const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     // const isValid = setRequiredEmail(true);
     // const isValid = validating({
     //   email: {require: true},
     // });
     // console.log('isvalid?', isValid);
-    if (email != "") {
+    if (email != '') {
       if (reg.test(email) === true) {
         const emails = email;
-        console.log("email", emails);
-        fetch(API_URL_LOKAL + "/tenant-resetpass", {
-          method: "POST",
+
+        const data = {
+          email: email,
+          newpass: password,
+        };
+        console.log('email', emails);
+        fetch(API_URL_LOKAL + '/auth/reset-pass', {
+          method: 'POST',
           headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${user.Token}`,
           },
-          body: JSON.stringify({ email }),
+          body: data,
         })
-          .then((response) => response.json())
           .then((res) => {
             // const resp = JSON.parse(res.Data);
-            console.log("res forgot pass", res);
+            console.log('res forgot pass', res);
             setError(res.success);
             if (res.success) {
               setLoading(true);
@@ -74,7 +93,7 @@ const ResetPassword = (props) => {
               setLoading(true);
               const pesan = res.message;
               alertFillBlank(true, pesan);
-              console.log("res pesan", res.message);
+              console.log('res pesan', res.message);
             }
           })
           .catch((error) => {
@@ -83,27 +102,76 @@ const ResetPassword = (props) => {
       } else {
         setLoading(true);
         // alert('Email not valid');
-        const pesan = "Email not valid";
+        const pesan = 'Email not valid';
         alertFillBlank(true, pesan);
       }
     } else {
       setLoading(true);
       // alert('Input email');
-      const pesan = "Input email please";
+      const pesan = 'Input email please';
       alertFillBlank(true, pesan);
     }
   };
 
+  const btnSend = () => {
+    const data = {
+      email: email,
+      newpass: password,
+    };
+    const config = {
+      method: 'POST',
+      url: API_URL_LOKAL + '/auth/reset-pass',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${user.Token}`,
+      },
+      params: data,
+    };
+
+    // fetch(API_URL_LOKAL + '/auth/reset-pass', {
+    //   method: 'POST',
+    //   headers: {
+    //     Accept: 'application/json',
+    //     'Content-Type': 'application/json',
+    //     Authorization: `Bearer ${user.Token}`,
+    //   },
+    //   body: data,
+    // })
+    axios(config)
+      .then((res) => {
+        // const resp = JSON.parse(res.Data);
+        console.log('res forgot pass', res);
+        setError(res.success);
+        if (res.success == true) {
+          setLoading(true);
+          setPesan(res.message);
+          const pesan = res.message;
+
+          alertFillBlank(true, pesan);
+        } else {
+          setLoading(true);
+          setPesan(res.message);
+          const pesan = res.message;
+          alertFillBlank(true, pesan);
+          console.log('res pesan', res.message);
+        }
+      })
+      .catch((error) => {
+        console.log(error.response);
+      });
+  };
+
   const alertFillBlank = (visible, pesan) => {
     setAlertVisibility(visible);
-    setPesan(pesan);
+
     setLoading(false);
   };
 
   const onCloseModal = () => {
     if (error == false) {
       setAlertVisibility(false);
-      navigation.navigate("SignIn");
+      navigation.navigate('SignIn');
     } else {
       setAlertVisibility(false);
     }
@@ -112,10 +180,10 @@ const ResetPassword = (props) => {
   return (
     <SafeAreaView
       style={BaseStyle.safeAreaView}
-      edges={["right", "top", "left"]}
+      edges={['right', 'top', 'left']}
     >
       <Header
-        title={t("reset_password")}
+        title={t('reset_password')}
         renderLeft={() => {
           return (
             <Icon
@@ -127,18 +195,40 @@ const ResetPassword = (props) => {
           );
         }}
         onPressLeft={() => {
-          navigation.goBack();
+          props.navigation.navigate('SignIn');
         }}
       />
       <ScrollView>
         <View
           style={{
-            alignItems: "center",
+            alignItems: 'center',
             padding: 20,
-            width: "100%",
+            width: '100%',
           }}
         >
           <TextInput
+            style={[
+              BaseStyle.textInput,
+              { marginTop: 10, backgroundColor: colors.border },
+            ]}
+            onChangeText={(text) => setPassword(text)}
+            autoCorrect={false}
+            placeholder={t('input_your_password')}
+            secureTextEntry={hidePass}
+            value={password}
+            selectionColor={colors.primary}
+            icon={
+              <Icon
+                onPress={() => setHidePass(!hidePass)}
+                active
+                name={hidePass ? 'eye-slash' : 'eye'}
+                size={20}
+                color={colors.text}
+              />
+            }
+          />
+
+          {/* <TextInput
             style={[BaseStyle.textInput, { marginTop: 65 }]}
             onChangeText={(text) => setEmail(text)}
             onFocus={() => {
@@ -148,14 +238,14 @@ const ResetPassword = (props) => {
               });
             }}
             autoCorrect={false}
-            placeholder={t("email_address")}
+            placeholder={t('email_address')}
             placeholderTextColor={
               success.email ? BaseColor.grayColor : colors.primary
             }
             value={email}
             selectionColor={colors.primary}
-          />
-          <View style={{ width: "100%" }}>
+          /> */}
+          <View style={{ width: '100%' }}>
             <Button
               full
               style={{ marginTop: 20 }}
@@ -165,7 +255,7 @@ const ResetPassword = (props) => {
               }}
               loading={loading}
             >
-              {t("reset_password")}
+              {t('reset_password')}
             </Button>
           </View>
         </View>
@@ -173,7 +263,7 @@ const ResetPassword = (props) => {
       <View>
         <Modal
           isVisible={Alert_Visibility}
-          style={{ height: "100%" }}
+          style={{ height: '100%' }}
           onBackdropPress={() => setAlertVisibility(false)}
         >
           <View
@@ -182,28 +272,28 @@ const ResetPassword = (props) => {
 
               // alignContent: 'center',
               padding: 10,
-              backgroundColor: "#fff",
+              backgroundColor: '#fff',
               // height: ,
               borderRadius: 8,
             }}
           >
-            <View style={{ alignItems: "center" }}>
+            <View style={{ alignItems: 'center' }}>
               <Text
                 style={{
                   fontSize: 16,
-                  fontWeight: "bold",
+                  fontWeight: 'bold',
                   color: colors.primary,
                   marginBottom: 10,
                 }}
               >
-                {"Alert"}
+                {'Alert'}
               </Text>
-              <Text>{pesan}</Text>
+              <Text style={{ fontSize: 13, color: colors.text }}>{pesan}</Text>
             </View>
             <View
               style={{
-                flexDirection: "row",
-                justifyContent: "flex-end",
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
               }}
             >
               <Button
@@ -216,7 +306,9 @@ const ResetPassword = (props) => {
                 }}
                 onPress={() => onCloseModal()}
               >
-                <Text style={{ fontSize: 13 }}>{t("OK")}</Text>
+                <Text style={{ fontSize: 13, color: BaseColor.whiteColor }}>
+                  {t('OK')}
+                </Text>
               </Button>
             </View>
           </View>

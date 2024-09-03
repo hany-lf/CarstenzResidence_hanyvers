@@ -5,33 +5,33 @@ import {
   SafeAreaView,
   Text,
   TextInput,
-} from "@components";
-import { BaseColor, BaseStyle, useTheme } from "@config";
-import React, { useState } from "react";
-import { ScrollView, View } from "react-native";
-import styles from "./styles";
-import { useTranslation } from "react-i18next";
-import axios from "axios";
-import getUser from "../../selectors/UserSelectors";
-import { useSelector } from "react-redux";
-import Modal from "react-native-modal";
-import { API_URL_LOKAL } from "@env";
+} from '@components';
+import { BaseColor, BaseStyle, useTheme } from '@config';
+import React, { useState } from 'react';
+import { ScrollView, View } from 'react-native';
+import styles from './styles';
+import { useTranslation } from 'react-i18next';
+import axios from 'axios';
+import getUser from '../../selectors/UserSelectors';
+import { useSelector } from 'react-redux';
+import Modal from 'react-native-modal';
+import { API_URL_LOKAL } from '@env';
 
 const ChangePassword = (props) => {
   const { navigation } = props;
   const { t } = useTranslation();
   const { colors } = useTheme();
-  const [password, setPassword] = useState("");
-  const [repassword, setRepassword] = useState("");
+  const [password, setPassword] = useState('');
+  const [repassword, setRepassword] = useState('');
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => getUser(state));
-  const [email, setEmail] = useState(user != null ? user.user : "");
+  const [email, setEmail] = useState(user != null ? user.user : '');
   const [hidePass, setHidePass] = useState(true);
   const [hideRePass, setHideRePass] = useState(true);
   const [modalAlert, setModalAlert] = useState(false);
   const [modalAlertNotMatch, setModalAlertNotMatch] = useState(false);
-  const [messageAlert, setMessageAlert] = useState("");
-  const [messageAlertNotMatch, setMessageAlertNotMatch] = useState("");
+  const [messageAlert, setMessageAlert] = useState('');
+  const [messageAlertNotMatch, setMessageAlertNotMatch] = useState('');
 
   const changePassword = () => {
     if (password == repassword) {
@@ -39,9 +39,9 @@ const ChangePassword = (props) => {
         email: email,
         newpass: password,
       };
-      console.log("formdaata change pass", formData);
+      console.log('formdaata change pass', formData);
       axios
-        .post(API_URL_LOKAL + "/auth/change-pass", formData)
+        .post(API_URL_LOKAL + '/auth/change-pass', formData)
         .then((res) => {
           if (res.data.success == true) {
             setModalAlert(true);
@@ -55,20 +55,20 @@ const ChangePassword = (props) => {
           }
         })
         .catch((error) => {
-          console.log(error.response);
+          console.log('error change password', error.response);
         });
 
       // alert('same password');
     } else {
       // alert('different password');
       setModalAlertNotMatch(true);
-      setMessageAlertNotMatch("Passwords do not match.");
+      setMessageAlertNotMatch('Passwords do not match.');
     }
   };
 
   const onCloseAlert = () => {
     setModalAlert(false);
-    navigation.navigate("Home");
+    navigation.navigate('Home');
   };
   const onCloseAlertNotMatch = () => {
     setModalAlertNotMatch(false);
@@ -77,10 +77,10 @@ const ChangePassword = (props) => {
   return (
     <SafeAreaView
       style={BaseStyle.safeAreaView}
-      edges={["right", "top", "left"]}
+      edges={['right', 'top', 'left']}
     >
       <Header
-        title={t("change_password")}
+        title={t('change_password')}
         renderLeft={() => {
           return (
             <Icon
@@ -99,7 +99,7 @@ const ChangePassword = (props) => {
         <View style={styles.contain}>
           <View style={styles.contentTitle}>
             <Text headline semibold>
-              {t("password")}
+              {t('password')}
             </Text>
           </View>
           <TextInput
@@ -107,7 +107,7 @@ const ChangePassword = (props) => {
             onChangeText={(text) => setPassword(text)}
             autoCorrect={false}
             // secureTextEntry={true}
-            placeholder={t("password")}
+            placeholder={t('password')}
             placeholderTextColor={BaseColor.grayColor}
             value={password}
             selectionColor={colors.primary}
@@ -116,7 +116,7 @@ const ChangePassword = (props) => {
               <Icon
                 onPress={() => setHidePass(!hidePass)}
                 active
-                name={hidePass ? "eye-slash" : "eye"}
+                name={hidePass ? 'eye-slash' : 'eye'}
                 size={20}
                 color={colors.text}
               />
@@ -125,7 +125,7 @@ const ChangePassword = (props) => {
 
           <View style={styles.contentTitle}>
             <Text headline semibold>
-              {t("re_password")}
+              {t('re_password')}
             </Text>
           </View>
           <TextInput
@@ -133,7 +133,7 @@ const ChangePassword = (props) => {
             onChangeText={(text) => setRepassword(text)}
             autoCorrect={false}
             secureTextEntry={hideRePass}
-            placeholder={t("password_confirm")}
+            placeholder={t('password_confirm')}
             placeholderTextColor={BaseColor.grayColor}
             value={repassword}
             selectionColor={colors.primary}
@@ -141,7 +141,7 @@ const ChangePassword = (props) => {
               <Icon
                 onPress={() => setHideRePass(!hideRePass)}
                 active
-                name={hideRePass ? "eye-slash" : "eye"}
+                name={hideRePass ? 'eye-slash' : 'eye'}
                 size={20}
                 color={colors.text}
               />
@@ -161,7 +161,7 @@ const ChangePassword = (props) => {
             // }, 500);
           }}
         >
-          {t("confirm")}
+          {t('confirm')}
         </Button>
       </View>
 
@@ -169,7 +169,7 @@ const ChangePassword = (props) => {
       <View>
         <Modal
           isVisible={modalAlert}
-          style={{ height: "100%" }}
+          style={{ height: '100%' }}
           onBackdropPress={() => onCloseAlert()}
         >
           <View
@@ -178,28 +178,28 @@ const ChangePassword = (props) => {
 
               // alignContent: 'center',
               padding: 10,
-              backgroundColor: "#fff",
+              backgroundColor: '#fff',
               // height: ,
               borderRadius: 8,
             }}
           >
-            <View style={{ alignItems: "center" }}>
+            <View style={{ alignItems: 'center' }}>
               <Text
                 style={{
                   fontSize: 16,
-                  fontWeight: "bold",
+                  fontWeight: 'bold',
                   color: colors.primary,
                   marginBottom: 10,
                 }}
               >
-                {messageAlert.includes("success") ? "Success" : "Failed"}
+                {messageAlert.includes('success') ? 'Success' : 'Failed'}
               </Text>
               <Text>{messageAlert}</Text>
             </View>
             <View
               style={{
-                flexDirection: "row",
-                justifyContent: "flex-end",
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
               }}
             >
               <Button
@@ -213,7 +213,7 @@ const ChangePassword = (props) => {
                 onPress={() => onCloseAlert()}
               >
                 <Text style={{ fontSize: 13, color: colors.whiteColor }}>
-                  {t("OK")}
+                  {t('OK')}
                 </Text>
               </Button>
             </View>
@@ -226,7 +226,7 @@ const ChangePassword = (props) => {
       <View>
         <Modal
           isVisible={modalAlertNotMatch}
-          style={{ height: "100%" }}
+          style={{ height: '100%' }}
           onBackdropPress={() => onCloseAlertNotMatch()}
         >
           <View
@@ -235,28 +235,28 @@ const ChangePassword = (props) => {
 
               // alignContent: 'center',
               padding: 10,
-              backgroundColor: "#fff",
+              backgroundColor: '#fff',
               // height: ,
               borderRadius: 8,
             }}
           >
-            <View style={{ alignItems: "center" }}>
+            <View style={{ alignItems: 'center' }}>
               <Text
                 style={{
                   fontSize: 16,
-                  fontWeight: "bold",
+                  fontWeight: 'bold',
                   color: colors.primary,
                   marginBottom: 10,
                 }}
               >
-                {"Failed"}
+                {'Failed'}
               </Text>
               <Text>{messageAlertNotMatch}</Text>
             </View>
             <View
               style={{
-                flexDirection: "row",
-                justifyContent: "flex-end",
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
               }}
             >
               <Button
@@ -270,7 +270,7 @@ const ChangePassword = (props) => {
                 onPress={() => onCloseAlertNotMatch()}
               >
                 <Text style={{ fontSize: 13, color: colors.whiteColor }}>
-                  {t("OK")}
+                  {t('OK')}
                 </Text>
               </Button>
             </View>

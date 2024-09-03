@@ -105,3 +105,7 @@ Subject Public Key Algorithm: 2048-bit RSA key
 Version: 1
 
 ---
+
+untuk file yang terlalu besar tidak bisa masuk ke git, maka perlu dihapus dulu dengan perintah berikut (sesuai dengan nama file)
+
+git filter-branch --tree-filter 'rm -rf .yarn/cache/react-native-segment-control-npm-1.0.5-ca030c8d9f-47202ce952.zip' HEAD

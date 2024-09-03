@@ -93,9 +93,9 @@ const EProductDetail = (props) => {
   } = productData;
 
   useEffect(() => {
-    console.log('texttdsadas', productData);
+    // console.log('texttdsadas', productData);
     // console.log('liatttt', galery);
-    console.log('user for rent sell', user);
+    // console.log('user for rent sell', user);
     setTimeout(() => {
       setLoading(false);
     }, 1000);
@@ -391,11 +391,19 @@ const EProductDetail = (props) => {
         </View>
         <View>
           {/* <ListThumbCircle source={avatar} /> */}
-          <ListThumbCircle
-            image={{ uri: `${avatar}` }}
-            txtLeftTitle={agent_name}
-            txtContent={email}
-          />
+          {avatar.includes('localhost') ? (
+            <ListThumbCircle
+              image={Images.avata1}
+              txtLeftTitle={agent_name}
+              txtContent={email}
+            />
+          ) : (
+            <ListThumbCircle
+              image={{ uri: `${avatar}` }}
+              txtLeftTitle={agent_name}
+              txtContent={email}
+            />
+          )}
           {/* <Text title4 semibold style={{marginTop: 5}}>
             {agent_name}
           </Text>

@@ -123,6 +123,10 @@ const SignIn = (props) => {
     android: 20,
   });
 
+  useEffect(() => {
+    console.log('users di sign in', user);
+  }, []);
+
   return (
     <KeyboardAvoidingView
       keyboardVerticalOffset="100"

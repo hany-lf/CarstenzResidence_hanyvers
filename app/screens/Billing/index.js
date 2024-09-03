@@ -119,58 +119,58 @@ const Billing = ({
   }, [email]);
 
   //-----FOR GET ENTITY & PROJJECT
-  const getTower = async () => {
-    const data = {
-      email: email,
-      //   email: 'haniyya.ulfah@ifca.co.id',
-      app: 'O',
-    };
+  // const getTower = async () => {
+  //   const data = {
+  //     email: email,
+  //     //   email: 'haniyya.ulfah@ifca.co.id',
+  //     app: 'O',
+  //   };
 
-    const config = {
-      headers: {
-        accept: 'application/json',
-        'Content-Type': 'application/json',
-        // token: "",
-      },
-    };
+  //   const config = {
+  //     headers: {
+  //       accept: 'application/json',
+  //       'Content-Type': 'application/json',
+  //       // token: "",
+  //     },
+  //   };
 
-    await axios
-      .get(
-        // `http://apps.pakubuwono-residence.com/apisysadmin/api/getProject/${data.email}`,
-        API_URL_LOKAL + `/getData/mysql/${data.email}/${data.app}`,
-        {
-          config,
-        },
-      )
-      .then((res) => {
-        const datas = res.data;
+  //   await axios
+  //     .get(
+  //       // `http://apps.pakubuwono-residence.com/apisysadmin/api/getProject/${data.email}`,
+  //       API_URL_LOKAL + `/getData/mysql/${data.email}/${data.app}`,
+  //       {
+  //         config,
+  //       },
+  //     )
+  //     .then((res) => {
+  //       const datas = res.data;
 
-        const arrDataTower = datas.data;
-        // let dataArr = {};
-        arrDataTower.map((dat) => {
-          if (dat) {
-            console.log('data trower', dat.entity_cd);
-            setdataTowerUser(dat);
-            setEntity(dat.entity_cd);
-            setProjectNo(dat.project_no);
-            // const jsonValue = JSON.stringify(dat);
-            //   setdataFormHelp(saveStorage);
-            // console.log('storage', saveStorage);
-            // dataArr.push(jsonValue);
-            // getDebtor(dat);
-          }
-        });
-        // AsyncStorage.setItem('@DataTower', dataArr);
-        setArrDataTowerUser(arrDataTower);
+  //       const arrDataTower = datas.data;
+  //       // let dataArr = {};
+  //       arrDataTower.map((dat) => {
+  //         if (dat) {
+  //           console.log('data trower', dat.entity_cd);
+  //           setdataTowerUser(dat);
+  //           setEntity(dat.entity_cd);
+  //           setProjectNo(dat.project_no);
+  //           // const jsonValue = JSON.stringify(dat);
+  //           //   setdataFormHelp(saveStorage);
+  //           // console.log('storage', saveStorage);
+  //           // dataArr.push(jsonValue);
+  //           // getDebtor(dat);
+  //         }
+  //       });
+  //       // AsyncStorage.setItem('@DataTower', dataArr);
+  //       setArrDataTowerUser(arrDataTower);
 
-        setSpinner(false);
-        // return res.data;
-      })
-      .catch((error) => {
-        console.log('error get tower api', error);
-        alert('error get');
-      });
-  };
+  //       setSpinner(false);
+  //       // return res.data;
+  //     })
+  //     .catch((error) => {
+  //       console.log('error get tower api', error);
+  //       alert('error get');
+  //     });
+  // };
 
   useEffect(() => {
     // getTower(user);
@@ -183,10 +183,10 @@ const Billing = ({
   }, []);
   // Make function to call the api
   async function fetchData() {
-    console.log(
-      'api due sumary',
-      API_URL_LOKAL + `/modules/billing/due-summary/${email}`,
-    );
+    // console.log(
+    //   'api due sumary',
+    //   API_URL_LOKAL + `/modules/billing/due-summary/${email}`,
+    // );
     const config = {
       method: 'get',
       url: API_URL_LOKAL + `/modules/billing/due-summary/${email}`,
@@ -201,16 +201,17 @@ const Billing = ({
       console.log('DATA DUE DATE -->', res.data.data);
       setLoading(false);
     } catch (error) {
+      console.log('error due summary', error.response);
       setErrors(error.response.data);
       // alert(hasError.toString());
     }
   }
 
   async function fetchDataCurrent() {
-    console.log(
-      'api current sumary',
-      API_URL_LOKAL + `/modules/billing/current-summary/${email}`,
-    );
+    // console.log(
+    //   'api current sumary',
+    //   API_URL_LOKAL + `/modules/billing/current-summary/${email}`,
+    // );
     const config = {
       method: 'get',
       url: API_URL_LOKAL + `/modules/billing/current-summary/${email}`,
@@ -226,7 +227,7 @@ const Billing = ({
       setLoading(false);
     } catch (error) {
       console.log('error fetch data current', error.response);
-      setErrors(error.response.data);
+      // setErrors(error.response.data);
       // alert(hasError.toString());
     }
   }

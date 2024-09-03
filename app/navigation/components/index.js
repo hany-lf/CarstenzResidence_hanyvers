@@ -45,12 +45,12 @@ export const tabBarIcon = ({ color, iconName, isFocused }) => {
 
 export const tabBarIconHaveNoty = ({ color, iconName }) => {
   // const notifData_FromRed = useSelector(state => getNotifRed(state));
-  console.log('icon name di icon haveduty', iconName);
+  // console.log('icon name di icon haveduty', iconName);
 
   const data = useSelector((state) => state.apiReducer.data);
 
   useEffect(() => {
-    console.log('data di tabbar', data);
+    // console.log('data di tabbar', data);
   }, [data]);
 
   // const finalCount =

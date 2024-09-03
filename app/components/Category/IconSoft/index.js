@@ -27,6 +27,7 @@ import {
   Package,
   News,
   Event,
+  Carts,
 } from '../../../components/Svg';
 import Fonts from '@config/Fonts';
 
@@ -72,6 +73,7 @@ export default function CategoryIconSoft({
     event: Event,
     // package: Package,
     news: News,
+    cart: Carts,
     // Tambahkan pemetaan ikon lainnya sesuai kebutuhan
   };
   // console.log('iconMapper[icon]', iconMapper);
