@@ -11,40 +11,41 @@ import {
   CategoryGrid,
   CategoryBoxColor,
   ModalFilterLocation,
-} from "@components";
-import { BaseColor, BaseStyle, useTheme } from "@config";
-import { FFriends } from "@data";
-import { useNavigation } from "@react-navigation/native";
-import { haveChildren } from "@utils";
-import React, { useEffect, useState, useMemo } from "react";
-import { useTranslation } from "react-i18next";
+} from '@components';
+import { BaseColor, BaseStyle, useTheme } from '@config';
+import { FFriends } from '@data';
+import { useNavigation } from '@react-navigation/native';
+import { haveChildren } from '@utils';
+import React, { useEffect, useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   FlatList,
   TouchableOpacity,
   View,
-  Picker,
+  // Picker,
   Modal,
   Platform,
   ScrollView,
   // Text,
-} from "react-native";
-import CheckBox from "@react-native-community/checkbox";
-import axios from "axios";
-import styles from "./styles";
+} from 'react-native';
+import { Picker } from '@react-native-picker/picker';
+import CheckBox from '@react-native-community/checkbox';
+import axios from 'axios';
+import styles from './styles';
 
 export default function ContractInformation() {
   const { t, i18n } = useTranslation();
   const { colors } = useTheme();
   const [loading, setLoading] = useState(true);
-  const [selectedValue, setSelectedValue] = useState("");
-  const [selectedValue1, setSelectedValue1] = useState("");
+  const [selectedValue, setSelectedValue] = useState('');
+  const [selectedValue1, setSelectedValue1] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisible1, setModalVisible1] = useState(false);
   const [formData, setFormData] = useState({
-    company_name: "",
-    address: "",
-    phone: "",
-    trade_name: "",
+    company_name: '',
+    address: '',
+    phone: '',
+    trade_name: '',
   });
   const [option1Checked, setOption1Checked] = useState(false);
   const [option2Checked, setOption2Checked] = useState(false);
@@ -52,7 +53,7 @@ export default function ContractInformation() {
   const [option4Checked, setOption4Checked] = useState(false);
   const [option5Checked, setOption5Checked] = useState(false);
 
-  const iosPickerStyle = Platform.OS === "ios" ? styles.iosPicker : null;
+  const iosPickerStyle = Platform.OS === 'ios' ? styles.iosPicker : null;
 
   const handleOptionSelect = (option) => {
     setOption1Checked(false);
@@ -62,19 +63,19 @@ export default function ContractInformation() {
     setOption5Checked(false);
 
     switch (option) {
-      case "option1":
+      case 'option1':
         setOption1Checked(true);
         break;
-      case "option2":
+      case 'option2':
         setOption2Checked(true);
         break;
-      case "option3":
+      case 'option3':
         setOption3Checked(true);
         break;
-      case "option4":
+      case 'option4':
         setOption4Checked(true);
         break;
-      case "option5":
+      case 'option5':
         setOption5Checked(true);
         break;
       default:
@@ -84,7 +85,7 @@ export default function ContractInformation() {
   const navigation = useNavigation();
   const handleNextScreen = () => {
     // Ganti 'NextScreen' dengan nama screen tujuan untuk navigasi
-    navigation.navigate("ContractorPermitExit");
+    navigation.navigate('ContractorPermitExit');
   };
   useEffect(() => {
     setTimeout(() => {
@@ -95,29 +96,29 @@ export default function ContractInformation() {
   return (
     <SafeAreaView
       style={BaseStyle.safeAreaView}
-      edges={["right", "top", "left"]}
+      edges={['right', 'top', 'left']}
     >
       <View
         style={{
-          alignItems: "center",
-          justifyContent: "center",
+          alignItems: 'center',
+          justifyContent: 'center',
           marginTop: 120,
         }}
       >
         <Image
-          source={require("@assets/images/goods.png")}
+          source={require('@assets/images/goods.png')}
           style={{
             height: 200,
             width: 300,
             // marginHorizontal: 100,
             // flexDirection: 'row',
-            resizeMode: "cover",
+            resizeMode: 'cover',
             // alignSelf: 'center',
           }}
         />
         <View style={{ marginTop: 20 }}>
           <Text
-            style={{ fontSize: 16, fontWeight: "bold", textAlign: "center" }}
+            style={{ fontSize: 16, fontWeight: 'bold', textAlign: 'center' }}
           >
             Fill your form below
           </Text>
@@ -125,14 +126,14 @@ export default function ContractInformation() {
             style={{
               marginTop: 10,
               fontSize: 16,
-              fontWeight: "100",
-              textAlign: "center",
+              fontWeight: '100',
+              textAlign: 'center',
             }}
           >
             Please fill in the forms
           </Text>
           <Text
-            style={{ fontSize: 16, fontWeight: "100", textAlign: "center" }}
+            style={{ fontSize: 16, fontWeight: '100', textAlign: 'center' }}
           >
             below for permit request data
           </Text>
@@ -147,8 +148,8 @@ export default function ContractInformation() {
           <Text
             style={{
               fontSize: 16,
-              fontWeight: "bold",
-              textAlign: "center",
+              fontWeight: 'bold',
+              textAlign: 'center',
               // marginBottom: 20,
             }}
           >
@@ -201,12 +202,12 @@ export default function ContractInformation() {
             >
               <Text
                 style={
-                  selectedValue === ""
-                    ? { color: "#A4A4A4" }
-                    : { color: "black" }
+                  selectedValue === ''
+                    ? { color: '#A4A4A4' }
+                    : { color: 'black' }
                 }
               >
-                {selectedValue !== "" ? selectedValue : "Unit Number"}
+                {selectedValue !== '' ? selectedValue : 'Unit Number'}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -215,12 +216,12 @@ export default function ContractInformation() {
             >
               <Text
                 style={
-                  selectedValue1 === ""
-                    ? { color: "#A4A4A4" }
-                    : { color: "black" }
+                  selectedValue1 === ''
+                    ? { color: '#A4A4A4' }
+                    : { color: 'black' }
                 }
               >
-                {selectedValue1 !== "" ? selectedValue1 : "Location"}
+                {selectedValue1 !== '' ? selectedValue1 : 'Location'}
               </Text>
             </TouchableOpacity>
           </ScrollView>

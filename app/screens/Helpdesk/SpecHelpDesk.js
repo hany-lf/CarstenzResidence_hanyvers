@@ -413,13 +413,22 @@ export default function SpecHelpDesk() {
           }}
         />
       ) : null}
+
       <View style={styles.wrap}>
         <Text title2>Ticket</Text>
         <Text headline style={{ fontWeight: 'normal' }}>
           Service Request Form
         </Text>
 
-        {checkedEntity === false ? null : (
+        {checkedEntity === false ? (
+          <View
+            style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
+          >
+            <Text style={{ color: BaseColor.text }}>
+              Choose Project at top right
+            </Text>
+          </View>
+        ) : (
           <ScrollView
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}

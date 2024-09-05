@@ -10,52 +10,53 @@ import {
   Header,
   Icon,
   CategoryIconSoft,
-} from "@components";
-import { BaseColor, BaseStyle, useTheme } from "@config";
-import { CheckBox, Badge } from "react-native-elements";
-import { Image } from "react-native";
-import { parseHexTransparency } from "@utils";
-import { useNavigation } from "@react-navigation/native";
+} from '@components';
+import { BaseColor, BaseStyle, useTheme } from '@config';
+import { CheckBox, Badge } from 'react-native-elements';
+import { Image } from 'react-native';
+import { parseHexTransparency } from '@utils';
+import { useNavigation } from '@react-navigation/native';
 
-import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   FlatList,
   TouchableOpacity,
   View,
   Platform,
   TouchableHighlight,
-} from "react-native";
+  Dimensions,
+} from 'react-native';
 
-import { useSelector } from "react-redux";
-import getUser from "../../selectors/UserSelectors";
-import getProject from "../../selectors/ProjectSelector";
-import axios from "axios";
-import client from "../../controllers/HttpClient";
-import styles from "./styles";
+import { useSelector } from 'react-redux';
+import getUser from '../../selectors/UserSelectors';
+import getProject from '../../selectors/ProjectSelector';
+import axios from 'axios';
+import client from '../../controllers/HttpClient';
+import styles from './styles';
 
-import { RadioButton } from "react-native-paper";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { RadioButton } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { API_URL_LOKAL } from "@env";
+import { API_URL_LOKAL } from '@env';
 
-import { Dropdown } from "react-native-element-dropdown";
+import { Dropdown } from 'react-native-element-dropdown';
 
 export default function StatusHelp({ route }) {
   const { t, i18n } = useTranslation();
   const { colors } = useTheme();
-  const [keyword, setKeyword] = useState("");
+  const [keyword, setKeyword] = useState('');
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
 
   const [dataTowerUser, setdataTowerUser] = useState([]);
   const [arrDataTowerUser, setArrDataTowerUser] = useState([]);
   const users = useSelector((state) => getUser(state));
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
   const [urlApi, seturlApi] = useState(client);
-  const [entity_cd, setEntity] = useState("");
-  const [project_no, setProjectNo] = useState("");
-  const [db_profile, setDb_Profile] = useState("");
+  const [entity_cd, setEntity] = useState('');
+  const [project_no, setProjectNo] = useState('');
+  const [db_profile, setDb_Profile] = useState('');
   const [checkedEntity, setCheckedEntity] = useState(false);
   const [spinner, setSpinner] = useState(true);
   const [dataStatus, setDataStatus] = useState([]);
@@ -72,15 +73,15 @@ export default function StatusHelp({ route }) {
   const [projectData, setProjectData] = useState([]);
   const project = useSelector((state) => getProject(state));
 
-    //  getTicketStatus(params);
-    //       setShow(true);
+  //  getTicketStatus(params);
+  //       setShow(true);
   //   console.log('passprop kategori help', passProp);
   const styleItem = {
     ...styles.profileItem,
     borderBottomColor: colors.border,
   };
-  
-// --- useeffect untuk project
+
+  // --- useeffect untuk project
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
@@ -93,39 +94,38 @@ export default function StatusHelp({ route }) {
           label: item.descs,
           value: item.project_no,
         }));
-        console.log("data di project", project);
+        console.log('data di project', project);
         setProjectData(project.data);
         setValueProject(projects);
 
         getTicketStatus(project);
         setShow(true);
       }
-       
     }, 3000);
   }, [project]);
 
-    // --- useeffect untuk update email/name
+  // --- useeffect untuk update email/name
   useEffect(() => {
-    setEmail(users != null && users.userData != null ? users.userData.email : "");
+    setEmail(
+      users != null && users.userData != null ? users.userData.email : '',
+    );
   }, [email]);
   // --- useeffect untuk update email/name
 
- 
-
   const handleClickProject = (item, index) => {
-    console.log("index", index);
+    console.log('index', index);
     setValueProjectSelected(item.value);
 
     setIsFocus(!isFocus);
     setShowChooseProject(!showChooseProject);
 
     if (item.value != null) {
-      console.log("value project selected", item.value);
+      console.log('value project selected', item.value);
       projectData.map((items, index) => {
-        console.log("items project data", items);
+        console.log('items project data', items);
         if (items.project_no === item.value) {
-          console.log("items choose project handle", items);
-          console.log("index", index);
+          console.log('items choose project handle', items);
+          console.log('index', index);
           // setProjectData(items);
           setCheckedEntity(true);
           // setShow(true);
@@ -136,21 +136,20 @@ export default function StatusHelp({ route }) {
   };
 
   const getTicketStatus = async (data) => {
-    console.log("data for status", data);
-
+    console.log('data for status', data);
 
     const formData = {
-      entity_cd: data.entity_cd,
-      project_no: data.project_no,
+      entity_cd: entity_cd,
+      project_no: project_no,
       email: email,
     };
 
-    console.log("formdata", formData);
+    console.log('formdata', formData);
     const config = {
-      method: "get",
-      url: API_URL_LOKAL + "/modules/cs/ticket-status-count",
+      method: 'get',
+      url: API_URL_LOKAL + '/modules/cs/ticket-status-count',
       headers: {
-        "content-type": "application/json",
+        'content-type': 'application/json',
         Authorization: `Bearer ${users.Token}`,
       },
       params: formData,
@@ -160,10 +159,10 @@ export default function StatusHelp({ route }) {
       .then((res) => {
         const datas = res.data;
 
-        console.log("data kategori", datas.success);
+        console.log('data kategori', datas.success);
         if (datas.success === true) {
           const datastatus = datas.data;
-          console.log("datastatus", datastatus);
+          console.log('datastatus', datastatus);
 
           if (datastatus.length > 1) {
             setDefaultStatus(false);
@@ -181,46 +180,53 @@ export default function StatusHelp({ route }) {
         // return res.data;
       })
       .catch((error) => {
-        console.log("error get status api", error.response);
+        console.log('error get status api', error.response);
         // alert('error get');
       });
   };
 
   const handleNavigation = (data, ticketStatus) => {
-    console.log("data where tiket statuss", data);
-    console.log("tikett status", ticketStatus);
+    console.log('data where tiket statuss', data);
+    console.log('tikett status', ticketStatus);
     setDisabled(true);
+    // const statusString = 'A'; // String tanpa tanda kutip satu
     getTicketWhereStatus(data, ticketStatus);
   };
+
   const getTicketWhereStatus = async (data, ticketStatus) => {
-    console.log("data where", data);
-    console.log("tiket state where", ticketStatus);
+    // console.log('data where', data);
+    console.log('tiket state where', ticketStatus);
 
     const formData = {
-        email: email,
-        status: ticketStatus,
-      };
+      email: email,
+      status: ticketStatus,
+      date_start: '',
+      date_end: '',
+    };
+
+    console.log('formdata where', formData);
+
     const config = {
-      method: "get",
-      url: API_URL_LOKAL + "/modules/cs/ticket-by-status",
+      method: 'get',
+      url: API_URL_LOKAL + '/modules/cs/ticket-by-status',
       headers: {
-        "content-type": "application/json",
+        'content-type': 'application/json',
         Authorization: `Bearer ${users.Token}`,
       },
       params: formData,
-    }
+    };
     await axios(config)
       .then((res) => {
         const datas = res.data;
 
-        // console.log('data datastatuswhere', datas);
+        console.log('data datastatuswhere', datas);
         const datastatuswhere = datas.data;
         // navigation.navigate('ViewHistoryStatus', {datastatuswhere}); //sementara krn data 0
         if (datas.success === true) {
           const datastatuswhere = datas.data;
           // setDataStatus(datastatus);
-          navigation.navigate("ViewHistoryStatus", datastatuswhere);
-          console.log("datastatuswhere", datastatuswhere);
+          navigation.navigate('ViewHistoryStatus', datastatuswhere);
+          // console.log('datastatuswhere', datastatuswhere);
         } else {
           setDisabled(false);
         }
@@ -229,8 +235,8 @@ export default function StatusHelp({ route }) {
         // return res.data;
       })
       .catch((error) => {
-        console.log("error get where status api", error.response);
-        alert("error get");
+        console.log('error get where status api', error.response);
+        alert('error get');
       });
   };
 
@@ -244,10 +250,10 @@ export default function StatusHelp({ route }) {
   return (
     <SafeAreaView
       style={BaseStyle.safeAreaView}
-      edges={["right", "top", "left"]}
+      edges={['right', 'top', 'left']}
     >
       <Header
-        title={t("status")} //belum dibuat lang
+        title={t('status')} //belum dibuat lang
         renderLeft={() => {
           return (
             <Icon
@@ -258,13 +264,13 @@ export default function StatusHelp({ route }) {
             />
           );
         }}
-         onPressRight={() => {
+        onPressRight={() => {
           // alert('test')
           // handleClickProject()
           setShowChooseProject(!showChooseProject);
           // navigation.navigate("ViewHistoryStatusTRO");
         }}
-         renderRight={() => {
+        renderRight={() => {
           return (
             <Icon
               name="sync-alt"
@@ -278,7 +284,7 @@ export default function StatusHelp({ route }) {
           navigation.goBack();
         }}
       />
-       {showChooseProject ? (
+      {showChooseProject ? (
         <Dropdown
           style={[
             styles.dropdown,
@@ -295,7 +301,7 @@ export default function StatusHelp({ route }) {
           maxHeight={300}
           labelField="label"
           valueField="value"
-          placeholder={!isFocus ? "Choose Project" : "Choose Project"}
+          placeholder={!isFocus ? 'Choose Project' : 'Choose Project'}
           searchPlaceholder="Search..."
           value={valueProjectSelected}
           onFocus={() => setIsFocus(true)}
@@ -307,13 +313,11 @@ export default function StatusHelp({ route }) {
       ) : null}
       <View style={styles.wrap}>
         <Text title2>Ticket</Text>
-        <Text headline style={{ fontWeight: "normal" }}>
+        <Text headline style={{ fontWeight: 'normal' }}>
           Status Help
         </Text>
 
         <View style={[styles.subWrap, { paddingBottom: 0, marginBottom: 10 }]}>
-         
-
           {show && checkedEntity === true ? (
             <View style={{ marginTop: 30, marginHorizontal: 10 }}>
               <TouchableOpacity
@@ -321,16 +325,16 @@ export default function StatusHelp({ route }) {
                 disabled={ds.cntopen == 0 ? true : false}
                 style={{
                   borderBottomWidth: 1,
-                  borderBottomColor: "#555",
+                  borderBottomColor: '#555',
                   //   paddingTop: 1,
                 }}
               >
                 <View
                   style={{
-                    justifyContent: "space-around",
-                    flexDirection: "row",
-                    alignContent: "center",
-                    alignItems: "center",
+                    justifyContent: 'space-around',
+                    flexDirection: 'row',
+                    alignContent: 'center',
+                    alignItems: 'center',
 
                     // alignSelf: 'center',
                   }}
@@ -349,17 +353,17 @@ export default function StatusHelp({ route }) {
                       width: 60,
                       height: 60,
                       // borderRadius: 8,
-                      alignItems: "center",
-                      justifyContent: "center",
+                      alignItems: 'center',
+                      justifyContent: 'center',
                       marginBottom: 10,
                       backgroundColor: parseHexTransparency(
                         colors.primary,
-                        100
+                        100,
                       ),
                     }}
                   >
                     <Icon
-                      name={"tasks"}
+                      name={'tasks'}
                       size={25}
                       color={BaseColor.whiteColor}
                       solid
@@ -371,9 +375,9 @@ export default function StatusHelp({ route }) {
                     style={styles.img}></Image> */}
                   <Text
                     style={{
-                      justifyContent: "center",
-                      alignItems: "center",
-                      alignSelf: "center",
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      alignSelf: 'center',
                       marginBottom: 10,
                     }}
                   >
@@ -385,19 +389,19 @@ export default function StatusHelp({ route }) {
                       width: 40,
                       height: 40,
                       borderRadius: 10,
-                      backgroundColor: "#42B649",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      alignSelf: "center",
+                      backgroundColor: '#42B649',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      alignSelf: 'center',
                       marginBottom: 5,
                     }}
                     value={
                       <Text
                         style={{
-                          color: "#fff",
-                          textAlign: "center",
-                          alignItems: "center",
-                          alignSelf: "center",
+                          color: '#fff',
+                          textAlign: 'center',
+                          alignItems: 'center',
+                          alignSelf: 'center',
                         }}
                       >
                         {ds.cntopen}
@@ -410,19 +414,19 @@ export default function StatusHelp({ route }) {
                 onPress={() =>
                   handleNavigation(dataTowerUser, "'A','P','M','F','Y','Z'")
                 }
-                disabled={ds.cntprocces == 0 ? true : false}
+                // disabled={ds.cntprocces == 0 ? true : false}
                 style={{
                   borderBottomWidth: 1,
-                  borderBottomColor: "#555",
+                  borderBottomColor: '#555',
                   //   marginBottom: 10,
                 }}
               >
                 <View
                   style={{
-                    justifyContent: "space-around",
-                    flexDirection: "row",
-                    alignContent: "center",
-                    alignItems: "center",
+                    justifyContent: 'space-around',
+                    flexDirection: 'row',
+                    alignContent: 'center',
+                    alignItems: 'center',
                     // alignSelf: 'center',
                   }}
                 >
@@ -440,18 +444,18 @@ export default function StatusHelp({ route }) {
                       width: 60,
                       height: 60,
                       // borderRadius: 8,
-                      alignItems: "center",
-                      justifyContent: "center",
+                      alignItems: 'center',
+                      justifyContent: 'center',
                       marginTop: 10,
                       marginBottom: 10,
                       backgroundColor: parseHexTransparency(
                         colors.primary,
-                        100
+                        100,
                       ),
                     }}
                   >
                     <Icon
-                      name={"tasks"}
+                      name={'tasks'}
                       size={25}
                       color={BaseColor.whiteColor}
                       solid
@@ -462,9 +466,9 @@ export default function StatusHelp({ route }) {
                     style={styles.img}></Image> */}
                   <Text
                     style={{
-                      justifyContent: "center",
-                      alignItems: "center",
-                      alignSelf: "center",
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      alignSelf: 'center',
                       marginBottom: 10,
                     }}
                   >
@@ -476,19 +480,19 @@ export default function StatusHelp({ route }) {
                       width: 40,
                       height: 40,
                       borderRadius: 10,
-                      backgroundColor: "#42B649",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      alignSelf: "center",
+                      backgroundColor: '#42B649',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      alignSelf: 'center',
                       marginBottom: 5,
                     }}
                     value={
                       <Text
                         style={{
-                          color: "#fff",
-                          textAlign: "center",
-                          alignItems: "center",
-                          alignSelf: "center",
+                          color: '#fff',
+                          textAlign: 'center',
+                          alignItems: 'center',
+                          alignSelf: 'center',
                         }}
                       >
                         {ds.cntprocces}
@@ -502,16 +506,16 @@ export default function StatusHelp({ route }) {
                 disabled={ds.cntcancel == 0 ? true : false}
                 style={{
                   borderBottomWidth: 1,
-                  borderBottomColor: "#555",
+                  borderBottomColor: '#555',
                   //   marginBottom: 10,
                 }}
               >
                 <View
                   style={{
-                    justifyContent: "space-around",
-                    flexDirection: "row",
-                    alignContent: "center",
-                    alignItems: "center",
+                    justifyContent: 'space-around',
+                    flexDirection: 'row',
+                    alignContent: 'center',
+                    alignItems: 'center',
                     // alignSelf: 'center',
                   }}
                 >
@@ -530,18 +534,18 @@ export default function StatusHelp({ route }) {
                       width: 60,
                       height: 60,
                       // borderRadius: 8,
-                      alignItems: "center",
-                      justifyContent: "center",
+                      alignItems: 'center',
+                      justifyContent: 'center',
                       marginTop: 10,
                       marginBottom: 10,
                       backgroundColor: parseHexTransparency(
                         colors.primary,
-                        100
+                        100,
                       ),
                     }}
                   >
                     <Icon
-                      name={"tasks"}
+                      name={'tasks'}
                       size={25}
                       color={BaseColor.whiteColor}
                       solid
@@ -553,9 +557,9 @@ export default function StatusHelp({ route }) {
                     style={styles.img}></Image> */}
                   <Text
                     style={{
-                      justifyContent: "center",
-                      alignItems: "center",
-                      alignSelf: "center",
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      alignSelf: 'center',
                       marginBottom: 10,
                     }}
                   >
@@ -567,19 +571,19 @@ export default function StatusHelp({ route }) {
                       width: 40,
                       height: 40,
                       borderRadius: 10,
-                      backgroundColor: "#42B649",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      alignSelf: "center",
+                      backgroundColor: '#42B649',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      alignSelf: 'center',
                       marginBottom: 5,
                     }}
                     value={
                       <Text
                         style={{
-                          color: "#fff",
-                          textAlign: "center",
-                          alignItems: "center",
-                          alignSelf: "center",
+                          color: '#fff',
+                          textAlign: 'center',
+                          alignItems: 'center',
+                          alignSelf: 'center',
                         }}
                       >
                         {ds.cntcancel}
@@ -593,16 +597,16 @@ export default function StatusHelp({ route }) {
                 disabled={ds.cntclose == 0 ? true : false}
                 style={{
                   borderBottomWidth: 1,
-                  borderBottomColor: "#555",
+                  borderBottomColor: '#555',
                   //   marginBottom: 10,
                 }}
               >
                 <View
                   style={{
-                    justifyContent: "space-around",
-                    flexDirection: "row",
-                    alignContent: "center",
-                    alignItems: "center",
+                    justifyContent: 'space-around',
+                    flexDirection: 'row',
+                    alignContent: 'center',
+                    alignItems: 'center',
                     // alignSelf: 'center',
                   }}
                 >
@@ -620,18 +624,18 @@ export default function StatusHelp({ route }) {
                       width: 60,
                       height: 60,
                       // borderRadius: 8,
-                      alignItems: "center",
-                      justifyContent: "center",
+                      alignItems: 'center',
+                      justifyContent: 'center',
                       marginTop: 10,
                       marginBottom: 10,
                       backgroundColor: parseHexTransparency(
                         colors.primary,
-                        100
+                        100,
                       ),
                     }}
                   >
                     <Icon
-                      name={"tasks"}
+                      name={'tasks'}
                       size={25}
                       color={BaseColor.whiteColor}
                       solid
@@ -642,9 +646,9 @@ export default function StatusHelp({ route }) {
                     style={styles.img}></Image> */}
                   <Text
                     style={{
-                      justifyContent: "center",
-                      alignItems: "center",
-                      alignSelf: "center",
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      alignSelf: 'center',
                       marginBottom: 10,
                     }}
                   >
@@ -656,19 +660,19 @@ export default function StatusHelp({ route }) {
                       width: 40,
                       height: 40,
                       borderRadius: 10,
-                      backgroundColor: "#42B649",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      alignSelf: "center",
+                      backgroundColor: '#42B649',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      alignSelf: 'center',
                       marginBottom: 5,
                     }}
                     value={
                       <Text
                         style={{
-                          color: "#fff",
-                          textAlign: "center",
-                          alignItems: "center",
-                          alignSelf: "center",
+                          color: '#fff',
+                          textAlign: 'center',
+                          alignItems: 'center',
+                          alignSelf: 'center',
                         }}
                       >
                         {ds.cntclose}
@@ -678,8 +682,23 @@ export default function StatusHelp({ route }) {
                 </View>
               </TouchableOpacity>
             </View>
-          ) : // <Text>Choose Project First</Text>
-          null}
+          ) : (
+            // <Text>Choose Project First</Text>
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                // flex: 1,
+                alignContent: 'center',
+                alignSelf: 'center',
+                height: Dimensions.get('window').height - 200,
+              }}
+            >
+              <Text style={{ color: BaseColor.text }}>
+                Choose Project at top right
+              </Text>
+            </View>
+          )}
         </View>
       </View>
     </SafeAreaView>

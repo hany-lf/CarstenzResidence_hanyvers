@@ -11,47 +11,48 @@ import {
   CategoryGrid,
   CategoryBoxColor,
   ModalFilterLocation,
-} from "@components";
-import { BaseColor, BaseStyle, useTheme } from "@config";
-import { FFriends } from "@data";
-import { useNavigation } from "@react-navigation/native";
-import { haveChildren } from "@utils";
-import React, { useEffect, useState, useMemo } from "react";
-import { useTranslation } from "react-i18next";
+} from '@components';
+import { BaseColor, BaseStyle, useTheme } from '@config';
+import { FFriends } from '@data';
+import { useNavigation } from '@react-navigation/native';
+import { haveChildren } from '@utils';
+import React, { useEffect, useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   FlatList,
   TouchableOpacity,
   View,
-  Picker,
+  // Picker,
   Modal,
   Platform,
   ScrollView,
-} from "react-native";
-import CheckBox from "@react-native-community/checkbox";
-import axios from "axios";
-import styles from "./styles";
+} from 'react-native';
+import { Picker } from '@react-native-picker/picker';
+import CheckBox from '@react-native-community/checkbox';
+import axios from 'axios';
+import styles from './styles';
 
 export default function TenantInformation() {
   const { t, i18n } = useTranslation();
   const { colors } = useTheme();
   const [loading, setLoading] = useState(true);
-  const [selectedValue, setSelectedValue] = useState("");
+  const [selectedValue, setSelectedValue] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [formData, setFormData] = useState({
-    tenant_name: "",
-    address: "",
-    phone: "",
-    fax: "",
-    email: "",
+    tenant_name: '',
+    address: '',
+    phone: '',
+    fax: '',
+    email: '',
   });
-  const iosPickerStyle = Platform.OS === "ios" ? styles.iosPicker : null;
+  const iosPickerStyle = Platform.OS === 'ios' ? styles.iosPicker : null;
 
   const navigation = useNavigation();
   const handleNextScreen = () => {
     // Ganti 'NextScreen' dengan nama screen tujuan untuk navigasi
     // navigation.navigate('TenantInformation');
-    alert("Data submitted! Thank You");
-    navigation.navigate("LegalManagement");
+    alert('Data submitted! Thank You');
+    navigation.navigate('LegalManagement');
   };
   useEffect(() => {
     setTimeout(() => {
@@ -62,25 +63,25 @@ export default function TenantInformation() {
   return (
     <SafeAreaView
       style={BaseStyle.safeAreaView}
-      edges={["right", "top", "left"]}
+      edges={['right', 'top', 'left']}
     >
-      <View style={{ justifyContent: "center" }}>
+      <View style={{ justifyContent: 'center' }}>
         <View
           style={{
-            alignContent: "center",
+            alignContent: 'center',
             marginHorizontal: 30,
             // borderWidth: 1,
             // borderColor: '#000'
           }}
         >
           <Image
-            source={require("@assets/images/form.png")}
+            source={require('@assets/images/form.png')}
             style={{
               height: 200,
               width: 300,
               // marginHorizontal: 100,
               // flexDirection: 'row',
-              resizeMode: "cover",
+              resizeMode: 'cover',
               // alignSelf: 'center',
             }}
           />
@@ -95,8 +96,8 @@ export default function TenantInformation() {
           <Text
             style={{
               fontSize: 16,
-              fontWeight: "bold",
-              textAlign: "center",
+              fontWeight: 'bold',
+              textAlign: 'center',
               marginBottom: 20,
             }}
           >
@@ -141,16 +142,16 @@ export default function TenantInformation() {
               onPress={() => setModalVisible(true)}
               style={styles.button}
             >
-              <Text style={selectedValue === "" ? { color: "#A4A4A4" } : null}>
-                {selectedValue !== "" ? selectedValue : "Unit Number"}
+              <Text style={selectedValue === '' ? { color: '#A4A4A4' } : null}>
+                {selectedValue !== '' ? selectedValue : 'Unit Number'}
               </Text>
             </TouchableOpacity>
 
             <Text
               style={{
                 fontSize: 16,
-                fontWeight: "bold",
-                textAlign: "left",
+                fontWeight: 'bold',
+                textAlign: 'left',
                 marginBottom: 20,
               }}
             >
@@ -160,9 +161,9 @@ export default function TenantInformation() {
               style={{
                 fontSize: 14,
                 // fontWeight: 'bold',
-                textAlign: "left",
+                textAlign: 'left',
                 marginBottom: 20,
-                fontStyle: "italic",
+                fontStyle: 'italic',
               }}
             >
               34.68 Sqm
@@ -172,8 +173,8 @@ export default function TenantInformation() {
               <Text
                 style={{
                   fontSize: 16,
-                  fontWeight: "bold",
-                  textAlign: "left",
+                  fontWeight: 'bold',
+                  textAlign: 'left',
                   marginBottom: 20,
                 }}
               >
@@ -183,12 +184,12 @@ export default function TenantInformation() {
                 style={{
                   fontSize: 14,
                   // fontWeight: 'bold',
-                  textAlign: "left",
+                  textAlign: 'left',
                   marginBottom: 20,
-                  fontStyle: "italic",
+                  fontStyle: 'italic',
                 }}
               >
-                01 Oct 2023 - 31 Oct 2024 {"(12 Months)"}
+                01 Oct 2023 - 31 Oct 2024 {'(12 Months)'}
               </Text>
             </View>
           </View>

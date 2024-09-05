@@ -11,62 +11,63 @@ import {
   CategoryGrid,
   CategoryBoxColor,
   ListItem,
-} from "@components";
-import { BaseColor, BaseStyle, useTheme } from "@config";
-import { FFriends } from "@data";
-import { useNavigation } from "@react-navigation/native";
-import { haveChildren } from "@utils";
-import React, { useEffect, useState, useMemo } from "react";
-import { useTranslation } from "react-i18next";
+} from '@components';
+import { BaseColor, BaseStyle, useTheme } from '@config';
+import { FFriends } from '@data';
+import { useNavigation } from '@react-navigation/native';
+import { haveChildren } from '@utils';
+import React, { useEffect, useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   FlatList,
   TouchableOpacity,
   View,
-  Picker,
+  // Picker,
   Modal,
   Platform,
   ScrollView,
-} from "react-native";
-import CheckBox from "@react-native-community/checkbox";
-import DatePicker from "react-native-date-picker";
-import moment from "moment";
-import axios from "axios";
-import styles from "./styles";
+} from 'react-native';
+import { Picker } from '@react-native-picker/picker';
+import CheckBox from '@react-native-community/checkbox';
+import DatePicker from 'react-native-date-picker';
+import moment from 'moment';
+import axios from 'axios';
+import styles from './styles';
 
 export default function ContractInformation() {
   const { t, i18n } = useTranslation();
   const { colors } = useTheme();
   const [loading, setLoading] = useState(true);
-  const [selectedValue, setSelectedValue] = useState("");
-  const [selectedValue1, setSelectedValue1] = useState("");
+  const [selectedValue, setSelectedValue] = useState('');
+  const [selectedValue1, setSelectedValue1] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisible1, setModalVisible1] = useState(false);
   const [formData, setFormData] = useState({
-    contractor_name: "",
-    subcontractor_name: "",
-    site_supervisor: "",
-    person_responsible: "",
-    contact_number: "",
-    number_works: "",
+    contractor_name: '',
+    subcontractor_name: '',
+    site_supervisor: '',
+    person_responsible: '',
+    contact_number: '',
+    number_works: '',
   });
-  const iosPickerStyle = Platform.OS === "ios" ? styles.iosPicker : null;
+  const iosPickerStyle = Platform.OS === 'ios' ? styles.iosPicker : null;
 
   const tomorrow = new Date();
   // const format = moment(tomorrow).add(1, 'days').format('YYYY-MM-DD');
-  const format = moment(tomorrow).format("YYYY-MM-DD");
+  const format = moment(tomorrow).format('YYYY-MM-DD');
   const [date, setDate] = useState(new Date());
   const [selectedDate, setselectedDate] = useState(false);
   const [open, setOpen] = useState(false);
 
   const [items, setItems] = useState([]);
-  const [itemName, setItemName] = useState("");
-  const [itemQuantity, setItemQuantity] = useState("");
+  const [itemName, setItemName] = useState('');
+  const [itemQuantity, setItemQuantity] = useState('');
 
   const handleAddItem = () => {
     if (itemName && itemQuantity) {
       setItems([...items, { name: itemName, quantity: itemQuantity }]);
-      setItemName("");
-      setItemQuantity("");
+      setItemName('');
+      setItemQuantity('');
     }
   };
 
@@ -74,8 +75,8 @@ export default function ContractInformation() {
   const handleNextScreen = () => {
     // Ganti 'NextScreen' dengan nama screen tujuan untuk navigasi
     // navigation.navigate('TenantInformation');
-    alert("Data submitted! Thank You");
-    navigation.navigate("LegalManagement");
+    alert('Data submitted! Thank You');
+    navigation.navigate('LegalManagement');
   };
   useEffect(() => {
     setTimeout(() => {
@@ -86,25 +87,25 @@ export default function ContractInformation() {
   return (
     <SafeAreaView
       style={BaseStyle.safeAreaView}
-      edges={["right", "top", "left"]}
+      edges={['right', 'top', 'left']}
     >
-      <View style={{ justifyContent: "center" }}>
+      <View style={{ justifyContent: 'center' }}>
         <View
           style={{
-            alignContent: "center",
+            alignContent: 'center',
             marginHorizontal: 30,
             // borderWidth: 1,
             // borderColor: '#000'
           }}
         >
           <Image
-            source={require("@assets/images/form.png")}
+            source={require('@assets/images/form.png')}
             style={{
               height: 200,
               width: 300,
               // marginHorizontal: 100,
               // flexDirection: 'row',
-              resizeMode: "cover",
+              resizeMode: 'cover',
               // alignSelf: 'center',
             }}
           />
@@ -120,8 +121,8 @@ export default function ContractInformation() {
           <Text
             style={{
               fontSize: 16,
-              fontWeight: "bold",
-              textAlign: "center",
+              fontWeight: 'bold',
+              textAlign: 'center',
               marginBottom: 20,
             }}
           >
@@ -172,8 +173,8 @@ export default function ContractInformation() {
             <Text
               style={{
                 fontSize: 16,
-                fontWeight: "bold",
-                textAlign: "center",
+                fontWeight: 'bold',
+                textAlign: 'center',
                 marginBottom: 20,
               }}
             >
@@ -203,13 +204,13 @@ export default function ContractInformation() {
                   paddingVertical: 10,
                   width: 90,
                   marginTop: 10,
-                  alignItems: "center",
+                  alignItems: 'center',
                   borderRadius: 8,
-                  backgroundColor: "#315447",
+                  backgroundColor: '#315447',
                 }}
                 onPress={handleAddItem}
               >
-                <Text style={{ color: "#FFF" }}>Tambah Item</Text>
+                <Text style={{ color: '#FFF' }}>Tambah Item</Text>
               </TouchableOpacity>
             </View>
           </View>

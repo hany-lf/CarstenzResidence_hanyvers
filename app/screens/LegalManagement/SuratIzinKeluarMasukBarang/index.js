@@ -12,80 +12,80 @@ import {
   CategoryBoxColor,
   ListItem,
   ListItem3,
-} from "@components";
-import { BaseColor, BaseStyle, useTheme } from "@config";
-import { FFriends } from "@data";
-import { useNavigation } from "@react-navigation/native";
-import { haveChildren } from "@utils";
-import React, { useEffect, useState, useMemo } from "react";
-import { useTranslation } from "react-i18next";
+} from '@components';
+import { BaseColor, BaseStyle, useTheme } from '@config';
+import { FFriends } from '@data';
+import { useNavigation } from '@react-navigation/native';
+import { haveChildren } from '@utils';
+import React, { useEffect, useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   FlatList,
   TouchableOpacity,
   View,
-  //Picker,
+  // Picker,
   Modal,
   Platform,
   ScrollView,
-} from "react-native";
-import CheckBox from "@react-native-community/checkbox";
-import DatePicker from "react-native-date-picker";
-import moment from "moment";
-import axios from "axios";
-import styles from "./styles";
-import { Picker } from "@react-native-picker/picker";
+} from 'react-native';
+import CheckBox from '@react-native-community/checkbox';
+import DatePicker from 'react-native-date-picker';
+import moment from 'moment';
+import axios from 'axios';
+import styles from './styles';
+import { Picker } from '@react-native-picker/picker';
 
 export default function SuratIzinKeluarMasukBarang() {
   const { t, i18n } = useTranslation();
   const { colors } = useTheme();
-  console.log("41 colors: ", colors);
+  console.log('41 colors: ', colors);
   const [loading, setLoading] = useState(true);
-  const [selectedValue, setSelectedValue] = useState("");
-  const [selectedValue1, setSelectedValue1] = useState("");
+  const [selectedValue, setSelectedValue] = useState('');
+  const [selectedValue1, setSelectedValue1] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisible1, setModalVisible1] = useState(false);
 
-  const [typeInOut, setTypeInOut] = useState("");
+  const [typeInOut, setTypeInOut] = useState('');
   const [formData, setFormData] = useState({
-    contractor_name: "",
-    subcontractor_name: "",
-    site_supervisor: "",
-    person_responsible: "",
-    contact_number: "",
-    number_works: "",
+    contractor_name: '',
+    subcontractor_name: '',
+    site_supervisor: '',
+    person_responsible: '',
+    contact_number: '',
+    number_works: '',
 
-    TenantName: "",
+    TenantName: '',
     //FloorNoUnitTower: "",
-    ContractorName: "",
-    NameofResponsiblePerson: "",
-    TelOfficeMobile: "",
-    Typeofwork: "",
-    Dateofwork: "",
+    ContractorName: '',
+    NameofResponsiblePerson: '',
+    TelOfficeMobile: '',
+    Typeofwork: '',
+    Dateofwork: '',
     //Hoursofwork: "",
-    numberofWorkers: "",
+    numberofWorkers: '',
 
-    ApplicantName: "",
-    FloorNoUnitTower: "", //
-    ExitEntryDate: "",
-    NameofOwnerTenant: "",
-    NoTelephone: "", //
-    Typeofwork: "",
+    ApplicantName: '',
+    FloorNoUnitTower: '', //
+    ExitEntryDate: '',
+    NameofOwnerTenant: '',
+    NoTelephone: '', //
+    Typeofwork: '',
 
-    NameSenderTaker: "",
-    NoKTPSIM: "",
-    Address: "",
-    NoPhone: "",
-    DayDate: "",
-    clock: "",
-    to: "",
-    VehicleType: "",
-    VehicleNumber: "",
+    NameSenderTaker: '',
+    NoKTPSIM: '',
+    Address: '',
+    NoPhone: '',
+    DayDate: '',
+    clock: '',
+    to: '',
+    VehicleType: '',
+    VehicleNumber: '',
   });
-  const iosPickerStyle = Platform.OS === "ios" ? styles.iosPicker : null;
+  const iosPickerStyle = Platform.OS === 'ios' ? styles.iosPicker : null;
 
   const tomorrow = new Date();
   // const format = moment(tomorrow).add(1, 'days').format('YYYY-MM-DD');
-  const format = moment(tomorrow).format("YYYY-MM-DD");
+  const format = moment(tomorrow).format('YYYY-MM-DD');
   const [date, setDate] = useState(new Date());
   const [selectedDate, setselectedDate] = useState(false);
   const [open, setOpen] = useState(false);
@@ -93,9 +93,9 @@ export default function SuratIzinKeluarMasukBarang() {
   const [items, setItems] = useState([]);
   // const [itemName, setItemName] = useState("");
   // const [itemQuantity, setItemQuantity] = useState("");
-  const [item1, setItem1] = useState("");
-  const [item2, setItem2] = useState("");
-  const [item3, setItem3] = useState("");
+  const [item1, setItem1] = useState('');
+  const [item2, setItem2] = useState('');
+  const [item3, setItem3] = useState('');
 
   // const handleAddItem = () => {
   //   if (itemName && itemQuantity) {
@@ -108,9 +108,9 @@ export default function SuratIzinKeluarMasukBarang() {
   const handleAddItem = () => {
     if (item1 && item2 && item3) {
       setItems([...items, { column1: item1, column2: item2, column3: item3 }]);
-      setItem1("");
-      setItem2("");
-      setItem3("");
+      setItem1('');
+      setItem2('');
+      setItem3('');
     }
   };
 
@@ -125,10 +125,10 @@ export default function SuratIzinKeluarMasukBarang() {
   };
 
   const handleNextScreen = () => {
-    if (typeInOut != "no") {
+    if (typeInOut != 'no') {
       setModalVisible(true);
     } else {
-      alert("Tipe surat izin mengeluarkan / memasukkan barang belum dipilih");
+      alert('Tipe surat izin mengeluarkan / memasukkan barang belum dipilih');
     }
 
     // Ganti 'NextScreen' dengan nama screen tujuan untuk navigasi
@@ -150,7 +150,7 @@ export default function SuratIzinKeluarMasukBarang() {
   const [option1Checked, setOption1Checked] = useState(false);
   const [option2Checked, setOption2Checked] = useState(false);
   const [option3Checked, setOption3Checked] = useState(false);
-  const [lainLain, setlainLain] = useState("");
+  const [lainLain, setlainLain] = useState('');
   // const [option4Checked, setOption4Checked] = useState(false);
   // const [option5Checked, setOption5Checked] = useState(false);
   // const [optionJamKerja, setOptionJamKerja] = useState({
@@ -159,9 +159,9 @@ export default function SuratIzinKeluarMasukBarang() {
   //   option3: false,
   // });
 
-  const [jamKerja, setJamKerja] = useState("");
+  const [jamKerja, setJamKerja] = useState('');
 
-  dummyArrayValue = ["Pkl 10.00 - 22.00", "Pkl 22.00 - 10.00", "Lain-lain"];
+  dummyArrayValue = ['Pkl 10.00 - 22.00', 'Pkl 22.00 - 10.00', 'Lain-lain'];
 
   const handleOptionSelect = (option) => {
     setOption1Checked(false);
@@ -176,15 +176,15 @@ export default function SuratIzinKeluarMasukBarang() {
     // })
 
     switch (option) {
-      case "option1":
+      case 'option1':
         setOption1Checked(true);
         setJamKerja(dummyArrayValue[0]);
         break;
-      case "option2":
+      case 'option2':
         setOption2Checked(true);
         setJamKerja(dummyArrayValue[1]);
         break;
-      case "option3":
+      case 'option3':
         setOption3Checked(true);
         setJamKerja(lainLain);
         break;
@@ -204,12 +204,12 @@ export default function SuratIzinKeluarMasukBarang() {
   return (
     <SafeAreaView
       style={BaseStyle.safeAreaView}
-      edges={["right", "top", "left"]}
+      edges={['right', 'top', 'left']}
     >
-      <View style={{ justifyContent: "center" }}>
+      <View style={{ justifyContent: 'center' }}>
         <View
           style={{
-            alignContent: "center",
+            alignContent: 'center',
             marginHorizontal: 30,
             // borderWidth: 1,
             // borderColor: '#000'
@@ -238,12 +238,12 @@ export default function SuratIzinKeluarMasukBarang() {
           <Text
             style={{
               fontSize: 16,
-              fontWeight: "bold",
-              textAlign: "center",
+              fontWeight: 'bold',
+              textAlign: 'center',
               margin: 20,
               marginBottom: 0,
               //padding: 0,
-              textDecorationLine: "underline",
+              textDecorationLine: 'underline',
             }}
           >
             SURAT IZIN KELUAR / MASUK BARANG
@@ -251,8 +251,8 @@ export default function SuratIzinKeluarMasukBarang() {
           <Text
             style={{
               fontSize: 16,
-              fontWeight: "bold",
-              textAlign: "center",
+              fontWeight: 'bold',
+              textAlign: 'center',
               margin: 10,
               marginTop: 0,
             }}
@@ -326,14 +326,14 @@ export default function SuratIzinKeluarMasukBarang() {
               //   color: "blue",
               // }}
               dropdownIconColor={
-                colors.background != "white" ? "white" : "black"
+                colors.background != 'white' ? 'white' : 'black'
               }
               dropdownIconRippleColor={colors.primary}
               selectedValue={typeInOut}
               style={
-                colors.background != "white"
-                  ? { color: "white" }
-                  : { color: "black" }
+                colors.background != 'white'
+                  ? { color: 'white' }
+                  : { color: 'black' }
               }
               onValueChange={(itemValue, itemIndex) => setTypeInOut(itemValue)}
             >
@@ -370,7 +370,7 @@ export default function SuratIzinKeluarMasukBarang() {
             <Text
               style={{ paddingHorizontal: 7, paddingBottom: 2, paddingTop: 20 }}
             >
-              Nama Pemohon:{" "}
+              Nama Pemohon:{' '}
             </Text>
             <TextInput
               style={{ marginBottom: 10, paddingHorizontal: 15 }}
@@ -381,7 +381,7 @@ export default function SuratIzinKeluarMasukBarang() {
               }
             />
             <Text style={{ paddingHorizontal: 7, paddingBottom: 2 }}>
-              Lantai & No. Unit / Tower:{" "}
+              Lantai & No. Unit / Tower:{' '}
             </Text>
             <TextInput
               style={{ marginBottom: 10, paddingHorizontal: 15 }}
@@ -392,7 +392,7 @@ export default function SuratIzinKeluarMasukBarang() {
               }
             />
             <Text style={{ paddingHorizontal: 7, paddingBottom: 2 }}>
-              Tanggal Keluar / Masuk Barang:{" "}
+              Tanggal Keluar / Masuk Barang:{' '}
             </Text>
             <TextInput
               style={{ marginBottom: 10, paddingHorizontal: 15 }}
@@ -403,7 +403,7 @@ export default function SuratIzinKeluarMasukBarang() {
               }
             />
             <Text style={{ paddingHorizontal: 7, paddingBottom: 2 }}>
-              Nama Pemilik / Penyewa:{" "}
+              Nama Pemilik / Penyewa:{' '}
             </Text>
             <TextInput
               style={{ marginBottom: 10, paddingHorizontal: 15 }}
@@ -414,7 +414,7 @@ export default function SuratIzinKeluarMasukBarang() {
               }
             />
             <Text style={{ paddingHorizontal: 7, paddingBottom: 2 }}>
-              No. Telepon:{" "}
+              No. Telepon:{' '}
             </Text>
             <TextInput
               keyboardType="numeric"
@@ -426,7 +426,7 @@ export default function SuratIzinKeluarMasukBarang() {
               }
             />
             <Text style={{ paddingHorizontal: 7, paddingBottom: 2 }}>
-              Jenis Pekerjaan:{" "}
+              Jenis Pekerjaan:{' '}
             </Text>
             <TextInput
               style={{ marginBottom: 10, paddingHorizontal: 15 }}
@@ -440,8 +440,8 @@ export default function SuratIzinKeluarMasukBarang() {
             <Text
               style={{
                 fontSize: 16,
-                fontWeight: "bold",
-                textAlign: "center",
+                fontWeight: 'bold',
+                textAlign: 'center',
                 margin: 20,
               }}
             >
@@ -453,11 +453,11 @@ export default function SuratIzinKeluarMasukBarang() {
                 <>
                   <ListItem3
                     item={{
-                      column1: "Jenis Barang",
-                      column2: "Jumlah",
-                      column3: "Keterangan",
+                      column1: 'Jenis Barang',
+                      column2: 'Jumlah',
+                      column3: 'Keterangan',
                     }}
-                    onDelete={"header"}
+                    onDelete={'header'}
                   />
                 </>
               )}
@@ -477,8 +477,8 @@ export default function SuratIzinKeluarMasukBarang() {
                   <Text
                     style={{
                       fontSize: 16,
-                      fontWeight: "bold",
-                      textAlign: "center",
+                      fontWeight: 'bold',
+                      textAlign: 'center',
                       marginVertical: 10,
                     }}
                   >
@@ -521,20 +521,20 @@ export default function SuratIzinKeluarMasukBarang() {
                   paddingVertical: 10,
                   width: 90,
                   marginTop: 20,
-                  alignItems: "center",
+                  alignItems: 'center',
                   borderRadius: 8,
                   backgroundColor: colors.primary, //"#315447",
-                  alignSelf: "flex-end",
+                  alignSelf: 'flex-end',
                 }}
                 onPress={handleAddItem}
               >
-                <Text style={{ color: "#FFF" }}>Tambah Item</Text>
+                <Text style={{ color: '#FFF' }}>Tambah Item</Text>
               </TouchableOpacity>
             </View>
             <Text
               style={{ paddingHorizontal: 7, paddingBottom: 2, marginTop: 20 }}
             >
-              Nama / Pengirim / Pengambil:{" "}
+              Nama / Pengirim / Pengambil:{' '}
             </Text>
             <TextInput
               style={{ marginBottom: 10, paddingHorizontal: 15 }}
@@ -545,7 +545,7 @@ export default function SuratIzinKeluarMasukBarang() {
               }
             />
             <Text style={{ paddingHorizontal: 7, paddingBottom: 2 }}>
-              No. KTP / SIM:{" "}
+              No. KTP / SIM:{' '}
             </Text>
             <TextInput
               style={{ marginBottom: 10, paddingHorizontal: 15 }}
@@ -556,7 +556,7 @@ export default function SuratIzinKeluarMasukBarang() {
               }
             />
             <Text style={{ paddingHorizontal: 7, paddingBottom: 2 }}>
-              Alamat:{" "}
+              Alamat:{' '}
             </Text>
             <TextInput
               style={{ marginBottom: 10, paddingHorizontal: 15 }}
@@ -567,7 +567,7 @@ export default function SuratIzinKeluarMasukBarang() {
               }
             />
             <Text style={{ paddingHorizontal: 7, paddingBottom: 2 }}>
-              No. Telepon:{" "}
+              No. Telepon:{' '}
             </Text>
             <TextInput
               style={{ marginBottom: 10, paddingHorizontal: 15 }}
@@ -578,7 +578,7 @@ export default function SuratIzinKeluarMasukBarang() {
               }
             />
             <Text style={{ paddingHorizontal: 7, paddingBottom: 2 }}>
-              Hari / Tanggal:{" "}
+              Hari / Tanggal:{' '}
             </Text>
             <TextInput
               style={{ marginBottom: 10, paddingHorizontal: 15 }}
@@ -589,14 +589,14 @@ export default function SuratIzinKeluarMasukBarang() {
               }
             />
             <Text style={{ paddingHorizontal: 7, paddingBottom: 2 }}>
-              Jam:{" "}
+              Jam:{' '}
             </Text>
             <View
               style={{
                 //flex: 1,
-                flexDirection: "row",
+                flexDirection: 'row',
                 //justifyContent: "center", // Center vertically
-                alignItems: "center", // Center horizontally
+                alignItems: 'center', // Center horizontally
               }}
             >
               <TextInput
@@ -614,10 +614,10 @@ export default function SuratIzinKeluarMasukBarang() {
                   paddingHorizontal: 7,
                   paddingBottom: 2,
                   //justifyContent: "center",
-                  textAlign: "center",
+                  textAlign: 'center',
                 }}
               >
-                s.d.{" "}
+                s.d.{' '}
               </Text>
               <TextInput
                 style={{ flex: 1, marginBottom: 10, paddingHorizontal: 15 }}
@@ -627,7 +627,7 @@ export default function SuratIzinKeluarMasukBarang() {
               />
             </View>
             <Text style={{ paddingHorizontal: 7, paddingBottom: 2 }}>
-              Jenis Kendaraan:{" "}
+              Jenis Kendaraan:{' '}
             </Text>
             <TextInput
               style={{ marginBottom: 10, paddingHorizontal: 15 }}
@@ -638,7 +638,7 @@ export default function SuratIzinKeluarMasukBarang() {
               }
             />
             <Text style={{ paddingHorizontal: 7, paddingBottom: 2 }}>
-              No Kendaraan:{" "}
+              No Kendaraan:{' '}
             </Text>
             <TextInput
               style={{ marginBottom: 10, paddingHorizontal: 15 }}
@@ -663,7 +663,7 @@ export default function SuratIzinKeluarMasukBarang() {
               style={{
                 fontSize: 16,
                 marginHorizontal: 20,
-                textAlign: "justify",
+                textAlign: 'justify',
                 //textAlignLast: "justify",
                 marginBottom: 7,
               }}
@@ -676,7 +676,7 @@ export default function SuratIzinKeluarMasukBarang() {
               style={{
                 fontSize: 16,
                 marginHorizontal: 20,
-                textAlign: "justify",
+                textAlign: 'justify',
                 //textAlignLast: "justify",
                 marginBottom: 7,
               }}
@@ -688,7 +688,7 @@ export default function SuratIzinKeluarMasukBarang() {
               style={{
                 fontSize: 16,
                 marginHorizontal: 20,
-                textAlign: "justify",
+                textAlign: 'justify',
                 //textAlignLast: "justify",
                 marginBottom: 7,
               }}
@@ -700,7 +700,7 @@ export default function SuratIzinKeluarMasukBarang() {
               style={{
                 fontSize: 16,
                 marginHorizontal: 20,
-                textAlign: "justify",
+                textAlign: 'justify',
                 //textAlignLast: "justify",
                 marginBottom: 7,
               }}
@@ -713,7 +713,7 @@ export default function SuratIzinKeluarMasukBarang() {
               style={{
                 fontSize: 16,
                 marginHorizontal: 20,
-                textAlign: "justify",
+                textAlign: 'justify',
                 //textAlignLast: "justify",
                 marginBottom: 7,
               }}
@@ -748,15 +748,15 @@ export default function SuratIzinKeluarMasukBarang() {
                     styles.modalContent,
                     {
                       backgroundColor:
-                        colors.background != "white" ? "black" : "white",
+                        colors.background != 'white' ? 'black' : 'white',
                     },
                   ]}
                 >
                   <Text
                     style={{
                       fontSize: 16,
-                      fontWeight: "bold",
-                      textAlign: "center",
+                      fontWeight: 'bold',
+                      textAlign: 'center',
                       margin: 20,
                     }}
                   >
@@ -778,49 +778,49 @@ export default function SuratIzinKeluarMasukBarang() {
                       margin: 20,
                     }}
                   >
-                    Mohon diizinkan kepada pembawa surat ini{" "}
+                    Mohon diizinkan kepada pembawa surat ini{' '}
                     <Text
                       style={{
                         //textDecorationLine: "underline",
-                        fontWeight: "bold",
+                        fontWeight: 'bold',
                       }}
                     >
-                      {typeInOut == "in"
-                        ? "memasukkan barang"
-                        : "mengeluarkan barang"}
-                    </Text>{" "}
+                      {typeInOut == 'in'
+                        ? 'memasukkan barang'
+                        : 'mengeluarkan barang'}
+                    </Text>{' '}
                     untuk:
                   </Text>
                   <Text>Nama Pemohon</Text>
                   <Text style={{ marginBottom: 8 }}>
-                    {"          : " + formData.ApplicantName}
+                    {'          : ' + formData.ApplicantName}
                   </Text>
                   <Text>Lantai & No . Unit / Tower</Text>
                   <Text style={{ marginBottom: 8 }}>
-                    {"          : " + formData.FloorNoUnitTower}
+                    {'          : ' + formData.FloorNoUnitTower}
                   </Text>
                   <Text>Tanggal Keluar / Masuk Barang</Text>
                   <Text style={{ marginBottom: 8 }}>
-                    {"          : " + formData.ExitEntryDate}
+                    {'          : ' + formData.ExitEntryDate}
                   </Text>
                   <Text>Nama Pemilik / Penyewa</Text>
                   <Text style={{ marginBottom: 8 }}>
-                    {"          : " + formData.NameofOwnerTenant}
+                    {'          : ' + formData.NameofOwnerTenant}
                   </Text>
                   <Text>No. Telepon</Text>
                   <Text style={{ marginBottom: 8 }}>
-                    {"          : " + formData.NoTelephone}
+                    {'          : ' + formData.NoTelephone}
                   </Text>
                   <Text>Jenis Pekerjaan</Text>
                   <Text style={{ marginBottom: 8 }}>
-                    {"          : " + formData.Typeofwork}
+                    {'          : ' + formData.Typeofwork}
                   </Text>
 
                   <Text
                     style={{
                       fontSize: 16,
-                      fontWeight: "bold",
-                      textAlign: "center",
+                      fontWeight: 'bold',
+                      textAlign: 'center',
                       margin: 20,
                     }}
                   >
@@ -831,18 +831,18 @@ export default function SuratIzinKeluarMasukBarang() {
                     <>
                       <ListItem3
                         item={{
-                          column1: "Jenis Barang",
-                          column2: "Jumlah",
-                          column3: "Keterangan",
+                          column1: 'Jenis Barang',
+                          column2: 'Jumlah',
+                          column3: 'Keterangan',
                         }}
-                        onDelete={"header"}
+                        onDelete={'header'}
                       />
                     </>
                   )}
                   <FlatList
                     data={items}
                     renderItem={({ item, index }) => (
-                      <ListItem3 item={item} index={index} onDelete={"modal"} />
+                      <ListItem3 item={item} index={index} onDelete={'modal'} />
                     )}
                     keyExtractor={(item, index) => index.toString()}
                   />
@@ -851,44 +851,44 @@ export default function SuratIzinKeluarMasukBarang() {
                     Nama / Pengirim / Pengambil
                   </Text>
                   <Text style={{ marginBottom: 8 }}>
-                    {"          : " + formData.NameSenderTaker}
+                    {'          : ' + formData.NameSenderTaker}
                   </Text>
                   <Text>No. KTP / SIM</Text>
                   <Text style={{ marginBottom: 8 }}>
-                    {"          : " + formData.NoKTPSIM}
+                    {'          : ' + formData.NoKTPSIM}
                   </Text>
                   <Text>Alamat</Text>
                   <Text style={{ marginBottom: 8 }}>
-                    {"          : " + formData.Address}
+                    {'          : ' + formData.Address}
                   </Text>
                   <Text>No. Telepon</Text>
                   <Text style={{ marginBottom: 8 }}>
-                    {"          : " + formData.NoPhone}
+                    {'          : ' + formData.NoPhone}
                   </Text>
                   <Text>Hari / Tanggal</Text>
                   <Text style={{ marginBottom: 8 }}>
-                    {"          : " + formData.DayDate}
+                    {'          : ' + formData.DayDate}
                   </Text>
                   <Text>Jam</Text>
                   <View
                     style={{
                       //flex: 1,
-                      flexDirection: "row",
+                      flexDirection: 'row',
                       //justifyContent: "center", // Center vertically
-                      alignItems: "center", // Center horizontally
+                      alignItems: 'center', // Center horizontally
                     }}
                   >
                     <Text style={{ marginBottom: 8 }}>
-                      {"          : " + formData.clock + " s.d. " + formData.to}
+                      {'          : ' + formData.clock + ' s.d. ' + formData.to}
                     </Text>
                   </View>
                   <Text>Jenis Kendaraan</Text>
                   <Text style={{ marginBottom: 8 }}>
-                    {"          : " + formData.VehicleType}
+                    {'          : ' + formData.VehicleType}
                   </Text>
                   <Text>No Kendaraan</Text>
                   <Text style={{ marginBottom: 8 }}>
-                    {"          : " + formData.VehicleNumber}
+                    {'          : ' + formData.VehicleNumber}
                   </Text>
 
                   <TouchableOpacity

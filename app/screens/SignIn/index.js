@@ -34,6 +34,9 @@ import { data_project } from '../../actions/ProjectActions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import { API_URL_LOKAL } from '@env';
+import { FontFamily } from '../../config';
+import Fonts from '../../config/Fonts';
+import DeviceInfo from 'react-native-device-info';
 
 const SignIn = (props) => {
   const { navigation } = props;
@@ -50,6 +53,14 @@ const SignIn = (props) => {
 
   const user = useSelector((state) => getUser(state));
   const project = useSelector((state) => getProject(state));
+  const [macAddress, setMacAddress] = useState('');
+
+  useEffect(() => {
+    DeviceInfo.getMacAddress().then((mac) => {
+      console.log('mac address', mac);
+      setMacAddress(mac);
+    });
+  }, []);
 
   // const isLoading = useSelector((state) =>
   //   isLoadingSelector([actionTypes.LOGIN], state)
@@ -63,8 +74,8 @@ const SignIn = (props) => {
     loadProject();
   };
   const loginUser = useCallback(
-    () => dispatch(login(email, password, token_firebase)),
-    [email, password, token_firebase, dispatch],
+    () => dispatch(login(email, password, token_firebase, macAddress)),
+    [email, password, token_firebase, macAddress, dispatch],
   );
 
   const loadProject = useCallback(
@@ -165,7 +176,7 @@ const SignIn = (props) => {
             BaseStyle.textInput,
             { backgroundColor: colors.border, fontSize: 10 },
           ]}
-          placeholderTextColor={colors.text}
+          // placeholderTextColor={colors.text}
           onChangeText={emailChanged}
           autoCorrect={false}
           placeholder={t('input_id')}
@@ -201,7 +212,16 @@ const SignIn = (props) => {
             // onPress={loginUser}
             onPress={loginklik}
           >
-            {t('sign_in')}
+            <Text
+              style={{
+                color: BaseColor.whiteColor,
+                fontSize: 14,
+                fontFamily: Fonts.type.LatoBold,
+              }}
+            >
+              {t('sign_in')}
+            </Text>
+            {/* {t('sign_in')} */}
           </Button>
         </View>
         <View style={styles.contentActionBottom}>

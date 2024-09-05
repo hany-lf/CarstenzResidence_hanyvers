@@ -11,34 +11,35 @@ import {
   CategoryGrid,
   CategoryBoxColor,
   ModalFilterLocation,
-} from "@components";
-import { BaseColor, BaseStyle, useTheme } from "@config";
-import { FFriends } from "@data";
-import { useNavigation } from "@react-navigation/native";
-import { haveChildren } from "@utils";
-import React, { useEffect, useState, useMemo } from "react";
-import { useTranslation } from "react-i18next";
+} from '@components';
+import { BaseColor, BaseStyle, useTheme } from '@config';
+import { FFriends } from '@data';
+import { useNavigation } from '@react-navigation/native';
+import { haveChildren } from '@utils';
+import React, { useEffect, useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   FlatList,
   TouchableOpacity,
   View,
-  Picker,
+  // Picker,
   Modal,
   Platform,
   // Text,
-} from "react-native";
-import CheckBox from "@react-native-community/checkbox";
-import axios from "axios";
-import styles from "./styles";
+} from 'react-native';
+import { Picker } from '@react-native-picker/picker';
+import CheckBox from '@react-native-community/checkbox';
+import axios from 'axios';
+import styles from './styles';
 
 export default function FormPermitFitOut() {
   const { t, i18n } = useTranslation();
   const { colors } = useTheme();
   const [loading, setLoading] = useState(true);
-  const [selectedValue, setSelectedValue] = useState("");
+  const [selectedValue, setSelectedValue] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [formData, setFormData] = useState({
-    shop_name: "",
+    shop_name: '',
   });
   const [option1Checked, setOption1Checked] = useState(false);
   const [option2Checked, setOption2Checked] = useState(false);
@@ -46,7 +47,7 @@ export default function FormPermitFitOut() {
   const [option4Checked, setOption4Checked] = useState(false);
   const [option5Checked, setOption5Checked] = useState(false);
 
-  const iosPickerStyle = Platform.OS === "ios" ? styles.iosPicker : null;
+  const iosPickerStyle = Platform.OS === 'ios' ? styles.iosPicker : null;
 
   const handleOptionSelect = (option) => {
     setOption1Checked(false);
@@ -56,19 +57,19 @@ export default function FormPermitFitOut() {
     setOption5Checked(false);
 
     switch (option) {
-      case "option1":
+      case 'option1':
         setOption1Checked(true);
         break;
-      case "option2":
+      case 'option2':
         setOption2Checked(true);
         break;
-      case "option3":
+      case 'option3':
         setOption3Checked(true);
         break;
-      case "option4":
+      case 'option4':
         setOption4Checked(true);
         break;
-      case "option5":
+      case 'option5':
         setOption5Checked(true);
         break;
       default:
@@ -78,7 +79,7 @@ export default function FormPermitFitOut() {
   const navigation = useNavigation();
   const handleNextScreen = () => {
     // Ganti 'NextScreen' dengan nama screen tujuan untuk navigasi
-    navigation.navigate("TenantInformation");
+    navigation.navigate('TenantInformation');
   };
   useEffect(() => {
     setTimeout(() => {
@@ -89,23 +90,23 @@ export default function FormPermitFitOut() {
   return (
     <SafeAreaView
       style={BaseStyle.safeAreaView}
-      edges={["right", "top", "left"]}
+      edges={['right', 'top', 'left']}
     >
-      <View style={{ alignItems: "center", justifyContent: "center" }}>
+      <View style={{ alignItems: 'center', justifyContent: 'center' }}>
         <Image
-          source={require("@assets/images/form.png")}
+          source={require('@assets/images/form.png')}
           style={{
             height: 200,
             width: 300,
             // marginHorizontal: 100,
             // flexDirection: 'row',
-            resizeMode: "cover",
+            resizeMode: 'cover',
             // alignSelf: 'center',
           }}
         />
         <View style={{ marginTop: 20 }}>
           <Text
-            style={{ fontSize: 16, fontWeight: "bold", textAlign: "center" }}
+            style={{ fontSize: 16, fontWeight: 'bold', textAlign: 'center' }}
           >
             Fill your form below
           </Text>
@@ -113,14 +114,14 @@ export default function FormPermitFitOut() {
             style={{
               marginTop: 10,
               fontSize: 16,
-              fontWeight: "100",
-              textAlign: "center",
+              fontWeight: '100',
+              textAlign: 'center',
             }}
           >
             Please fill in the forms
           </Text>
           <Text
-            style={{ fontSize: 16, fontWeight: "100", textAlign: "center" }}
+            style={{ fontSize: 16, fontWeight: '100', textAlign: 'center' }}
           >
             below for permit request data
           </Text>
@@ -135,8 +136,8 @@ export default function FormPermitFitOut() {
           <Text
             style={{
               fontSize: 16,
-              fontWeight: "bold",
-              textAlign: "center",
+              fontWeight: 'bold',
+              textAlign: 'center',
               marginBottom: 20,
             }}
           >
@@ -161,20 +162,20 @@ export default function FormPermitFitOut() {
             >
               <Text
                 style={
-                  selectedValue === ""
-                    ? { color: "#A4A4A4" }
-                    : { color: "black" }
+                  selectedValue === ''
+                    ? { color: '#A4A4A4' }
+                    : { color: 'black' }
                 }
               >
-                {selectedValue !== "" ? selectedValue : "Unit Number"}
+                {selectedValue !== '' ? selectedValue : 'Unit Number'}
               </Text>
             </TouchableOpacity>
             {/* checkbox */}
             <Text
               style={{
                 fontSize: 16,
-                fontWeight: "bold",
-                textAlign: "left",
+                fontWeight: 'bold',
+                textAlign: 'left',
                 marginBottom: 20,
               }}
             >
@@ -182,14 +183,14 @@ export default function FormPermitFitOut() {
             </Text>
 
             <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}
+              style={{ flexDirection: 'row', justifyContent: 'space-between' }}
             >
               <CheckBox
                 disabled={false}
                 animationDuration={0.2}
                 value={option1Checked}
                 style={styles.checkBoxSize}
-                onValueChange={() => handleOptionSelect("option1")}
+                onValueChange={() => handleOptionSelect('option1')}
               />
               <Text style={styles.checkBoxFontSize}>Food Beverage</Text>
 
@@ -198,7 +199,7 @@ export default function FormPermitFitOut() {
                 animationDuration={0.2}
                 value={option2Checked}
                 style={styles.checkBoxSize}
-                onValueChange={() => handleOptionSelect("option2")}
+                onValueChange={() => handleOptionSelect('option2')}
               />
               <Text style={styles.checkBoxFontSize}>Non F & B</Text>
 
@@ -207,20 +208,20 @@ export default function FormPermitFitOut() {
                 animationDuration={0.2}
                 value={option3Checked}
                 style={styles.checkBoxSize}
-                onValueChange={() => handleOptionSelect("option3")}
+                onValueChange={() => handleOptionSelect('option3')}
               />
               <Text style={styles.checkBoxFontSize}>New Tenant</Text>
             </View>
-            <View style={{ flexDirection: "row", marginTop: 20 }}>
+            <View style={{ flexDirection: 'row', marginTop: 20 }}>
               <CheckBox
                 disabled={false}
                 animationDuration={0.2}
                 value={option4Checked}
                 style={styles.checkBoxSize}
-                onValueChange={() => handleOptionSelect("option4")}
+                onValueChange={() => handleOptionSelect('option4')}
               />
               <Text style={styles.checkBoxFontSize}>
-                Renewal {"(Redesign)"}
+                Renewal {'(Redesign)'}
               </Text>
 
               <CheckBox
@@ -228,7 +229,7 @@ export default function FormPermitFitOut() {
                 animationDuration={0.2}
                 value={option5Checked}
                 style={styles.checkBoxSize}
-                onValueChange={() => handleOptionSelect("option5")}
+                onValueChange={() => handleOptionSelect('option5')}
               />
               <Text style={styles.checkBoxFontSize}>Relocation</Text>
             </View>
@@ -237,8 +238,8 @@ export default function FormPermitFitOut() {
               <Text
                 style={{
                   fontSize: 16,
-                  fontWeight: "bold",
-                  textAlign: "left",
+                  fontWeight: 'bold',
+                  textAlign: 'left',
                   marginBottom: 20,
                 }}
               >
@@ -248,12 +249,12 @@ export default function FormPermitFitOut() {
                 style={{
                   fontSize: 14,
                   // fontWeight: 'bold',
-                  textAlign: "left",
+                  textAlign: 'left',
                   marginBottom: 20,
-                  fontStyle: "italic",
+                  fontStyle: 'italic',
                 }}
               >
-                01 Oct 2023 - 31 Oct 2024 {"(12 Months)"}
+                01 Oct 2023 - 31 Oct 2024 {'(12 Months)'}
               </Text>
             </View>
           </View>

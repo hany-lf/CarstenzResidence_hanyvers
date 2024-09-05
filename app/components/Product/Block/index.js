@@ -43,6 +43,7 @@ const Block = ({
   loading = false,
   currency,
   price,
+  facility,
 }) => {
   const { colors } = useTheme();
 
@@ -246,6 +247,7 @@ Block.propTypes = {
   salePercent: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onPress: PropTypes.func,
   isFavorite: PropTypes.bool,
+  facility: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 Block.defaultProps = {
@@ -264,6 +266,7 @@ Block.defaultProps = {
   salePercent: '',
   onPress: () => {},
   isFavorite: false,
+  facility: '',
 };
 
 export default Block;

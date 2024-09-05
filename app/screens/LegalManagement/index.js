@@ -10,35 +10,35 @@ import {
   CategoryGrid,
   CategoryBoxColor,
   ModalFilterLocation,
-} from "@components";
+} from '@components';
 
-import { BaseColor, BaseStyle, useTheme } from "@config";
-import { CheckBox } from "react-native-elements";
-import { FFriends } from "@data";
-import { useNavigation } from "@react-navigation/native";
-import { haveChildren } from "@utils";
-import React, { useEffect, useState, useMemo } from "react";
-import { useTranslation } from "react-i18next";
+import { BaseColor, BaseStyle, useTheme } from '@config';
+import { CheckBox } from 'react-native-elements';
+import { FFriends } from '@data';
+import { useNavigation } from '@react-navigation/native';
+import { haveChildren } from '@utils';
+import React, { useEffect, useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
-import { FlatList, TouchableOpacity, View, ScrollView } from "react-native";
+import { FlatList, TouchableOpacity, View, ScrollView } from 'react-native';
 
-import { SceneMap } from "react-native-tab-view";
-import { useSelector } from "react-redux";
-import getUser from "../../selectors/UserSelectors";
-import axios from "axios";
-import client from "../../controllers/HttpClient";
-import styles from "./styles";
-import ModalDropdown_debtor from "@components/ModalDropdown_debtor";
-import ModalDropdown_lotno from "@components/ModalDropdown_lotno";
+import { SceneMap } from 'react-native-tab-view';
+import { useSelector } from 'react-redux';
+import getUser from '../../selectors/UserSelectors';
+import axios from 'axios';
+import client from '../../controllers/HttpClient';
+import styles from './styles';
+import ModalDropdown_debtor from '@components/ModalDropdown_debtor';
+import ModalDropdown_lotno from '@components/ModalDropdown_lotno';
 
 const Friends = () => {
   const { t, i18n } = useTranslation();
   const { colors } = useTheme();
-  const [keyword, setKeyword] = useState("");
+  const [keyword, setKeyword] = useState('');
   const [friends, setFriends] = useState(FFriends);
   const navigation = useNavigation();
   const onSend = () => {
-    navigation.navigate("FSendMoney");
+    navigation.navigate('FSendMoney');
   };
 
   return (
@@ -65,7 +65,7 @@ const Friends = () => {
                   backgroundColor: colors.background,
                 }}
               >
-                {`${t("send")}`}
+                {`${t('send')}`}
               </Tag>
             }
           />
@@ -89,24 +89,24 @@ export default function Helpdesk() {
   return (
     <SafeAreaView
       style={BaseStyle.safeAreaView}
-      edges={["right", "top", "left"]}
+      edges={['right', 'top', 'left']}
     >
       <ScrollView>
-        <View style={{ alignItems: "center", justifyContent: "center" }}>
+        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
           <Image
-            source={require("@assets/images/contract.png")}
+            source={require('@assets/images/contract.png')}
             style={{
               height: 300,
               width: 300,
               // marginHorizontal: 100,
               // flexDirection: 'row',
-              resizeMode: "contain",
+              resizeMode: 'contain',
               // alignSelf: 'center',
             }}
           />
           <View style={{ marginTop: 10 }}>
             <Text
-              style={{ fontSize: 16, fontWeight: "bold", textAlign: "center" }}
+              style={{ fontSize: 16, fontWeight: 'bold', textAlign: 'center' }}
             >
               Choose your Letter
             </Text>
@@ -114,14 +114,14 @@ export default function Helpdesk() {
               style={{
                 marginTop: 10,
                 fontSize: 16,
-                fontWeight: "100",
-                textAlign: "center",
+                fontWeight: '100',
+                textAlign: 'center',
               }}
             >
               Select the letter category
             </Text>
             <Text
-              style={{ fontSize: 16, fontWeight: "100", textAlign: "center" }}
+              style={{ fontSize: 16, fontWeight: '100', textAlign: 'center' }}
             >
               to continue with the next step
             </Text>
@@ -133,14 +133,14 @@ export default function Helpdesk() {
                 marginTop: 10,
                 borderRadius: 10,
                 borderWidth: 1,
-                borderColor: "#315447",
+                borderColor: '#315447',
                 padding: 10,
-                alignItems: "center",
+                alignItems: 'center',
               }}
-              onPress={() => navigation.navigate("RenovationPermit")}
+              onPress={() => navigation.navigate('RenovationPermit')}
             >
               <Text
-                style={{ fontSize: 16, fontWeight: "100", textAlign: "center" }}
+                style={{ fontSize: 16, fontWeight: '100', textAlign: 'center' }}
               >
                 Renovation Permit
               </Text>
@@ -150,14 +150,14 @@ export default function Helpdesk() {
                 marginTop: 10,
                 borderRadius: 10,
                 borderWidth: 1,
-                borderColor: "#315447",
+                borderColor: '#315447',
                 padding: 10,
-                alignItems: "center",
+                alignItems: 'center',
               }}
-              onPress={() => navigation.navigate("FitOut")}
+              onPress={() => navigation.navigate('FitOut')}
             >
               <Text
-                style={{ fontSize: 16, fontWeight: "100", textAlign: "center" }}
+                style={{ fontSize: 16, fontWeight: '100', textAlign: 'center' }}
               >
                 Fit Out
               </Text>
@@ -167,19 +167,19 @@ export default function Helpdesk() {
                 marginTop: 10,
                 borderRadius: 10,
                 borderWidth: 1,
-                borderColor: "#315447",
+                borderColor: '#315447',
                 padding: 10,
-                alignItems: "center",
+                alignItems: 'center',
               }}
-              onPress={() => navigation.navigate("EntryExit")}
+              onPress={() => navigation.navigate('EntryExit')}
             >
               <Text
-                style={{ fontSize: 16, fontWeight: "100", textAlign: "center" }}
+                style={{ fontSize: 16, fontWeight: '100', textAlign: 'center' }}
               >
                 Entry and Exit Permit of Goods
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={{
                 marginTop: 10,
                 borderRadius: 10,
@@ -195,20 +195,20 @@ export default function Helpdesk() {
               >
                 Other
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity
               style={{
                 marginTop: 10,
                 borderRadius: 10,
                 borderWidth: 1,
-                borderColor: "#315447",
+                borderColor: '#315447',
                 padding: 10,
-                alignItems: "center",
+                alignItems: 'center',
               }}
-              onPress={() => navigation.navigate("SuratIzinKerja")}
+              onPress={() => navigation.navigate('SuratIzinKerja')}
             >
               <Text
-                style={{ fontSize: 16, fontWeight: "100", textAlign: "center" }}
+                style={{ fontSize: 16, fontWeight: '100', textAlign: 'center' }}
               >
                 Surat Izin Kerja
               </Text>
@@ -218,14 +218,14 @@ export default function Helpdesk() {
                 marginTop: 10,
                 borderRadius: 10,
                 borderWidth: 1,
-                borderColor: "#315447",
+                borderColor: '#315447',
                 padding: 10,
-                alignItems: "center",
+                alignItems: 'center',
               }}
-              onPress={() => navigation.navigate("SuratIzinKeluarMasukBarang")}
+              onPress={() => navigation.navigate('SuratIzinKeluarMasukBarang')}
             >
               <Text
-                style={{ fontSize: 16, fontWeight: "100", textAlign: "center" }}
+                style={{ fontSize: 16, fontWeight: '100', textAlign: 'center' }}
               >
                 Surat Izin Keluar / Masuk Barang
               </Text>

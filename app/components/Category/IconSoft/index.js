@@ -28,6 +28,9 @@ import {
   News,
   Event,
   Carts,
+  HouseRoles,
+  MeterInfo,
+  LegalPermit,
 } from '../../../components/Svg';
 import Fonts from '@config/Fonts';
 
@@ -71,9 +74,13 @@ export default function CategoryIconSoft({
     facilities: Facilities,
     meter: Others,
     event: Event,
-    // package: Package,
+    package: Package,
     news: News,
     cart: Carts,
+    houseroles: HouseRoles,
+    meterinfo: MeterInfo,
+    legalpermit: LegalPermit,
+
     // Tambahkan pemetaan ikon lainnya sesuai kebutuhan
   };
   // console.log('iconMapper[icon]', iconMapper);
@@ -123,8 +130,8 @@ export default function CategoryIconSoft({
         /> */}
 
         <IconComponent
-          width={50}
-          height={50}
+          width={40}
+          height={40}
           iconClass={icon}
           // size={isRound ? 29 : 32}
           size={isRound ? 40 : 32}

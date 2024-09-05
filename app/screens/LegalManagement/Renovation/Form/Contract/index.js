@@ -11,48 +11,49 @@ import {
   CategoryGrid,
   CategoryBoxColor,
   ModalFilterLocation,
-} from "@components";
-import { BaseColor, BaseStyle, useTheme } from "@config";
-import { FFriends } from "@data";
-import { useNavigation } from "@react-navigation/native";
-import { haveChildren } from "@utils";
-import React, { useEffect, useState, useMemo } from "react";
-import { useTranslation } from "react-i18next";
+} from '@components';
+import { BaseColor, BaseStyle, useTheme } from '@config';
+import { FFriends } from '@data';
+import { useNavigation } from '@react-navigation/native';
+import { haveChildren } from '@utils';
+import React, { useEffect, useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   FlatList,
   TouchableOpacity,
   View,
-  Picker,
+  // Picker,
   Modal,
   Platform,
   ScrollView,
-} from "react-native";
-import CheckBox from "@react-native-community/checkbox";
-import DatePicker from "react-native-date-picker";
-import moment from "moment";
-import axios from "axios";
-import styles from "./styles";
+} from 'react-native';
+import { Picker } from '@react-native-picker/picker';
+import CheckBox from '@react-native-community/checkbox';
+import DatePicker from 'react-native-date-picker';
+import moment from 'moment';
+import axios from 'axios';
+import styles from './styles';
 
 export default function ContractInformation() {
   const { t, i18n } = useTranslation();
   const { colors } = useTheme();
   const [loading, setLoading] = useState(true);
-  const [selectedValue, setSelectedValue] = useState("");
-  const [selectedValue1, setSelectedValue1] = useState("");
+  const [selectedValue, setSelectedValue] = useState('');
+  const [selectedValue1, setSelectedValue1] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisible1, setModalVisible1] = useState(false);
   const [formData, setFormData] = useState({
-    contractor_name: "",
-    address: "",
-    person_responsible: "",
-    phone: "",
-    number_works: "",
+    contractor_name: '',
+    address: '',
+    person_responsible: '',
+    phone: '',
+    number_works: '',
   });
-  const iosPickerStyle = Platform.OS === "ios" ? styles.iosPicker : null;
+  const iosPickerStyle = Platform.OS === 'ios' ? styles.iosPicker : null;
 
   const tomorrow = new Date();
   // const format = moment(tomorrow).add(1, 'days').format('YYYY-MM-DD');
-  const format = moment(tomorrow).format("YYYY-MM-DD");
+  const format = moment(tomorrow).format('YYYY-MM-DD');
   const [date, setDate] = useState(new Date());
   const [selectedDate, setselectedDate] = useState(false);
   const [open, setOpen] = useState(false);
@@ -61,8 +62,8 @@ export default function ContractInformation() {
   const handleNextScreen = () => {
     // Ganti 'NextScreen' dengan nama screen tujuan untuk navigasi
     // navigation.navigate('TenantInformation');
-    alert("Data submitted! Thank You");
-    navigation.navigate("LegalManagement");
+    alert('Data submitted! Thank You');
+    navigation.navigate('LegalManagement');
   };
   useEffect(() => {
     setTimeout(() => {
@@ -73,25 +74,25 @@ export default function ContractInformation() {
   return (
     <SafeAreaView
       style={BaseStyle.safeAreaView}
-      edges={["right", "top", "left"]}
+      edges={['right', 'top', 'left']}
     >
-      <View style={{ justifyContent: "center" }}>
+      <View style={{ justifyContent: 'center' }}>
         <View
           style={{
-            alignContent: "center",
+            alignContent: 'center',
             marginHorizontal: 30,
             // borderWidth: 1,
             // borderColor: '#000'
           }}
         >
           <Image
-            source={require("@assets/images/form.png")}
+            source={require('@assets/images/form.png')}
             style={{
               height: 200,
               width: 300,
               // marginHorizontal: 100,
               // flexDirection: 'row',
-              resizeMode: "cover",
+              resizeMode: 'cover',
               // alignSelf: 'center',
             }}
           />
@@ -106,8 +107,8 @@ export default function ContractInformation() {
           <Text
             style={{
               fontSize: 16,
-              fontWeight: "bold",
-              textAlign: "center",
+              fontWeight: 'bold',
+              textAlign: 'center',
               marginBottom: 20,
             }}
           >
@@ -157,8 +158,8 @@ export default function ContractInformation() {
             <Text
               style={{
                 fontSize: 16,
-                fontWeight: "bold",
-                textAlign: "center",
+                fontWeight: 'bold',
+                textAlign: 'center',
                 marginBottom: 20,
               }}
             >
@@ -168,7 +169,7 @@ export default function ContractInformation() {
               {/* <View style={{flexDirection: "row", justifyContent: "space-around"}}> */}
               <TouchableOpacity
                 style={{
-                  backgroundColor: "#F5F5F5",
+                  backgroundColor: '#F5F5F5',
                   // colors.primary,
                   paddingVertical: 15,
                   paddingHorizontal: 15,
@@ -178,9 +179,9 @@ export default function ContractInformation() {
                 onPress={() => setOpen(true)}
               >
                 {selectedDate ? (
-                  <Text>{moment(date).format("DD-MM-YYYY")}</Text>
+                  <Text>{moment(date).format('DD-MM-YYYY')}</Text>
                 ) : (
-                  <Text style={{ color: "#aeaeae" }}>Due Date</Text>
+                  <Text style={{ color: '#aeaeae' }}>Due Date</Text>
                 )}
 
                 <DatePicker
@@ -209,8 +210,8 @@ export default function ContractInformation() {
               onPress={() => setModalVisible(true)}
               style={styles.button}
             >
-              <Text style={selectedValue === "" ? { color: "#A4A4A4" } : null}>
-                {selectedValue !== "" ? selectedValue : "Type of Works"}
+              <Text style={selectedValue === '' ? { color: '#A4A4A4' } : null}>
+                {selectedValue !== '' ? selectedValue : 'Type of Works'}
               </Text>
             </TouchableOpacity>
 
@@ -218,8 +219,8 @@ export default function ContractInformation() {
               onPress={() => setModalVisible1(true)}
               style={styles.button}
             >
-              <Text style={selectedValue1 === "" ? { color: "#A4A4A4" } : null}>
-                {selectedValue1 !== "" ? selectedValue1 : "Delivery Through"}
+              <Text style={selectedValue1 === '' ? { color: '#A4A4A4' } : null}>
+                {selectedValue1 !== '' ? selectedValue1 : 'Delivery Through'}
               </Text>
             </TouchableOpacity>
 

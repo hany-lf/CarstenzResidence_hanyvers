@@ -39,10 +39,67 @@ const Categories = ({ style = {}, dataMenus }) => {
 
   return (
     <View>
-      <View style={[{ flexDirection: 'row' }, style]}>
+      <View style={[{ flexDirection: 'row', marginHorizontal: 0 }, style]}>
         <FlatList
           data={dataMenus}
-          renderItem={({ item, key }) => (
+          renderItem={({ item, key }) => {
+            const isSecondRow = Math.floor(key / 3) === 1;
+            const isItemInSecondRow = key >= 3 && key < 6;
+            const isOddItemInSecondRow =
+              isItemInSecondRow && (key % 3 === 0 || key % 3 === 2);
+
+            return (
+              <View
+                key={key}
+                style={{
+                  flex: 1,
+                  marginVertical: 12,
+                }}
+              >
+                <CategoryIconSoft
+                  isRound
+                  // icon={item.icon}
+                  // style={{ padding: 0 }}
+                  style={{
+                    flex: 1,
+                    // marginVertical: 12,
+                    // paddingHorizontal: 10,
+                    // justifyContent: 'center',
+                    // alignItems: 'center',
+                    marginHorizontal: 10,
+                    // marginHorizontal: isSecondRow
+                    //   ? isOddItemInSecondRow
+                    //     ? 10
+                    //     : 50
+                    //   : 10,
+                  }}
+                  // icon_url={item.icon_url}
+                  icon={item.IconClass}
+                  title={t(item.Title)}
+                  // onPress={() => console.log('coba di categories', item.Screen)}
+                  onPress={() =>
+                    user.userData.facility_booking == item.User_Facility ||
+                    item.User_Menu == 'Y'
+                      ? goToScreen(item.Screen)
+                      : onExpand(
+                          'User tidak memiliki izin untuk booking fasilitas',
+                        )
+                  }
+                />
+              </View>
+            );
+          }}
+          numColumns={3}
+          columnWrapperStyle={{
+            //
+            justifyContent:
+              dataMenus.length % 3 === 2 ? 'center' : 'space-evenly',
+          }}
+          keyExtractor={(item, index) => index}
+        />
+        {/* <FlatList
+          data={dataMenus}
+          renderItem={({ item }) => (
             // console.log(
             //   'coba userfacility == user_facility,',
             //   user.UserFacility != item.user_facility,
@@ -52,38 +109,26 @@ const Categories = ({ style = {}, dataMenus }) => {
             //   user.UserFacility == item.user_menu,
             // ),
             <View
-              key={key}
               style={{
                 flex: 1,
-                marginVertical: 12,
+                marginVertical: 10,
+                // paddingHorizontal: 10,
                 // marginHorizontal: 20,
                 // width: 60,
                 // alignItems: 'center',
                 // justifyContent: 'center',
               }}
             >
-              {/* <CategoryIconSoft
-                isRound
-                // icon={item.icon}
-                style={{ padding: 0 }}
-                icon_url={item.icon_url}
-                icon={item.icon}
-                title={t(item.Title)}
-                onPress={() =>
-                  user.UserFacility == item.user_facility ||
-                  item.user_menu == "Y"
-                    ? goToScreen(item.screen)
-                    : onExpand(user.Pesan_Facility)
-                }
-              /> */}
               <CategoryIconSoft
                 isRound
                 // icon={item.icon}
-                style={{ padding: 0 }}
-                // icon_url={item.icon_url}
+                style={{
+                  padding: 0,
+                  // width: 90,
+                  // height: 90
+                }}
                 icon={item.IconClass}
                 title={t(item.Title)}
-                // onPress={() => console.log('coba di categories', item.Screen)}
                 onPress={() =>
                   user.userData.facility_booking == item.User_Facility ||
                   item.User_Menu == 'Y'
@@ -98,7 +143,7 @@ const Categories = ({ style = {}, dataMenus }) => {
           //Setting the number of column
           numColumns={4}
           keyExtractor={(item, index) => index}
-        />
+        /> */}
       </View>
 
       <View>

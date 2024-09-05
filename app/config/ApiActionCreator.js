@@ -12,8 +12,11 @@ const apiActionCreator = (url, params) => (dispatch) => {
         'content-type': 'application/json',
         Authorization: `Bearer ${params.token}`,
       },
+      // timeout: 5000, // default is `0` (no timeout),
       params: {
         email: params.email,
+        // entity_cd: '01', //hardcode
+        // project_no: '02', //hardcode
         entity_cd: params.entity_cd,
         project_no: params.project_no,
       },
@@ -28,7 +31,7 @@ const apiActionCreator = (url, params) => (dispatch) => {
       })
       .catch((error) => {
         dispatch(fetchError(error));
-        console.log('error api action creator', error.response.data);
+        console.log('error api action creator', error.response);
       });
   });
 };

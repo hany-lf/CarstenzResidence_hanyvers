@@ -1,6 +1,6 @@
-import axios from "axios";
-import { API_URL } from "react-native-dotenv";
-import { API_URL_LOKAL, API_URL_LIVE_WEBPBI, API_URL_LIVE_WEBIFCA } from "@env";
+import axios from 'axios';
+import { API_URL } from 'react-native-dotenv';
+import { API_URL_LOKAL, API_URL_LIVE_WEBPBI, API_URL_LIVE_WEBIFCA } from '@env';
 
 /*
   Base client config for your application.
@@ -14,7 +14,7 @@ API_URL_LIVE_WEBPBI
 API_URL_LIVE_WEBIFCA
 */
 
-console.log("17 api url lokal", API_URL_LOKAL);
+console.log('17 api url lokal', API_URL_LOKAL);
 
 const client = axios.create({
   baseURL: API_URL_LOKAL,
@@ -22,9 +22,10 @@ const client = axios.create({
   //baseURL: API_URL_LIVE_WEBIFCA,
   //timeout: 10000,
   headers: {
-    Accept: "application/json",
-    "Content-Type": "application/json",
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
   },
+  timeout: 5000, // default is `0` (no timeout)
 });
 
 client.interceptors.response.use(
@@ -35,7 +36,7 @@ client.interceptors.response.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 // const client = axios.create({

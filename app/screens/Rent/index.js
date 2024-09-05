@@ -208,6 +208,7 @@ const Rent = (props) => {
                       salePercent={item.salePercent}
                       currency={item.currency}
                       price={item.price}
+                      facility={item.facility}
                     />
                   )}
                 />

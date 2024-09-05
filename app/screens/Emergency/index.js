@@ -4,35 +4,54 @@ import {
   Icon,
   SafeAreaView,
   TextInput,
-} from "@components";
-import { BaseColor, BaseStyle, Typography, useTheme } from "@config";
+} from '@components';
+import { BaseColor, BaseStyle, Typography, useTheme } from '@config';
 //import { FCategoryData } from "@data";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { FlatList, RefreshControl, View, Linking } from "react-native";
-import { API_URL_LOKAL } from "@env";
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FlatList, RefreshControl, View, Linking } from 'react-native';
+import { API_URL_LOKAL } from '@env';
+import getUser from '../../selectors/UserSelectors';
+import { useSelector } from 'react-redux';
 
 const Emergency = (props) => {
   const { navigation } = props;
   const { t } = useTranslation();
   const { colors } = useTheme();
   const [refreshing, setRefreshing] = useState(false);
-  const [search, setSearch] = useState("");
-  const [modeView, setModeView] = useState("list");
+  const [search, setSearch] = useState('');
+  const [modeView, setModeView] = useState('list');
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const user = useSelector((state) => getUser(state));
 
   async function fetchDataDue() {
     try {
-      const res = await axios.get(API_URL_LOKAL + "/setting/emergency_contact");
+      const config = {
+        method: 'GET',
+        url: API_URL_LOKAL + '/setting/emergency-contact',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user.Token}`,
+        },
+        params: {},
+      };
+      const res = await axios(config);
       setData(res.data.data);
-      console.log("data", data);
+      console.log('data', data);
     } catch (error) {
       setErrors(error);
       // alert(hasError.toString());
     }
   }
+  const onRefresh = () => {
+    setLoading(true);
+    setTimeout(() => {
+      fetchDataDue();
+      setLoading(false);
+    }, 3000);
+  };
 
   useEffect(() => {
     setTimeout(() => {
@@ -60,7 +79,7 @@ const Emergency = (props) => {
   const onChangeText = (text) => {
     setSearch(text);
     setData(
-      text ? data.filter((item) => item.contact_name.includes(text)) : data
+      text ? data.filter((item) => item.contact_name.includes(text)) : data,
     );
   };
 
@@ -68,10 +87,10 @@ const Emergency = (props) => {
     return (
       <SafeAreaView
         style={[BaseStyle.safeAreaView]}
-        edges={["right", "top", "left"]}
+        edges={['right', 'top', 'left']}
       >
         <Header
-          title={t("Emergency Call")}
+          title={t('Emergency Call')}
           renderLeft={() => {
             return (
               <Icon
@@ -112,7 +131,7 @@ const Emergency = (props) => {
               colors={[colors.primary]}
               tintColor={colors.primary}
               refreshing={refreshing}
-              onRefresh={() => {}}
+              onRefresh={onRefresh}
             />
           }
           data={data}

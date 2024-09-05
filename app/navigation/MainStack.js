@@ -91,6 +91,7 @@ import PinchZoom from '../screens/Home/PinchZoom';
 
 import ComingSoon from '../screens/ComingSoon';
 import EventResto from '../screens/EventResto';
+import EventRestoMenu from '../screens/EventResto/event_resto_menu';
 import ClubFacilities from '../screens/ClubFacilities';
 
 import ItemStore from '../screens/Store/ItemStore';
@@ -565,6 +566,11 @@ function MainStack() {
       <Stack.Screen
         name="EventResto"
         component={EventResto}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="EventRestoMenu"
+        component={EventRestoMenu}
         options={{ headerShown: false }}
       />
       <Stack.Screen

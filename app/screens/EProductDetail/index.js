@@ -90,6 +90,7 @@ const EProductDetail = (props) => {
     images,
     market_type,
     currency,
+    facility,
   } = productData;
 
   useEffect(() => {
@@ -303,14 +304,14 @@ const EProductDetail = (props) => {
             {adv_descs}
           </Text>
         </View>
-        <View>
+        {/* <View>
           <Text headline style={{ marginTop: 20 }}>
             {t('Type Market')}
           </Text>
           <Text subhead style={{ marginTop: 20, color: BaseColor.grayColor }}>
             {market_type}
           </Text>
-        </View>
+        </View> */}
 
         <Text headline style={{ marginTop: 20 }}>
           {t('specifications')}
@@ -388,6 +389,23 @@ const EProductDetail = (props) => {
             description={'Parking'}
             title={qty_parking}
           />
+        </View>
+        <View style={styles.specifications}>
+          <View>
+            <Text caption1 grayColor>
+              Facility
+            </Text>
+            {/* <ProductSpecGrid
+              style={{ flex: 1 }}
+              description={'Facility'}
+              // title={certificate}
+            /> */}
+            {facility.map((item) => (
+              <View>
+                <Text>{item.facility_name}</Text>
+              </View>
+            ))}
+          </View>
         </View>
         <View>
           {/* <ListThumbCircle source={avatar} /> */}

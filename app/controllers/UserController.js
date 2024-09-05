@@ -10,7 +10,7 @@ class UserController {
     this.basePath = API_URL_LOKAL;
   }
 
-  login = async (email, password, token_firebase) => {
+  login = async (email, password, token_firebase, macAddress) => {
     //var anyString = '';
     //var functionToText = anyString + httpClient;
     // console.log(
@@ -22,6 +22,8 @@ class UserController {
     //   token_firebase
     // );
     console.log(' login user controller', email);
+    console.log('mac address', macAddress);
+
     try {
       // console.log("25 try controller login begin");
       // console.log("API: " + API_URL_LOKAL);
@@ -34,10 +36,11 @@ class UserController {
           password: password,
 
           device: 'ios',
-          mac: '',
+          mac: macAddress,
           token_firebase: token_firebase,
           apps_type: 'S',
         },
+        timeout: 5000, // default is `0` (no timeout)
         headers: {
           Authorization: `Bearer ${token_firebase}`,
         },

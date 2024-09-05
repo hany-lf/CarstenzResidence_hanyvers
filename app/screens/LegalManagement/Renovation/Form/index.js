@@ -11,38 +11,39 @@ import {
   CategoryGrid,
   CategoryBoxColor,
   ModalFilterLocation,
-} from "@components";
-import { BaseColor, BaseStyle, useTheme } from "@config";
-import { FFriends } from "@data";
-import { useNavigation } from "@react-navigation/native";
-import { haveChildren } from "@utils";
-import React, { useEffect, useState, useMemo } from "react";
-import { useTranslation } from "react-i18next";
+} from '@components';
+import { BaseColor, BaseStyle, useTheme } from '@config';
+import { FFriends } from '@data';
+import { useNavigation } from '@react-navigation/native';
+import { haveChildren } from '@utils';
+import React, { useEffect, useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   FlatList,
   TouchableOpacity,
   View,
-  Picker,
+  // Picker,
   Modal,
   Platform,
   ScrollView,
   // Text,
-} from "react-native";
-import CheckBox from "@react-native-community/checkbox";
-import axios from "axios";
-import styles from "./styles";
+} from 'react-native';
+import { Picker } from '@react-native-picker/picker';
+import CheckBox from '@react-native-community/checkbox';
+import axios from 'axios';
+import styles from './styles';
 
 export default function ContractInformation() {
   const { t, i18n } = useTranslation();
   const { colors } = useTheme();
   const [loading, setLoading] = useState(true);
-  const [selectedValue, setSelectedValue] = useState("");
+  const [selectedValue, setSelectedValue] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [formData, setFormData] = useState({
-    owner_name: "",
-    person_charge: "",
-    phone: "",
-    email: "",
+    owner_name: '',
+    person_charge: '',
+    phone: '',
+    email: '',
   });
   const [option1Checked, setOption1Checked] = useState(false);
   const [option2Checked, setOption2Checked] = useState(false);
@@ -50,7 +51,7 @@ export default function ContractInformation() {
   const [option4Checked, setOption4Checked] = useState(false);
   const [option5Checked, setOption5Checked] = useState(false);
 
-  const iosPickerStyle = Platform.OS === "ios" ? styles.iosPicker : null;
+  const iosPickerStyle = Platform.OS === 'ios' ? styles.iosPicker : null;
 
   const handleOptionSelect = (option) => {
     setOption1Checked(false);
@@ -60,19 +61,19 @@ export default function ContractInformation() {
     setOption5Checked(false);
 
     switch (option) {
-      case "option1":
+      case 'option1':
         setOption1Checked(true);
         break;
-      case "option2":
+      case 'option2':
         setOption2Checked(true);
         break;
-      case "option3":
+      case 'option3':
         setOption3Checked(true);
         break;
-      case "option4":
+      case 'option4':
         setOption4Checked(true);
         break;
-      case "option5":
+      case 'option5':
         setOption5Checked(true);
         break;
       default:
@@ -82,46 +83,46 @@ export default function ContractInformation() {
   const navigation = useNavigation();
   const handleNextScreen = () => {
     // Ganti 'NextScreen' dengan nama screen tujuan untuk navigasi
-    navigation.navigate("ContractorPermit");
+    navigation.navigate('ContractorPermit');
   };
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
       setFormData({
         ...formData,
-        owner_name: "Renaldy Mukriyanto",
-        phone: "082361286343",
+        owner_name: 'Renaldy Mukriyanto',
+        phone: '082361286343',
       });
-      setSelectedValue("E11A");
+      setSelectedValue('E11A');
     }, 1000);
   }, []);
 
   return (
     <SafeAreaView
       style={BaseStyle.safeAreaView}
-      edges={["right", "top", "left"]}
+      edges={['right', 'top', 'left']}
     >
       <View
         style={{
-          alignItems: "center",
-          justifyContent: "center",
+          alignItems: 'center',
+          justifyContent: 'center',
           marginTop: 120,
         }}
       >
         <Image
-          source={require("@assets/images/formrenovation.png")}
+          source={require('@assets/images/formrenovation.png')}
           style={{
             height: 200,
             width: 300,
             // marginHorizontal: 100,
             // flexDirection: 'row',
-            resizeMode: "cover",
+            resizeMode: 'cover',
             // alignSelf: 'center',
           }}
         />
         <View style={{ marginTop: 20 }}>
           <Text
-            style={{ fontSize: 16, fontWeight: "bold", textAlign: "center" }}
+            style={{ fontSize: 16, fontWeight: 'bold', textAlign: 'center' }}
           >
             Fill your form below
           </Text>
@@ -129,14 +130,14 @@ export default function ContractInformation() {
             style={{
               marginTop: 10,
               fontSize: 16,
-              fontWeight: "100",
-              textAlign: "center",
+              fontWeight: '100',
+              textAlign: 'center',
             }}
           >
             Please fill in the forms
           </Text>
           <Text
-            style={{ fontSize: 16, fontWeight: "100", textAlign: "center" }}
+            style={{ fontSize: 16, fontWeight: '100', textAlign: 'center' }}
           >
             below for permit request data
           </Text>
@@ -151,8 +152,8 @@ export default function ContractInformation() {
           <Text
             style={{
               fontSize: 16,
-              fontWeight: "bold",
-              textAlign: "center",
+              fontWeight: 'bold',
+              textAlign: 'center',
               // marginBottom: 20,
             }}
           >
@@ -205,18 +206,18 @@ export default function ContractInformation() {
             >
               <Text
                 style={
-                  selectedValue === "" ? { color: "black" } : { color: "black" }
+                  selectedValue === '' ? { color: 'black' } : { color: 'black' }
                 }
               >
-                {selectedValue !== "" ? selectedValue : "Unit Number"}
+                {selectedValue !== '' ? selectedValue : 'Unit Number'}
               </Text>
             </TouchableOpacity>
 
             <Text
               style={{
                 fontSize: 16,
-                fontWeight: "bold",
-                textAlign: "left",
+                fontWeight: 'bold',
+                textAlign: 'left',
                 marginBottom: 20,
               }}
             >
@@ -224,14 +225,14 @@ export default function ContractInformation() {
             </Text>
 
             <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}
+              style={{ flexDirection: 'row', justifyContent: 'space-between' }}
             >
               <CheckBox
                 disabled={false}
                 animationDuration={0.2}
                 value={option1Checked}
                 style={styles.checkBoxSize}
-                onValueChange={() => handleOptionSelect("option1")}
+                onValueChange={() => handleOptionSelect('option1')}
               />
               <Text style={styles.checkBoxFontSize}>Business</Text>
 
@@ -240,7 +241,7 @@ export default function ContractInformation() {
                 animationDuration={0.2}
                 value={option2Checked}
                 style={styles.checkBoxSize}
-                onValueChange={() => handleOptionSelect("option2")}
+                onValueChange={() => handleOptionSelect('option2')}
               />
               <Text style={styles.checkBoxFontSize}>Non Business</Text>
             </View>
@@ -249,8 +250,8 @@ export default function ContractInformation() {
               <Text
                 style={{
                   fontSize: 16,
-                  fontWeight: "bold",
-                  textAlign: "left",
+                  fontWeight: 'bold',
+                  textAlign: 'left',
                   marginBottom: 20,
                 }}
               >
@@ -260,9 +261,9 @@ export default function ContractInformation() {
                 style={{
                   fontSize: 14,
                   // fontWeight: 'bold',
-                  textAlign: "left",
+                  textAlign: 'left',
                   marginBottom: 20,
-                  fontStyle: "italic",
+                  fontStyle: 'italic',
                 }}
               >
                 04 Oct 2023

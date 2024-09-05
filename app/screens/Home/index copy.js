@@ -1152,29 +1152,19 @@ const Home = (props) => {
           }
         >
           {/* <View style={{flex: 1}}> */}
+          {/* <View style={{flex: 1}}> */}
           <ImageBackground
-            // source={require('../../assets/images/image-home/Main_Image.png')}
-            source={require('../../assets/images/image-home/carstensz.webp')}
-            style={
-              {
-                // height: '100%',
-                // height: 400,
-                // width: '100%',
-                // flex: 1,
-                // resizeMode: 'cover',
-                // borderBottomLeftRadius: 500,
-                // borderBottomRightRadius: 175,
-              }
-            }
+            source={require('../../assets/images/image-home/bgHome-cartenz.png')}
+            // source={require('../../assets/images/image-home/carstensz.webp')}
             imageStyle={{
               height: 400,
               width: '100%',
-              // borderBottomLeftRadius: 175,
-              // borderBottomRightRadius: 175,
+              // borderBottomLeftRadius: 200,
+              // borderBottomRightRadius: 200,
             }}
           >
             <LinearGradient
-              colors={['rgba(73, 73, 73, 0)', 'rgba(73, 73, 73, 1)']}
+              colors={['rgba(73, 73, 73, 0)', 'transparent']}
               // colors={['#4c669f', '#3b5998', '#192f6a']}
               // {...otherGradientProps}
               style={{
@@ -1186,8 +1176,8 @@ const Home = (props) => {
                 // flex: 1,
                 justifyContent: 'center',
                 // top: 30,
-                // borderBottomLeftRadius: 175,
-                // borderBottomRightRadius: 175,
+                // borderBottomLeftRadius: 200,
+                // borderBottomRightRadius: 200,
               }}
             >
               <View
@@ -1195,10 +1185,33 @@ const Home = (props) => {
                   flexDirection: 'column',
                   flex: 1,
                   justifyContent: 'center',
-                  top: 30,
+                  top: 0,
                 }}
               >
-                {/* ------- TEXT WELCOME HOME ------- */}
+                <View style={{ alignItems: 'center', top: 0 }}>
+                  <Text
+                    style={{
+                      color: 'white',
+                      fontFamily: 'DMSerifDisplay',
+                      fontSize: 10,
+                    }}
+                  >
+                    {/* Once Upon Your Lifetime */}
+                  </Text>
+                </View>
+                <View style={{ alignItems: 'center', top: 0 }}>
+                  <Image
+                    style={{
+                      height: 100,
+                      width: '80%',
+                      //padding: 100,
+                      resizeMode: 'contain',
+                    }}
+                    source={require('../../assets/images/image-home/vector-logo-carstensz.png')}
+                  ></Image>
+                </View>
+
+                {/* ---- tagline carstensz */}
                 <View
                   style={{
                     // flex: 1,
@@ -1212,72 +1225,19 @@ const Home = (props) => {
                 >
                   <Text
                     style={{
-                      fontSize: 25,
+                      fontSize: 14,
                       color: 'white',
-                      fontFamily: 'DMSerifDisplay',
-                      lineHeight: 30,
+                      fontFamily: Fonts.type.Zocial,
+                      // lineHeight: 10,
                     }}
                   >
-                    Welcome home
-                    {'\n'}
-                    {name}
+                    Iconic Living at BSD - Gading Serpong
                   </Text>
-                </View>
-                {/* ------- CLOSE TEXT WELCOME HOME ------- */}
-
-                {/* ----- SEARCH INPUT ----- */}
-                {/* <View
-                    style={{
-                      // flex: 1,
-                      alignItems: 'center',
-                      left: 47,
-                      justifyContent: 'center',
-                      width: '80%',
-                    }}>
-                    <SearchInput
-                      style={[BaseStyle.textInput, Typography.body1]}
-                      onChangeText={onChangeText}
-                      autoCorrect={false}
-                      placeholder={t('Explore your luxury lifestyle')}
-                      placeholderTextColor={BaseColor.grayColor}
-                      value={keyword}
-                      selectionColor={colors.primary}
-                      onSubmitEditing={() => {}}
-                      icon={
-                        <Icon
-                          name="search"
-                          solid
-                          size={24}
-                          color={colors.primary}
-                        />
-                      }
-                    />
-                  </View> */}
-                <View style={{ alignItems: 'center', top: 20 }}>
-                  <Text
-                    style={{
-                      color: 'white',
-                      fontFamily: 'DMSerifDisplay',
-                      fontSize: 10,
-                    }}
-                  >
-                    {/* Once Upon Your Lifetime */}
-                  </Text>
-                </View>
-                <View style={{ alignItems: 'center', top: 10 }}>
-                  <Image
-                    style={{
-                      height: 100,
-                      width: '90%',
-                      //padding: 100,
-                      resizeMode: 'contain',
-                    }}
-                    source={require('../../assets/images/image-home/vector-logo-carstensz.webp')}
-                  ></Image>
                 </View>
               </View>
             </LinearGradient>
           </ImageBackground>
+          {/* </View> */}
           {/* </View> */}
 
           <View

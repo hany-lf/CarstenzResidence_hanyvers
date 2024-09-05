@@ -10,52 +10,52 @@ import {
   // CheckBox,
   PlaceholderLine,
   Placeholder,
-} from "@components";
-import { BaseColor, BaseStyle, useTheme } from "@config";
-import { CheckBox } from "react-native-elements";
-import { FFriends } from "@data";
-import { useNavigation } from "@react-navigation/native";
-import { haveChildren } from "@utils";
-import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { FlatList, TouchableOpacity, View } from "react-native";
-import { SceneMap } from "react-native-tab-view";
-import { useSelector } from "react-redux";
-import getUser from "../../selectors/UserSelectors";
-import axios from "axios";
-import { API_URL } from "@env";
-import styles from "./styles";
+} from '@components';
+import { BaseColor, BaseStyle, useTheme } from '@config';
+import { CheckBox } from 'react-native-elements';
+import { FFriends } from '@data';
+import { useNavigation } from '@react-navigation/native';
+import { haveChildren } from '@utils';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FlatList, TouchableOpacity, View } from 'react-native';
+import { SceneMap } from 'react-native-tab-view';
+import { useSelector } from 'react-redux';
+import getUser from '../../selectors/UserSelectors';
+import axios from 'axios';
+import { API_URL } from '@env';
+import styles from './styles';
 
-import ModalDropdown_debtor from "@components/ModalDropdown_debtor";
-import ModalDropdown_lotno from "@components/ModalDropdown_lotno";
+import ModalDropdown_debtor from '@components/ModalDropdown_debtor';
+import ModalDropdown_lotno from '@components/ModalDropdown_lotno';
 
 const sortOptionInit = [
   {
-    value: "remove",
-    icon: "sort-amount-up",
-    text: "remove",
+    value: 'remove',
+    icon: 'sort-amount-up',
+    text: 'remove',
   },
   {
-    value: "share_this_article",
-    icon: "sort-amount-down",
-    text: "share_this_article",
+    value: 'share_this_article',
+    icon: 'sort-amount-down',
+    text: 'share_this_article',
   },
   {
-    value: "view_detail",
-    icon: "sort-amount-up",
-    text: "view_detail",
+    value: 'view_detail',
+    icon: 'sort-amount-up',
+    text: 'view_detail',
   },
   {
-    value: "reset_all",
-    icon: "sort-amount-up",
-    text: "reset_all",
+    value: 'reset_all',
+    icon: 'sort-amount-up',
+    text: 'reset_all',
   },
 ];
 
 const Friends = () => {
   const { t, i18n } = useTranslation();
   const { colors } = useTheme();
-  const [keyword, setKeyword] = useState("");
+  const [keyword, setKeyword] = useState('');
   const [friends, setFriends] = useState(FFriends);
   const navigation = useNavigation();
 
@@ -75,7 +75,7 @@ const Friends = () => {
   //   };
 
   const onSend = () => {
-    navigation.navigate("FSendMoney");
+    navigation.navigate('FSendMoney');
   };
 
   return (
@@ -118,7 +118,7 @@ const Friends = () => {
                   backgroundColor: colors.background,
                 }}
               >
-                {`${t("send")}`}
+                {`${t('send')}`}
               </Tag>
             }
           />
@@ -131,7 +131,7 @@ const Friends = () => {
 const SpecHelp = (props) => {
   const { t, i18n } = useTranslation();
   const { colors } = useTheme();
-  const [keyword, setKeyword] = useState("");
+  const [keyword, setKeyword] = useState('');
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
   const [dataSpec, setdataSpec] = useState([]);
@@ -142,32 +142,32 @@ const SpecHelp = (props) => {
   const [urlApi, seturlApi] = useState(API_URL);
   const [checkedEntity, setCheckedEntity] = useState(false);
   const [dataDebtor, setDataDebtor] = useState([]);
-  const [entity, setEntity] = useState("");
-  const [project_no, setProjectNo] = useState("");
-  const [db_profile, setDb_Profile] = useState("");
+  const [entity, setEntity] = useState('');
+  const [project_no, setProjectNo] = useState('');
+  const [db_profile, setDb_Profile] = useState('');
   const [spinner, setSpinner] = useState(true);
 
   const [sortOption, setSortOption] = useState(sortOptionInit);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const [debtor, setDebtor] = useState("");
-  const [textDebtor, settextDebtor] = useState("");
-  const [textNameDebtor, settextNameDebtor] = useState("");
+  const [debtor, setDebtor] = useState('');
+  const [textDebtor, settextDebtor] = useState('');
+  const [textNameDebtor, settextNameDebtor] = useState('');
   const [dataLotno, setDataLotno] = useState([]);
-  const [textLot, setLotno] = useState("");
+  const [textLot, setLotno] = useState('');
   const [reportName, setreportName] = useState(users.name);
 
   //-----FOR GET ENTITY & PROJJECT
   const getTower = async () => {
     const data = {
       email: email,
-      app: "O",
+      app: 'O',
     };
 
     const config = {
       headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
+        accept: 'application/json',
+        'Content-Type': 'application/json',
         // token: "",
       },
     };
@@ -177,7 +177,7 @@ const SpecHelp = (props) => {
         `http://apps.pakubuwono-residence.com/apiwebpbi/api/getData/mysql/${data.email}/${data.app}`,
         {
           config,
-        }
+        },
       )
       .then((res) => {
         const datas = res.data;
@@ -193,35 +193,35 @@ const SpecHelp = (props) => {
         // return res.data;
       })
       .catch((error) => {
-        console.log("error get tower api", error);
-        alert("error get");
+        console.log('error get tower api', error);
+        alert('error get');
       });
   };
 
   //-----FOR GET DEBTOR
   const getDebtor = async (data) => {
-    console.log("data for debtor", data);
+    console.log('data for debtor', data);
 
     const params =
-      "?" +
-      "entity_cd=" +
+      '?' +
+      'entity_cd=' +
       data.entity_cd +
-      "&" +
-      "project_no=" +
+      '&' +
+      'project_no=' +
       data.project_no +
-      "&" +
-      "email=" +
+      '&' +
+      'email=' +
       email;
 
     const config = {
       headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        token: "",
+        accept: 'application/json',
+        'Content-Type': 'application/json',
+        token: '',
       },
     };
     await axios
-      .post(urlApi + "/modules/cs/debtor" + params, {
+      .post(urlApi + '/modules/cs/debtor' + params, {
         config,
       })
       .then((res) => {
@@ -233,8 +233,8 @@ const SpecHelp = (props) => {
         // return res.data;
       })
       .catch((error) => {
-        console.log("error get tower api", error.response);
-        alert("error get");
+        console.log('error get tower api', error.response);
+        alert('error get');
       });
   };
 
@@ -262,7 +262,7 @@ const SpecHelp = (props) => {
           ...item,
           checked: item.value == selected.value,
         };
-      })
+      }),
     );
   };
 
@@ -283,7 +283,7 @@ const SpecHelp = (props) => {
     data.data.map((dat) => {
       if (dat) {
         setDebtor(dat.debtor_acct);
-        settextDebtor(dat.debtor_acct + " - " + dat.name);
+        settextDebtor(dat.debtor_acct + ' - ' + dat.name);
         settextNameDebtor(dat.name);
         getLot(dat.debtor_acct);
       }
@@ -302,7 +302,7 @@ const SpecHelp = (props) => {
     //   '&' +
     //   'email=' +
     //   email;
-    console.log("params lotno", params);
+    console.log('params lotno', params);
     const params = {
       entity_cd: entity,
       project_no: project_no,
@@ -310,14 +310,14 @@ const SpecHelp = (props) => {
     };
     const config = {
       headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        token: "",
+        accept: 'application/json',
+        'Content-Type': 'application/json',
+        token: '',
       },
     };
 
     await axios
-      .post(urlApi + "/modules/cs/lot-no", params, {
+      .post(urlApi + '/modules/cs/lot-no', params, {
         config,
       })
       .then((res) => {
@@ -328,31 +328,31 @@ const SpecHelp = (props) => {
         // return res.data;
       })
       .catch((error) => {
-        console.log("error get tower api", error.response);
-        alert("error get");
+        console.log('error get tower api', error.response);
+        alert('error get');
       });
   };
 
   const handleLotChange = (lot) => {
-    console.log("lot", lot);
+    console.log('lot', lot);
     setLotno(lot);
     // this.setState({textLot: lot});
     getFloor(lot);
   };
 
   const getFloor = (lot) => {
-    console.log("lot floor", lot);
+    console.log('lot floor', lot);
   };
 
   return (
     <View style={styles.wrap}>
       <Text title2>Ticket</Text>
-      <Text headline style={{ fontWeight: "normal" }}>
+      <Text headline style={{ fontWeight: 'normal' }}>
         Specification Help Desk
       </Text>
       <View style={[styles.subWrap, { paddingBottom: 0, marginBottom: 10 }]}>
         <View>
-          <Text style={{ color: "#3f3b38", fontSize: 14 }}>Choose Project</Text>
+          <Text style={{ color: '#3f3b38', fontSize: 14 }}>Choose Project</Text>
           {spinner ? (
             <View>
               {/* <Spinner visible={this.state.spinner} /> */}
@@ -374,7 +374,15 @@ const SpecHelp = (props) => {
           )}
         </View>
       </View>
-      {checkedEntity === false ? null : (
+      {checkedEntity === false ? (
+        <View
+          style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
+        >
+          <Text style={{ color: BaseColor.text }}>
+            Choose Project at top right
+          </Text>
+        </View>
+      ) : (
         <View>
           <View style={{ marginBottom: 5, paddingBottom: 0, marginTop: 5 }}>
             <ModalDropdown_debtor
@@ -388,7 +396,7 @@ const SpecHelp = (props) => {
 
           <Text
             style={{
-              color: "#3f3b38",
+              color: '#3f3b38',
               fontSize: 14,
               marginBottom: 0,
               paddingBottom: 0,
@@ -421,7 +429,7 @@ const SpecHelp = (props) => {
 
           <Text
             style={{
-              color: "#3f3b38",
+              color: '#3f3b38',
               fontSize: 14,
               marginBottom: 0,
               paddingBottom: 0,
@@ -446,13 +454,13 @@ const SpecHelp = (props) => {
 export default function Helpdesk() {
   const { t, i18n } = useTranslation();
   const { colors } = useTheme();
-  const [loading, setLoading] = useState("");
+  const [loading, setLoading] = useState('');
   const navigation = useNavigation();
 
   const [index, setIndex] = useState(0);
   const [routes] = useState([
-    { key: "newticket", title: "New Ticket" },
-    { key: "status", title: "Status" },
+    { key: 'newticket', title: 'New Ticket' },
+    { key: 'status', title: 'Status' },
   ]);
   const renderScene = SceneMap({
     newticket: SpecHelp,
@@ -462,11 +470,11 @@ export default function Helpdesk() {
   return (
     <SafeAreaView
       style={BaseStyle.safeAreaView}
-      edges={["right", "top", "left"]}
+      edges={['right', 'top', 'left']}
     >
       <Header
         // title={t('choose_friend')}
-        title={t("helpdesk")} //belum ada lang translatenya
+        title={t('helpdesk')} //belum ada lang translatenya
         renderLeft={() => {
           return (
             <Icon

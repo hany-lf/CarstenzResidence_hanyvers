@@ -9,14 +9,14 @@ import {
   RefreshControl,
   Header,
   Icon,
-} from "@components";
-import { BaseColor, BaseStyle, useTheme } from "@config";
-import { CheckBox } from "react-native-elements";
+} from '@components';
+import { BaseColor, BaseStyle, useTheme } from '@config';
+import { CheckBox } from 'react-native-elements';
 
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation } from '@react-navigation/native';
 
-import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   FlatList,
   TouchableOpacity,
@@ -24,22 +24,22 @@ import {
   Platform,
   TouchableHighlight,
   ScrollView,
-} from "react-native";
+} from 'react-native';
 
-import { useSelector } from "react-redux";
-import getUser from "../../selectors/UserSelectors";
-import getProject from "../../selectors/ProjectSelector";
-import axios from "axios";
-import client from "../../controllers/HttpClient";
-import styles from "./styles";
+import { useSelector } from 'react-redux';
+import getUser from '../../selectors/UserSelectors';
+import getProject from '../../selectors/ProjectSelector';
+import axios from 'axios';
+import client from '../../controllers/HttpClient';
+import styles from './styles';
 
-import { RadioButton } from "react-native-paper";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { API_URL_LOKAL } from "@env";
+import { RadioButton } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { API_URL_LOKAL } from '@env';
 export default function CategoryHelp({ route }) {
   const { t, i18n } = useTranslation();
   const { colors } = useTheme();
-  const [keyword, setKeyword] = useState("");
+  const [keyword, setKeyword] = useState('');
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
 
@@ -58,16 +58,16 @@ export default function CategoryHelp({ route }) {
   const [valueProject, setValueProject] = useState([]);
   const [valueProjectSelected, setValueProjectSelected] = useState(null);
   const [projectData, setProjectData] = useState([]);
-  const [entity_cd, setEntity] = useState("");
-  const [project_no, setProjectNo] = useState("");
+  const [entity_cd, setEntity] = useState('');
+  const [project_no, setProjectNo] = useState('');
   const project = useSelector((state) => getProject(state));
 
-  const [typeLocation, setTypeLocation] = useState("");
+  const [typeLocation, setTypeLocation] = useState('');
   const [passPropStorage, setPassPropStorage] = useState();
   const [passProp, setpassProp] = useState(route.params.saveStorage);
   //   console.log('passprop kategori help', passProp);
-  console.log("arrDataTowerUser", arrDataTowerUser);
-  console.log("dataTowerUser >", dataTowerUser.project_no);
+  console.log('arrDataTowerUser', arrDataTowerUser);
+  console.log('dataTowerUser >', dataTowerUser.project_no);
   const styleItem = {
     ...styles.profileItem,
     borderBottomColor: colors.border,
@@ -86,7 +86,7 @@ export default function CategoryHelp({ route }) {
           label: item.descs,
           value: item.project_no,
         }));
-        console.log("data di project", project);
+        console.log('data di project', project);
         setProjectData(project.data);
         setValueProject(projects);
       }
@@ -96,9 +96,9 @@ export default function CategoryHelp({ route }) {
   }, [project]);
 
   const getDataStorage = async () => {
-    const value = await AsyncStorage.getItem("@helpdeskStorage");
-    const DataTower = await AsyncStorage.getItem("@DataTower");
-    console.log("data tower", DataTower);
+    const value = await AsyncStorage.getItem('@helpdeskStorage');
+    const DataTower = await AsyncStorage.getItem('@DataTower');
+    console.log('data tower', DataTower);
 
     const passPropStorage = JSON.parse(value);
 
@@ -106,7 +106,7 @@ export default function CategoryHelp({ route }) {
   };
 
   const defaultLocation = () => {
-    getCategoryHelp("U");
+    getCategoryHelp('U');
   };
 
   // const handleSetRadio = (checked, type) => {
@@ -133,13 +133,13 @@ export default function CategoryHelp({ route }) {
     const params = {
       location_type: type, //ini nanti pake radiobutton
     };
-    console.log("params category", params);
+    console.log('params category', params);
 
     const config = {
-      method: "get",
-      url: API_URL_LOKAL + "/modules/cs/category-help",
+      method: 'get',
+      url: API_URL_LOKAL + '/modules/cs/category-help',
       headers: {
-        "content-type": "application/json",
+        'content-type': 'application/json',
         Authorization: `Bearer ${users.Token}`,
       },
       params: params,
@@ -149,22 +149,22 @@ export default function CategoryHelp({ route }) {
       .then((res) => {
         const datas = res.data;
         const dataCategorys = datas.data;
-        console.log("data kategori", dataCategorys);
+        console.log('data kategori', dataCategorys);
 
         setDataCategory(dataCategorys);
         setSpinner(false);
         // return res.data;
       })
       .catch((error) => {
-        console.log("error get tower api", error.response);
-        alert("error get");
+        console.log('error get tower api', error.response);
+        alert('error get');
       });
   };
 
   const handleClick = async (data, index) => {
-    console.log("category_grop_cd", data.category_group_cd);
-    console.log("loc_type", data.location_type);
-    console.log("passprops", passProp);
+    console.log('category_grop_cd', data.category_group_cd);
+    console.log('loc_type', data.location_type);
+    console.log('passprops', passProp);
     const saveParams = {
       //   ...passPropStorage,
       passProp,
@@ -177,16 +177,16 @@ export default function CategoryHelp({ route }) {
       category_group_cd: data.category_group_cd,
       location_type: data.location_type,
     };
-    console.log("urutan kedua props", saveStorage);
-    console.log("urutan kedua params", saveParams);
+    console.log('urutan kedua props', saveStorage);
+    console.log('urutan kedua params', saveParams);
 
     const jsonValue = JSON.stringify(saveStorage);
-    await AsyncStorage.setItem("@helpdeskStorage", jsonValue);
+    await AsyncStorage.setItem('@helpdeskStorage', jsonValue);
 
-    const jsonValueNullLocation = JSON.stringify("");
-    await AsyncStorage.setItem("@locationStorage", jsonValueNullLocation);
+    const jsonValueNullLocation = JSON.stringify('');
+    await AsyncStorage.setItem('@locationStorage', jsonValueNullLocation);
 
-    navigation.navigate("SelectCategory", {
+    navigation.navigate('SelectCategory', {
       // screen: 'Settings',
       saveParams,
     });
@@ -200,10 +200,10 @@ export default function CategoryHelp({ route }) {
   return (
     <SafeAreaView
       style={BaseStyle.safeAreaView}
-      edges={["right", "top", "left"]}
+      edges={['right', 'top', 'left']}
     >
       <Header
-        title={t("category_help")} //belum dibuat lang
+        title={t('category_help')} //belum dibuat lang
         renderLeft={() => {
           return (
             <Icon
@@ -220,14 +220,14 @@ export default function CategoryHelp({ route }) {
       />
       <View style={styles.wrap}>
         <Text title2>Ticket</Text>
-        <Text headline style={{ fontWeight: "normal" }}>
+        <Text headline style={{ fontWeight: 'normal' }}>
           Service Request Form
         </Text>
-        <Text headline style={{ fontWeight: "normal", paddingTop: 20 }}>
+        <Text headline style={{ fontWeight: 'normal', paddingTop: 20 }}>
           Location
         </Text>
 
-        <View style={{ flexDirection: "row" }}>
+        <View style={{ flexDirection: 'row' }}>
           {/* <View style={{flexDirection: 'row'}}>
             <RadioButton
               color={BaseColor.hijau_pkbw}
@@ -241,18 +241,18 @@ export default function CategoryHelp({ route }) {
               Public Area
             </Text>
           </View> */}
-          <View style={{ flexDirection: "row", marginTop: 10 }}>
+          <View style={{ flexDirection: 'row', marginTop: 10 }}>
             <RadioButton
               color={BaseColor.hijau_pkbw}
               value="U"
               // status={typeLocation == 'U' ? 'checked' : 'unchecked'}
-              status={"checked"}
+              status={'checked'}
               // onPress={() => setTypeLocation('U')}
               // onPress={() => handleSetRadio(true, 'U')}
             />
             <Text
               headline
-              style={{ alignSelf: "center", fontWeight: "normal" }}
+              style={{ alignSelf: 'center', fontWeight: 'normal' }}
             >
               Unit
             </Text>

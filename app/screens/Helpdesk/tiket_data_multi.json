@@ -1,0 +1,103 @@
+{
+    "success": true,
+    "message": "Success",
+    "data": {
+        "data_entry": [
+            {
+                "report_no": "EX24090001",
+                "reported_date": "2024-09-04 01:43:00.000",
+                "billing_type": "T",
+                "status": "R",
+                "name": "Shinta Juliastuty",
+                "contact_no": "0576464",
+                "lot_no": "F2621",
+                "floor": "26",
+                "category": "Internet",
+                "request_by": "Hany",
+                "work_requested": "Wifi error",
+                "assign_to": null,
+                "problem_cause": null,
+                "remarks": null,
+                "action_taken": null,
+                "status_approval": null,
+                "name_approval": null,
+                "date_approval": null,
+                "link_url": null,
+                "location": "Tangerang",
+                "request_type": "U",
+                "respond_date": "2024-09-04 01:43:00.000"
+            }
+        ],
+        "data_hd": [
+            {
+                "debtor_acct": "10021",
+                "name": "Shinta Juliastuty",
+                "report_no": "EX24090001",
+                "reported_by": "MOBILE",
+                "reported_date": "2024-09-04 01:43:00.000",
+                "assign_to": null,
+                "lot_no": "F2621",
+                "serv_req_by": "Hany",
+                "contact_no": "0576464",
+                "work_requested": "Wifi error",
+                "status": "R",
+                "entity_cd": "01",
+                "project_no": "02",
+                "audit_date": "2024-09-04 13:43:37.000"
+            }
+        ],
+        "data_labour": [
+            {
+                "sum": [
+                    {
+                        "base_amt": null,
+                        "tax_amt": null,
+                        "total_amt": null,
+                        "disc_amt": null
+                    }
+                ],
+                "detail": []
+            }
+        ],
+        "data_material": [
+            {
+                "sum": [
+                    {
+                        "base_amt": null,
+                        "tax_amt": null,
+                        "total_amt": null,
+                        "disc_amt": null
+                    }
+                ],
+                "detail": []
+            }
+        ],
+        "data_other": [
+            {
+                "sum": [
+                    {
+                        "base_amt": null,
+                        "tax_amt": null,
+                        "total_amt": null,
+                        "disc_amt": null
+                    }
+                ],
+                "detail": []
+            }
+        ],
+        "data_action": [],
+        "data_image": [
+            {
+                "entity_cd": "01",
+                "project_no": "02",
+                "report_no": "EX24090001",
+                "document_no": "1",
+                "file_attachment": "EX24090001_image.png",
+                "file_url": "https://ifca.carstensz.co.id/carstensz_api/public/storage/image/CSTicket/EX24090001/EX24090001_image.png",
+                "rowID": "191",
+                "audit_user": "MGR",
+                "audit_date": "2024-09-04 13:43:37.000"
+            }
+        ]
+    }
+}

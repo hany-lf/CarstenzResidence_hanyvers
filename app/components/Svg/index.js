@@ -14,6 +14,9 @@ export { default as TROffice } from './home/menu/tr_office.svg';
 export { default as Package } from './home/menu/package.svg';
 export { default as Billing } from './home/menu/billing.svg';
 export { default as Carts } from './home/menu/cart.svg';
+export { default as HouseRoles } from './home/menu/houseroles.svg';
+export { default as MeterInfo } from './home/menu/meterinfo.svg';
+export { default as LegalPermit } from './home/menu/legalpermit.svg';
 
 //for nav bottom
 export { default as NavAccount } from './home/nav_account.svg';

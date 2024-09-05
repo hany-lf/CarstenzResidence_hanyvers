@@ -43,7 +43,7 @@ export const tabBarIcon = ({ color, iconName, isFocused }) => {
   ) : null;
 };
 
-export const tabBarIconHaveNoty = ({ color, iconName }) => {
+export const tabBarIconHaveNoty = ({ color, iconName, isFocused }) => {
   // const notifData_FromRed = useSelector(state => getNotifRed(state));
   // console.log('icon name di icon haveduty', iconName);
 
@@ -72,7 +72,7 @@ export const tabBarIconHaveNoty = ({ color, iconName }) => {
 
   return (
     <View>
-      {tabBarIcon({ color, iconName })}
+      {tabBarIcon({ color, iconName, isFocused })}
       <View
         style={{
           borderWidth: 1,

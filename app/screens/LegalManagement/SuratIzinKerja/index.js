@@ -12,62 +12,62 @@ import {
   CategoryBoxColor,
   ListItem,
   ListItem3,
-} from "@components";
-import { BaseColor, BaseStyle, useTheme } from "@config";
-import { FFriends } from "@data";
-import { useNavigation } from "@react-navigation/native";
-import { haveChildren } from "@utils";
-import React, { useEffect, useState, useMemo } from "react";
-import { useTranslation } from "react-i18next";
+} from '@components';
+import { BaseColor, BaseStyle, useTheme } from '@config';
+import { FFriends } from '@data';
+import { useNavigation } from '@react-navigation/native';
+import { haveChildren } from '@utils';
+import React, { useEffect, useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   FlatList,
   TouchableOpacity,
   View,
-  //Picker,
+  // Picker,
   Modal,
   Platform,
   ScrollView,
-} from "react-native";
-import CheckBox from "@react-native-community/checkbox";
-import DatePicker from "react-native-date-picker";
-import moment from "moment";
-import axios from "axios";
-import styles from "./styles";
+} from 'react-native';
+import CheckBox from '@react-native-community/checkbox';
+import DatePicker from 'react-native-date-picker';
+import moment from 'moment';
+import axios from 'axios';
+import styles from './styles';
 
-import { Picker } from "@react-native-picker/picker";
+import { Picker } from '@react-native-picker/picker';
 
 export default function SuratIzinKerja() {
   const { t, i18n } = useTranslation();
   const { colors } = useTheme();
-  console.log("42 colors: ", colors);
+  console.log('42 colors: ', colors);
   const [loading, setLoading] = useState(true);
-  const [selectedValue, setSelectedValue] = useState("");
-  const [selectedValue1, setSelectedValue1] = useState("");
+  const [selectedValue, setSelectedValue] = useState('');
+  const [selectedValue1, setSelectedValue1] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisible1, setModalVisible1] = useState(false);
   const [formData, setFormData] = useState({
-    contractor_name: "",
-    subcontractor_name: "",
-    site_supervisor: "",
-    person_responsible: "",
-    contact_number: "",
-    number_works: "",
+    contractor_name: '',
+    subcontractor_name: '',
+    site_supervisor: '',
+    person_responsible: '',
+    contact_number: '',
+    number_works: '',
 
-    TenantName: "",
-    FloorNoUnitTower: "",
-    ContractorName: "",
-    NameofResponsiblePerson: "",
-    TelOfficeMobile: "",
-    Typeofwork: "",
-    Dateofwork: "",
+    TenantName: '',
+    FloorNoUnitTower: '',
+    ContractorName: '',
+    NameofResponsiblePerson: '',
+    TelOfficeMobile: '',
+    Typeofwork: '',
+    Dateofwork: '',
     //Hoursofwork: "",
-    numberofWorkers: "",
+    numberofWorkers: '',
   });
-  const iosPickerStyle = Platform.OS === "ios" ? styles.iosPicker : null;
+  const iosPickerStyle = Platform.OS === 'ios' ? styles.iosPicker : null;
 
   const tomorrow = new Date();
   // const format = moment(tomorrow).add(1, 'days').format('YYYY-MM-DD');
-  const format = moment(tomorrow).format("YYYY-MM-DD");
+  const format = moment(tomorrow).format('YYYY-MM-DD');
   const [date, setDate] = useState(new Date());
   const [selectedDate, setselectedDate] = useState(false);
   const [open, setOpen] = useState(false);
@@ -75,9 +75,9 @@ export default function SuratIzinKerja() {
   const [items, setItems] = useState([]);
   // const [itemName, setItemName] = useState("");
   // const [itemQuantity, setItemQuantity] = useState("");
-  const [item1, setItem1] = useState("");
-  const [item2, setItem2] = useState("");
-  const [item3, setItem3] = useState("");
+  const [item1, setItem1] = useState('');
+  const [item2, setItem2] = useState('');
+  const [item3, setItem3] = useState('');
 
   // const handleAddItem = () => {
   //   if (itemName && itemQuantity) {
@@ -90,9 +90,9 @@ export default function SuratIzinKerja() {
   const handleAddItem = () => {
     if (item1 && item2 && item3) {
       setItems([...items, { column1: item1, column2: item2, column3: item3 }]);
-      setItem1("");
-      setItem2("");
-      setItem3("");
+      setItem1('');
+      setItem2('');
+      setItem3('');
     }
   };
 
@@ -128,7 +128,7 @@ export default function SuratIzinKerja() {
   const [option1Checked, setOption1Checked] = useState(false);
   const [option2Checked, setOption2Checked] = useState(false);
   const [option3Checked, setOption3Checked] = useState(false);
-  const [lainLain, setlainLain] = useState("");
+  const [lainLain, setlainLain] = useState('');
   // const [option4Checked, setOption4Checked] = useState(false);
   // const [option5Checked, setOption5Checked] = useState(false);
   // const [optionJamKerja, setOptionJamKerja] = useState({
@@ -137,9 +137,9 @@ export default function SuratIzinKerja() {
   //   option3: false,
   // });
 
-  const [jamKerja, setJamKerja] = useState("");
+  const [jamKerja, setJamKerja] = useState('');
 
-  dummyArrayValue = ["Pkl 10.00 - 22.00", "Pkl 22.00 - 10.00", "Lain-lain"];
+  dummyArrayValue = ['Pkl 10.00 - 22.00', 'Pkl 22.00 - 10.00', 'Lain-lain'];
 
   const handleOptionSelect = (option) => {
     setOption1Checked(false);
@@ -154,15 +154,15 @@ export default function SuratIzinKerja() {
     // })
 
     switch (option) {
-      case "option1":
+      case 'option1':
         setOption1Checked(true);
         setJamKerja(dummyArrayValue[0]);
         break;
-      case "option2":
+      case 'option2':
         setOption2Checked(true);
         setJamKerja(dummyArrayValue[1]);
         break;
-      case "option3":
+      case 'option3':
         setOption3Checked(true);
         setJamKerja(lainLain);
         break;
@@ -182,12 +182,12 @@ export default function SuratIzinKerja() {
   return (
     <SafeAreaView
       style={BaseStyle.safeAreaView}
-      edges={["right", "top", "left"]}
+      edges={['right', 'top', 'left']}
     >
-      <View style={{ justifyContent: "center" }}>
+      <View style={{ justifyContent: 'center' }}>
         <View
           style={{
-            alignContent: "center",
+            alignContent: 'center',
             marginHorizontal: 30,
             // borderWidth: 1,
             // borderColor: '#000'
@@ -216,12 +216,12 @@ export default function SuratIzinKerja() {
           <Text
             style={{
               fontSize: 16,
-              fontWeight: "bold",
-              textAlign: "center",
+              fontWeight: 'bold',
+              textAlign: 'center',
               margin: 20,
               marginBottom: 0,
               //padding: 0,
-              textDecorationLine: "underline",
+              textDecorationLine: 'underline',
             }}
           >
             SURAT IZIN KERJA
@@ -229,8 +229,8 @@ export default function SuratIzinKerja() {
           <Text
             style={{
               fontSize: 16,
-              fontWeight: "bold",
-              textAlign: "center",
+              fontWeight: 'bold',
+              textAlign: 'center',
               margin: 10,
               marginTop: 0,
             }}
@@ -279,7 +279,7 @@ export default function SuratIzinKerja() {
               }
             /> */}
             <Text style={{ paddingHorizontal: 7, paddingBottom: 2 }}>
-              Nama Tenant:{" "}
+              Nama Tenant:{' '}
             </Text>
             <TextInput
               style={{ marginBottom: 10, paddingHorizontal: 15 }}
@@ -290,7 +290,7 @@ export default function SuratIzinKerja() {
               }
             />
             <Text style={{ paddingHorizontal: 7, paddingBottom: 2 }}>
-              Lantai & No . Unit / Tower:{" "}
+              Lantai & No . Unit / Tower:{' '}
             </Text>
             <TextInput
               style={{ marginBottom: 10, paddingHorizontal: 15 }}
@@ -301,7 +301,7 @@ export default function SuratIzinKerja() {
               }
             />
             <Text style={{ paddingHorizontal: 7, paddingBottom: 2 }}>
-              Nama Kontraktor:{" "}
+              Nama Kontraktor:{' '}
             </Text>
             <TextInput
               style={{ marginBottom: 10, paddingHorizontal: 15 }}
@@ -312,7 +312,7 @@ export default function SuratIzinKerja() {
               }
             />
             <Text style={{ paddingHorizontal: 7, paddingBottom: 2 }}>
-              Nama Penanggung Jawab:{" "}
+              Nama Penanggung Jawab:{' '}
             </Text>
             <TextInput
               style={{ marginBottom: 10, paddingHorizontal: 15 }}
@@ -323,7 +323,7 @@ export default function SuratIzinKerja() {
               }
             />
             <Text style={{ paddingHorizontal: 7, paddingBottom: 2 }}>
-              Telp. Kantor / HP:{" "}
+              Telp. Kantor / HP:{' '}
             </Text>
             <TextInput
               style={{ marginBottom: 10, paddingHorizontal: 15 }}
@@ -334,7 +334,7 @@ export default function SuratIzinKerja() {
               }
             />
             <Text style={{ paddingHorizontal: 7, paddingBottom: 2 }}>
-              Jenis Pekerjaan:{" "}
+              Jenis Pekerjaan:{' '}
             </Text>
             <TextInput
               style={{ marginBottom: 10, paddingHorizontal: 15 }}
@@ -345,7 +345,7 @@ export default function SuratIzinKerja() {
               }
             />
             <Text style={{ paddingHorizontal: 7, paddingBottom: 2 }}>
-              Tanggal Kerja:{" "}
+              Tanggal Kerja:{' '}
             </Text>
             <TextInput
               style={{ marginBottom: 10, paddingHorizontal: 15 }}
@@ -359,8 +359,8 @@ export default function SuratIzinKerja() {
             <Text
               style={{
                 fontSize: 16,
-                fontWeight: "bold",
-                textAlign: "center",
+                fontWeight: 'bold',
+                textAlign: 'center',
                 marginVertical: 20,
               }}
             >
@@ -369,14 +369,14 @@ export default function SuratIzinKerja() {
 
             <View
               style={{
-                flexDirection: "row",
+                flexDirection: 'row',
                 //justifyContent: "space-around",
               }}
             >
               <CheckBox
                 tintColors={{
                   true: colors.primary,
-                  false: colors.background != "white" ? "white" : "black",
+                  false: colors.background != 'white' ? 'white' : 'black',
                 }}
                 disabled={false}
                 animationDuration={0.2}
@@ -388,14 +388,14 @@ export default function SuratIzinKerja() {
                     //   colors.background != "white" ? "white" : null,
                   },
                 ]}
-                onValueChange={() => handleOptionSelect("option1")}
+                onValueChange={() => handleOptionSelect('option1')}
               />
               <Text style={styles.checkBoxFontSize}>Pkl 10.00 - 22.00</Text>
 
               <CheckBox
                 tintColors={{
                   true: colors.primary,
-                  false: colors.background != "white" ? "white" : "black",
+                  false: colors.background != 'white' ? 'white' : 'black',
                 }}
                 disabled={false}
                 animationDuration={0.2}
@@ -407,7 +407,7 @@ export default function SuratIzinKerja() {
                     //   colors.background != "white" ? "white" : null,
                   },
                 ]}
-                onValueChange={() => handleOptionSelect("option2")}
+                onValueChange={() => handleOptionSelect('option2')}
               />
               <Text style={styles.checkBoxFontSize}>Pkl 22.00 - 10.00</Text>
 
@@ -420,11 +420,11 @@ export default function SuratIzinKerja() {
               />
               <Text style={styles.checkBoxFontSize}>Lain-lain</Text> */}
             </View>
-            <View style={{ flexDirection: "row", marginTop: 20 }}>
+            <View style={{ flexDirection: 'row', marginTop: 20 }}>
               <CheckBox
                 tintColors={{
                   true: colors.primary,
-                  false: colors.background != "white" ? "white" : "black",
+                  false: colors.background != 'white' ? 'white' : 'black',
                 }}
                 disabled={false}
                 animationDuration={0.2}
@@ -436,7 +436,7 @@ export default function SuratIzinKerja() {
                     //   colors.background != "white" ? "white" : null,
                   },
                 ]}
-                onValueChange={() => handleOptionSelect("option3")}
+                onValueChange={() => handleOptionSelect('option3')}
               />
               <Text style={styles.checkBoxFontSize}>Lain-lain:</Text>
               <TextInput
@@ -490,11 +490,11 @@ export default function SuratIzinKerja() {
                 <>
                   <ListItem3
                     item={{
-                      column1: "Jenis Pekerjaan / Kegiatan",
-                      column2: "Peralatan / Alat Pelindung Diri",
-                      column3: "Keterangan",
+                      column1: 'Jenis Pekerjaan / Kegiatan',
+                      column2: 'Peralatan / Alat Pelindung Diri',
+                      column3: 'Keterangan',
                     }}
-                    onDelete={"header"}
+                    onDelete={'header'}
                   />
                 </>
               )}
@@ -514,8 +514,8 @@ export default function SuratIzinKerja() {
                   <Text
                     style={{
                       fontSize: 16,
-                      fontWeight: "bold",
-                      textAlign: "center",
+                      fontWeight: 'bold',
+                      textAlign: 'center',
                       marginVertical: 10,
                     }}
                   >
@@ -559,18 +559,18 @@ export default function SuratIzinKerja() {
                   paddingVertical: 10,
                   width: 90,
                   marginTop: 20,
-                  alignItems: "center",
+                  alignItems: 'center',
                   borderRadius: 8,
                   backgroundColor: colors.primary, //"#315447",
-                  alignSelf: "flex-end",
+                  alignSelf: 'flex-end',
                 }}
                 onPress={handleAddItem}
               >
-                <Text style={{ color: "#FFF" }}>Tambah Item</Text>
+                <Text style={{ color: '#FFF' }}>Tambah Item</Text>
               </TouchableOpacity>
             </View>
             <Text style={{ paddingHorizontal: 7, paddingBottom: 2 }}>
-              Jumlah Pekerja (Orang):{" "}
+              Jumlah Pekerja (Orang):{' '}
             </Text>
             <TextInput
               style={{ marginVertical: 10, paddingHorizontal: 15 }}
@@ -584,7 +584,7 @@ export default function SuratIzinKerja() {
             <Text
               style={{
                 fontSize: 16,
-                fontWeight: "bold",
+                fontWeight: 'bold',
                 //textAlign: "center",
                 margin: 20,
               }}
@@ -595,7 +595,7 @@ export default function SuratIzinKerja() {
               style={{
                 fontSize: 16,
                 marginHorizontal: 20,
-                textAlign: "justify",
+                textAlign: 'justify',
                 //textAlignLast: "justify",
                 marginBottom: 7,
               }}
@@ -611,7 +611,7 @@ export default function SuratIzinKerja() {
               style={{
                 fontSize: 16,
                 marginHorizontal: 20,
-                textAlign: "justify",
+                textAlign: 'justify',
                 //textAlignLast: "justify",
                 marginBottom: 7,
               }}
@@ -623,7 +623,7 @@ export default function SuratIzinKerja() {
               style={{
                 fontSize: 16,
                 marginHorizontal: 20,
-                textAlign: "justify",
+                textAlign: 'justify',
                 //textAlignLast: "justify",
                 marginBottom: 7,
               }}
@@ -635,7 +635,7 @@ export default function SuratIzinKerja() {
               style={{
                 fontSize: 16,
                 marginHorizontal: 20,
-                textAlign: "justify",
+                textAlign: 'justify',
                 //textAlignLast: "justify",
                 marginBottom: 7,
               }}
@@ -647,7 +647,7 @@ export default function SuratIzinKerja() {
               style={{
                 fontSize: 16,
                 marginHorizontal: 20,
-                textAlign: "justify",
+                textAlign: 'justify',
                 //textAlignLast: "justify",
                 marginBottom: 0,
               }}
@@ -665,7 +665,7 @@ export default function SuratIzinKerja() {
               <Text
                 style={[
                   styles.nextButtonText,
-                  colors.primary == "#FDC60A" ? { color: "white" } : null,
+                  colors.primary == '#FDC60A' ? { color: 'white' } : null,
                 ]}
               >
                 Submit
@@ -689,15 +689,15 @@ export default function SuratIzinKerja() {
                     styles.modalContent,
                     {
                       backgroundColor:
-                        colors.background != "white" ? "black" : "white",
+                        colors.background != 'white' ? 'black' : 'white',
                     },
                   ]}
                 >
                   <Text
                     style={{
                       fontSize: 16,
-                      fontWeight: "bold",
-                      textAlign: "center",
+                      fontWeight: 'bold',
+                      textAlign: 'center',
                       margin: 20,
                     }}
                   >
@@ -713,35 +713,35 @@ export default function SuratIzinKerja() {
                 </Text> */}
                   <Text>Nama Tenant</Text>
                   <Text style={{ marginBottom: 8 }}>
-                    {"          : " + formData.TenantName}
+                    {'          : ' + formData.TenantName}
                   </Text>
                   <Text>Lantai & No . Unit / Tower</Text>
                   <Text style={{ marginBottom: 8 }}>
-                    {"          : " + formData.FloorNoUnitTower}
+                    {'          : ' + formData.FloorNoUnitTower}
                   </Text>
                   <Text>Nama Kontraktor</Text>
                   <Text style={{ marginBottom: 8 }}>
-                    {"          : " + formData.ContractorName}
+                    {'          : ' + formData.ContractorName}
                   </Text>
                   <Text>Nama Penanggung Jawab</Text>
                   <Text style={{ marginBottom: 8 }}>
-                    {"          : " + formData.NameofResponsiblePerson}
+                    {'          : ' + formData.NameofResponsiblePerson}
                   </Text>
                   <Text>Telp. Kantor / HP</Text>
                   <Text style={{ marginBottom: 8 }}>
-                    {"          : " + formData.TelOfficeMobile}
+                    {'          : ' + formData.TelOfficeMobile}
                   </Text>
                   <Text>Jenis Pekerjaan</Text>
                   <Text style={{ marginBottom: 8 }}>
-                    {"          : " + formData.Typeofwork}
+                    {'          : ' + formData.Typeofwork}
                   </Text>
                   <Text>Tanggal Kerja</Text>
                   <Text style={{ marginBottom: 8 }}>
-                    {"          : " + formData.Dateofwork}
+                    {'          : ' + formData.Dateofwork}
                   </Text>
                   <Text>Jam Kerja</Text>
                   <Text style={{ marginBottom: 8 }}>
-                    {"          : " + jamKerja}
+                    {'          : ' + jamKerja}
                   </Text>
                   <Text
                     style={{
@@ -758,26 +758,26 @@ export default function SuratIzinKerja() {
                     <>
                       <ListItem3
                         item={{
-                          column1: "Jenis Pekerjaan / Kegiatan",
-                          column2: "Peralatan / Alat Pelindung Diri",
-                          column3: "Keterangan",
+                          column1: 'Jenis Pekerjaan / Kegiatan',
+                          column2: 'Peralatan / Alat Pelindung Diri',
+                          column3: 'Keterangan',
                         }}
-                        onDelete={"header"}
+                        onDelete={'header'}
                       />
                     </>
                   )}
                   <FlatList
                     data={items}
                     renderItem={({ item, index }) => (
-                      <ListItem3 item={item} index={index} onDelete={"modal"} />
+                      <ListItem3 item={item} index={index} onDelete={'modal'} />
                     )}
                     keyExtractor={(item, index) => index.toString()}
                   />
                   <Text style={{ marginTop: 20 }}>Jumlah Pekerja</Text>
                   <Text style={{ marginBottom: 8 }}>
-                    {formData.numberofWorkers != ""
-                      ? "          : " + formData.numberofWorkers + " Orang"
-                      : "          : " + formData.numberofWorkers}
+                    {formData.numberofWorkers != ''
+                      ? '          : ' + formData.numberofWorkers + ' Orang'
+                      : '          : ' + formData.numberofWorkers}
                   </Text>
                   <TouchableOpacity
                     onPress={() => handleSubmit()}
