@@ -4,4 +4,4 @@ android/app/build/
 
 ios/build/
 ios/Pods/
-.yarn
+.yarn/
