@@ -10,7 +10,7 @@ const apiActionCreator = (url, params) => (dispatch) => {
       url: url,
       headers: {
         'content-type': 'application/json',
-        Authorization: `Bearer ${params.token}`,
+        Authorization: `Bearer ${params.token_firebase}`,
       },
       // timeout: 5000, // default is `0` (no timeout),
       params: {

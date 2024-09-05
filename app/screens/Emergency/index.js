@@ -4,6 +4,8 @@ import {
   Icon,
   SafeAreaView,
   TextInput,
+  Text,
+  Svg,
 } from '@components';
 import { BaseColor, BaseStyle, Typography, useTheme } from '@config';
 //import { FCategoryData } from "@data";
@@ -14,6 +16,9 @@ import { FlatList, RefreshControl, View, Linking } from 'react-native';
 import { API_URL_LOKAL } from '@env';
 import getUser from '../../selectors/UserSelectors';
 import { useSelector } from 'react-redux';
+import { NavEmergency } from '../../components/Svg';
+// import Svg, { Path, Circle } from 'react-native-svg';
+// import { Svg } from '../../components';
 
 const Emergency = (props) => {
   const { navigation } = props;
@@ -123,7 +128,7 @@ const Emergency = (props) => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{
             paddingHorizontal: 20,
-            marginVertical: 40,
+            marginVertical: 10,
           }}
           numColumns={1}
           refreshControl={
@@ -137,17 +142,57 @@ const Emergency = (props) => {
           data={data}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item, index }) => (
-            <CategoryIcon
-              loading={loading}
+            <View
               style={{
-                marginBottom: 10,
+                flexDirection: 'row',
+                marginVertical: 5,
+
+                alignItems: 'center',
               }}
-              title={item.contact_name}
-              subtitle={item.contact_no}
-              icon="phone"
-              // color={item.color}
-              onPress={() => Linking.openURL(`tel:${item.contact_no}`)}
-            />
+            >
+              <View
+                style={{
+                  width: 60,
+                  height: 60,
+                  borderRadius: 10,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: colors.primary,
+                  marginRight: 10,
+                }}
+              >
+                <NavEmergency
+                  width={30}
+                  height={30}
+                  fill={BaseColor.goldColor}
+                />
+              </View>
+              <View>
+                <Text style={{ fontSize: 14, color: colors.text }}>
+                  {item.contact_name}
+                </Text>
+                <Text style={{ fontSize: 14, color: colors.text }}>
+                  {item.contact_no}
+                </Text>
+              </View>
+            </View>
+            // <CategoryIcon
+            //   loading={loading}
+            //   style={{
+            //     marginBottom: 10,
+            //   }}
+            //   title={item.contact_name}
+            //   subtitle={item.contact_no}
+            //   icon={() => (
+            //     <NavEmergency
+            //       width={20}
+            //       height={20}
+            //       fill={BaseColor.goldColor}
+            //     />
+            //   )}
+            //   // color={item.color}
+            //   onPress={() => Linking.openURL(`tel:${item.contact_no}`)}
+            // />
           )}
         />
       </SafeAreaView>
