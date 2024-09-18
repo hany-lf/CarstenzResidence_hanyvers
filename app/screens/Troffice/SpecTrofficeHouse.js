@@ -81,6 +81,7 @@ export default function SpecTrofficeHouse(props) {
   const [projectData, setProjectData] = useState([]);
 
   const project = useSelector((state) => getProject(state));
+  const [defaultProject, setDefaultProject] = useState(true);
 
   //-----FOR GET ENTITY & PROJJECT
   const getTower = async () => {
@@ -184,11 +185,11 @@ export default function SpecTrofficeHouse(props) {
   //   }
   // }, [project]);
 
-  useEffect(() => {
-    if (entity_cd && project_no) {
-      getDebtor();
-    }
-  }, [entity_cd, project_no]);
+  // useEffect(() => {
+  //   if (entity_cd && project_no) {
+  //     getDebtor();
+  //   }
+  // }, [entity_cd, project_no]);
   // --- useeffect untuk project
 
   // --- useeffect untuk update email/name
@@ -199,13 +200,48 @@ export default function SpecTrofficeHouse(props) {
   }, [email]);
   // --- useeffect untuk update email/name
 
+  useEffect(() => {
+    if (project.data.length > 1) {
+      setDefaultProject(false);
+
+      //  const projects = project.data.map((item, id) => ({
+      //    label: item.descs,
+      //    value: item.project_no,
+      //  }));
+      //  console.log('data di project data lengt < 1', projects.value);
+      //  setProjectData(project.data);
+      //  setValueProject(projects);
+    } else {
+      setDefaultProject(true);
+      console.log('email set default', email);
+      const params = {
+        entity_cd: project.data[0].entity_cd,
+        project_no: project.data[0].project_no,
+        // email: email,
+      };
+
+      const projects = project.data.map((item, id) => ({
+        label: item.descs,
+        value: item.project_no,
+      }));
+      console.log('data di project data lengt < 1', projects.value);
+      setProjectData(project.data);
+      setValueProject(projects);
+
+      // console.log('kena ini gak??');
+      getDebtor(params);
+      // setShowChooseProject(true);
+      setValueProjectSelected(projects[0].value);
+    }
+  }, [project_no, email, entity_cd, project]);
+
   //-----FOR GET DEBTOR
-  const getDebtor = async () => {
+  const getDebtor = async (data) => {
     // console.log(object)
     // console.log('data for debtor', data);
     const params = {
-      entity_cd: entity_cd,
-      project_no: project_no,
+      entity_cd: data.entity_cd,
+      project_no: data.project_no,
       email: email,
     };
 
@@ -480,33 +516,59 @@ export default function SpecTrofficeHouse(props) {
             }}
           />
         ) : null}
-        {checkedEntity === false ? (
-          <View
-            style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
-          >
-            <Text style={{ color: BaseColor.text }}>
-              Choose Project at top right
-            </Text>
-          </View>
-        ) : (
-          <ScrollView
-            showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingHorizontal: 20 }}
-          >
-            <View>
-              <View style={{ marginBottom: 5, paddingBottom: 0, marginTop: 5 }}>
-                <ModalDropdown_debtor
-                  label="Debtor"
-                  data={dataDebtor}
-                  onChange={(index) =>
-                    handleChangeModal({ data: dataDebtor, index })
-                  }
-                  value={textDebtor}
-                  style={{ marginBottom: 0, paddingBottom: 0 }}
-                />
-              </View>
 
+        <ScrollView
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingHorizontal: 20 }}
+        >
+          <View>
+            <View style={{ marginBottom: 5, paddingBottom: 0, marginTop: 5 }}>
+              <ModalDropdown_debtor
+                label="Debtor"
+                data={dataDebtor}
+                onChange={(index) =>
+                  handleChangeModal({ data: dataDebtor, index })
+                }
+                value={textDebtor}
+                style={{ marginBottom: 0, paddingBottom: 0 }}
+              />
+            </View>
+
+            <Text
+              style={{
+                color: '#3f3b38',
+                fontSize: 14,
+                marginBottom: 0,
+                paddingBottom: 0,
+                marginTop: 0,
+                paddingTop: 0,
+              }}
+            >
+              Username
+            </Text>
+            <TextInput
+              editable={false} //wajib true kalo mau di klik-klik / di isi manual
+              value={textNameDebtor} //dari nama debtor
+              onChangeText={(text) => settextNameDebtor(text)}
+              style={{
+                marginBottom: 0,
+                paddingBottom: 0,
+                marginTop: 0,
+                paddingTop: 0,
+              }}
+            />
+            <View style={{ marginTop: 15 }}>
+              <ModalDropdown_lotno
+                label="Lot No"
+                data={dataLotno}
+                onChange={(option) =>
+                  handleLotChange(option.lot_no, option.zone_cd, option.slot)
+                }
+                value={textLot}
+              />
+            </View>
+            <View style={{ marginTop: 0 }}>
               <Text
                 style={{
                   color: '#3f3b38',
@@ -517,106 +579,71 @@ export default function SpecTrofficeHouse(props) {
                   paddingTop: 0,
                 }}
               >
-                Username
+                Taken By
               </Text>
               <TextInput
-                editable={false} //wajib true kalo mau di klik-klik / di isi manual
-                value={textNameDebtor} //dari nama debtor
-                onChangeText={(text) => settextNameDebtor(text)}
+                placeholder="Reported By"
+                editable={true}
+                value={reportName}
+                onChangeText={(text) => setreportName(text)}
+              />
+            </View>
+            <View style={{ marginTop: 15 }}>
+              <Text
                 style={{
+                  color: '#3f3b38',
+                  fontSize: 14,
                   marginBottom: 0,
                   paddingBottom: 0,
                   marginTop: 0,
                   paddingTop: 0,
                 }}
-              />
-              <View style={{ marginTop: 15 }}>
-                <ModalDropdown_lotno
-                  label="Lot No"
-                  data={dataLotno}
-                  onChange={(option) =>
-                    handleLotChange(option.lot_no, option.zone_cd, option.slot)
-                  }
-                  value={textLot}
-                />
-              </View>
-              <View style={{ marginTop: 0 }}>
-                <Text
-                  style={{
-                    color: '#3f3b38',
-                    fontSize: 14,
-                    marginBottom: 0,
-                    paddingBottom: 0,
-                    marginTop: 0,
-                    paddingTop: 0,
-                  }}
-                >
-                  Taken By
-                </Text>
-                <TextInput
-                  placeholder="Reported By"
-                  editable={true}
-                  value={reportName}
-                  onChangeText={(text) => setreportName(text)}
-                />
-              </View>
-              <View style={{ marginTop: 15 }}>
-                <Text
-                  style={{
-                    color: '#3f3b38',
-                    fontSize: 14,
-                    marginBottom: 0,
-                    paddingBottom: 0,
-                    marginTop: 0,
-                    paddingTop: 0,
-                  }}
-                >
-                  Contact No
-                </Text>
-                <TextInput
-                  keyboardType="number-pad"
-                  placeholder="Contact No"
-                  editable={true}
-                  value={contactNo}
-                  onChangeText={(text) => setcontactNo(text)}
-                />
-              </View>
-              <View style={{ marginTop: 15 }}>
-                <Text
-                  style={{
-                    color: '#3f3b38',
-                    fontSize: 14,
-                    marginBottom: 0,
-                    paddingBottom: 0,
-                    marginTop: 0,
-                    paddingTop: 0,
-                  }}
-                >
-                  Work Requested
-                </Text>
-                <TextInput
-                  placeholder="Work Requested"
-                  editable={true}
-                  value={workRequested}
-                  onChangeText={(text) => setworkRequested(text)}
-                  required={requiredText}
-                />
-              </View>
-
-              <Button
-                style={{
-                  width: 100,
-                  height: 45,
-                  alignSelf: 'center',
-                  marginTop: 20,
-                }}
-                onPress={() => handleNavigation()}
               >
-                <Text style={{ color: '#FFF' }}>Next</Text>
-              </Button>
+                Contact No
+              </Text>
+              <TextInput
+                keyboardType="number-pad"
+                placeholder="Contact No"
+                editable={true}
+                value={contactNo}
+                onChangeText={(text) => setcontactNo(text)}
+              />
             </View>
-          </ScrollView>
-        )}
+            <View style={{ marginTop: 15 }}>
+              <Text
+                style={{
+                  color: '#3f3b38',
+                  fontSize: 14,
+                  marginBottom: 0,
+                  paddingBottom: 0,
+                  marginTop: 0,
+                  paddingTop: 0,
+                }}
+              >
+                Work Requested
+              </Text>
+              <TextInput
+                placeholder="Work Requested"
+                editable={true}
+                value={workRequested}
+                onChangeText={(text) => setworkRequested(text)}
+                required={requiredText}
+              />
+            </View>
+
+            <Button
+              style={{
+                width: 100,
+                height: 45,
+                alignSelf: 'center',
+                marginTop: 20,
+              }}
+              onPress={() => handleNavigation()}
+            >
+              <Text style={{ color: '#FFF' }}>Next</Text>
+            </Button>
+          </View>
+        </ScrollView>
       </View>
     </SafeAreaView>
   );

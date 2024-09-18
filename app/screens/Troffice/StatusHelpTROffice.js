@@ -10,41 +10,41 @@ import {
   Header,
   Icon,
   CategoryIconSoft,
-} from "@components";
-import { BaseColor, BaseStyle, useTheme } from "@config";
-import { CheckBox, Badge } from "react-native-elements";
-import { Image } from "react-native";
-import { parseHexTransparency } from "@utils";
-import { useNavigation } from "@react-navigation/native";
+} from '@components';
+import { BaseColor, BaseStyle, useTheme } from '@config';
+import { CheckBox, Badge } from 'react-native-elements';
+import { Image } from 'react-native';
+import { parseHexTransparency } from '@utils';
+import { useNavigation } from '@react-navigation/native';
 
-import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   FlatList,
   TouchableOpacity,
   View,
   Platform,
   TouchableHighlight,
-} from "react-native";
+} from 'react-native';
 
-import { useSelector } from "react-redux";
+import { useSelector } from 'react-redux';
 
-import axios from "axios";
-import client from "../../controllers/HttpClient";
-import styles from "./styles";
+import axios from 'axios';
+import client from '../../controllers/HttpClient';
+import styles from './styles';
 
-import { RadioButton } from "react-native-paper";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { API_URL_LOKAL } from "@env";
-import getProject from "../../selectors/ProjectSelector";
-import getUser from "../../selectors/UserSelectors";
+import { RadioButton } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { API_URL_LOKAL } from '@env';
+import getProject from '../../selectors/ProjectSelector';
+import getUser from '../../selectors/UserSelectors';
 
-import { Dropdown } from "react-native-element-dropdown";
+import { Dropdown } from 'react-native-element-dropdown';
 
 export default function StatusHelpTROffice({ route }) {
   const { t, i18n } = useTranslation();
   const { colors } = useTheme();
-  const [keyword, setKeyword] = useState("");
+  const [keyword, setKeyword] = useState('');
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
   const user = useSelector((state) => getUser(state));
@@ -59,11 +59,11 @@ export default function StatusHelpTROffice({ route }) {
   const [dataTowerUser, setdataTowerUser] = useState([]);
   const [arrDataTowerUser, setArrDataTowerUser] = useState([]);
   const users = useSelector((state) => getUser(state));
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
   const [urlApi, seturlApi] = useState(client);
-  const [entity_cd, setEntity] = useState("");
-  const [project_no, setProjectNo] = useState("");
-  const [db_profile, setDb_Profile] = useState("");
+  const [entity_cd, setEntity] = useState('');
+  const [project_no, setProjectNo] = useState('');
+  const [db_profile, setDb_Profile] = useState('');
   const [checkedEntity, setCheckedEntity] = useState(false);
   const [spinner, setSpinner] = useState(true);
   const [dataStatus, setDataStatus] = useState([]);
@@ -72,6 +72,7 @@ export default function StatusHelpTROffice({ route }) {
 
   const [defaulTower, setDefaultTower] = useState(false);
   const [defaultStatus, setDefaultStatus] = useState(false);
+  const [defaultProject, setDefaultProject] = useState(true);
 
   //   console.log('passprop kategori help', passProp);
   const styleItem = {
@@ -92,7 +93,7 @@ export default function StatusHelpTROffice({ route }) {
           label: item.descs,
           value: item.project_no,
         }));
-        console.log("data di project", project);
+        console.log('data di project', project);
         setProjectData(project.data);
         setValueProject(projects);
       }
@@ -101,27 +102,62 @@ export default function StatusHelpTROffice({ route }) {
     }, 3000);
   }, [project]);
 
-  useEffect(() => {
-    if (entity_cd && project_no) {
-      // getLotNo();
-      const params = {
-        entity_cd: entity_cd,
-        project_no: project_no,
-      };
-      getTicketStatus(params);
-      setShow(true);
-    }
-  }, [entity_cd, project_no]);
+  // useEffect(() => {
+  //   if (entity_cd && project_no) {
+  //     // getLotNo();
+  //     const params = {
+  //       entity_cd: entity_cd,
+  //       project_no: project_no,
+  //     };
+  //     getTicketStatus(params);
+  //     setShow(true);
+  //   }
+  // }, [entity_cd, project_no]);
   // --- useeffect untuk project
 
   // --- useeffect untuk update email/name
   useEffect(() => {
-    setEmail(user != null && user.userData != null ? user.userData.email : "");
+    setEmail(user != null && user.userData != null ? user.userData.email : '');
   }, [email]);
   // --- useeffect untuk update email/name
 
+  useEffect(() => {
+    if (project.data.length > 1) {
+      setDefaultProject(false);
+
+      //  const projects = project.data.map((item, id) => ({
+      //    label: item.descs,
+      //    value: item.project_no,
+      //  }));
+      //  console.log('data di project data lengt < 1', projects.value);
+      //  setProjectData(project.data);
+      //  setValueProject(projects);
+    } else {
+      setDefaultProject(true);
+      console.log('email set default', email);
+      const params = {
+        entity_cd: project.data[0].entity_cd,
+        project_no: project.data[0].project_no,
+        // email: email,
+      };
+
+      const projects = project.data.map((item, id) => ({
+        label: item.descs,
+        value: item.project_no,
+      }));
+      console.log('data di project data lengt < 1', projects.value);
+      setProjectData(project.data);
+      setValueProject(projects);
+
+      // console.log('kena ini gak??');
+      getTicketStatus(params);
+      // setShowChooseProject(true);
+      setValueProjectSelected(projects[0].value);
+    }
+  }, [project_no, email, entity_cd, project]);
+
   const getTicketStatus = async (data) => {
-    console.log("data for status", data);
+    console.log('data for status', data);
 
     const formData = {
       entity_cd: data.entity_cd,
@@ -130,12 +166,12 @@ export default function StatusHelpTROffice({ route }) {
       category_cd: "'AU01','MU52'", //hardcode yagesya buat ac dan water aja ni
     };
 
-    console.log("formdata", formData);
+    console.log('formdata', formData);
     const config = {
-      method: "get",
-      url: API_URL_LOKAL + "/modules/troffice/ticket-status-count",
+      method: 'get',
+      url: API_URL_LOKAL + '/modules/troffice/ticket-status-count',
       headers: {
-        "content-type": "application/json",
+        'content-type': 'application/json',
         Authorization: `Bearer ${user.Token}`,
       },
       params: formData,
@@ -145,11 +181,11 @@ export default function StatusHelpTROffice({ route }) {
       .then((res) => {
         const datas = res.data;
 
-        console.log("data datas >", datas);
-        console.log("data kategori", datas.success);
+        console.log('data datas >', datas);
+        console.log('data kategori', datas.success);
         if (datas.success === true) {
           const datastatus = datas.data;
-          console.log("datastatus", datastatus);
+          console.log('datastatus', datastatus);
 
           if (datastatus.length > 1) {
             setDefaultStatus(false);
@@ -167,32 +203,32 @@ export default function StatusHelpTROffice({ route }) {
         // return res.data;
       })
       .catch((error) => {
-        console.log("error get status api", error.response);
+        console.log('error get status api', error.response);
         // alert('error get');
       });
   };
 
   const handleNavigation = (data, ticketStatus) => {
-    console.log("data where tiket statuss", data);
-    console.log("tikett status", ticketStatus);
+    console.log('data where tiket statuss', data);
+    console.log('tikett status', ticketStatus);
     setDisabled(true);
     getTicketWhereStatus(data, ticketStatus);
   };
   const getTicketWhereStatus = async (data, ticketStatus) => {
-    console.log("data where", data);
-    console.log("tiket state where", ticketStatus);
+    console.log('data where', data);
+    console.log('tiket state where', ticketStatus);
 
     const formData = {
       email: email,
       status: ticketStatus,
       category_cd: "'AU01','MU52'", //kok di hardcode??
     };
-    console.log("formData", formData);
+    console.log('formData', formData);
     const config = {
-      method: "post",
-      url: API_URL_LOKAL + "/modules/troffice/ticket-by-status",
+      method: 'post',
+      url: API_URL_LOKAL + '/modules/troffice/ticket-by-status',
       headers: {
-        "content-type": "application/json",
+        'content-type': 'application/json',
         Authorization: `Bearer ${user.Token}`,
       },
       params: formData,
@@ -219,14 +255,14 @@ export default function StatusHelpTROffice({ route }) {
       .then((res) => {
         const datas = res.data;
 
-        console.log("data datastatuswhere", datas);
+        console.log('data datastatuswhere', datas);
         // const datastatuswhere = datas.Data;
         // navigation.navigate('ViewHistoryStatus', {datastatuswhere}); //sementara krn data 0
         if (datas.success === true) {
           const datastatuswhere = datas.data;
           // setDataStatus(datastatus);
-          navigation.navigate("ViewHistoryStatusTRO", datastatuswhere);
-          console.log("datastatuswhere", datastatuswhere);
+          navigation.navigate('ViewHistoryStatusTRO', datastatuswhere);
+          console.log('datastatuswhere', datastatuswhere);
         } else {
           setDisabled(false);
         }
@@ -235,25 +271,25 @@ export default function StatusHelpTROffice({ route }) {
         // return res.data;
       })
       .catch((error) => {
-        console.log("error get where status api", error.response);
-        alert("error get");
+        console.log('error get where status api', error.response);
+        alert('error get');
       });
   };
 
   const handleClickProject = (item, index) => {
-    console.log("index", index);
+    console.log('index', index);
     setValueProjectSelected(item.value);
 
     setIsFocus(!isFocus);
     setShowChooseProject(!showChooseProject);
 
     if (item.value != null) {
-      console.log("value project selected", item.value);
+      console.log('value project selected', item.value);
       projectData.map((items, index) => {
-        console.log("items project data", items);
+        console.log('items project data', items);
         if (items.project_no === item.value) {
-          console.log("items choose project handle", items);
-          console.log("index", index);
+          console.log('items choose project handle', items);
+          console.log('index', index);
           // setProjectData(items);
           setCheckedEntity(true);
           setShow(true);
@@ -268,10 +304,10 @@ export default function StatusHelpTROffice({ route }) {
   return (
     <SafeAreaView
       style={BaseStyle.safeAreaView}
-      edges={["right", "top", "left"]}
+      edges={['right', 'top', 'left']}
     >
       <Header
-        title={t("status")} //belum dibuat lang
+        title={t('status')} //belum dibuat lang
         renderLeft={() => {
           return (
             <Icon
@@ -319,7 +355,7 @@ export default function StatusHelpTROffice({ route }) {
           maxHeight={300}
           labelField="label"
           valueField="value"
-          placeholder={!isFocus ? "Choose Project" : "Choose Project"}
+          placeholder={!isFocus ? 'Choose Project' : 'Choose Project'}
           searchPlaceholder="Search..."
           value={valueProjectSelected}
           onFocus={() => setIsFocus(true)}
@@ -331,380 +367,365 @@ export default function StatusHelpTROffice({ route }) {
       ) : null}
       <View style={styles.wrap}>
         <Text title2>Ticket</Text>
-        <Text headline style={{ fontWeight: "normal" }}>
-          Status Help TR Officess
+        <Text headline style={{ fontWeight: 'normal' }}>
+          Status Help TR Office
         </Text>
 
         <View style={[styles.subWrap, { paddingBottom: 0, marginBottom: 10 }]}>
-          {show && checkedEntity ? (
-            <View style={{ marginTop: 30, marginHorizontal: 10 }}>
-              <TouchableOpacity
-                // onPress={() => handleNavigation(dataTowerUser, "'R'")}
-                onPress={() => handleNavigation(dataTowerUser, "R")}
-                disabled={ds.cntopen == 0 ? true : false}
+          <View style={{ marginTop: 30, marginHorizontal: 10 }}>
+            <TouchableOpacity
+              // onPress={() => handleNavigation(dataTowerUser, "'R'")}
+              onPress={() => handleNavigation(dataTowerUser, 'R')}
+              disabled={ds.cntopen == 0 ? true : false}
+              style={{
+                borderBottomWidth: 1,
+                borderBottomColor: '#555',
+                //   paddingTop: 1,
+              }}
+            >
+              <View
                 style={{
-                  borderBottomWidth: 1,
-                  borderBottomColor: "#555",
-                  //   paddingTop: 1,
+                  justifyContent: 'space-around',
+                  flexDirection: 'row',
+                  alignContent: 'center',
+                  alignItems: 'center',
+
+                  // alignSelf: 'center',
                 }}
               >
-                <View
-                  style={{
-                    justifyContent: "space-around",
-                    flexDirection: "row",
-                    alignContent: "center",
-                    alignItems: "center",
-
-                    // alignSelf: 'center',
-                  }}
-                >
-                  {/* <CategoryIconSoft
+                {/* <CategoryIconSoft
                       isRound
                       size={25}
                       name="angle-left"
                       // style={{marginTop: 10}}
                     /> */}
-                  <View
-                    style={{
-                      borderRadius: 20,
-                      // width: 50,
-                      // height: 50,
-                      width: 60,
-                      height: 60,
-                      // borderRadius: 8,
-                      alignItems: "center",
-                      justifyContent: "center",
-                      marginBottom: 10,
-                      backgroundColor: parseHexTransparency(
-                        colors.primary,
-                        100
-                      ),
-                    }}
-                  >
-                    <Icon
-                      name={"tasks"}
-                      size={25}
-                      color={BaseColor.whiteColor}
-                      solid
-                    />
-                  </View>
-
-                  {/* <Image
-                      source={require('@assets/images/icon-helpdesk/newtiket.png')}
-                      style={styles.img}></Image> */}
-                  <Text
-                    style={{
-                      justifyContent: "center",
-                      alignItems: "center",
-                      alignSelf: "center",
-                      marginBottom: 10,
-                    }}
-                  >
-                    Open
-                  </Text>
-
-                  <Badge
-                    badgeStyle={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 10,
-                      backgroundColor: "#42B649",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      alignSelf: "center",
-                      marginBottom: 5,
-                    }}
-                    value={
-                      <Text
-                        style={{
-                          color: "#fff",
-                          textAlign: "center",
-                          alignItems: "center",
-                          alignSelf: "center",
-                        }}
-                      >
-                        {ds.cntopen}
-                      </Text>
-                    }
-                  ></Badge>
-                </View>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                onPress={
-                  () => handleNavigation(dataTowerUser, "P")
-                  //   handleNavigation(dataTowerUser, "'A','P','M','F','Y','Z'")
-                }
-                disabled={ds.cntprocces == 0 ? true : false}
-                style={{
-                  borderBottomWidth: 1,
-                  borderBottomColor: "#555",
-                  //   marginBottom: 10,
-                }}
-              >
                 <View
                   style={{
-                    justifyContent: "space-around",
-                    flexDirection: "row",
-                    alignContent: "center",
-                    alignItems: "center",
-                    // alignSelf: 'center',
+                    borderRadius: 20,
+                    // width: 50,
+                    // height: 50,
+                    width: 60,
+                    height: 60,
+                    // borderRadius: 8,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginBottom: 10,
+                    backgroundColor: parseHexTransparency(colors.primary, 100),
                   }}
                 >
-                  {/* <CategoryIconSoft
+                  <Icon
+                    name={'tasks'}
+                    size={25}
+                    color={BaseColor.whiteColor}
+                    solid
+                  />
+                </View>
+
+                {/* <Image
+                      source={require('@assets/images/icon-helpdesk/newtiket.png')}
+                      style={styles.img}></Image> */}
+                <Text
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    alignSelf: 'center',
+                    marginBottom: 10,
+                  }}
+                >
+                  Open
+                </Text>
+
+                <Badge
+                  badgeStyle={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: 10,
+                    backgroundColor: '#42B649',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    alignSelf: 'center',
+                    marginBottom: 5,
+                  }}
+                  value={
+                    <Text
+                      style={{
+                        color: '#fff',
+                        textAlign: 'center',
+                        alignItems: 'center',
+                        alignSelf: 'center',
+                      }}
+                    >
+                      {ds.cntopen}
+                    </Text>
+                  }
+                ></Badge>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={
+                () => handleNavigation(dataTowerUser, 'P')
+                //   handleNavigation(dataTowerUser, "'A','P','M','F','Y','Z'")
+              }
+              disabled={ds.cntprocces == 0 ? true : false}
+              style={{
+                borderBottomWidth: 1,
+                borderBottomColor: '#555',
+                //   marginBottom: 10,
+              }}
+            >
+              <View
+                style={{
+                  justifyContent: 'space-around',
+                  flexDirection: 'row',
+                  alignContent: 'center',
+                  alignItems: 'center',
+                  // alignSelf: 'center',
+                }}
+              >
+                {/* <CategoryIconSoft
                       isRound
                       size={25}
                       icon={'hourglass-half'}
                       style={{marginTop: 10}}
                     /> */}
-                  <View
-                    style={{
-                      borderRadius: 20,
-                      // width: 50,
-                      // height: 50,
-                      width: 60,
-                      height: 60,
-                      // borderRadius: 8,
-                      alignItems: "center",
-                      justifyContent: "center",
-                      marginTop: 10,
-                      marginBottom: 10,
-                      backgroundColor: parseHexTransparency(
-                        colors.primary,
-                        100
-                      ),
-                    }}
-                  >
-                    <Icon
-                      name={"tasks"}
-                      size={25}
-                      color={BaseColor.whiteColor}
-                      solid
-                    />
-                  </View>
-                  {/* <Image
-                      source={require('@assets/images/icon-helpdesk/newtiket.png')}
-                      style={styles.img}></Image> */}
-                  <Text
-                    style={{
-                      justifyContent: "center",
-                      alignItems: "center",
-                      alignSelf: "center",
-                      marginBottom: 10,
-                    }}
-                  >
-                    Process
-                  </Text>
-
-                  <Badge
-                    badgeStyle={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 10,
-                      backgroundColor: "#42B649",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      alignSelf: "center",
-                      marginBottom: 5,
-                    }}
-                    value={
-                      <Text
-                        style={{
-                          color: "#fff",
-                          textAlign: "center",
-                          alignItems: "center",
-                          alignSelf: "center",
-                        }}
-                      >
-                        {ds.cntprocces}
-                      </Text>
-                    }
-                  ></Badge>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => handleNavigation(dataTowerUser, "X")}
-                disabled={ds.cntcancel == 0 ? true : false}
-                style={{
-                  borderBottomWidth: 1,
-                  borderBottomColor: "#555",
-                  //   marginBottom: 10,
-                }}
-              >
                 <View
                   style={{
-                    justifyContent: "space-around",
-                    flexDirection: "row",
-                    alignContent: "center",
-                    alignItems: "center",
-                    // alignSelf: 'center',
+                    borderRadius: 20,
+                    // width: 50,
+                    // height: 50,
+                    width: 60,
+                    height: 60,
+                    // borderRadius: 8,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginTop: 10,
+                    marginBottom: 10,
+                    backgroundColor: parseHexTransparency(colors.primary, 100),
                   }}
                 >
-                  {/* <CategoryIconSoft
+                  <Icon
+                    name={'tasks'}
+                    size={25}
+                    color={BaseColor.whiteColor}
+                    solid
+                  />
+                </View>
+                {/* <Image
+                      source={require('@assets/images/icon-helpdesk/newtiket.png')}
+                      style={styles.img}></Image> */}
+                <Text
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    alignSelf: 'center',
+                    marginBottom: 10,
+                  }}
+                >
+                  Process
+                </Text>
+
+                <Badge
+                  badgeStyle={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: 10,
+                    backgroundColor: '#42B649',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    alignSelf: 'center',
+                    marginBottom: 5,
+                  }}
+                  value={
+                    <Text
+                      style={{
+                        color: '#fff',
+                        textAlign: 'center',
+                        alignItems: 'center',
+                        alignSelf: 'center',
+                      }}
+                    >
+                      {ds.cntprocces}
+                    </Text>
+                  }
+                ></Badge>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => handleNavigation(dataTowerUser, 'X')}
+              disabled={ds.cntcancel == 0 ? true : false}
+              style={{
+                borderBottomWidth: 1,
+                borderBottomColor: '#555',
+                //   marginBottom: 10,
+              }}
+            >
+              <View
+                style={{
+                  justifyContent: 'space-around',
+                  flexDirection: 'row',
+                  alignContent: 'center',
+                  alignItems: 'center',
+                  // alignSelf: 'center',
+                }}
+              >
+                {/* <CategoryIconSoft
                       isRound
                       size={25}
                       icon={'times'}
                       style={{marginTop: 10}}
                     /> */}
 
-                  <View
-                    style={{
-                      borderRadius: 20,
-                      // width: 50,
-                      // height: 50,
-                      width: 60,
-                      height: 60,
-                      // borderRadius: 8,
-                      alignItems: "center",
-                      justifyContent: "center",
-                      marginTop: 10,
-                      marginBottom: 10,
-                      backgroundColor: parseHexTransparency(
-                        colors.primary,
-                        100
-                      ),
-                    }}
-                  >
-                    <Icon
-                      name={"tasks"}
-                      size={25}
-                      color={BaseColor.whiteColor}
-                      solid
-                    />
-                  </View>
-
-                  {/* <Image
-                      source={require('@assets/images/icon-helpdesk/newtiket.png')}
-                      style={styles.img}></Image> */}
-                  <Text
-                    style={{
-                      justifyContent: "center",
-                      alignItems: "center",
-                      alignSelf: "center",
-                      marginBottom: 10,
-                    }}
-                  >
-                    Cancel
-                  </Text>
-
-                  <Badge
-                    badgeStyle={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 10,
-                      backgroundColor: "#42B649",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      alignSelf: "center",
-                      marginBottom: 5,
-                    }}
-                    value={
-                      <Text
-                        style={{
-                          color: "#fff",
-                          textAlign: "center",
-                          alignItems: "center",
-                          alignSelf: "center",
-                        }}
-                      >
-                        {ds.cntcancel}
-                      </Text>
-                    }
-                  ></Badge>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => handleNavigation(dataTowerUser, "C")}
-                disabled={ds.cntclose == 0 ? true : false}
-                style={{
-                  borderBottomWidth: 1,
-                  borderBottomColor: "#555",
-                  //   marginBottom: 10,
-                }}
-              >
                 <View
                   style={{
-                    justifyContent: "space-around",
-                    flexDirection: "row",
-                    alignContent: "center",
-                    alignItems: "center",
-                    // alignSelf: 'center',
+                    borderRadius: 20,
+                    // width: 50,
+                    // height: 50,
+                    width: 60,
+                    height: 60,
+                    // borderRadius: 8,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginTop: 10,
+                    marginBottom: 10,
+                    backgroundColor: parseHexTransparency(colors.primary, 100),
                   }}
                 >
-                  {/* <CategoryIconSoft
+                  <Icon
+                    name={'tasks'}
+                    size={25}
+                    color={BaseColor.whiteColor}
+                    solid
+                  />
+                </View>
+
+                {/* <Image
+                      source={require('@assets/images/icon-helpdesk/newtiket.png')}
+                      style={styles.img}></Image> */}
+                <Text
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    alignSelf: 'center',
+                    marginBottom: 10,
+                  }}
+                >
+                  Cancel
+                </Text>
+
+                <Badge
+                  badgeStyle={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: 10,
+                    backgroundColor: '#42B649',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    alignSelf: 'center',
+                    marginBottom: 5,
+                  }}
+                  value={
+                    <Text
+                      style={{
+                        color: '#fff',
+                        textAlign: 'center',
+                        alignItems: 'center',
+                        alignSelf: 'center',
+                      }}
+                    >
+                      {ds.cntcancel}
+                    </Text>
+                  }
+                ></Badge>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => handleNavigation(dataTowerUser, 'C')}
+              disabled={ds.cntclose == 0 ? true : false}
+              style={{
+                borderBottomWidth: 1,
+                borderBottomColor: '#555',
+                //   marginBottom: 10,
+              }}
+            >
+              <View
+                style={{
+                  justifyContent: 'space-around',
+                  flexDirection: 'row',
+                  alignContent: 'center',
+                  alignItems: 'center',
+                  // alignSelf: 'center',
+                }}
+              >
+                {/* <CategoryIconSoft
                       isRound
                       size={25}
                       icon={'check-double'}
                       style={{marginTop: 10}}
                     /> */}
-                  <View
-                    style={{
-                      borderRadius: 20,
-                      // width: 50,
-                      // height: 50,
-                      width: 60,
-                      height: 60,
-                      // borderRadius: 8,
-                      alignItems: "center",
-                      justifyContent: "center",
-                      marginTop: 10,
-                      marginBottom: 10,
-                      backgroundColor: parseHexTransparency(
-                        colors.primary,
-                        100
-                      ),
-                    }}
-                  >
-                    <Icon
-                      name={"tasks"}
-                      size={25}
-                      color={BaseColor.whiteColor}
-                      solid
-                    />
-                  </View>
-                  {/* <Image
+                <View
+                  style={{
+                    borderRadius: 20,
+                    // width: 50,
+                    // height: 50,
+                    width: 60,
+                    height: 60,
+                    // borderRadius: 8,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginTop: 10,
+                    marginBottom: 10,
+                    backgroundColor: parseHexTransparency(colors.primary, 100),
+                  }}
+                >
+                  <Icon
+                    name={'tasks'}
+                    size={25}
+                    color={BaseColor.whiteColor}
+                    solid
+                  />
+                </View>
+                {/* <Image
                       source={require('@assets/images/icon-helpdesk/newtiket.png')}
                       style={styles.img}></Image> */}
-                  <Text
-                    style={{
-                      justifyContent: "center",
-                      alignItems: "center",
-                      alignSelf: "center",
-                      marginBottom: 10,
-                    }}
-                  >
-                    Close
-                  </Text>
+                <Text
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    alignSelf: 'center',
+                    marginBottom: 10,
+                  }}
+                >
+                  Close
+                </Text>
 
-                  <Badge
-                    badgeStyle={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 10,
-                      backgroundColor: "#42B649",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      alignSelf: "center",
-                      marginBottom: 5,
-                    }}
-                    value={
-                      <Text
-                        style={{
-                          color: "#fff",
-                          textAlign: "center",
-                          alignItems: "center",
-                          alignSelf: "center",
-                        }}
-                      >
-                        {ds.cntclose}
-                      </Text>
-                    }
-                  ></Badge>
-                </View>
-              </TouchableOpacity>
-            </View>
-          ) : // <Text>Choose Project First</Text>
-          null}
+                <Badge
+                  badgeStyle={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: 10,
+                    backgroundColor: '#42B649',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    alignSelf: 'center',
+                    marginBottom: 5,
+                  }}
+                  value={
+                    <Text
+                      style={{
+                        color: '#fff',
+                        textAlign: 'center',
+                        alignItems: 'center',
+                        alignSelf: 'center',
+                      }}
+                    >
+                      {ds.cntclose}
+                    </Text>
+                  }
+                ></Badge>
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </SafeAreaView>

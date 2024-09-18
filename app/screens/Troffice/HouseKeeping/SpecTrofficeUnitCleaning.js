@@ -96,6 +96,7 @@ export default function SpecTrofficeUnitCleaning(props) {
   const user = useSelector((state) => getUser(state));
   const project = useSelector((state) => getProject(state));
   const [show, setShow] = useState(false);
+  const [defaultProject, setDefaultProject] = useState(true);
   // moment.locale('id');
 
   // moment().tz('Asia/Jakarta').format();
@@ -143,6 +144,41 @@ export default function SpecTrofficeUnitCleaning(props) {
     setEmail(user != null && user.userData != null ? user.userData.email : '');
   }, [email]);
   // --- useeffect untuk update email/name
+
+  useEffect(() => {
+    if (project.data.length > 1) {
+      setDefaultProject(false);
+
+      //  const projects = project.data.map((item, id) => ({
+      //    label: item.descs,
+      //    value: item.project_no,
+      //  }));
+      //  console.log('data di project data lengt < 1', projects.value);
+      //  setProjectData(project.data);
+      //  setValueProject(projects);
+    } else {
+      setDefaultProject(true);
+      console.log('email set default', email);
+      const params = {
+        entity_cd: project.data[0].entity_cd,
+        project_no: project.data[0].project_no,
+        // email: email,
+      };
+
+      const projects = project.data.map((item, id) => ({
+        label: item.descs,
+        value: item.project_no,
+      }));
+      console.log('data di project data lengt < 1', projects.value);
+      setProjectData(project.data);
+      setValueProject(projects);
+
+      // console.log('kena ini gak??');
+      getDebtor(params);
+      // setShowChooseProject(true);
+      setValueProjectSelected(projects[0].value);
+    }
+  }, [project_no, email, entity_cd, project]);
 
   const handleClickProject = (item, index) => {
     console.log('index', index);
@@ -502,108 +538,99 @@ export default function SpecTrofficeUnitCleaning(props) {
         {/* {dataCategory.descs.includes('AC') ? <Text>ini klik ac</Text> : <Text>ini klik water</Text>} */}
         {/* {indexCategory == 0 ? <Text>ini klik ac</Text> : <Text>ini klik water</Text>} */}
 
-        {checkedEntity === false ? (
-          <View
-            style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
-          >
-            <Text style={{ color: BaseColor.text }}>
-              Choose Project at top right
-            </Text>
-          </View>
-        ) : (
-          <ScrollView
-            showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingHorizontal: 20 }}
-          >
-            <View>
-              <View style={{ marginBottom: 5, paddingBottom: 0, marginTop: 5 }}>
-                <Text
-                  style={{
-                    color: '#3f3b38',
-                    // color: '#CDB04A',
-                    alignSelf: 'flex-start',
-                    fontSize: 14,
-                    // fontSize: 16,
-                    marginBottom: 10,
-                    paddingBottom: 0,
-                    marginTop: 0,
-                    paddingTop: 0,
-                    fontWeight: '800',
-                    // fontFamily: 'KaiseiHarunoUmi',
-                    // top: 10,
-                    // flex: 1,
-                    // justifyContent: 'center',
-                  }}
-                >
-                  DATE of Schedule
-                </Text>
-                <TouchableOpacity
-                  style={{
-                    backgroundColor: '#F5F5F5',
-                    // colors.primary,
-                    paddingVertical: 15,
-                    paddingHorizontal: 15,
-                    borderRadius: 10,
-                    marginBottom: 20,
-                  }}
-                  onPress={() => setOpen(true)}
-                >
-                  {/* {date !== null && date !== '' ? (
+        <ScrollView
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingHorizontal: 20 }}
+        >
+          <View>
+            <View style={{ marginBottom: 5, paddingBottom: 0, marginTop: 5 }}>
+              <Text
+                style={{
+                  color: '#3f3b38',
+                  // color: '#CDB04A',
+                  alignSelf: 'flex-start',
+                  fontSize: 14,
+                  // fontSize: 16,
+                  marginBottom: 10,
+                  paddingBottom: 0,
+                  marginTop: 0,
+                  paddingTop: 0,
+                  fontWeight: '800',
+                  // fontFamily: 'KaiseiHarunoUmi',
+                  // top: 10,
+                  // flex: 1,
+                  // justifyContent: 'center',
+                }}
+              >
+                DATE of Schedule
+              </Text>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: '#F5F5F5',
+                  // colors.primary,
+                  paddingVertical: 15,
+                  paddingHorizontal: 15,
+                  borderRadius: 10,
+                  marginBottom: 20,
+                }}
+                onPress={() => setOpen(true)}
+              >
+                {/* {date !== null && date !== '' ? (
                     <Text>{moment(date).format('DD-MM-YYYY')}</Text>
                   ) : (
                     <Text> {datatime.timeget}</Text>
                   )} */}
-                  <Text>{moment(date).format('DD-MM-YYYY')}</Text>
-                  <DatePicker
-                    modal
-                    // minimumDate={new Date(moment(format).format('YYYY-MM-DD'))}
-                    minimumDate={new Date(format)}
-                    mode="date"
-                    open={open}
-                    date={date}
-                    onConfirm={(date) => {
-                      setOpen(false);
-                      setDate(date);
-                    }}
-                    onCancel={() => {
-                      setOpen(false);
-                    }}
-                  />
-                </TouchableOpacity>
-
-                <Text
-                  style={{
-                    color: '#3f3b38',
-                    // color: '#CDB04A',
-                    alignSelf: 'flex-start',
-                    fontSize: 14,
-                    // fontSize: 16,
-                    marginBottom: 10,
-                    paddingBottom: 0,
-                    marginTop: 0,
-                    paddingTop: 0,
-                    fontWeight: '800',
-                    // fontFamily: 'KaiseiHarunoUmi',
-                    // top: 10,
-                    // flex: 1,
-                    // justifyContent: 'center',
+                <Text>{moment(date).format('DD-MM-YYYY')}</Text>
+                <DatePicker
+                  modal
+                  // minimumDate={new Date(moment(format).format('YYYY-MM-DD'))}
+                  minimumDate={new Date(format)}
+                  mode="date"
+                  open={open}
+                  date={date}
+                  onConfirm={(date) => {
+                    setOpen(false);
+                    setDate(date);
                   }}
-                >
-                  NAME of RESIDENT
-                </Text>
-                <ModalDropdown_debtor
-                  // label="Debtor"
-                  data={dataDebtor}
-                  onChange={(index) =>
-                    handleChangeModal({ data: dataDebtor, index })
-                  }
-                  value={textDebtor}
-                  style={{ marginBottom: 0, paddingBottom: 0 }}
+                  onCancel={() => {
+                    setOpen(false);
+                  }}
                 />
-              </View>
+              </TouchableOpacity>
 
-              {/* <Text
+              <Text
+                style={{
+                  color: '#3f3b38',
+                  // color: '#CDB04A',
+                  alignSelf: 'flex-start',
+                  fontSize: 14,
+                  // fontSize: 16,
+                  marginBottom: 10,
+                  paddingBottom: 0,
+                  marginTop: 0,
+                  paddingTop: 0,
+                  fontWeight: '800',
+                  // fontFamily: 'KaiseiHarunoUmi',
+                  // top: 10,
+                  // flex: 1,
+                  // justifyContent: 'center',
+                }}
+              >
+                NAME of RESIDENT
+              </Text>
+              <ModalDropdown_debtor
+                // label="Debtor"
+                data={dataDebtor}
+                onChange={(index) =>
+                  handleChangeModal({ data: dataDebtor, index })
+                }
+                value={textDebtor}
+                style={{ marginBottom: 0, paddingBottom: 0 }}
+              />
+            </View>
+
+            {/* <Text
                 style={{
                   // fontFamily: 'KaiseiHarunoUmi',
                   color: '#3f3b38',
@@ -627,35 +654,35 @@ export default function SpecTrofficeUnitCleaning(props) {
                   paddingTop: 0,
                 }}
               /> */}
-              <View style={{ marginTop: 15 }}>
-                <Text
-                  style={{
-                    // fontFamily: 'KaiseiHarunoUmi',
-                    color: '#3f3b38',
-                    fontWeight: '800',
-                    fontSize: 14,
-                    marginBottom: 0,
-                    paddingBottom: 0,
-                    marginTop: 0,
-                    paddingTop: 0,
-                  }}
-                >
-                  Unit No
-                </Text>
-                <ModalDropdown_lotno
-                  data={dataLotno}
-                  onChange={(option) =>
-                    handleLotChange(
-                      option.lot_no,
-                      option.zone_cd,
-                      option.slot,
-                      option.type,
-                    )
-                  }
-                  value={textLot}
-                />
-              </View>
-              {/* <View style={{marginTop: 0}}>
+            <View style={{ marginTop: 15 }}>
+              <Text
+                style={{
+                  // fontFamily: 'KaiseiHarunoUmi',
+                  color: '#3f3b38',
+                  fontWeight: '800',
+                  fontSize: 14,
+                  marginBottom: 0,
+                  paddingBottom: 0,
+                  marginTop: 0,
+                  paddingTop: 0,
+                }}
+              >
+                Unit No
+              </Text>
+              <ModalDropdown_lotno
+                data={dataLotno}
+                onChange={(option) =>
+                  handleLotChange(
+                    option.lot_no,
+                    option.zone_cd,
+                    option.slot,
+                    option.type,
+                  )
+                }
+                value={textLot}
+              />
+            </View>
+            {/* <View style={{marginTop: 0}}>
                 <Text
                   style={{
                     color: '#3f3b38',
@@ -674,30 +701,30 @@ export default function SpecTrofficeUnitCleaning(props) {
                   onChangeText={text => setreportName(text)}
                 />
               </View> */}
-              <View style={{ marginTop: 15 }}>
-                <Text
-                  style={{
-                    // fontFamily: 'KaiseiHarunoUmi',
-                    color: '#3f3b38',
-                    fontWeight: '800',
-                    fontSize: 14,
-                    marginBottom: 0,
-                    paddingBottom: 0,
-                    marginTop: 0,
-                    paddingTop: 0,
-                  }}
-                >
-                  Contact No
-                </Text>
-                <TextInput
-                  keyboardType="number-pad"
-                  placeholder="Contact No"
-                  editable={true}
-                  value={contactNo}
-                  onChangeText={(text) => setcontactNo(text)}
-                />
-              </View>
-              {/* <View style={{marginTop: 15}}>
+            <View style={{ marginTop: 15 }}>
+              <Text
+                style={{
+                  // fontFamily: 'KaiseiHarunoUmi',
+                  color: '#3f3b38',
+                  fontWeight: '800',
+                  fontSize: 14,
+                  marginBottom: 0,
+                  paddingBottom: 0,
+                  marginTop: 0,
+                  paddingTop: 0,
+                }}
+              >
+                Contact No
+              </Text>
+              <TextInput
+                keyboardType="number-pad"
+                placeholder="Contact No"
+                editable={true}
+                value={contactNo}
+                onChangeText={(text) => setcontactNo(text)}
+              />
+            </View>
+            {/* <View style={{marginTop: 15}}>
                 <Text
                   style={{
                     color: '#3f3b38',
@@ -718,20 +745,19 @@ export default function SpecTrofficeUnitCleaning(props) {
                 />
               </View> */}
 
-              <Button
-                style={{
-                  width: 100,
-                  height: 45,
-                  alignSelf: 'center',
-                  marginTop: 20,
-                }}
-                onPress={() => handleNavigation()}
-              >
-                <Text style={{ color: '#FFF' }}>Next</Text>
-              </Button>
-            </View>
-          </ScrollView>
-        )}
+            <Button
+              style={{
+                width: 100,
+                height: 45,
+                alignSelf: 'center',
+                marginTop: 20,
+              }}
+              onPress={() => handleNavigation()}
+            >
+              <Text style={{ color: '#FFF' }}>Next</Text>
+            </Button>
+          </View>
+        </ScrollView>
       </View>
     </SafeAreaView>
   );

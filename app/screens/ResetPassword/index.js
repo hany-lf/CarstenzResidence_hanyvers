@@ -56,7 +56,7 @@ const ResetPassword = (props) => {
     setEmail(user != null ? user.email : '');
   }, [email]);
   // --- useeffect untuk update email/name
-  const btnSend_ = () => {
+  const btnSend = () => {
     const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     // const isValid = setRequiredEmail(true);
     // const isValid = validating({
@@ -113,54 +113,54 @@ const ResetPassword = (props) => {
     }
   };
 
-  const btnSend = () => {
-    const data = {
-      email: email,
-      newpass: password,
-    };
-    const config = {
-      method: 'POST',
-      url: API_URL_LOKAL + '/auth/reset-pass',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${user.Token}`,
-      },
-      params: data,
-    };
+  // const btnSend = () => {
+  //   const data = {
+  //     email: email,
+  //     newpass: password,
+  //   };
+  //   const config = {
+  //     method: 'POST',
+  //     url: API_URL_LOKAL + '/auth/reset-pass',
+  //     headers: {
+  //       Accept: 'application/json',
+  //       'Content-Type': 'application/json',
+  //       Authorization: `Bearer ${user.Token}`,
+  //     },
+  //     params: data,
+  //   };
 
-    // fetch(API_URL_LOKAL + '/auth/reset-pass', {
-    //   method: 'POST',
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'application/json',
-    //     Authorization: `Bearer ${user.Token}`,
-    //   },
-    //   body: data,
-    // })
-    axios(config)
-      .then((res) => {
-        // const resp = JSON.parse(res.Data);
-        console.log('res forgot pass', res);
-        setError(res.success);
-        if (res.success == true) {
-          setLoading(true);
-          setPesan(res.message);
-          const pesan = res.message;
+  // fetch(API_URL_LOKAL + '/auth/reset-pass', {
+  //   method: 'POST',
+  //   headers: {
+  //     Accept: 'application/json',
+  //     'Content-Type': 'application/json',
+  //     Authorization: `Bearer ${user.Token}`,
+  //   },
+  //   body: data,
+  // })
+  //   axios(config)
+  //     .then((res) => {
+  //       // const resp = JSON.parse(res.Data);
+  //       console.log('res forgot pass', res);
+  //       setError(res.success);
+  //       if (res.success == true) {
+  //         setLoading(true);
+  //         setPesan(res.message);
+  //         const pesan = res.message;
 
-          alertFillBlank(true, pesan);
-        } else {
-          setLoading(true);
-          setPesan(res.message);
-          const pesan = res.message;
-          alertFillBlank(true, pesan);
-          console.log('res pesan', res.message);
-        }
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
-  };
+  //         alertFillBlank(true, pesan);
+  //       } else {
+  //         setLoading(true);
+  //         setPesan(res.message);
+  //         const pesan = res.message;
+  //         alertFillBlank(true, pesan);
+  //         console.log('res pesan', res.message);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log(error.response);
+  //     });
+  // };
 
   const alertFillBlank = (visible, pesan) => {
     setAlertVisibility(visible);

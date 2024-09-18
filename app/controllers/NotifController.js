@@ -10,7 +10,12 @@ class NotifController {
     this.basePath = API_URL_LOKAL;
   }
 
-  notifikasi_nbadge = async (email, entity_cd, project_no) => {
+  notifikasi_nbadge = async ({
+    email,
+    entity_cd,
+    project_no,
+    token_firebase,
+  }) => {
     console.log('email for notif di controller', email);
     console.log('entity for notir', entity_cd);
     console.log('project no for notif', project_no);
@@ -24,6 +29,10 @@ class NotifController {
           `/notification-badge?email=${email}&entity_cd=${entity_cd}&project_no=${project_no}`,
         // url: `http://apps.pakubuwono-residence.com/apiwebpbi/api/notification?email=${email}&entity_cd=${entity_cd}&project_no=${project_no}`,
         method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token_firebase}`,
+        },
         // timeout: 5000, // default is `0` (no timeout)
       });
       // alert(result.Pesan);

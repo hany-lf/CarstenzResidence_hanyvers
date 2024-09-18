@@ -31,6 +31,7 @@ import EProductDetail from '../screens/EProductDetail';
 import messaging from '@react-native-firebase/messaging';
 import Home from '../screens/Home';
 import ResetPassword from '../screens/ResetPassword';
+import ChangePasswordFirst from '../screens/ChangePasswordFirst';
 
 const Navigator = (props) => {
   const { theme, colors } = useTheme();
@@ -183,7 +184,10 @@ const Navigator = (props) => {
           ) : user == null || user == '' || user == 0 ? (
             <RootStack.Screen name="SignIn" component={SignIn} />
           ) : user.isResetPass == 1 ? (
-            <RootStack.Screen name="ResetPassword" component={ResetPassword} />
+            <RootStack.Screen
+              name="ChangePasswordFirst"
+              component={ChangePasswordFirst}
+            />
           ) : (
             <RootStack.Screen name="MainStack" component={MainStack} />
           )}
@@ -192,7 +196,7 @@ const Navigator = (props) => {
           <RootStack.Screen name="Notification" component={Notification} />
           {/* <RootStack.Screen name="Home" component={Home} /> */}
           <RootStack.Screen name="Skip" component={Skip} />
-
+          <RootStack.Screen name="ResetPassword" component={ResetPassword} />
           <RootStack.Screen name="EProductDetail" component={EProductDetail} />
         </RootStack.Navigator>
       </NavigationContainer>

@@ -93,32 +93,26 @@ const removeUser = (user) => ({
 //   user,
 // });
 
-export const login =
-  (email, password, token_firebase, macAddress) => async (dispatch) => {
-    dispatch(loginRequest());
-    console.log('login action', email);
-    try {
-      console.log('try login action', email);
-      const user = await UserController.login(
-        email,
-        password,
-        token_firebase,
-        macAddress,
-      );
-      dispatch(loginSuccess(user.data));
-      console.log('99 userrrrr', user);
-      // alert("JSON.stringify(user)");
-    } catch (error) {
-      const msgPesan = error.response.data.message;
-      Platform.OS == 'android'
-        ? Alert.alert('Sorry!', msgPesan)
-        : Alert.prompt('Sorry!', msgPesan);
-      // alert('error di login user action',error);
-      console.log('103 ini konsol eror', error.response.data);
+export const login = (email, password, token_firebase) => async (dispatch) => {
+  dispatch(loginRequest());
+  console.log('login action', email);
+  try {
+    console.log('try login action', email);
+    const user = await UserController.login(email, password, token_firebase);
+    dispatch(loginSuccess(user.data));
+    console.log('99 userrrrr', user);
+    // alert("JSON.stringify(user)");
+  } catch (error) {
+    const msgPesan = error.response.data.message;
+    Platform.OS == 'android'
+      ? Alert.alert('Sorry!', msgPesan)
+      : Alert.prompt('Sorry!', msgPesan);
+    // alert('error di login user action',error);
+    console.log('103 ini konsol eror', error.response.data);
 
-      // dispatch(loginError(error));
-    }
-  };
+    // dispatch(loginError(error));
+  }
+};
 
 export const reset = (newPass, conPass, email) => async (dispatch) => {
   dispatch(resetPassRequest());

@@ -74,6 +74,8 @@ export default function SpecHelpDesk() {
   const [defaultDebtor, setDefaultDebtor] = useState(false);
   const [defaultLotNo, setDefaultLotNo] = useState(false);
 
+  const [defaultProject, setDefaultProject] = useState(true);
+
   // --- useeffect untuk project
   useEffect(() => {
     setTimeout(() => {
@@ -83,6 +85,7 @@ export default function SpecHelpDesk() {
         // console.log('entity useeffect di home', project.data[0].entity_cd);
         setEntity(project.data[0].entity_cd);
         setProjectNo(project.data[0].project_no);
+
         const projects = project.data.map((item, id) => ({
           label: item.descs,
           value: item.project_no,
@@ -91,13 +94,11 @@ export default function SpecHelpDesk() {
         setProjectData(project.data);
         setValueProject(projects);
       }
-      // getCategoryHelp;
-      // setSpinner(false);
     }, 3000);
   }, [project]);
 
   // useEffect(() => {
-  //   if (entity_cd && project_no) {
+  //   if (entity_cd != && project_no) {
   //     // getLotNo();
   //     const params = {
   //       entity_cd: entity_cd,
@@ -107,7 +108,7 @@ export default function SpecHelpDesk() {
   //     // setShow(true);
   //   }
   // }, [entity_cd, project_no]);
-  // --- useeffect untuk project
+  // // --- useeffect untuk project
 
   // --- useeffect untuk update email/name
   useEffect(() => {
@@ -117,12 +118,39 @@ export default function SpecHelpDesk() {
   }, [email]);
   // --- useeffect untuk update email/name
 
+  useEffect(() => {
+    if (project.data.length > 1) {
+      setDefaultProject(false);
+    } else {
+      setDefaultProject(true);
+
+      const params = {
+        entity_cd: project.data[0].entity_cd,
+        project_no: project.data[0].project_no,
+        email: email,
+      };
+
+      const projects = project.data.map((item, id) => ({
+        label: item.descs,
+        value: item.project_no,
+      }));
+      console.log('data di project data lengt < 1', projects.value);
+      setProjectData(project.data);
+      setValueProject(projects);
+
+      console.log('kena ini gak??');
+      getDebtor(params);
+      // setShowChooseProject(true);
+      setValueProjectSelected(projects[0].value);
+    }
+  }, [project_no, email, entity_cd, project]);
+
   const handleClickProject = (item, index) => {
     console.log('index', index);
     setValueProjectSelected(item.value);
-
+    setDefaultProject(false);
     setIsFocus(!isFocus);
-    setShowChooseProject(!showChooseProject);
+    // setShowChooseProject(!showChooseProject);
 
     if (item.value != null) {
       console.log('value project selected', item.value);
@@ -132,7 +160,7 @@ export default function SpecHelpDesk() {
           console.log('items choose project handle', items);
           console.log('index', index);
           // setProjectData(items);
-          setCheckedEntity(true);
+          // setCheckedEntity(true);
           // setShow(true);
           getDebtor(items); // ini dikasih get apapun setelah pilih project
         }
@@ -386,7 +414,7 @@ export default function SpecHelpDesk() {
           );
         }}
       />
-      {showChooseProject ? (
+      {
         <Dropdown
           style={[
             styles.dropdown,
@@ -412,7 +440,33 @@ export default function SpecHelpDesk() {
             handleClickProject(item, index);
           }}
         />
-      ) : null}
+
+        // <Dropdown
+        //   style={[
+        //     styles.dropdown,
+        //     isFocus && { borderColor: BaseColor.corn30 },
+        //   ]}
+        //   placeholderStyle={styles.placeholderStyle}
+        //   selectedTextStyle={styles.selectedTextStyle}
+        //   inputSearchStyle={styles.inputSearchStyle}
+        //   iconStyle={styles.iconStyle}
+        //   itemTextStyle={styles.itemTextStyle}
+        //   containerStyle={{ borderRadius: 15, marginVertical: 5 }}
+        //   data={valueProject}
+        //   search
+        //   maxHeight={300}
+        //   labelField="label"
+        //   valueField="value"
+        //   placeholder={!isFocus ? 'Choose Project' : 'Choose Project'}
+        //   searchPlaceholder="Search..."
+        //   value={valueProjectSelected}
+        //   onFocus={() => setIsFocus(true)}
+        //   onBlur={() => setIsFocus(false)}
+        //   onChange={(item, index) => {
+        //     handleClickProject(item, index);
+        //   }}
+        // />
+      }
 
       <View style={styles.wrap}>
         <Text title2>Ticket</Text>
@@ -420,33 +474,56 @@ export default function SpecHelpDesk() {
           Service Request Form
         </Text>
 
-        {checkedEntity === false ? (
-          <View
-            style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
-          >
-            <Text style={{ color: BaseColor.text }}>
-              Choose Project at top right
-            </Text>
-          </View>
-        ) : (
-          <ScrollView
-            showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingHorizontal: 20 }}
-          >
-            <View>
-              <View style={{ marginBottom: 5, paddingBottom: 0, marginTop: 5 }}>
-                <ModalDropdown_debtor
-                  label="Debtor"
-                  data={dataDebtor}
-                  onChange={(index) =>
-                    handleChangeModal({ data: dataDebtor, index })
-                  }
-                  value={textDebtor}
-                  style={{ marginBottom: 0, paddingBottom: 0 }}
-                />
-              </View>
+        <ScrollView
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingHorizontal: 20 }}
+        >
+          <View>
+            <View style={{ marginBottom: 5, paddingBottom: 0, marginTop: 5 }}>
+              <ModalDropdown_debtor
+                label="Debtor"
+                data={dataDebtor}
+                onChange={(index) =>
+                  handleChangeModal({ data: dataDebtor, index })
+                }
+                value={textDebtor}
+                style={{ marginBottom: 0, paddingBottom: 0 }}
+              />
+            </View>
 
+            <Text
+              style={{
+                color: '#3f3b38',
+                fontSize: 14,
+                marginBottom: 0,
+                paddingBottom: 0,
+                marginTop: 0,
+                paddingTop: 0,
+              }}
+            >
+              Username
+            </Text>
+            <TextInput
+              editable={false} //wajib true kalo mau di klik-klik / di isi manual
+              value={textNameDebtor} //dari nama debtor
+              onChangeText={(text) => settextNameDebtor(text)}
+              style={{
+                marginBottom: 0,
+                paddingBottom: 0,
+                marginTop: 0,
+                paddingTop: 0,
+              }}
+            />
+            <View style={{ marginTop: 15 }}>
+              <ModalDropdown_lotno
+                label="Lot No"
+                data={dataLotno}
+                onChange={(option) => handleLotChange(option.lot_no)}
+                value={textLot}
+              />
+            </View>
+            <View style={{ marginTop: 0 }}>
               <Text
                 style={{
                   color: '#3f3b38',
@@ -457,84 +534,51 @@ export default function SpecHelpDesk() {
                   paddingTop: 0,
                 }}
               >
-                Username
+                Taken By
               </Text>
               <TextInput
-                editable={false} //wajib true kalo mau di klik-klik / di isi manual
-                value={textNameDebtor} //dari nama debtor
-                onChangeText={(text) => settextNameDebtor(text)}
+                placeholder="Reported By"
+                editable={true}
+                value={reportName}
+                onChangeText={(text) => setreportName(text)}
+              />
+            </View>
+            <View style={{ marginTop: 15 }}>
+              <Text
                 style={{
+                  color: '#3f3b38',
+                  fontSize: 14,
                   marginBottom: 0,
                   paddingBottom: 0,
                   marginTop: 0,
                   paddingTop: 0,
                 }}
-              />
-              <View style={{ marginTop: 15 }}>
-                <ModalDropdown_lotno
-                  label="Lot No"
-                  data={dataLotno}
-                  onChange={(option) => handleLotChange(option.lot_no)}
-                  value={textLot}
-                />
-              </View>
-              <View style={{ marginTop: 0 }}>
-                <Text
-                  style={{
-                    color: '#3f3b38',
-                    fontSize: 14,
-                    marginBottom: 0,
-                    paddingBottom: 0,
-                    marginTop: 0,
-                    paddingTop: 0,
-                  }}
-                >
-                  Taken By
-                </Text>
-                <TextInput
-                  placeholder="Reported By"
-                  editable={true}
-                  value={reportName}
-                  onChangeText={(text) => setreportName(text)}
-                />
-              </View>
-              <View style={{ marginTop: 15 }}>
-                <Text
-                  style={{
-                    color: '#3f3b38',
-                    fontSize: 14,
-                    marginBottom: 0,
-                    paddingBottom: 0,
-                    marginTop: 0,
-                    paddingTop: 0,
-                  }}
-                >
-                  Contact No
-                </Text>
-                <TextInput
-                  keyboardType="number-pad"
-                  placeholder="Contact No"
-                  editable={true}
-                  value={contactNo}
-                  onChangeText={(text) => setcontactNo(text)}
-                  required={requiredText}
-                />
-              </View>
-
-              <Button
-                style={{
-                  width: 100,
-                  height: 45,
-                  alignSelf: 'center',
-                  marginTop: 20,
-                }}
-                onPress={() => handleNavigation()}
               >
-                <Text style={{ color: '#FFF' }}>Next</Text>
-              </Button>
+                Contact No
+              </Text>
+              <TextInput
+                keyboardType="number-pad"
+                placeholder="Contact No"
+                editable={true}
+                value={contactNo}
+                onChangeText={(text) => setcontactNo(text)}
+                required={requiredText}
+              />
             </View>
-          </ScrollView>
-        )}
+
+            <Button
+              style={{
+                width: 100,
+                height: 45,
+                alignSelf: 'center',
+                marginTop: 20,
+              }}
+              onPress={() => handleNavigation()}
+            >
+              <Text style={{ color: '#FFF' }}>Next</Text>
+            </Button>
+          </View>
+        </ScrollView>
       </View>
     </SafeAreaView>
   );

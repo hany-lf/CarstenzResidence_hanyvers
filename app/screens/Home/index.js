@@ -203,7 +203,7 @@ const Home = (props) => {
       setEntity(project.data[0].entity_cd);
       setProjectNo(project.data[0].project_no);
       getLotNo();
-      notifUser();
+      // notifUser();
       dataNewsAnnounce();
       dataPromoClubFacilities();
     }
@@ -212,7 +212,7 @@ const Home = (props) => {
   useEffect(() => {
     if (entity_cd != null && project_no != null) {
       getLotNo();
-      notifUser();
+      // notifUser();
       dataNewsAnnounce();
       dataPromoClubFacilities();
     }
@@ -245,6 +245,23 @@ const Home = (props) => {
       );
       // }
 
+      dispatch(
+        apiCall(API_URL_LOKAL + `/setting/notification`, {
+          token_firebase: user.Token,
+          entity_cd: entity_cd,
+          project_no: project_no,
+          email: email,
+        }),
+      );
+
+      // dispatch(
+      //   notifikasi_nbadge({
+      //     email: email,
+      //     entity_cd: entity_cd,
+      //     project_no: project_no,
+      //   }),
+      // );
+
       console.log('Profile screen is focused');
       if (user != null && user.userData != null && user.userData.pict != null) {
         setFotoProfil(user.userData.pict);
@@ -273,6 +290,14 @@ const Home = (props) => {
         group_cd: user.userData.Group_Cd,
       }),
     );
+    // dispatch(
+    //   notifikasi_nbadge({
+    //     token_firebase: user.Token,
+    //     email: email,
+    //     entity_cd: entity_cd,
+    //     project_no: project_no,
+    //   }),
+    // );
     dispatch(
       data_project({ emails: user.userData.email, token_firebase: user.Token }),
     );
@@ -309,7 +334,7 @@ const Home = (props) => {
       });
   }, []);
 
-  //untuk load badge notif
+  //untuk load badge notif PENTING DAN HARUS ADA SCRIPT DISPATCH INI
   useEffect(() => {
     dispatch(
       apiCall(API_URL_LOKAL + `/setting/notification`, {
@@ -319,7 +344,7 @@ const Home = (props) => {
         email: email,
       }),
     );
-  }, [entity_cd, project_no, email]);
+  }, [user, entity_cd, project_no, email]);
 
   //untuk load data get chairman message
   // (sebenernya terpakai hanya sekali, saat open screen pertama kali.
@@ -381,7 +406,7 @@ const Home = (props) => {
       .then((res) => {
         console.log('res header image', res.data.data);
         setHeaderImage(res.data.data);
-        setArrDataTowerUser;
+        // setArrDataTowerUser;
       })
       .catch((error) => {
         console.log('error res header image', error.response);
@@ -508,11 +533,11 @@ const Home = (props) => {
     }
   }
 
-  const notifUser = useCallback(
-    (entity_cd, project_no, email) =>
-      dispatch(notifikasi_nbadge(email, entity_cd, project_no)),
-    [email, entity_cd, project_no, dispatch],
-  );
+  // const notifUser = useCallback(
+  //   (entity_cd, project_no, email) =>
+  //     dispatch(notifikasi_nbadge(email, entity_cd, project_no)),
+  //   [email, entity_cd, project_no, dispatch],
+  // );
 
   // const dataImage = async () => {
   //   const config = {
@@ -1176,8 +1201,8 @@ const Home = (props) => {
 
                     height: 400,
                     width: '100%',
-                    borderBottomLeftRadius: 175,
-                    borderBottomRightRadius: 175,
+                    // borderBottomLeftRadius: 175,
+                    // borderBottomRightRadius: 175,
                   }}
                 >
                   <LinearGradient

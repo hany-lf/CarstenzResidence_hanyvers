@@ -3,6 +3,7 @@ import { fetchData, fetchSuccess, fetchError } from './ApiActions';
 
 const apiActionCreator = (url, params) => (dispatch) => {
   console.log('token di apiactioncreator', params);
+  console.log('urldi apiactioncreator', url);
   dispatch(fetchData());
   return new Promise(() => {
     const config = {
@@ -21,11 +22,11 @@ const apiActionCreator = (url, params) => (dispatch) => {
         project_no: params.project_no,
       },
     };
-    console.log('config', config);
+    // console.log('config', config);
     axios(config)
       // .get(url)
       .then((response) => {
-        console.log('response', response.data.data.notifications);
+        // console.log('response', response.data.data.notifications);
         dispatch(fetchSuccess(response.data.data.notifications));
         // console.log('response', response);
       })

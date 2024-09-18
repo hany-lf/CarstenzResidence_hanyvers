@@ -12,7 +12,13 @@ import { BaseColor, BaseStyle, Typography, useTheme } from '@config';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FlatList, RefreshControl, View, Linking } from 'react-native';
+import {
+  FlatList,
+  RefreshControl,
+  View,
+  Linking,
+  TouchableOpacity,
+} from 'react-native';
 import { API_URL_LOKAL } from '@env';
 import getUser from '../../selectors/UserSelectors';
 import { useSelector } from 'react-redux';
@@ -142,40 +148,45 @@ const Emergency = (props) => {
           data={data}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item, index }) => (
-            <View
-              style={{
-                flexDirection: 'row',
-                marginVertical: 5,
-
-                alignItems: 'center',
-              }}
+            <TouchableOpacity
+              onPress={() => Linking.openURL(`tel:${item.contact_no}`)}
             >
               <View
                 style={{
-                  width: 60,
-                  height: 60,
-                  borderRadius: 10,
-                  justifyContent: 'center',
+                  flexDirection: 'row',
+                  marginVertical: 5,
+
                   alignItems: 'center',
-                  backgroundColor: colors.primary,
-                  marginRight: 10,
                 }}
               >
-                <NavEmergency
-                  width={30}
-                  height={30}
-                  fill={BaseColor.goldColor}
-                />
+                <View
+                  style={{
+                    width: 60,
+                    height: 60,
+                    borderRadius: 10,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: colors.primary,
+                    marginRight: 10,
+                  }}
+                >
+                  <NavEmergency
+                    width={30}
+                    height={30}
+                    fill={BaseColor.goldColor}
+                  />
+                </View>
+                <View>
+                  <Text style={{ fontSize: 14, color: colors.text }}>
+                    {item.contact_name}
+                  </Text>
+                  <Text style={{ fontSize: 14, color: colors.text }}>
+                    {item.contact_no}
+                  </Text>
+                </View>
               </View>
-              <View>
-                <Text style={{ fontSize: 14, color: colors.text }}>
-                  {item.contact_name}
-                </Text>
-                <Text style={{ fontSize: 14, color: colors.text }}>
-                  {item.contact_no}
-                </Text>
-              </View>
-            </View>
+            </TouchableOpacity>
+
             // <CategoryIcon
             //   loading={loading}
             //   style={{

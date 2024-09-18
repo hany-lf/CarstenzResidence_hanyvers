@@ -52,13 +52,15 @@ const SignIn = (props) => {
   const [token, setTokenBasic] = useState('');
 
   const user = useSelector((state) => getUser(state));
+  const userError = useSelector((state) => getUser(state));
+  console.log('usererror?', userError);
   const project = useSelector((state) => getProject(state));
   const [macAddress, setMacAddress] = useState('');
 
   useEffect(() => {
     DeviceInfo.getMacAddress().then((mac) => {
       console.log('mac address', mac);
-      setMacAddress(mac);
+      // setMacAddress(mac);
     });
   }, []);
 
@@ -70,6 +72,10 @@ const SignIn = (props) => {
   // );
   const loginklik = () => {
     console.log('54 run loginKlik');
+    DeviceInfo.getMacAddress().then((mac) => {
+      console.log('mac address', mac);
+      // setMacAddress(mac);
+    });
     loginUser();
     loadProject();
   };

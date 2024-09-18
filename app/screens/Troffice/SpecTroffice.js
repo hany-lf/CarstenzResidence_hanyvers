@@ -79,6 +79,7 @@ export default function SpecTroffice(props) {
 
   const [valueProject, setValueProject] = useState([]);
   const [valueProjectSelected, setValueProjectSelected] = useState(null);
+  const [defaultProject, setDefaultProject] = useState(true);
   // const [valueProject, setValueProject] = useState([]);
 
   // useEffect(() => {
@@ -125,14 +126,49 @@ export default function SpecTroffice(props) {
   }, [email]);
   // --- useeffect untuk update email/name
 
+  useEffect(() => {
+    if (project.data.length > 1) {
+      setDefaultProject(false);
+
+      //  const projects = project.data.map((item, id) => ({
+      //    label: item.descs,
+      //    value: item.project_no,
+      //  }));
+      //  console.log('data di project data lengt < 1', projects.value);
+      //  setProjectData(project.data);
+      //  setValueProject(projects);
+    } else {
+      setDefaultProject(true);
+      console.log('email set default', email);
+      const params = {
+        entity_cd: project.data[0].entity_cd,
+        project_no: project.data[0].project_no,
+        // email: email,
+      };
+
+      const projects = project.data.map((item, id) => ({
+        label: item.descs,
+        value: item.project_no,
+      }));
+      console.log('data di project data lengt < 1', projects.value);
+      setProjectData(project.data);
+      setValueProject(projects);
+
+      // console.log('kena ini gak??');
+      getDebtor(params);
+      // setShowChooseProject(true);
+      setValueProjectSelected(projects[0].value);
+    }
+  }, [project_no, email, entity_cd, project]);
+
   //-----FOR GET DEBTOR
   const getDebtor = async (data) => {
     // console.log(object)
     // console.log('data for debtor', data);
 
     const params = {
-      entity_cd: entity_cd || data.entity_cd,
-      project_no: project_no || data.project_no,
+      entity_cd: data.entity_cd,
+      project_no: data.project_no,
       email: email,
     };
 
@@ -297,10 +333,9 @@ export default function SpecTroffice(props) {
 
   const getFloor = async (lot) => {
     console.log('lot getfloor', lot);
-    const lotno = lot;
 
     const params = {
-      lotno: lotno,
+      lot_no: lot,
     };
 
     const config = {
@@ -440,35 +475,58 @@ export default function SpecTroffice(props) {
         {/* {dataCategory.descs.includes('AC') ? <Text>ini klik ac</Text> : <Text>ini klik water</Text>} */}
         {/* {indexCategory == 0 ? <Text>ini klik ac</Text> : <Text>ini klik water</Text>} */}
 
-        {checkedEntity === false ? (
-          <View
-            style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
-          >
-            <Text style={{ color: BaseColor.text }}>
-              Choose Project at top right
-            </Text>
-          </View>
-        ) : (
-          <ScrollView
-            showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingHorizontal: 20 }}
-          >
-            <View>
-              <View
-                style={{ marginBottom: 5, paddingBottom: 0, marginTop: 15 }}
-              >
-                <ModalDropdown_debtor
-                  label="Debtor"
-                  data={dataDebtor}
-                  onChange={(index) =>
-                    handleChangeModal({ data: dataDebtor, index })
-                  }
-                  value={textDebtor}
-                  style={{ marginBottom: 0, paddingBottom: 0 }}
-                />
-              </View>
+        <ScrollView
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingHorizontal: 20 }}
+        >
+          <View>
+            <View style={{ marginBottom: 5, paddingBottom: 0, marginTop: 15 }}>
+              <ModalDropdown_debtor
+                label="Debtor"
+                data={dataDebtor}
+                onChange={(index) =>
+                  handleChangeModal({ data: dataDebtor, index })
+                }
+                value={textDebtor}
+                style={{ marginBottom: 0, paddingBottom: 0 }}
+              />
+            </View>
 
+            <Text
+              style={{
+                color: '#3f3b38',
+                fontSize: 14,
+                marginBottom: 0,
+                paddingBottom: 0,
+                marginTop: 0,
+                paddingTop: 0,
+              }}
+            >
+              Username
+            </Text>
+            <TextInput
+              editable={false} //wajib true kalo mau di klik-klik / di isi manual
+              value={textNameDebtor} //dari nama debtor
+              onChangeText={(text) => settextNameDebtor(text)}
+              style={{
+                marginBottom: 0,
+                paddingBottom: 0,
+                marginTop: 0,
+                paddingTop: 0,
+              }}
+            />
+            <View style={{ marginTop: 15 }}>
+              <ModalDropdown_lotno
+                label="Lot No"
+                data={dataLotno}
+                onChange={(option) =>
+                  handleLotChange(option.lot_no, option.zone_cd, option.slot)
+                }
+                value={textLot}
+              />
+            </View>
+            <View style={{ marginTop: 0 }}>
               <Text
                 style={{
                   color: '#3f3b38',
@@ -479,50 +537,16 @@ export default function SpecTroffice(props) {
                   paddingTop: 0,
                 }}
               >
-                Username
+                Taken By
               </Text>
               <TextInput
-                editable={false} //wajib true kalo mau di klik-klik / di isi manual
-                value={textNameDebtor} //dari nama debtor
-                onChangeText={(text) => settextNameDebtor(text)}
-                style={{
-                  marginBottom: 0,
-                  paddingBottom: 0,
-                  marginTop: 0,
-                  paddingTop: 0,
-                }}
+                placeholder="Reported By"
+                editable={true}
+                value={reportName}
+                onChangeText={(text) => setreportName(text)}
               />
-              <View style={{ marginTop: 15 }}>
-                <ModalDropdown_lotno
-                  label="Lot No"
-                  data={dataLotno}
-                  onChange={(option) =>
-                    handleLotChange(option.lot_no, option.zone_cd, option.slot)
-                  }
-                  value={textLot}
-                />
-              </View>
-              <View style={{ marginTop: 0 }}>
-                <Text
-                  style={{
-                    color: '#3f3b38',
-                    fontSize: 14,
-                    marginBottom: 0,
-                    paddingBottom: 0,
-                    marginTop: 0,
-                    paddingTop: 0,
-                  }}
-                >
-                  Taken By
-                </Text>
-                <TextInput
-                  placeholder="Reported By"
-                  editable={true}
-                  value={reportName}
-                  onChangeText={(text) => setreportName(text)}
-                />
-              </View>
-              {/* <View style={{marginTop: 15}}>
+            </View>
+            {/* <View style={{marginTop: 15}}>
                 <Text
                   style={{
                     color: '#3f3b38',
@@ -563,20 +587,19 @@ export default function SpecTroffice(props) {
                 />
               </View> */}
 
-              <Button
-                style={{
-                  width: 100,
-                  height: 45,
-                  alignSelf: 'center',
-                  marginTop: 20,
-                }}
-                onPress={() => handleNavigation()}
-              >
-                <Text style={{ color: '#FFF' }}>Next</Text>
-              </Button>
-            </View>
-          </ScrollView>
-        )}
+            <Button
+              style={{
+                width: 100,
+                height: 45,
+                alignSelf: 'center',
+                marginTop: 20,
+              }}
+              onPress={() => handleNavigation()}
+            >
+              <Text style={{ color: '#FFF' }}>Next</Text>
+            </Button>
+          </View>
+        </ScrollView>
       </View>
     </SafeAreaView>
   );

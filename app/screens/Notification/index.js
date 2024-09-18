@@ -65,7 +65,7 @@ const Notification = (props) => {
   const [indexList, setIndexList] = useState();
 
   const data = useSelector((state) => state.apiReducer.data);
-  console.log('data notif length', data);
+  // console.log('data notif length', data);
   // const [isRead, setisRead] = useState(data.IsRead);
 
   const [modalSuccessVisible, showModalSuccess] = useState(false);
@@ -88,9 +88,9 @@ const Notification = (props) => {
     }, []),
   );
 
-  useEffect(() => {
-    console.log('data di notif', data);
-  }, [data]);
+  // useEffect(() => {
+  //   // console.log('data di notif', data);
+  // }, [data]);
 
   const refreshDataNotif = () => {
     dispatch(
@@ -314,6 +314,7 @@ const Notification = (props) => {
           }
           // data={dataNotif}
           data={data}
+          // data={dataNotif}
           keyExtractor={(item, index) => item.rowID}
           renderItem={({ item, index }) => (
             // console.log('index notif', index),

@@ -199,6 +199,7 @@ const Home = (props) => {
   useEffect(() => {
     if (entity_cd && project_no) {
       getLotNo();
+      notifUser();
     }
   }, [entity_cd, project_no]);
   // --- useeffect untuk project
@@ -724,7 +725,7 @@ const Home = (props) => {
     fetchDataHistory();
 
     // getLotNo();
-    notifUser();
+
     setLoading(false);
   }, [user, dataMenus]);
 
