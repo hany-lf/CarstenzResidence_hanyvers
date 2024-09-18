@@ -26,6 +26,25 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:497360765806:android:3cfa1030124e99f5b9777f",
+        "android_client_info": {
+          "package_name": "id.co.ifca.carstenszresidencelive"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMVUkMRtTxQYMkrtMY4f6v_3IqvPlDx7U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:497360765806:android:1f3dd43a9be6611fb9777f",
         "android_client_info": {
           "package_name": "id.co.property365.carstenzresidence"
