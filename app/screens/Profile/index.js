@@ -21,6 +21,7 @@ import { actionTypes, login, logout } from '../../actions/UserActions';
 import getUser from '../../selectors/UserSelectors';
 import { useFocusEffect } from '@react-navigation/native';
 import { API_URL_LOKAL } from '@env';
+import VersionInfo from 'react-native-version-info';
 
 const { authentication } = AuthActions;
 
@@ -34,6 +35,7 @@ const Profile = (props) => {
   const user = useSelector((state) => getUser(state));
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [version, setVersion] = useState('');
   // const [fotoprofil, setFotoProfil] = useState(
   //   user.pict != null ? user.pict.replace('https', 'http') : null,
   // );
@@ -92,6 +94,21 @@ const Profile = (props) => {
       }
     }, [user]), // Removed fotoprofil from the dependency array
   );
+
+  useEffect(() => {
+    const init = async () => {
+      // const {version} = Constants.manifest;
+      // const version = require('../../package.json');
+      // console.log('ceeek', version);
+      console.log(VersionInfo.appVersion);
+      console.log(VersionInfo.buildVersion);
+      console.log(VersionInfo.bundleIdentifier);
+      const version = VersionInfo.appVersion;
+      setVersion(version);
+    };
+
+    init();
+  }, []);
 
   const onLogOut = useCallback(() => {
     Alert.alert(
@@ -320,6 +337,30 @@ const Profile = (props) => {
                 enableRTL={true}
               />
             </TouchableOpacity>
+          </View>
+
+          <View
+            style={{
+              justifyContent: 'center',
+              flex: 1,
+
+              alignItems: 'center',
+              paddingTop: 30,
+              // position: 'absolute',
+              // bottom: 50,
+              // left: 0,
+              // right: 0,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 10,
+                color: colors.primary,
+              }}
+            >
+              Version {version}
+              {/* {Platform.OS == 'android' ? 'Version 5.2.0.3' : 'Version 5.3'} */}
+            </Text>
           </View>
         </ScrollView>
       </View>

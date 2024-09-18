@@ -9,7 +9,7 @@ import {
 } from '@components';
 import { BaseColor, BaseStyle, useTheme } from '@config';
 import { Images } from '@config';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   ScrollView,
   TouchableOpacity,
@@ -19,6 +19,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
@@ -37,6 +38,7 @@ import { API_URL_LOKAL } from '@env';
 import { FontFamily } from '../../config';
 import Fonts from '../../config/Fonts';
 import DeviceInfo from 'react-native-device-info';
+import VersionInfo from 'react-native-version-info';
 
 const SignIn = (props) => {
   const { navigation } = props;
@@ -56,12 +58,32 @@ const SignIn = (props) => {
   console.log('usererror?', userError);
   const project = useSelector((state) => getProject(state));
   const [macAddress, setMacAddress] = useState('');
+  const [version, setVersion] = useState('');
+
+  const emailInputRef = useRef(null);
+  const passwordInputRef = useRef(null);
+  const signInButtonRef = useRef(null); // Referensi ini bisa digunakan jika Anda memiliki custom button
 
   useEffect(() => {
     DeviceInfo.getMacAddress().then((mac) => {
       console.log('mac address', mac);
       // setMacAddress(mac);
     });
+  }, []);
+
+  useEffect(() => {
+    const init = async () => {
+      // const {version} = Constants.manifest;
+      // const version = require('../../package.json');
+      // console.log('ceeek', version);
+      console.log(VersionInfo.appVersion);
+      console.log(VersionInfo.buildVersion);
+      console.log(VersionInfo.bundleIdentifier);
+      const version = VersionInfo.appVersion;
+      setVersion(version);
+    };
+
+    init();
   }, []);
 
   // const isLoading = useSelector((state) =>
@@ -76,8 +98,12 @@ const SignIn = (props) => {
       console.log('mac address', mac);
       // setMacAddress(mac);
     });
-    loginUser();
-    loadProject();
+    setLoading(true);
+    setTimeout(() => {
+      loginUser();
+      loadProject();
+      setLoading(false);
+    }, 5000);
   };
   const loginUser = useCallback(
     () => dispatch(login(email, password, token_firebase, macAddress)),
@@ -106,6 +132,7 @@ const SignIn = (props) => {
       props.navigation.navigate('MainStack');
       // navigation.navigate('MainStack');
     }
+    emailInputRef.current?.focus(); // Memanggil focus pada TextInput
   });
 
   useEffect(() => {
@@ -140,22 +167,18 @@ const SignIn = (props) => {
     android: 20,
   });
 
-  useEffect(() => {
-    console.log('users di sign in', user);
-  }, []);
-
   return (
-    <KeyboardAvoidingView
-      keyboardVerticalOffset="100"
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{
-        flex: 1,
-      }}
+    // <KeyboardAvoidingView
+    //   keyboardVerticalOffset="100"
+    //   behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    //   style={{
+    //     flex: 1,
+    //   }}
+    // >
+    <SafeAreaView
+      style={BaseStyle.safeAreaView}
+      edges={['right', 'top', 'left']}
     >
-      {/* <SafeAreaView
-        style={BaseStyle.safeAreaView}
-        edges={["right", "top", "left"]}
-      > */}
       <View style={{ marginVertical: 50 }} />
       <View>
         <Image
@@ -178,6 +201,7 @@ const SignIn = (props) => {
 
       <View style={styles.contain}>
         <TextInput
+          ref={emailInputRef}
           style={[
             BaseStyle.textInput,
             { backgroundColor: colors.border, fontSize: 10 },
@@ -185,15 +209,20 @@ const SignIn = (props) => {
           // placeholderTextColor={colors.text}
           onChangeText={emailChanged}
           autoCorrect={false}
+          autoCapitalize="none"
           placeholder={t('input_id')}
           value={email}
           selectionColor={colors.primary}
+          onSubmitEditing={() => passwordInputRef.current?.focus()}
         />
+
         <TextInput
+          ref={passwordInputRef}
           style={[
             BaseStyle.textInput,
             { marginTop: 10, backgroundColor: colors.border },
           ]}
+          onSubmitEditing={() => signInButtonRef.current?.focus()}
           onChangeText={passwordChanged}
           autoCorrect={false}
           placeholder={t('input_password')}
@@ -210,13 +239,17 @@ const SignIn = (props) => {
             />
           }
         />
-        <View style={{ width: '100%', marginVertical: 16 }}>
+        <View
+          style={{ width: '100%', marginVertical: 16 }}
+          ref={signInButtonRef}
+        >
           <Button
             full
             loading={loading}
             style={{ marginTop: 20 }}
             // onPress={loginUser}
             onPress={loginklik}
+            disable={loading ? true : false}
           >
             <Text
               style={{
@@ -239,11 +272,34 @@ const SignIn = (props) => {
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => navigation.navigate('Skip')}>
+          {/* <TouchableOpacity onPress={() => navigation.navigate('Skip')}>
             <Text body2 primaryColor>
               {t('Skip Login')}
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+        </View>
+
+        <View
+          style={{
+            justifyContent: 'center',
+            // flex: 1,
+            alignItems: 'center',
+            top: 100,
+            // position: 'relative',
+            // bottom: 50,
+            // left: 0,
+            // right: 0,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 10,
+              color: colors.primary,
+            }}
+          >
+            Version {version}
+            {/* {Platform.OS == 'android' ? 'Version 5.2.0.3' : 'Version 5.3'} */}
+          </Text>
         </View>
       </View>
 
@@ -253,8 +309,8 @@ const SignIn = (props) => {
         style={{
           flex: 1,
         }}></KeyboardAvoidingView> */}
-      {/* </SafeAreaView> */}
-    </KeyboardAvoidingView>
+    </SafeAreaView>
+    // </KeyboardAvoidingView>
   );
 };
 

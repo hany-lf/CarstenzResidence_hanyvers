@@ -1492,8 +1492,7 @@ const Home = (props) => {
                           fontFamily: 'KaiseiHarunoUmi',
                         }}
                       >
-                        {/* Lot No Available */}
-                        F2621s
+                        {/* Lot No Available */}-
                       </Text>
                     </ModalSelector>
                     <Icon

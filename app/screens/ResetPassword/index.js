@@ -67,12 +67,15 @@ const ResetPassword = (props) => {
       if (reg.test(email) === true) {
         const emails = email;
 
+        // const data = {
+        //   email: email,
+        //   newpass: password,
+        // };
         const data = {
           email: email,
-          newpass: password,
         };
         console.log('email', emails);
-        fetch(API_URL_LOKAL + '/auth/reset-pass', {
+        fetch(API_URL_LOKAL + '/auth/forgot-send-email', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -81,6 +84,15 @@ const ResetPassword = (props) => {
           },
           body: data,
         })
+          //  fetch(API_URL_LOKAL + '/auth/reset-pass', {
+          //    method: 'POST',
+          //    headers: {
+          //      Accept: 'application/json',
+          //      'Content-Type': 'application/json',
+          //      Authorization: `Bearer ${user.Token}`,
+          //    },
+          //    body: data,
+          //  })
           .then((res) => {
             // const resp = JSON.parse(res.Data);
             console.log('res forgot pass', res);
@@ -206,7 +218,7 @@ const ResetPassword = (props) => {
             width: '100%',
           }}
         >
-          <TextInput
+          {/* <TextInput
             style={[
               BaseStyle.textInput,
               { marginTop: 10, backgroundColor: colors.border },
@@ -226,10 +238,14 @@ const ResetPassword = (props) => {
                 color={colors.text}
               />
             }
-          />
+          /> */}
 
-          {/* <TextInput
-            style={[BaseStyle.textInput, { marginTop: 65 }]}
+          <TextInput
+            // style={[BaseStyle.textInput, { marginTop: 65 }]}
+            style={[
+              BaseStyle.textInput,
+              { marginTop: 10, backgroundColor: colors.border },
+            ]}
             onChangeText={(text) => setEmail(text)}
             onFocus={() => {
               setSuccess({
@@ -244,7 +260,7 @@ const ResetPassword = (props) => {
             }
             value={email}
             selectionColor={colors.primary}
-          /> */}
+          />
           <View style={{ width: '100%' }}>
             <Button
               full
@@ -255,7 +271,9 @@ const ResetPassword = (props) => {
               }}
               loading={loading}
             >
-              {t('reset_password')}
+              <Text style={{ fontSize: 13, color: BaseColor.whiteColor }}>
+                {t('reset_password')}
+              </Text>
             </Button>
           </View>
         </View>

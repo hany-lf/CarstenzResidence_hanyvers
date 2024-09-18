@@ -103,14 +103,64 @@ export const login = (email, password, token_firebase) => async (dispatch) => {
     console.log('99 userrrrr', user);
     // alert("JSON.stringify(user)");
   } catch (error) {
-    const msgPesan = error.response.data.message;
-    Platform.OS == 'android'
-      ? Alert.alert('Sorry!', msgPesan)
-      : Alert.prompt('Sorry!', msgPesan);
-    // alert('error di login user action',error);
-    console.log('103 ini konsol eror', error.response.data);
+    // const msgPesan = error.response.data.message;
+    // Platform.OS == 'android'
+    //   ? Alert.alert('Sorry!', msgPesan)
+    //   : Alert.prompt('Sorry!', msgPesan);
+    // // alert('error di login user action',error);
+    // console.log('103 ini konsol eror', error.response.data);
 
     // dispatch(loginError(error));
+
+    if (error.response.data.message.email != null) {
+      const msgPesan = error.response.data.message.email[0];
+      console.log('msgpesan email tidak null', msgPesan);
+
+      // Platform.OS == 'android'
+      //   ? Alert.alert('Sorry! Warning email tidak null', msgPesan)
+      //   : Alert.prompt('Sorry! Warning ios email tidak null', msgPesan);
+      Platform.OS == 'android'
+        ? Alert.alert('Incorrect Username', msgPesan)
+        : Alert.prompt('Incorrect Username', msgPesan);
+
+      console.log('ini konsol eror', msgPesan);
+
+      // kalo error email: munculnya {"email": ["The email format is invalid."]}
+      // kalo error password: munculnya Wrong Password / User not found
+    } else if (error.response.data.message.password != null) {
+      const msgPesan = error.response.data.message.password[0];
+      console.log('msgpesan password tidk null', msgPesan);
+
+      // Platform.OS == 'android'
+      //   ? Alert.alert('Sorry! Warning msgpesan password tidk null', msgPesan)
+      //   : Alert.prompt(
+      //       'Sorry! Warning ios msgpesan password tidk null',
+      //       msgPesan,
+      //     );
+
+      Platform.OS == 'android'
+        ? Alert.alert('Sorry! Warning', msgPesan)
+        : Alert.prompt('Sorry! Warning', msgPesan);
+
+      console.log('ini konsol eror', msgPesan);
+      // kalo error email: munculnya {"email": ["The email format is invalid."]}
+      // kalo error password: munculnya Wrong Password / User not found
+    } else {
+      const msgPesan = error.response.data.message;
+      console.log('msgpesan password null', msgPesan);
+
+      // Platform.OS == 'android'
+      //   ? Alert.alert('Sorry! Warning password dan email deh', msgPesan)
+      //   : Alert.prompt('Sorry! Warning password dan email deh ios', msgPesan);
+
+      Platform.OS == 'android'
+        ? Alert.alert('Sorry! Warning', msgPesan)
+        : Alert.prompt('Sorry! Warning', msgPesan);
+
+      console.log('ini konsol eror', msgPesan);
+      // kalo error email: munculnya {"email": ["The email format is invalid."]}
+      // kalo error password: munculnya Wrong Password / User not found
+    }
   }
 };
 
