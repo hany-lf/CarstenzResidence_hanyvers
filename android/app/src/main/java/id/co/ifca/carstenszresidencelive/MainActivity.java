@@ -1,4 +1,4 @@
-package id.co.property365.carstenzresidence;
+package id.co.ifca.carstenszresidencelive;
 import android.os.Bundle; // here
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
@@ -16,7 +16,7 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "CarstenzRDemo";
+    return "CarstenszResidenceLive";
   }
 
   @Override

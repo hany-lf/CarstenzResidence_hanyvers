@@ -84,9 +84,9 @@ android {
 
     compileSdkVersion 33
 
-    namespace "id.co.property365.carstenzresidence"
+    namespace "id.co.ifca.carstenszresidencelive"
     defaultConfig {
-        applicationId "id.co.property365.carstenzresidence"
+        applicationId "id.co.ifca.carstenszresidencelive"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 5

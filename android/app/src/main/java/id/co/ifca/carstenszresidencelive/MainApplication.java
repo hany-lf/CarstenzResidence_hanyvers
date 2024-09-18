@@ -1,4 +1,4 @@
-package id.co.property365.carstenzresidence;
+package id.co.ifca.carstenszresidencelive;
 
 import android.app.Application;
 import com.reactnativecommunity.webview.RNCWebViewPackage;

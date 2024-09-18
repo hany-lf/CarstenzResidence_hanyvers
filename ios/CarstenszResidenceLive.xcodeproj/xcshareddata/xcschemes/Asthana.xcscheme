@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "CarstenzRDemo.app"
-               BlueprintName = "CarstenzRDemo"
-               ReferencedContainer = "container:CarstenzRDemo.xcodeproj">
+               BuildableName = "CarstenszResidenceLive.app"
+               BlueprintName = "CarstenszResidenceLive"
+               ReferencedContainer = "container:CarstenszResidenceLive.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "CarstenzRDemoTests.xctest"
-               BlueprintName = "CarstenzRDemoTests"
-               ReferencedContainer = "container:CarstenzRDemo.xcodeproj">
+               BuildableName = "CarstenszResidenceLiveTests.xctest"
+               BlueprintName = "CarstenszResidenceLiveTests"
+               ReferencedContainer = "container:CarstenszResidenceLive.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "CarstenzRDemo.app"
-            BlueprintName = "CarstenzRDemo"
-            ReferencedContainer = "container:CarstenzRDemo.xcodeproj">
+            BuildableName = "CarstenszResidenceLive.app"
+            BlueprintName = "CarstenszResidenceLive"
+            ReferencedContainer = "container:CarstenszResidenceLive.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "CarstenzRDemo.app"
-            BlueprintName = "CarstenzRDemo"
-            ReferencedContainer = "container:CarstenzRDemo.xcodeproj">
+            BuildableName = "CarstenszResidenceLive.app"
+            BlueprintName = "CarstenszResidenceLive"
+            ReferencedContainer = "container:CarstenszResidenceLive.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
