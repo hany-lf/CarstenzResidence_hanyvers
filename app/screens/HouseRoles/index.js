@@ -345,7 +345,7 @@ const HouseRoles = (props) => {
       edges={['right', 'top', 'left']}
     >
       <Header
-        title={t('House Roles')}
+        title={t('house_roles')}
         renderLeft={() => {
           return (
             <Icon

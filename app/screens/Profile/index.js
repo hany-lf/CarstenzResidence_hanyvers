@@ -36,6 +36,7 @@ const Profile = (props) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [version, setVersion] = useState('');
+  const [buildVersion, setBuildVersion] = useState('');
   // const [fotoprofil, setFotoProfil] = useState(
   //   user.pict != null ? user.pict.replace('https', 'http') : null,
   // );
@@ -69,16 +70,24 @@ const Profile = (props) => {
     console.log('User state updated: profil useffect', user);
   }, [user]);
 
-  // --- useeffect untuk update email/name
+  // --- useEffect untuk update email/name
   useEffect(() => {
-    setName(user != null && user.userData != null ? user.userData.name : '');
-  }, [name]);
+    if (user != null && user.userData != null) {
+      setName(user.userData.name); // Update name hanya ketika user data berubah
+      setEmail(user.userData.email);
+    }
+  }, [user]); // Dependensi hanya pada user
+
+  // --- useeffect untuk update email/name
+  // useEffect(() => {
+  //   setName(user != null && user.userData != null ? user.userData.name : '');
+  // }, [name]);
   // --- useeffect untuk update email/name
 
   // --- useeffect untuk update email/name
-  useEffect(() => {
-    setEmail(user != null && user.userData != null ? user.userData.email : '');
-  }, [email]);
+  // useEffect(() => {
+  //   setEmail(user != null && user.userData != null ? user.userData.email : '');
+  // }, [email]);
   // --- useeffect untuk update email/name
 
   useFocusEffect(
@@ -104,6 +113,8 @@ const Profile = (props) => {
       console.log(VersionInfo.buildVersion);
       console.log(VersionInfo.bundleIdentifier);
       const version = VersionInfo.appVersion;
+      const buildVersion = VersionInfo.buildVersion;
+      setBuildVersion(buildVersion);
       setVersion(version);
     };
 
@@ -358,7 +369,7 @@ const Profile = (props) => {
                 color: colors.primary,
               }}
             >
-              Version {version}
+              Version {version} {`(` + buildVersion + `)`}
               {/* {Platform.OS == 'android' ? 'Version 5.2.0.3' : 'Version 5.3'} */}
             </Text>
           </View>

@@ -19,7 +19,17 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         // ...action.edits,
-        user: action.edits,
+        // user: action.edits,
+        user: {
+          ...state.user,
+          userData: {
+            ...state.user.userData, // Memastikan objek userData yang ada tidak diganti
+            // ...action.edits,
+            Handphone: action.edits.handphone, // Mengupdate properti pict saja
+            email: action.edits.user,
+            name: action.edits.name,
+          },
+        },
         // pict: action.edits,
       };
     case actionTypes.CHANGE_FOTO:

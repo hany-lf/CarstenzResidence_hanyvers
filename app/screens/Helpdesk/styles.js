@@ -1,7 +1,7 @@
-import { StyleSheet, Dimensions, PixelRatio } from "react-native";
-import { BaseColor, useTheme } from "@config";
-const deviceHeight = Dimensions.get("window").height;
-const deviceWidth = Dimensions.get("window").width;
+import { StyleSheet, Dimensions, PixelRatio } from 'react-native';
+import { BaseColor, useTheme } from '@config';
+const deviceHeight = Dimensions.get('window').height;
+const deviceWidth = Dimensions.get('window').width;
 const colors = useTheme;
 
 export default StyleSheet.create({
@@ -10,7 +10,7 @@ export default StyleSheet.create({
     backgroundColor: BaseColor.fieldColor,
     borderRadius: 5,
     padding: 10,
-    width: "100%",
+    width: '100%',
   },
   contain: {
     flex: 1,
@@ -18,9 +18,9 @@ export default StyleSheet.create({
   item: {
     paddingTop: 15,
     paddingBottom: 15,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     borderBottomWidth: 1,
   },
   subWrap: {
@@ -35,47 +35,48 @@ export default StyleSheet.create({
     flex: 1,
   },
   profileItem: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     borderBottomWidth: StyleSheet.hairlineWidth,
     paddingBottom: 20,
     paddingTop: 20,
   },
   textArea: {
     borderRadius: 5,
-    backgroundColor: "#F6F6F6",
+    backgroundColor: '#F6F6F6',
+    color: BaseColor.corn70,
   },
   pickerWrap: {
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginVertical: 10,
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: "#E2DFE4",
-    backgroundColor: "#F6F6F6",
+    borderColor: '#E2DFE4',
+    backgroundColor: '#F6F6F6',
   },
   sel: {
     width: deviceWidth - 100,
     marginVertical: 10,
     paddingVertical: 10,
-    borderColor: "#9B9B9B",
+    borderColor: '#9B9B9B',
     borderWidth: 1 / PixelRatio.get(),
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 5,
     height: null,
   },
   pickerWrap: {
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginVertical: 10,
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: "#E2DFE4",
-    backgroundColor: "#F6F6F6",
+    borderColor: '#E2DFE4',
+    backgroundColor: '#F6F6F6',
   },
   avatar: {
     width: deviceWidth - 100,
@@ -85,18 +86,18 @@ export default StyleSheet.create({
   avatarContainer: {
     width: deviceWidth - 100,
     marginVertical: 10,
-    borderColor: "#9B9B9B",
+    borderColor: '#9B9B9B',
     borderWidth: 1 / PixelRatio.get(),
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 5,
     height: 200,
   },
   iconRemove: {
     // backgroundColor: '#EE6B60',
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     // color: '#ff1744',
-    position: "absolute",
+    position: 'absolute',
     borderRadius: 50,
     padding: 5,
     right: 0,
@@ -109,39 +110,39 @@ export default StyleSheet.create({
     marginTop: 10,
   },
   bottomModal: {
-    justifyContent: "flex-end",
+    justifyContent: 'flex-end',
     margin: 0,
   },
   modalView: {
     flex: 1,
-    justifyContent: "flex-end",
+    justifyContent: 'flex-end',
   },
   modalContainer: {
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     height: deviceHeight / 2,
     width: deviceWidth,
     // justifyContent : 'center',
-    alignItems: "center",
+    alignItems: 'center',
     borderTopLeftRadius: 18,
     borderTopRightRadius: 18,
   },
   modalHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     width: deviceWidth,
     paddingHorizontal: 25,
     paddingTop: 22,
   },
   textModal: {
     fontSize: 18,
-    color: "#333",
+    color: '#333',
   },
   iconModal: {
     fontSize: 25,
-    color: "#333",
+    color: '#333',
   },
   modalBody: {
-    justifyContent: "center",
+    justifyContent: 'center',
     height: deviceHeight - deviceHeight / 1.5,
     width: deviceWidth,
     paddingHorizontal: 25,
@@ -149,7 +150,7 @@ export default StyleSheet.create({
   },
   modalBodyTitle: {
     paddingVertical: 15,
-    textAlign: "center",
+    textAlign: 'center',
   },
   starWrap: {
     paddingBottom: 40,
@@ -157,63 +158,63 @@ export default StyleSheet.create({
   },
   btnWrapModal: {
     marginHorizontal: 60,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   btnNo: {
     width: 100,
     borderRadius: 5,
-    backgroundColor: "#F99B23",
+    backgroundColor: '#F99B23',
     paddingVertical: 7,
     paddingHorizontal: 10,
   },
   textNo: {
-    color: "#fff",
-    textAlign: "center",
+    color: '#fff',
+    textAlign: 'center',
   },
   btnYes: {
     width: 100,
     borderWidth: 1,
-    borderColor: "#F9A233",
+    borderColor: '#F9A233',
     borderRadius: 5,
     paddingVertical: 7,
     paddingHorizontal: 10,
   },
   textYes: {
-    color: "#F9A233",
-    textAlign: "center",
+    color: '#F9A233',
+    textAlign: 'center',
   },
   activeTabStyle: { backgroundColor: BaseColor.hijau_pkbw },
   activeTabTextStyle: {
-    color: "#000",
-    fontFamily: "Montserrat-SemiBold",
+    color: '#000',
+    fontFamily: 'Montserrat-SemiBold',
   },
   tabStyle: {
     borderColor: BaseColor.hijau_pkbw,
-    backgroundColor: "#F6F9FC",
+    backgroundColor: '#F6F9FC',
     paddingVertical: 10,
   },
   tabTextStyle: {
     color: BaseColor.hijau_pkbw,
-    fontFamily: "Montserrat-SemiBold",
+    fontFamily: 'Montserrat-SemiBold',
   },
 
   // ------------ styles for dropdown background
   header: {
-    backgroundColor: "#000",
+    backgroundColor: '#000',
     // marginLeft: 20,
     paddingLeft: 20,
     // top: 40,
-    width: "100%",
+    width: '100%',
     zIndex: 9999,
   },
   container: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     padding: 16,
   },
   dropdown: {
     height: 50,
-    width: Dimensions.get("window").width - 40,
+    width: Dimensions.get('window').width - 40,
     marginVertical: 10,
     borderColor: BaseColor.corn50,
     borderWidth: 0.5,
@@ -227,8 +228,8 @@ export default StyleSheet.create({
     marginRight: 5,
   },
   label: {
-    position: "absolute",
-    backgroundColor: "white",
+    position: 'absolute',
+    backgroundColor: 'white',
     left: 22,
     top: 8,
     zIndex: 999,

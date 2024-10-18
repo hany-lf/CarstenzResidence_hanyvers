@@ -59,6 +59,7 @@ const SignIn = (props) => {
   const project = useSelector((state) => getProject(state));
   const [macAddress, setMacAddress] = useState('');
   const [version, setVersion] = useState('');
+  const [buildVersion, setBuildVersion] = useState('');
 
   const emailInputRef = useRef(null);
   const passwordInputRef = useRef(null);
@@ -77,10 +78,12 @@ const SignIn = (props) => {
       // const version = require('../../package.json');
       // console.log('ceeek', version);
       console.log(VersionInfo.appVersion);
+      console.log(VersionInfo.buildNumber);
       console.log(VersionInfo.buildVersion);
       console.log(VersionInfo.bundleIdentifier);
       const version = VersionInfo.appVersion;
       setVersion(version);
+      setBuildVersion(VersionInfo.buildVersion);
     };
 
     init();
@@ -132,8 +135,11 @@ const SignIn = (props) => {
       props.navigation.navigate('MainStack');
       // navigation.navigate('MainStack');
     }
-    emailInputRef.current?.focus(); // Memanggil focus pada TextInput
   });
+  // Menggunakan useEffect untuk memfokuskan TextInput saat screen terbuka
+  useEffect(() => {
+    emailInputRef.current?.focus(); // Memanggil focus pada TextInput
+  }, []);
 
   useEffect(() => {
     requestUserPermission();
@@ -297,7 +303,7 @@ const SignIn = (props) => {
               color: colors.primary,
             }}
           >
-            Version {version}
+            Version {version} {`(` + buildVersion + `)`}
             {/* {Platform.OS == 'android' ? 'Version 5.2.0.3' : 'Version 5.3'} */}
           </Text>
         </View>

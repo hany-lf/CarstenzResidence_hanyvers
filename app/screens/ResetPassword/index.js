@@ -52,9 +52,9 @@ const ResetPassword = (props) => {
   };
 
   // --- useeffect untuk update email/name
-  useEffect(() => {
-    setEmail(user != null ? user.email : '');
-  }, [email]);
+  // useEffect(() => {
+  //   setEmail(user != null ? user.email : '');
+  // }, [email]);
   // --- useeffect untuk update email/name
   const btnSend = () => {
     const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -100,10 +100,12 @@ const ResetPassword = (props) => {
             if (res.success) {
               setLoading(true);
               const pesan = res.message;
+              setPesan(pesan);
               alertFillBlank(true, pesan);
             } else if (res.success) {
               setLoading(true);
               const pesan = res.message;
+              setPesan(pesan);
               alertFillBlank(true, pesan);
               console.log('res pesan', res.message);
             }
@@ -176,7 +178,7 @@ const ResetPassword = (props) => {
 
   const alertFillBlank = (visible, pesan) => {
     setAlertVisibility(visible);
-
+    setPesan(pesan);
     setLoading(false);
   };
 

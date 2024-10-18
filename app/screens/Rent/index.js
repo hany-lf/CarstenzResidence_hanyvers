@@ -200,8 +200,8 @@ const Rent = (props) => {
                       nett={item.nett}
                       semi_gross={item.semi_gross}
                       agent_name={item.agent_name}
-                      publish_date={moment(item.publish_date).format('H:mm:ss')}
-                      // publish_date={moment(item.date_created).format("H:mm:ss")}
+                      // publish_date={moment(item.publish_date).format('H:mm:ss')}
+                      publish_date={moment(item.date_created).format('H:mm:ss')}
                       price_descs={item.price_descs}
                       onPress={() => goProductDetail(item)}
                       isFavorite={item.isFavorite}
@@ -239,7 +239,7 @@ const Rent = (props) => {
                     nett={item.nett}
                     semi_gross={item.semi_gross}
                     agent_name={item.agent_name}
-                    publish_date={moment(item.publish_date).format('H:mm:ss')}
+                    publish_date={moment(item.date_created).format('H:mm:ss')}
                     price_descs={item.price_descs}
                     onPress={() => goProductDetail(item)}
                     isFavorite={item.isFavorite}

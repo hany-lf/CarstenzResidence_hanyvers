@@ -10,7 +10,7 @@ import {
   Button,
   CardBooking,
   FormCounterSelect,
-} from "@components";
+} from '@components';
 import {
   StyleSheet,
   Dimensions,
@@ -22,46 +22,46 @@ import {
   Pressable,
   TouchableOpacity,
   ActivityIndicator,
-} from "react-native";
-import { useSelector, useDispatch } from "react-redux";
-import { BaseStyle, useTheme, BaseColor } from "@config";
-import { useTranslation } from "react-i18next";
-import { useNavigation } from "@react-navigation/native";
-import { Picker } from "@react-native-picker/picker";
-import getUser from "../../selectors/UserSelectors";
-import getProject from "../../selectors/ProjectSelector";
+} from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
+import { BaseStyle, useTheme, BaseColor } from '@config';
+import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
+import { Picker } from '@react-native-picker/picker';
+import getUser from '../../selectors/UserSelectors';
+import getProject from '../../selectors/ProjectSelector';
 import React, {
   Fragment,
   useEffect,
   useRef,
   useState,
   useCallback,
-} from "react";
-const { height: deviceHeight, width: deviceWidth } = Dimensions.get("window");
-import moment from "moment";
-import Style from "./styles";
-import { API_URL_LOKAL } from "@env";
-import axios from "axios";
+} from 'react';
+const { height: deviceHeight, width: deviceWidth } = Dimensions.get('window');
+import moment from 'moment';
+import Style from './styles';
+import { API_URL_LOKAL } from '@env';
+import axios from 'axios';
 
 const MeterInfoX = (params) => {
   const [dataMember, setDataMember] = useState(params.params);
   const { t } = useTranslation();
   const { colors } = useTheme();
   const navigation = useNavigation();
-  const [projectDesc, setProjectDesc] = useState("");
-  const toMonth = moment(new Date()).format("MM");
-  console.log('tomount', toMonth)
+  const [projectDesc, setProjectDesc] = useState('');
+  const toMonth = moment(new Date()).format('MM');
+  console.log('tomount', toMonth);
   const [chooseMonths, setChooseMonths] = useState(toMonth);
-  const toYears = moment(new Date()).format("YYYY");
+  const toYears = moment(new Date()).format('YYYY');
   const [getYears, setGetYears] = useState(toYears);
 
   // const projectSelector = useSelector((state) => getProject(state));
   const user = useSelector((state) => getUser(state));
-  const [email, setEmail] = useState(user != null ? user.user : "");
+  const [email, setEmail] = useState(user != null ? user.user : '');
   // const [dataProject, setDataProject] = useState([]);
   const [dataMeter, setDataMeter] = useState([]);
-  const [message, setMessage] = useState("");
-  const [errorMsg, setError] = useState("");
+  const [message, setMessage] = useState('');
+  const [errorMsg, setError] = useState('');
   const [spinner, setSpinner] = useState(false);
 
   const [showChooseProject, setShowChooseProject] = useState(false);
@@ -69,51 +69,51 @@ const MeterInfoX = (params) => {
   const [valueProject, setValueProject] = useState([]);
   const [valueProjectSelected, setValueProjectSelected] = useState(null);
   const [projectData, setProjectData] = useState([]);
-  const [entity_cd, setEntity] = useState("");
-  const [project_no, setProjectNo] = useState("");
+  const [entity_cd, setEntity] = useState('');
+  const [project_no, setProjectNo] = useState('');
   const project = useSelector((state) => getProject(state));
   const [loading, setLoading] = useState(true);
 
-  console.log("params >", dataMember);
-  console.log("email >", email);
-  console.log("user >", user);
+  console.log('params >', dataMember);
+  console.log('email >', email);
+  console.log('user >', user);
   // console.log('projectSelector >', projectSelector);
 
-  console.log("getMeterLoad", dataMeter);
+  console.log('getMeterLoad', dataMeter);
 
-  console.log("chooseMonths", chooseMonths);
+  console.log('chooseMonths', chooseMonths);
 
   // const toMonth = moment(new Date()).format("MM");
   // const toYears = moment(new Date()).format("YYYY");
-  const toMonthName = moment(new Date()) .format("MMMM");
+  const toMonthName = moment(new Date()).format('MMMM');
 
   const customStyleIndex = 0;
 
   const meterType = (type) => {
-    if (type == "E") {
-      return "KWH";
+    if (type == 'E') {
+      return 'KWH';
     } else {
-      return "M3";
+      return 'M3';
     }
   };
   const defaultMonths = [
-    { value: "01", descs: "January" },
-    { value: "02", descs: "February" },
-    { value: "03", descs: "March" },
-    { value: "04", descs: "April" },
-    { value: "05", descs: "May" },
-    { value: "06", descs: "June" },
-    { value: "07", descs: "July" },
-    { value: "08", descs: "August" },
-    { value: "09", descs: "September" },
-    { value: "10", descs: "October" },
-    { value: "11", descs: "November" },
-    { value: "12", descs: "December" },
+    { value: '01', descs: 'January' },
+    { value: '02', descs: 'February' },
+    { value: '03', descs: 'March' },
+    { value: '04', descs: 'April' },
+    { value: '05', descs: 'May' },
+    { value: '06', descs: 'June' },
+    { value: '07', descs: 'July' },
+    { value: '08', descs: 'August' },
+    { value: '09', descs: 'September' },
+    { value: '10', descs: 'October' },
+    { value: '11', descs: 'November' },
+    { value: '12', descs: 'December' },
   ];
 
-  const defaultYears = moment(new Date()).format("YYYY");
+  const defaultYears = moment(new Date()).format('YYYY');
 
-   // --- useeffect untuk project
+  // --- useeffect untuk project
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
@@ -126,7 +126,7 @@ const MeterInfoX = (params) => {
           label: item.descs,
           value: item.project_no,
         }));
-        console.log("data di project", project);
+        console.log('data di project', project);
         setProjectData(project.data);
         setValueProject(projects);
       }
@@ -135,9 +135,9 @@ const MeterInfoX = (params) => {
     }, 3000);
   }, [project]);
 
-    // --- useeffect untuk update email/name
+  // --- useeffect untuk update email/name
   useEffect(() => {
-    setEmail(user != null && user.userData != null ? user.userData.email : "");
+    setEmail(user != null && user.userData != null ? user.userData.email : '');
   }, [email]);
   // --- useeffect untuk update email/name
 
@@ -202,7 +202,7 @@ const MeterInfoX = (params) => {
       console.log('cek getYears', getYears);
       console.log('cek chooseMonths', chooseMonths);
       console.log('cek toMonth', toMonth);
-      alert("Please fill in Years");
+      alert('Please fill in Years');
     } else {
       // console.log('get years ada isinya', getYears)
       //    console.log('ada isinya chooseMonths', chooseMonths);
@@ -215,27 +215,52 @@ const MeterInfoX = (params) => {
       const Monthz = chooseMonths || toMonth;
       const Yearz = getYears;
 
-      console.log("Entitycdz", Entitycdz);
-      console.log("Projectnoz", Projectnoz);
-      console.log("Monthz", Monthz);
-      console.log("getYears", getYears);
-      console.log("toEmail", toEmail);
+      console.log('Entitycdz', Entitycdz);
+      console.log('Projectnoz', Projectnoz);
+      console.log('Monthz', Monthz);
+      console.log('getYears', getYears);
+      console.log('toEmail', toEmail);
 
+      console.log(
+        'url api meter',
+        API_URL_LOKAL +
+          '/modules/meter/data-filter/' +
+          Entitycdz +
+          '/' +
+          Projectnoz +
+          '/' +
+          toEmail +
+          '/' +
+          Monthz +
+          '/' +
+          Yearz,
+      );
       const config = {
-        method: "get",
-        url: API_URL_LOKAL + "/modules/meter/data-filter/" + Entitycdz + "/" + Projectnoz + "/" + toEmail + "/" + Monthz + "/" + Yearz,
+        method: 'get',
+        url:
+          API_URL_LOKAL +
+          '/modules/meter/data-filter/' +
+          Entitycdz +
+          '/' +
+          Projectnoz +
+          '/' +
+          toEmail +
+          '/' +
+          Monthz +
+          '/' +
+          Yearz,
         headers: {
-          "content-type": "application/json",
+          'content-type': 'application/json',
           Authorization: `Bearer ${user.Token}`,
         },
       };
 
       axios(config)
         .then((res) => {
-          console.log("cek isi RES", res);
-           let resData = res.data.data;
-            let resPesan = res.data.message;
-            let resError = res.data.success;
+          console.log('cek isi RES', res);
+          let resData = res.data.data;
+          let resPesan = res.data.message;
+          let resError = res.data.success;
           if (res.data.success) {
             // let resData = res.data.data;
             // let resPesan = res.data.message;
@@ -247,8 +272,8 @@ const MeterInfoX = (params) => {
             setSpinner(false);
             // console.log('getMeterLoad', this);
           } else {
-            console.log('res.message', res.data.data)
-             setDataMeter(resData);
+            console.log('res.message', res.data.data);
+            setDataMeter(resData);
             setMessage(resPesan);
             setError(resError);
             // alert(res.message);
@@ -264,7 +289,7 @@ const MeterInfoX = (params) => {
   return (
     <SafeAreaView>
       <Header
-        title={t("Meter Info")}
+        title={t('Meter Info')}
         renderLeft={() => {
           return (
             <Icon
@@ -289,20 +314,20 @@ const MeterInfoX = (params) => {
           paddingTop: 10,
           backgroundColor: colors.backgroundColor, //BaseColor.whiteColor,
           //backgroundColor: BaseColor.whiteColor,
-          height: "100%",
+          height: '100%',
         }}
       >
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "flex-start",
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
           }}
         >
           <Text
             style={[
               Style.subTitle2,
               {
-                color: colors.background == "white" ? "#4E4E4E" : "white",
+                color: colors.background == 'white' ? '#4E4E4E' : 'white',
               },
             ]}
           >
@@ -313,11 +338,11 @@ const MeterInfoX = (params) => {
               styles.Dropdown1,
               {
                 backgroundColor:
-                  colors.background == "white" ? "#f0f0f0" : "#323232",
-                color: colors.background == "white" ? "#777777" : "white",
+                  colors.background == 'white' ? '#f0f0f0' : '#323232',
+                color: colors.background == 'white' ? '#777777' : 'white',
               },
             ]}
-            mode={"dropdown"}
+            mode={'dropdown'}
             selectedValue={projectDesc}
             onValueChange={(val) => setProjectDesc(val)}
           >
@@ -335,15 +360,15 @@ const MeterInfoX = (params) => {
         </View>
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "flex-start",
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
           }}
         >
           <Text
             style={{
               fontSize: 16,
-              fontFamily: "Montserrat-SemiBold",
-              color: colors.background == "white" ? "#4E4E4E" : "white",
+              fontFamily: 'Montserrat-SemiBold',
+              color: colors.background == 'white' ? '#4E4E4E' : 'white',
               marginTop: 15,
             }}
           >
@@ -354,11 +379,11 @@ const MeterInfoX = (params) => {
               styles.Dropdown2,
               {
                 backgroundColor:
-                  colors.background == "white" ? "#f0f0f0" : "#323232",
-                color: colors.background == "white" ? "#777777" : "white",
+                  colors.background == 'white' ? '#f0f0f0' : '#323232',
+                color: colors.background == 'white' ? '#777777' : 'white',
               },
             ]}
-            mode={"dropdown"}
+            mode={'dropdown'}
             selectedValue={chooseMonths}
             onValueChange={(val) => setChooseMonths(val)}
           >
@@ -369,54 +394,59 @@ const MeterInfoX = (params) => {
         </View>
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "flex-start",
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
           }}
         >
           <Text
             style={{
               fontSize: 16,
-              fontFamily: "Montserrat-SemiBold",
-              color: colors.background == "white" ? "#4E4E4E" : "white",
+              fontFamily: 'Montserrat-SemiBold',
+              color: colors.background == 'white' ? '#4E4E4E' : 'white',
               marginTop: 10,
             }}
           >
             Years
           </Text>
-          <View style={{flexDirection: 'column', justifyContent: 'flex-start'}}>
+          <View
+            style={{ flexDirection: 'column', justifyContent: 'flex-start' }}
+          >
             <TextInput
-            style={{
-              height: 55,
-              backgroundColor:
-                colors.background == "white" ? "#f5f5f5" : "#323232",
-              color: colors.background == "white" ? "black" : "white",
-              paddingHorizontal: 10,
-              marginBottom: 10,
-              marginLeft: 20,
-              width: 250,
-              // borderRadius: 10,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-            // placeholder={defaultYears}
-            placeholder="YYYY"
-            placeholderTextColor="#a9a9a9"
-            // defaultValue={this.state.defaultYears}
-            value={getYears}
-            onChangeText={(val) => setGetYears(val)}
-          />
-            {getYears == null ? 
-              <Text style={{color: 'red', fontSize:11, paddingHorizontal: 20}}>
-                If you don't fill in the Year field, it will fill in the current year.
-              </Text> : 
-            null}
+              style={{
+                height: 55,
+                backgroundColor:
+                  colors.background == 'white' ? '#f5f5f5' : '#323232',
+                color: colors.background == 'white' ? 'black' : 'white',
+                paddingHorizontal: 10,
+                marginBottom: 10,
+                marginLeft: 20,
+                width: 250,
+                // borderRadius: 10,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              // placeholder={defaultYears}
+              placeholder="YYYY"
+              placeholderTextColor="#a9a9a9"
+              // defaultValue={this.state.defaultYears}
+              value={getYears}
+              onChangeText={(val) => setGetYears(val)}
+            />
+            {getYears == null ? (
+              <Text
+                style={{ color: 'red', fontSize: 11, paddingHorizontal: 20 }}
+              >
+                If you don't fill in the Year field, it will fill in the current
+                year.
+              </Text>
+            ) : null}
           </View>
         </View>
-        
+
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
+            flexDirection: 'row',
+            justifyContent: 'space-between',
           }}
         >
           <Text style={Style.title}></Text>
@@ -424,12 +454,12 @@ const MeterInfoX = (params) => {
             style={{
               width: 100,
               height: 45,
-              alignSelf: "center",
+              alignSelf: 'center',
               marginTop: 20,
-              backgroundColor: "#58D68D",
-              color: "black",
-              justifyContent: "center",
-              alignItems: "center",
+              backgroundColor: '#58D68D',
+              color: 'black',
+              justifyContent: 'center',
+              alignItems: 'center',
               fontSize: 30,
             }}
             onPress={() => onRetrieve()}
@@ -449,7 +479,7 @@ const MeterInfoX = (params) => {
             {spinner ? (
               <ActivityIndicator size="large" color="#37BEB7" />
             ) : errorMsg == false ? (
-              <Text style={{textAlign: 'center'}}>{message}</Text>
+              <Text style={{ textAlign: 'center' }}>{message}</Text>
             ) : dataMeter != null || dataMeter.length > 0 ? (
               dataMeter.map((data, key) => {
                 return (
@@ -457,15 +487,15 @@ const MeterInfoX = (params) => {
                     <View>
                       <View
                         style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
                         }}
                       >
                         <Text
                           style={{
                             fontSize: 18,
-                            fontWeight: "500",
-                            textAlign: "left",
+                            fontWeight: '500',
+                            textAlign: 'left',
                           }}
                         >
                           {data.lot_no}
@@ -473,9 +503,9 @@ const MeterInfoX = (params) => {
                         <Text
                           style={{
                             fontSize: 12,
-                            fontWeight: "500",
-                            textAlign: "right",
-                            color: "#9B9B9B",
+                            fontWeight: '500',
+                            textAlign: 'right',
+                            color: '#9B9B9B',
                           }}
                         >
                           {data.descs}
@@ -483,16 +513,16 @@ const MeterInfoX = (params) => {
                       </View>
                       <View
                         style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
                         }}
                       >
                         <Text
                           style={{
                             fontSize: 16,
-                            fontWeight: "500",
-                            textAlign: "left",
-                            color: "#F99B23",
+                            fontWeight: '500',
+                            textAlign: 'left',
+                            color: '#F99B23',
                           }}
                         >
                           {data.name}
@@ -501,9 +531,9 @@ const MeterInfoX = (params) => {
                           <Text
                             style={{
                               fontSize: 12,
-                              fontWeight: "500",
-                              textAlign: "right",
-                              color: "#9B9B9B",
+                              fontWeight: '500',
+                              textAlign: 'right',
+                              color: '#9B9B9B',
                             }}
                           >
                             {data.meter_id}
@@ -513,49 +543,49 @@ const MeterInfoX = (params) => {
                       <View
                         style={{
                           borderBottomWidth: 1,
-                          borderBottomColor: "#F3F3F3",
+                          borderBottomColor: '#F3F3F3',
                           marginTop: 5,
                         }}
                       />
                       <View
                         style={{
-                          flexDirection: "row",
-                          alignItems: "center",
+                          flexDirection: 'row',
+                          alignItems: 'center',
                           marginTop: 5,
-                          justifyContent: "space-between",
+                          justifyContent: 'space-between',
                         }}
                       >
                         <View
                           style={{
-                            flexDirection: "row",
-                            alignItems: "center",
+                            flexDirection: 'row',
+                            alignItems: 'center',
                           }}
                         >
                           {/* <Icon name="event" size={13} color="#9B9B9B"/> */}
                           <Text
                             style={{
                               fontSize: 12,
-                              fontWeight: "500",
-                              textAlign: "left",
-                              color: "#9B9B9B",
+                              fontWeight: '500',
+                              textAlign: 'left',
+                              color: '#9B9B9B',
                             }}
                           >
-                            {moment(data.doc_date).format("DD MMM YYYY")}
+                            {moment(data.doc_date).format('DD MMM YYYY')}
                           </Text>
                         </View>
                         <View
                           style={{
-                            flexDirection: "row",
-                            alignItems: "center",
+                            flexDirection: 'row',
+                            alignItems: 'center',
                           }}
                         >
                           {/* <Icon name="attach-money" size={13} color="#F99B23"/> */}
                           <Text
                             style={{
                               fontSize: 12,
-                              fontWeight: "500",
-                              textAlign: "left",
-                              color: "#333",
+                              fontWeight: '500',
+                              textAlign: 'left',
+                              color: '#333',
                             }}
                           >
                             {/* {numFormat(data.trx_amt)} */}
@@ -567,16 +597,16 @@ const MeterInfoX = (params) => {
                       {/* Title */}
                       <View
                         style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          alignItems: "center",
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
                           marginTop: 8,
                         }}
                       >
                         <Text
                           style={{
                             fontSize: 12,
-                            fontWeight: "500",
+                            fontWeight: '500',
                           }}
                         >
                           Current
@@ -584,7 +614,7 @@ const MeterInfoX = (params) => {
                         <Text
                           style={{
                             fontSize: 12,
-                            fontWeight: "500",
+                            fontWeight: '500',
                           }}
                         >
                           Last
@@ -592,7 +622,7 @@ const MeterInfoX = (params) => {
                         <Text
                           style={{
                             fontSize: 12,
-                            fontWeight: "500",
+                            fontWeight: '500',
                           }}
                         >
                           Total x {parseInt(data.multiplier)}
@@ -602,16 +632,16 @@ const MeterInfoX = (params) => {
                       {/* Value */}
                       <View
                         style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          alignItems: "center",
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
                         }}
                       >
                         <Text
                           style={{
                             fontSize: 12,
-                            fontWeight: "500",
-                            textAlign: "left",
+                            fontWeight: '500',
+                            textAlign: 'left',
                           }}
                         >
                           {data.curr_read + meterType(data.meter_type)}
@@ -620,8 +650,8 @@ const MeterInfoX = (params) => {
                         <Text
                           style={{
                             fontSize: 12,
-                            fontWeight: "500",
-                            textAlign: "left",
+                            fontWeight: '500',
+                            textAlign: 'left',
                           }}
                         >
                           {data.last_read + meterType(data.meter_type)}
@@ -630,8 +660,8 @@ const MeterInfoX = (params) => {
                         <Text
                           style={{
                             fontSize: 12,
-                            fontWeight: "500",
-                            textAlign: "left",
+                            fontWeight: '500',
+                            textAlign: 'left',
                           }}
                         >
                           {data.usage + meterType(data.meter_type)}
@@ -642,7 +672,7 @@ const MeterInfoX = (params) => {
                 );
               })
             ) : (
-              alert("Data not found")
+              alert('Data not found')
             )}
           </ScrollView>
         )}
@@ -655,9 +685,9 @@ export default MeterInfoX;
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     shadowOffset: { width: 1, height: 1 },
-    shadowColor: "#fff",
+    shadowColor: '#fff',
     shadowOpacity: 0.5,
     // elevation:5,
     paddingHorizontal: 10,
@@ -666,78 +696,78 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   listview: {
-    marginTop: "1%",
-    height: "100%",
+    marginTop: '1%',
+    height: '100%',
   },
   listitemm: {
     height: 100,
   },
   input: {
     height: 40,
-    backgroundColor: "#f5f5f5",
-    color: "black",
+    backgroundColor: '#f5f5f5',
+    color: 'black',
     paddingHorizontal: 10,
     marginBottom: 10,
     marginLeft: 20,
     width: null,
     borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   inputTime: {
     height: 40,
-    backgroundColor: "#f5f5f5",
-    color: "black",
+    backgroundColor: '#f5f5f5',
+    color: 'black',
     paddingHorizontal: 10,
     marginBottom: 16,
     width: deviceWidth * 0.4,
     borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
-    textAlign: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
   },
   inputUsage: {
     height: 40,
-    color: "black",
+    color: 'black',
     marginBottom: 16,
     // borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
-    textAlign: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
   },
   inputDate: {
     height: 40,
-    backgroundColor: "#f5f5f5",
-    color: "black",
+    backgroundColor: '#f5f5f5',
+    color: 'black',
     paddingHorizontal: 10,
     marginBottom: 16,
     borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
-    textAlign: "left",
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'left',
   },
   btnMin: {
     borderBottomLeftRadius: 10,
     borderTopLeftRadius: 10,
-    backgroundColor: "#f1f1f1",
+    backgroundColor: '#f1f1f1',
     width: deviceWidth * 0.08,
   },
   btnPlus: {
     borderBottomRightRadius: 10,
     borderTopRightRadius: 10,
-    backgroundColor: "#f1f1f1",
+    backgroundColor: '#f1f1f1',
     width: deviceWidth * 0.08,
   },
   textBlack: {
-    color: "#3f3b38",
+    color: '#3f3b38',
     //fontFamily: 'Montserrat-Regular',
   },
   Dropdown1: {
     // fontFamily: Fonts.type.sfuiDisplaySemibold,
     borderBottomWidth: 0,
-    borderColor: "#DDD",
-    backgroundColor: "#f0f0f0",
+    borderColor: '#DDD',
+    backgroundColor: '#f0f0f0',
     paddingHorizontal: 20,
     paddingVertical: 15,
     fontSize: 18,
@@ -745,15 +775,15 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginLeft: 10,
     borderRadius: 5,
-    textAlignVertical: "top",
-    color: "#777777",
+    textAlignVertical: 'top',
+    color: '#777777',
     // paddingLeft: Fonts.moderateScale(10),
   },
   Dropdown2: {
     // fontFamily: Fonts.type.sfuiDisplaySemibold,
     borderBottomWidth: 0,
-    borderColor: "#DDD",
-    backgroundColor: "#f0f0f0",
+    borderColor: '#DDD',
+    backgroundColor: '#f0f0f0',
     paddingHorizontal: 20,
     paddingVertical: 15,
     fontSize: 18,
@@ -761,21 +791,21 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginLeft: 15,
     borderRadius: 5,
-    textAlignVertical: "top",
-    color: "#777777",
+    textAlignVertical: 'top',
+    color: '#777777',
     // paddingLeft: Fonts.moderateScale(10),
   },
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#fff",
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
   },
   showPickerBtn: {
     height: 44,
-    backgroundColor: "#973BC2",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#973BC2',
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingHorizontal: 16,
     borderRadius: 6,
   },

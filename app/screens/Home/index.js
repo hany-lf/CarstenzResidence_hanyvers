@@ -120,9 +120,7 @@ const Home = (props) => {
   //   useSelector((state) => state)
   // );
   // const email = user.user;
-  const [email, setEmail] = useState(
-    user != null && user.userData != null ? user.userData.email : '',
-  );
+  const [email, setEmail] = useState('');
   // console.log('usr di home', user);
   // console.log('pict user', user.userData.pict)
   // const [fotoprofil, setFotoProfil] = useState(
@@ -184,17 +182,10 @@ const Home = (props) => {
   const [refreshing, setRefreshing] = useState(false);
   const [headerImage, setHeaderImage] = useState([]);
 
-  // useFocusEffect(
-  //   // console.log('user di home focus', user),
-  //   // console.log('userData di home focus', user.userData),
-  //   React.useCallback(() => {
-  //     // if (user && user.userData) {
-  //         console.log('user di home focus', user);
-  //         console.log('userData di home focus', user.userData);
-  //       dispatch(get_menu_actions({ token_firebase: user.Token, group_cd: user.userData.Group_Cd }));
-  //     // }
-  //   }, [user]),
-  // );
+  const [loadMenu, setLoadMenu] = useState(true);
+
+  const dispatch = useDispatch();
+
   // --- useeffect untuk project
   useEffect(() => {
     if (project && project.data && project.data.length > 0) {
@@ -219,95 +210,109 @@ const Home = (props) => {
   }, [entity_cd, project_no]);
   // --- useeffect untuk project
 
-  // --- useeffect untuk update email/name
+  // --- useEffect untuk update email/name
   useEffect(() => {
-    setEmail(user != null && user.userData != null ? user.userData.email : '');
-  }, [email]);
-  // --- useeffect untuk update email/name
-
-  // --- useeffect untuk update email/name
-  useEffect(() => {
-    setName(user != null && user.userData != null ? user.userData.name : '');
-  }, [name]);
-  // --- useeffect untuk update email/name
+    if (user != null && user.userData != null) {
+      setName(user.userData.name); // Update name hanya ketika user data berubah
+      setEmail(user.userData.email);
+    }
+  }, [user]); // Dependensi hanya pada user
 
   useFocusEffect(
     useCallback(() => {
-      console.log('useFocusEffect triggered');
+      if (user?.userData && user.userData.Group_Cd && user.Token) {
+        console.log('useFocusEffect triggered');
+        console.log('user di home focus', user);
+        console.log('userData di home focus', user.userData);
 
+        // if (user && user.userData) {
+        //   console.log('User data:', user.userData);
+        dispatch(
+          get_menu_actions({
+            token_firebase: user.Token,
+            group_cd: user.userData.Group_Cd,
+          }),
+        );
+        // }
+
+        dispatch(
+          apiCall(API_URL_LOKAL + `/setting/notification`, {
+            token_firebase: user.Token,
+            entity_cd: entity_cd,
+            project_no: project_no,
+            email: email,
+          }),
+        );
+
+        // dispatch(
+        //   notifikasi_nbadge({
+        //     email: email,
+        //     entity_cd: entity_cd,
+        //     project_no: project_no,
+        //   }),
+        // );
+
+        console.log('Profile screen is focused');
+        if (
+          user != null &&
+          user.userData != null &&
+          user.userData.pict != null
+        ) {
+          setFotoProfil(user.userData.pict);
+        } else {
+          setFotoProfil('https://dev.ifca.co.id/no-image.png');
+        }
+
+        setLoadMenu(true);
+      } else {
+        console.warn('Data user belum lengkap, menunggu user data');
+        setLoadMenu(false);
+        // Mungkin tampilkan loader atau coba panggil ulang API jika perlu
+      }
+    }, [user, dispatch]),
+  );
+  // --- useeffect untuk update image pict
+
+  // --- onrefresh ini berfungsi jika ketika ditarik reload, maka update dispatch(ambil data terbaru) menu dari database
+  const onRefresh = useCallback(() => {
+    if (user?.userData && user.userData.Group_Cd && user.Token) {
+      setRefreshing(true);
+      console.log('ini refresh on di home', user.userData);
       // if (user && user.userData) {
-      //   console.log('User data:', user.userData);
+      //     console.log('user di home refresh', user),
+      //     console.log('userData di home refresh', user.userData),
       dispatch(
         get_menu_actions({
           token_firebase: user.Token,
           group_cd: user.userData.Group_Cd,
         }),
       );
-      // }
-
-      dispatch(
-        apiCall(API_URL_LOKAL + `/setting/notification`, {
-          token_firebase: user.Token,
-          entity_cd: entity_cd,
-          project_no: project_no,
-          email: email,
-        }),
-      );
-
       // dispatch(
       //   notifikasi_nbadge({
+      //     token_firebase: user.Token,
       //     email: email,
       //     entity_cd: entity_cd,
       //     project_no: project_no,
       //   }),
       // );
-
-      console.log('Profile screen is focused');
-      if (user != null && user.userData != null && user.userData.pict != null) {
-        setFotoProfil(user.userData.pict);
-      } else {
-        setFotoProfil('https://dev.ifca.co.id/no-image.png');
-      }
-
-      return () => {
-        console.log('Screen unfocused or cleanup');
-      };
-    }, [user, dispatch]),
-  );
-  // --- useeffect untuk update image pict
-
-  const dispatch = useDispatch();
-  // --- onrefresh ini berfungsi jika ketika ditarik reload, maka update dispatch(ambil data terbaru) menu dari database
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    console.log('ini refresh on di home', user.userData);
-    // if (user && user.userData) {
-    //     console.log('user di home refresh', user),
-    //     console.log('userData di home refresh', user.userData),
-    dispatch(
-      get_menu_actions({
-        token_firebase: user.Token,
-        group_cd: user.userData.Group_Cd,
-      }),
-    );
-    // dispatch(
-    //   notifikasi_nbadge({
-    //     token_firebase: user.Token,
-    //     email: email,
-    //     entity_cd: entity_cd,
-    //     project_no: project_no,
-    //   }),
-    // );
-    dispatch(
-      data_project({ emails: user.userData.email, token_firebase: user.Token }),
-    );
-    getHeaderImage();
-    //    .then(() => setRefreshing(false));  // Ensure refreshing ends after data is fetched
-    // }
-    // dataPromoClubFacilities();
-    wait(5000).then(() => {
-      setRefreshing(false);
-    });
+      dispatch(
+        data_project({
+          emails: user.userData.email,
+          token_firebase: user.Token,
+        }),
+      );
+      getHeaderImage();
+      //    .then(() => setRefreshing(false));  // Ensure refreshing ends after data is fetched
+      // }
+      // dataPromoClubFacilities();
+      wait(5000).then(() => {
+        setRefreshing(false);
+      });
+    } else {
+      console.warn('Data user belum lengkap, menunggu user data');
+      setLoadMenu(false);
+      // Mungkin tampilkan loader atau coba panggil ulang API jika perlu
+    }
   }, [user, dispatch]);
 
   useEffect(() => {
@@ -1512,7 +1517,10 @@ const Home = (props) => {
 
           {/* --- menu dinamis kotak-kotak  */}
           <View style={styles.paddingContent}>
-            {user == null || user == '' || user.userData == null ? (
+            {user == null ||
+            user == '' ||
+            user.userData == null ||
+            loadMenu == false ? (
               <Text>user not available</Text>
             ) : (
               // dataMenus.map((item, index)=>(

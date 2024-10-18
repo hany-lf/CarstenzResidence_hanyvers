@@ -49,6 +49,7 @@ const ProfileEdit = (props) => {
 
   useEffect(() => {
     if (user != null && user.userData != null && user.userData.pict != null) {
+      console.log('useeffect user.userData.pict', user.userData.pict);
       setImagesCek(user.userData.pict);
     } else {
       setImagesCek(API_URL_LOKAL + '/public/storage/photo_resident/user.png');
@@ -56,23 +57,29 @@ const ProfileEdit = (props) => {
     console.log('User state updated: profil edit', user);
   }, [user]);
 
-  // --- useeffect untuk update email/name
+  // --- useEffect untuk update email/name
   useEffect(() => {
-    setName(user != null && user.userData != null ? user.userData.name : '');
-  }, [name]);
+    if (user != null && user.userData != null) {
+      setName(user.userData.name); // Update name hanya ketika user data berubah
+      setPhone(user.userData.Handphone);
+      setEmail(user.userData.email);
+    }
+  }, [user]); // Dependensi hanya pada user
   // --- useeffect untuk update email/name
-  // --- useeffect untuk update email/name
-  useEffect(() => {
-    setPhone(
-      user != null && user.userData != null ? user.userData.Handphone : '',
-    );
-  }, [phone]);
-  // --- useeffect untuk update email/name
+  // useEffect(() => {
+  //   setPhone(
+  //     user != null && user.userData != null && user.userData.Handphone != null
+  //       ? user.userData.Handphone
+  //       : phone,
+  //   );
+  // }, [phone]);
+  // // --- useeffect untuk update email/name
 
   useFocusEffect(
     React.useCallback(() => {
       console.log('Profile screen is focused');
       if (user != null && user.userData != null && user.userData.pict != null) {
+        console.log('usefocus user.userData.pict', user.userData.pict);
         setImagesCek(user.userData.pict);
       } else {
         setImagesCek(API_URL_LOKAL + '/public/storage/photo_resident/user.png');
@@ -81,9 +88,9 @@ const ProfileEdit = (props) => {
   );
 
   // --- useeffect untuk update email/name
-  useEffect(() => {
-    setEmail(user != null && user.userData != null ? user.userData.email : '');
-  }, [email]);
+  // useEffect(() => {
+  //   setEmail(user != null && user.userData != null ? user.userData.email : '');
+  // }, [email]);
   // --- useeffect untuk update email/name
 
   useEffect(() => {
@@ -350,8 +357,9 @@ const ProfileEdit = (props) => {
             style={BaseStyle.textInput}
             // onChangeText={text => setPhone(text)}
             onChangeText={handphonechanged}
-            autoCorrect={false}
-            placeholder={t('input_address')}
+            // autoCorrect={false}
+            keyboardType="numeric"
+            placeholder={t('input_phone')}
             placeholderTextColor={BaseColor.grayColor}
             value={phone}
             selectionColor={colors.primary}

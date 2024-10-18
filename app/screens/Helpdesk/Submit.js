@@ -392,7 +392,7 @@ export default function SubmitHelpdesk({ route, props }) {
         })
         .catch((err) => {
           showModalError(true);
-          // setError(err);
+          setError(err);
           console.log('errz', err);
         });
     }
@@ -444,7 +444,7 @@ export default function SubmitHelpdesk({ route, props }) {
       edges={['right', 'top', 'left']}
     >
       <Header
-        title={t('category_helpss')} //belum dibuat lang
+        title={t('category_help')} //belum dibuat lang
         renderLeft={() => {
           return (
             <Icon

@@ -125,6 +125,7 @@ class UserController {
           gender: data.genders,
         },
       });
+      console.log('controler result save profile', result);
       return result;
     } catch (error) {
       return Promise.reject(error);
