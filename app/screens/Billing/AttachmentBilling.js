@@ -4,11 +4,11 @@ import {
   ListThumbCircleNotif,
   SafeAreaView,
   Text,
-} from "@components";
-import { BaseColor, BaseStyle, useTheme } from "@config";
+} from '@components';
+import { BaseColor, BaseStyle, useTheme } from '@config';
 // Load sample data
 // import {NotificationData} from '@data';
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   FlatList,
   RefreshControl,
@@ -16,25 +16,25 @@ import {
   View,
   StyleSheet,
   Dimensions,
-} from "react-native";
-import { useTranslation } from "react-i18next";
-import { Card } from "react-native-paper";
-import { useSelector } from "react-redux";
-import axios from "axios";
-import getUser from "../../selectors/UserSelectors";
-import { API_URL_LOKAL } from "@env";
+} from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { Card } from 'react-native-paper';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
+import getUser from '../../selectors/UserSelectors';
+import { API_URL_LOKAL } from '@env';
 
 const fileDummy = [
   {
-    rowId: "1",
-    descs: "descs meter",
-    url_link: "",
+    rowId: '1',
+    descs: 'descs meter',
+    url_link: '',
   },
 ];
 
 const AttachmentBilling = (props) => {
   const { navigation, route } = props;
-  console.log("route params", route);
+  console.log('route params', route);
   //   const url_attachment = route.params;
   const { t } = useTranslation();
   const { colors } = useTheme();
@@ -52,38 +52,46 @@ const AttachmentBilling = (props) => {
     const project_no = route.params.project_no;
     const debtor_acct = route.params.debtor_acct;
     const doc_no = route.params.doc_no;
+    const fin_month = route.params.fin_month;
+    const fin_year = route.params.fin_year;
 
-    console.log("token user di gettacchament billing", user.Token);
+    console.log('token user di gettacchament billing', user.Token);
+    // console.log(
+    //   "params api attach",
+    //   API_URL_LOKAL +
+    //     `/modules/billing/attach/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`
+    // );
     console.log(
-      "params api attach",
+      'params api attach',
       API_URL_LOKAL +
-        `/modules/billing/attach/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`
+        `/modules/billing/attach/${entity_cd}/${project_no}/${debtor_acct}/${fin_month}/${fin_year}`,
     );
 
     try {
       const config = {
-        method: "get",
+        method: 'get',
         url:
           API_URL_LOKAL +
-          `/modules/billing/attach/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`,
+          // `/modules/billing/attach/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`,
+          `/modules/billing/attach/${entity_cd}/${project_no}/${debtor_acct}/${fin_month}/${fin_year}`,
         headers: {
-          "content-type": "application/json",
+          'content-type': 'application/json',
           Authorization: `Bearer ${user.Token}`,
         },
       };
       const res = await axios(config);
-      console.log("res atatchment billing", res.data.data);
+      console.log('res atatchment billing', res.data.data);
       setAttachment(res.data.data);
     } catch (error) {
-      console.log("error attach get", error);
+      console.log('error attach get', error);
       setErrors(error);
       // alert(hasError.toString());
     }
   };
 
   const openAttach = (item) => {
-    console.log("itm", item);
-    navigation.navigate("PDFAttach", item);
+    console.log('itm', item);
+    navigation.navigate('PDFAttach', item);
   };
 
   const renderItem = ({ item, index }) => {
@@ -94,8 +102,8 @@ const AttachmentBilling = (props) => {
             openAttach(item);
           }}
         >
-          <View style={{ flexDirection: "row", flex: 1 }}>
-            <View style={{ justifyContent: "space-between", flex: 1 }}>
+          <View style={{ flexDirection: 'row', flex: 1 }}>
+            <View style={{ justifyContent: 'space-between', flex: 1 }}>
               <Text style={{ fontSize: 18 }} bold>
                 {item.remark}
               </Text>
@@ -120,10 +128,10 @@ const AttachmentBilling = (props) => {
   return (
     <SafeAreaView
       style={BaseStyle.safeAreaView}
-      edges={["right", "top", "left"]}
+      edges={['right', 'top', 'left']}
     >
       <Header
-        title={t("Attachment Invoice")}
+        title={t('Attachment Invoice')}
         renderLeft={() => {
           return (
             <Icon
@@ -144,15 +152,15 @@ const AttachmentBilling = (props) => {
           style={{
             flex: 1,
 
-            justifyContent: "center",
+            justifyContent: 'center',
           }}
         >
           <Text
             style={{
-              justifyContent: "center",
-              alignContent: "center",
-              alignItems: "center",
-              alignSelf: "center",
+              justifyContent: 'center',
+              alignContent: 'center',
+              alignItems: 'center',
+              alignSelf: 'center',
               fontSize: 16,
               marginTop: 10,
             }}
@@ -193,7 +201,7 @@ export default AttachmentBilling;
 const stylesCurrent = StyleSheet.create({
   pdf: {
     flex: 1,
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
   },
 });

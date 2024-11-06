@@ -249,7 +249,7 @@ const Notification = (props) => {
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    console.log('ini refresh on di home', users.userData);
+    // console.log('ini refresh on di home', users.userData);
     // if (user && user.userData) {
     //     console.log('user di home refresh', user),
     //     console.log('userData di home refresh', user.userData),
@@ -264,9 +264,9 @@ const Notification = (props) => {
         token: users.Token,
       }),
     );
-    wait(5000).then(() => {
+    setTimeout(() => {
       setRefreshing(false);
-    });
+    }, 5000);
   }, [users, dispatch]);
 
   //untuk refresh screen, load data notif dan badge notif

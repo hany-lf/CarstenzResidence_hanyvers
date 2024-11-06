@@ -46,6 +46,8 @@ const TransactionExpand = ({
   project_no = '',
   email = '',
   tab_id = '',
+  fin_month = '',
+  fin_year = '',
   ListTransactionProps = {
     icon: 'exchange-alt',
     name: name,
@@ -61,6 +63,8 @@ const TransactionExpand = ({
     project_no: project_no,
     email: email,
     tab_id: tab_id,
+    fin_month: fin_month,
+    fin_year: fin_year,
   },
   isExpandInit = false,
 }) => {
@@ -175,6 +179,8 @@ const TransactionExpand = ({
       project_no: project_no,
       debtor_acct: debtor_acct,
       doc_no: doc_no,
+      fin_month: fin_month,
+      fin_year: fin_year,
     };
     console.log('params for click attach', params);
     navigation.navigate('AttachmentBilling', params);

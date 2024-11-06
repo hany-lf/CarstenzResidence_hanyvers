@@ -114,7 +114,7 @@ const Home = (props) => {
   const notif = useSelector((state) => getNotifRed(state));
   const project = useSelector((state) => getProject(state));
   const dataMenus = useSelector((state) => getMenu(state));
-  // console.log('project di home', project);
+  console.log('dataMenus', dataMenus);
   // console.log(
   //   "99 state",
   //   useSelector((state) => state)
@@ -263,10 +263,10 @@ const Home = (props) => {
           setFotoProfil('https://dev.ifca.co.id/no-image.png');
         }
 
-        setLoadMenu(true);
+        // setLoadMenu(true);
       } else {
         console.warn('Data user belum lengkap, menunggu user data');
-        setLoadMenu(false);
+        // setLoadMenu(false);
         // Mungkin tampilkan loader atau coba panggil ulang API jika perlu
       }
     }, [user, dispatch]),
@@ -310,7 +310,7 @@ const Home = (props) => {
       });
     } else {
       console.warn('Data user belum lengkap, menunggu user data');
-      setLoadMenu(false);
+      // setLoadMenu(false);
       // Mungkin tampilkan loader atau coba panggil ulang API jika perlu
     }
   }, [user, dispatch]);
@@ -826,6 +826,8 @@ const Home = (props) => {
   const total_outstanding = Math.floor(invoice) + Math.floor(invoiceNotDue);
   // console.log('total_outstanding', total_outstanding);
 
+  useEffect(() => {}, [dataMenus]);
+
   useEffect(() => {
     // console.log('galery', galery);
 
@@ -848,7 +850,7 @@ const Home = (props) => {
       setFotoProfil('https://dev.ifca.co.id/no-image.png');
     }
     // console.log('User state updated: home', user);
-  }, [user, dataMenus]);
+  }, [user]);
 
   const goPostDetail = (item) => () => {
     navigation.navigate('PostDetail', { item: item });
@@ -1517,16 +1519,15 @@ const Home = (props) => {
 
           {/* --- menu dinamis kotak-kotak  */}
           <View style={styles.paddingContent}>
-            {user == null ||
-            user == '' ||
-            user.userData == null ||
-            loadMenu == false ? (
+            {user == null || user == '' || user.userData == null ? (
               <Text>user not available</Text>
-            ) : (
-              // dataMenus.map((item, index)=>(
-              //   <Text key={index}>{item.Title}</Text>
-              // ))
+            ) : // dataMenus.map((item, index)=>(
+            //   <Text key={index}>{item.Title}</Text>
+            // ))
+            dataMenus.length > 0 ? (
               <Categories style={{ marginTop: 10 }} dataMenus={dataMenus} />
+            ) : (
+              <ActivityIndicator />
             )}
           </View>
           {/* --- menu dinamis  */}

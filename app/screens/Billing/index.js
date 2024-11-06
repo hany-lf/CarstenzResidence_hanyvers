@@ -314,6 +314,8 @@ const Billing = ({
                     entity_cd={entity_cd}
                     project_no={project_no}
                     email={email}
+                    fin_month={item.fin_month}
+                    fin_year={item.fin_year}
                     tab_id={1}
                   />
                 ))
@@ -377,6 +379,8 @@ const Billing = ({
                   entity_cd={entity_cd}
                   project_no={project_no}
                   email={email}
+                  // fin_month={item.fin_month}
+                  // fin_year={item.fin_year}
                   tab_id={2}
                 />
               ))

@@ -1,28 +1,30 @@
-import Text from "@components/Text";
-import Icon from "@components/Icon";
-import { useTheme, BaseColor } from "@config";
-import PropTypes from "prop-types";
-import React from "react";
-import { TouchableOpacity, View } from "react-native";
-import styles from "./styles";
-import numFormat from "../../numFormat";
+import Text from '@components/Text';
+import Icon from '@components/Icon';
+import { useTheme, BaseColor } from '@config';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { TouchableOpacity, View } from 'react-native';
+import styles from './styles';
+import numFormat from '../../numFormat';
 
 const ListTransaction = ({
   style = {},
-  icon = "",
-  name = "",
-  doc_no = "",
-  descs = "",
-  mbal_amt = "",
-  trx_type = "",
-  due_date = "",
-  doc_date = "",
-  tower = "",
-  date = "",
-  status = "",
-  price = "",
-  lot_no = "",
-  debtor_acct = "",
+  icon = '',
+  name = '',
+  doc_no = '',
+  descs = '',
+  mbal_amt = '',
+  trx_type = '',
+  due_date = '',
+  doc_date = '',
+  tower = '',
+  date = '',
+  status = '',
+  price = '',
+  lot_no = '',
+  debtor_acct = '',
+  fin_month = '',
+  fin_year = '',
   onPress = () => {},
 }) => {
   const { colors } = useTheme();
@@ -39,10 +41,10 @@ const ListTransaction = ({
       </View>
       <View style={{ flex: 1 }}>
         <Text subhead style={styles.text}>
-          {lot_no} - {doc_no}
+          {lot_no} - {fin_month} - {fin_year}
         </Text>
         <Text footnote light style={[styles.text, { marginTop: 5 }]}>
-          {due_date}
+          {/* {due_date} */}
         </Text>
         <Text
           bold
