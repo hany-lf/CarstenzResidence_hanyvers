@@ -26,6 +26,7 @@ import {
   Typography,
   FontWeight,
 } from '@config';
+import Fonts from '../../config/Fonts';
 import {
   HomeChannelData,
   HomeListData,
@@ -89,6 +90,9 @@ import { color } from 'react-native-reanimated';
 import { useFocusEffect } from '@react-navigation/native';
 
 import { fontPixel, pixelSizeVertical } from './normalize';
+// import { MenuBar } from '../../components/Svg';
+import AlertSvg from '../../components/Svg/home/eye.svg'; // Mengimpor SVG sebagai komponen
+import { Alert2 } from '../../components/Svg';
 
 import { API_URL_LOKAL } from '@env';
 const wait = (timeout) => {
@@ -96,7 +100,8 @@ const wait = (timeout) => {
 };
 
 const Home = (props) => {
-  console.log('hah ini api url dari env??', API_URL_LOKAL);
+  // console.log('hah ini api url dari env??', API_URL_LOKAL);
+
   const { navigation, route } = props;
   const { t } = useTranslation();
   const { colors } = useTheme();
@@ -109,22 +114,23 @@ const Home = (props) => {
   const notif = useSelector((state) => getNotifRed(state));
   const project = useSelector((state) => getProject(state));
   const dataMenus = useSelector((state) => getMenu(state));
-  // console.log("project di home", project);
+  console.log('project dari useselector', project);
+  // console.log('dataMenus', dataMenus);
   // console.log(
   //   "99 state",
   //   useSelector((state) => state)
   // );
   // const email = user.user;
-  const [email, setEmail] = useState(
-    user != null && user.userData != null ? user.userData.email : '',
-  );
-  console.log('usr di home', user);
+  const [email, setEmail] = useState('');
+  // console.log('usr di home', user);
   // console.log('pict user', user.userData.pict)
-  const [fotoprofil, setFotoProfil] = useState(
-    user != null && user.userData != null
-      ? { uri: user.userData.pict }
-      : { uri: `https://dev.ifca.co.id/no-image.png` },
-  );
+  // const [fotoprofil, setFotoProfil] = useState(
+  //   user != null && user.userData != null
+  //     ? { uri: user.userData.pict }
+  //     : { uri: `https://dev.ifca.co.id/no-image.png` },
+  // );
+  const [fotoprofil, setFotoProfil] = useState('');
+  // console.log('fotoprofil cek home', fotoprofil);
   const [name, setName] = useState('');
   const [heightHeader, setHeightHeader] = useState(Utils.heightHeader());
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -143,14 +149,14 @@ const Home = (props) => {
   // const [entity_cd, setEntity] = useState(project.Data[0].entity_cd);
   // const [project_no, setProjectNo] = useState(project.Data[0].project_no);
   const [lotno, setLotno] = useState([]);
-  console.log('lotno array 0', lotno.lot_no);
-  console.log('fotoprofil >', fotoprofil);
+  // console.log('lotno array 0', lotno.lot_no);
+  // console.log('fotoprofil >', fotoprofil);
   const repl =
     user != null && user.userData != null
       ? fotoprofil.uri
       : `https://dev.ifca.co.id/no-image.png`;
   // console.log("repll", repl);
-  const [text_lotno, setTextLotno] = useState('');
+  const [text_lotno, setTextLotno] = useState();
   const [default_text_lotno, setDefaultLotno] = useState(true);
   const [keyword, setKeyword] = useState('');
 
@@ -175,83 +181,156 @@ const Home = (props) => {
   const [urlImageGreetings, setUrlGreetingsImage] = useState('');
 
   const [refreshing, setRefreshing] = useState(false);
+  const [headerImage, setHeaderImage] = useState([]);
 
-  // useFocusEffect(
-  //   // console.log('user di home focus', user),
-  //   // console.log('userData di home focus', user.userData),
-  //   React.useCallback(() => {
-  //     // if (user && user.userData) {
-  //         console.log('user di home focus', user);
-  //         console.log('userData di home focus', user.userData);
-  //       dispatch(get_menu_actions({ token_firebase: user.Token, group_cd: user.userData.Group_Cd }));
-  //     // }
-  //   }, [user]),
-  // );
+  const [loadMenu, setLoadMenu] = useState(true);
+
+  const dispatch = useDispatch();
+
   // --- useeffect untuk project
   useEffect(() => {
+    console.log('project useeffect', project);
+
     if (project && project.data && project.data.length > 0) {
-      // console.log('entity useeffect di home', project.data[0].entity_cd);
+      console.log('project di home', project);
+      console.log('entity useeffect di home', project.data[0].entity_cd);
       setEntity(project.data[0].entity_cd);
       setProjectNo(project.data[0].project_no);
+      // getLotNo();
+      // // notifUser();
+      // dataNewsAnnounce();
+      // dataPromoClubFacilities();
     }
   }, [project]);
 
   useEffect(() => {
-    if (entity_cd && project_no) {
+    console.log('entity_cd useeffect', entity_cd);
+    console.log('project_no useeffect', project_no);
+    if (entity_cd != null && project_no != null) {
       getLotNo();
-      notifUser();
+      // notifUser();
+      dataNewsAnnounce();
+      dataPromoClubFacilities();
     }
   }, [entity_cd, project_no]);
   // --- useeffect untuk project
 
-  // --- useeffect untuk update email/name
+  // --- useEffect untuk update email/name
   useEffect(() => {
-    setEmail(user != null && user.userData != null ? user.userData.email : '');
-  }, [email]);
-  // --- useeffect untuk update email/name
-
-  // --- useeffect untuk update email/name
-  useEffect(() => {
-    setName(user != null && user.userData != null ? user.userData.name : '');
-  }, [name]);
-  // --- useeffect untuk update email/name
+    if (user != null && user.userData != null) {
+      setName(user.userData.name); // Update name hanya ketika user data berubah
+      setEmail(user.userData.email);
+      dispatch(
+        data_project({
+          email: user.userData.email,
+          token_firebase: user.Token,
+        }),
+      );
+      dispatch(
+        get_menu_actions({
+          token_firebase: user.Token,
+          group_cd: user.userData.Group_Cd,
+        }),
+      );
+    }
+  }, [dispatch, user]); // Dependensi hanya pada user
 
   useFocusEffect(
     useCallback(() => {
-      console.log('useFocusEffect triggered');
+      if (user?.userData && user.userData.Group_Cd && user.Token) {
+        console.log('useFocusEffect triggered');
+        console.log('user di home focus', user);
+        console.log('userData di home focus', user.userData);
 
-      if (user && user.userData) {
-        console.log('User data:', user.userData);
+        // if (user && user.userData) {
+        //   console.log('User data:', user.userData);
         dispatch(
           get_menu_actions({
             token_firebase: user.Token,
             group_cd: user.userData.Group_Cd,
           }),
         );
-      }
+        // }
 
-      return () => {
-        console.log('Screen unfocused or cleanup');
-      };
+        dispatch(
+          apiCall(API_URL_LOKAL + `/setting/notification`, {
+            token_firebase: user.Token,
+            entity_cd: entity_cd,
+            project_no: project_no,
+            email: email,
+          }),
+        );
+
+        // dispatch(
+        //   notifikasi_nbadge({
+        //     email: email,
+        //     entity_cd: entity_cd,
+        //     project_no: project_no,
+        //   }),
+        // );
+
+        console.log('Profile screen is focused');
+        if (
+          user != null &&
+          user.userData != null &&
+          user.userData.pict != null
+        ) {
+          setFotoProfil(user.userData.pict);
+        } else {
+          setFotoProfil('https://dev.ifca.co.id/no-image.png');
+        }
+
+        // setLoadMenu(true);
+      } else {
+        console.warn('Data user belum lengkap, menunggu user data');
+        // setLoadMenu(false);
+        // Mungkin tampilkan loader atau coba panggil ulang API jika perlu
+      }
     }, [user, dispatch]),
   );
+  // --- useeffect untuk update image pict
 
-  const dispatch = useDispatch();
   // --- onrefresh ini berfungsi jika ketika ditarik reload, maka update dispatch(ambil data terbaru) menu dari database
   const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    // console
-    // if (user && user.userData) {
-    console.log('user di home refresh', user),
-      console.log('userData di home refresh', user.userData),
+    if (user?.userData && user.userData.Group_Cd && user.Token) {
+      setRefreshing(true);
+      console.log('ini refresh on di home', user.userData);
+      // if (user && user.userData) {
+      //     console.log('user di home refresh', user),
+      //     console.log('userData di home refresh', user.userData),
       dispatch(
         get_menu_actions({
           token_firebase: user.Token,
           group_cd: user.userData.Group_Cd,
         }),
-      ).then(() => setRefreshing(false)); // Ensure refreshing ends after data is fetched
-    // }
-  }, [user]);
+      );
+      // dispatch(
+      //   notifikasi_nbadge({
+      //     token_firebase: user.Token,
+      //     email: email,
+      //     entity_cd: entity_cd,
+      //     project_no: project_no,
+      //   }),
+      // );
+      dispatch(
+        data_project({
+          emails: user.userData.email,
+          token_firebase: user.Token,
+        }),
+      );
+      getHeaderImage();
+      //    .then(() => setRefreshing(false));  // Ensure refreshing ends after data is fetched
+      // }
+      // dataPromoClubFacilities();
+      wait(5000).then(() => {
+        setRefreshing(false);
+      });
+    } else {
+      console.warn('Data user belum lengkap, menunggu user data');
+      // setLoadMenu(false);
+      // Mungkin tampilkan loader atau coba panggil ulang API jika perlu
+    }
+  }, [user, dispatch]);
 
   useEffect(() => {
     messaging().onNotificationOpenedApp((remoteMessage) => {
@@ -277,16 +356,30 @@ const Home = (props) => {
       });
   }, []);
 
-  //untuk load badge notif
+  //untuk load badge notif PENTING DAN HARUS ADA SCRIPT DISPATCH INI
   useEffect(() => {
     dispatch(
-      apiCall(
-        API_URL_LOKAL +
-          `/setting/notification?email=${email}&entity_cd=${entity_cd}&project_no=${project_no}`,
-        user.Token,
-      ),
+      apiCall(API_URL_LOKAL + `/setting/notification`, {
+        token_firebase: user.Token,
+        entity_cd: entity_cd,
+        project_no: project_no,
+        email: email,
+      }),
     );
-  }, []);
+  }, [user, entity_cd, project_no, email]);
+
+  // untuk load menu pertama kali dan harus ada script ini
+  // useEffect(() => {
+  //   if (user.length > 0) {
+  //     // Tambahkan pengecekan untuk memastikan user tidak null
+  //     dispatch(
+  //       get_menu_actions({
+  //         token_firebase: user.Token,
+  //         group_cd: user.userData.Group_Cd,
+  //       }),
+  //     );
+  //   }
+  // }, [user]);
 
   //untuk load data get chairman message
   // (sebenernya terpakai hanya sekali, saat open screen pertama kali.
@@ -299,11 +392,12 @@ const Home = (props) => {
     //   `http://apps.pakubuwono-residence.com/apiwebpbi/api/first_login_Get/` + email,
     // );
     const config = {
+      timeout: 5000, // default is `0` (no timeout)
       method: 'get',
       url: API_URL_LOKAL + `/home/greetings`,
       headers: {
         'content-type': 'application/json',
-        Authorization: `Bearer ${user.userData.Token}`,
+        Authorization: `Bearer ${user.Token}`,
       },
     };
     await axios(config)
@@ -323,26 +417,57 @@ const Home = (props) => {
         // return res.data;
       })
       .catch((error) => {
-        console.log('error res greeting', error);
+        console.log('error res greeting', error.response);
         // alert('error get');
       });
   };
 
   useEffect(() => {
-    doSomething();
+    // doSomething();
+    getHeaderImage();
   }, []);
 
+  const getHeaderImage = async () => {
+    setSpinner(true);
+    const config = {
+      method: 'get',
+      url: API_URL_LOKAL + `/home/common-mobile-header`,
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${user.Token}`,
+      },
+    };
+    await axios(config)
+      .then((res) => {
+        console.log('res header image', res.data.data);
+        setHeaderImage(res.data.data);
+        // setArrDataTowerUser;
+      })
+      .catch((error) => {
+        console.log('error res header image', error.response);
+        setSpinner(false);
+      });
+  };
+
   const getImageGreetings = async () => {
+    const config = {
+      timeout: 5000, // default is `0` (no timeout)
+      method: 'get',
+      url: API_URL_LOKAL + `/home/greetings`,
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${user.Token}`,
+      },
+    };
     // console.log(
     //   'url greetings chairman',
     //   `http://apps.pakubuwono-residence.com/apiwebpbi/api/first_login_Get/` + email,
     // );
-    await axios
-      .get(API_URL_LOKAL + `/home/greetings`)
+    await axios(config)
       .then((res) => {
         // console.log('res greetings', res.data.data);
         const image_greetings = res.data.data;
-        console.log('image_greetings', image_greetings);
+        // console.log('image_greetings', image_greetings);
         setImageGreetings(image_greetings);
         setLoadNews(false);
         // return res.data;
@@ -385,21 +510,21 @@ const Home = (props) => {
   // https://dev.ifca.co.id/apicarstensz/api/facility/book/unit?entity=01&project=01&email=martin7id@yahoo.com
 
   async function getLotNo() {
-    console.log('email getlotno', email);
+    // console.log('email getlotno', email);
+    console.log('entitycode getlotno', entity_cd);
+    // console.log('projectno getlotno', project_no);
 
+    const params = {
+      entity_cd: entity_cd,
+      project_no: project_no,
+      email: email,
+    };
+    console.log('params getlotno', params);
     const config = {
+      timeout: 5000, // default is `0` (no timeout)
       method: 'get',
       // url: 'http://dev.ifca.co.id:8080/apiciputra/api/approval/groupMenu?approval_user=MGR',
-      url:
-        API_URL_LOKAL +
-        `/home/common-unit?entity_cd=` +
-        entity_cd +
-        '&' +
-        'project_no=' +
-        project_no +
-        '&' +
-        'email=' +
-        email,
+      url: API_URL_LOKAL + `/home/common-unit`,
       // url: API_URL_LOKAL + `/home/common-unit` ,
       headers: {
         'content-type': 'application/json',
@@ -407,7 +532,7 @@ const Home = (props) => {
         Authorization: `Bearer ${user.Token}`,
       },
       // params: {approval_user: user.userIDToken.UserId},
-      params: {},
+      params: params,
     };
 
     try {
@@ -416,12 +541,19 @@ const Home = (props) => {
           const resLotno = res.data.data;
           console.log('reslotno', resLotno);
           // console.log("reslotno", res);
-
+          // console.log('default_text_lotno', default_text_lotno);
+          if (default_text_lotno === true) {
+            // console.log('ini kena gaksih?', res.data.data[0]);
+            setTextLotno(res.data.data[0]);
+          }
           setLotno(resLotno);
 
-          if (default_text_lotno == true) {
-            setTextLotno(resLotno[0]);
-          }
+          // if (default_text_lotno === true) {
+          //   console.log('ini kena gaksih?', default_text_lotno);
+          //     if (default_text_lotno == true) {
+          //       setTextLotno(resLotno[0]);
+          //     }
+          // }
 
           setSpinner(false);
         })
@@ -436,11 +568,11 @@ const Home = (props) => {
     }
   }
 
-  const notifUser = useCallback(
-    (entity_cd, project_no) =>
-      dispatch(notifikasi_nbadge(email, entity_cd, project_no)),
-    [email, entity_cd, project_no, dispatch],
-  );
+  // const notifUser = useCallback(
+  //   (entity_cd, project_no, email) =>
+  //     dispatch(notifikasi_nbadge(email, entity_cd, project_no)),
+  //   [email, entity_cd, project_no, dispatch],
+  // );
 
   // const dataImage = async () => {
   //   const config = {
@@ -472,7 +604,7 @@ const Home = (props) => {
   async function fetchDataDue() {
     const config = {
       method: 'get',
-      url: API_URL_LOKAL + `/modules/billing/due-summary/IFCAPB/${user.user}`,
+      url: API_URL_LOKAL + `/modules/billing/due-summary/${email}`,
       headers: {
         'content-type': 'application/json',
         Authorization: `Bearer ${user.Token}`,
@@ -481,7 +613,7 @@ const Home = (props) => {
     try {
       const res = await axios(config);
       setDataDue(res.data.data);
-      console.log('data get data due', res.data.data);
+      // console.log('data get data due', res.data.data);
     } catch (error) {
       setErrors(error);
       // alert(hasError.toString());
@@ -489,10 +621,10 @@ const Home = (props) => {
   }
 
   async function fetchDataNotDue() {
+    // console.log('email di home untuk fetchdatanotdue', email);
     const config = {
       method: 'get',
-      url:
-        API_URL_LOKAL + `/modules/billing/current-summary/IFCAPB/${user.user}`,
+      url: API_URL_LOKAL + `/modules/billing/current-summary/${email}`,
       headers: {
         'content-type': 'application/json',
         Authorization: `Bearer ${user.Token}`,
@@ -501,7 +633,7 @@ const Home = (props) => {
     try {
       const res = await axios(config);
       setDataNotDue(res.data.data);
-      console.log('data get data not due', res.data.data);
+      // console.log('data get data not due', res.data.data);
     } catch (error) {
       setErrors(error);
       // alert(hasError.toString());
@@ -509,10 +641,10 @@ const Home = (props) => {
   }
 
   async function fetchDataHistory() {
+    // console.log('email di home untuk fetchdatahistory', email);
     const config = {
       method: 'get',
-      url:
-        API_URL_LOKAL + `/modules/billing/summary-history/IFCAPB/${user.user}`,
+      url: API_URL_LOKAL + `/modules/billing/summary-history/${email}`,
       headers: {
         'content-type': 'application/json',
         Authorization: `Bearer ${user.Token}`,
@@ -529,6 +661,10 @@ const Home = (props) => {
   }
 
   const dataNewsAnnounce = async () => {
+    const params = {
+      entity_cd: entity_cd,
+      project_no: project_no,
+    };
     const config = {
       method: 'get',
       // url: 'http://dev.ifca.co.id:8080/apiciputra/api/approval/groupMenu?approval_user=MGR',
@@ -539,12 +675,12 @@ const Home = (props) => {
         Authorization: `Bearer ${user.Token}`,
       },
       // params: {approval_user: user.userIDToken.UserId},
-      params: {},
+      params: params,
     };
     console.log('config news', config);
     await axios(config)
       .then((res) => {
-        console.log('res news', res.data.data);
+        // console.log('res news', res.data.data);
         const datanews = res.data.data;
         const slicedatanews = datanews.slice(0, 6);
         // console.log("slice data", slicedatanews);
@@ -560,6 +696,10 @@ const Home = (props) => {
   };
 
   const dataPromoClubFacilities = async () => {
+    const params = {
+      entity_cd: entity_cd,
+      project_no: project_no,
+    };
     const config = {
       method: 'get',
       // url: 'http://dev.ifca.co.id:8080/apiciputra/api/approval/groupMenu?approval_user=MGR',
@@ -570,34 +710,35 @@ const Home = (props) => {
         Authorization: `Bearer ${user.Token}`,
       },
       // params: {approval_user: user.userIDToken.UserId},
-      params: {},
+      params: params,
     };
 
     await axios(config)
       .then((res) => {
         // console.log("res promoclubfacilities", res.data.data);
         const datapromoclub = res.data.data;
+        // console.log('data promo ada isinya ga', datapromoclub);
 
         // filter by category
 
         const filterForPromo = datapromoclub
-          .filter((item) => item.category === 'P')
+          .filter((item) => item.category === 'P') //promo
           .map((items) => items);
 
         const filterForClub = datapromoclub
-          .filter((item) => item.category === 'C')
+          .filter((item) => item.category === 'C') //club
           .map((items) => items);
 
         const filterForFacilities = datapromoclub
-          .filter((item) => item.category === 'F')
+          .filter((item) => item.category === 'F') //facility
           .map((items) => items);
 
         const filterForEvent = datapromoclub
-          .filter((item) => item.category == 'E')
+          .filter((item) => item.category == 'E') //event
           .map((items) => items);
 
         const filterForRestaurant = datapromoclub
-          .filter((item) => item.category == 'R')
+          .filter((item) => item.category == 'R') //restauran
           .map((items) => items);
 
         // join data atau data gabungan all per 2 category
@@ -618,13 +759,16 @@ const Home = (props) => {
         const slicedatapromoclubfac = joinFilterDataPromoClubFac.slice(0, 6);
         const slicedataeventresto = joinFilterDataEventRestaurant.slice(0, 6);
 
+        // console.log('slicedataeventresto', slicedataeventresto);
+        // console.log('slicedatapromoclubfac', slicedatapromoclubfac);
+
         // console.log('joinFilterDataPromoClubFac', joinFilterDataPromoClubFac);
 
         // pecah array images from data slice
 
         const arrayImagePromoClubFac = slicedatapromoclubfac.map(
           (item, key) => {
-            // console.log("item promo club fac", item.url_image);
+            // console.log('item promo club fac', item.url_image);
             return { url_image: item.url_image, key: key };
             // return { url_image: `${item.url_image}`.replace('http://localhost/', 'https://ifca.carstensz.co.id/') , key: key };
             // item.url_image
@@ -635,11 +779,11 @@ const Home = (props) => {
         );
 
         const arrayImageEventResto = slicedataeventresto.map((item, key) => {
-          return { url_image: item.url_image };
+          return { url_image: item.url_image, key: key };
         });
 
         // const slicedatapromo = datapromoclub.slice(0, 6);
-        // console.log('slice data promo', slicedatapromo);
+        // console.log('slice data promo', arrayImagePromoClubFac);
         // console.log('image promo club', datapromoclub.image);
 
         // const tes = slicedatapromo.map((item, key) => {
@@ -678,7 +822,7 @@ const Home = (props) => {
           return (max += parseInt(bills.mbal_amt));
         }, 0);
 
-  console.log('sum', sum);
+  // console.log('sum', sum);
 
   //TOTAL DATE NOT DUE
   const sumNotDue =
@@ -688,38 +832,40 @@ const Home = (props) => {
           return (max += parseInt(bills.mbal_amt));
         }, 0);
 
-  console.log('sumNotDue', sumNotDue);
+  // console.log('sumNotDue', sumNotDue);
 
   const math_total = Math.floor(sumNotDue) + Math.floor(sum);
-  console.log('math total', math_total);
+  // console.log('math total', math_total);
 
   const unique =
     getDataDue == 0 ? 0 : [...new Set(getDataDue.map((item) => item.doc_no))];
-  console.log('unique', unique);
+  // console.log('unique', unique);
 
   const uniqueNotDue =
     getDataNotDue == 0 || getDataNotDue == null
       ? 0
       : [...new Set(getDataNotDue.map((item) => item.doc_no))];
-  console.log('uniqueNotDue', uniqueNotDue);
+  // console.log('uniqueNotDue', uniqueNotDue);
 
   const invoice = unique == 0 ? 0 : unique.length;
-  console.log('invoice', invoice);
+  // console.log('invoice', invoice);
 
   const invoiceNotDue = uniqueNotDue == 0 ? 0 : uniqueNotDue.length;
-  console.log('invoiceNotDue', invoiceNotDue);
+  // console.log('invoiceNotDue', invoiceNotDue);
 
   const total_outstanding = Math.floor(invoice) + Math.floor(invoiceNotDue);
-  console.log('total_outstanding', total_outstanding);
+  // console.log('total_outstanding', total_outstanding);
+
+  useEffect(() => {}, [dataMenus]);
 
   useEffect(() => {
-    console.log('galery', galery);
-    // dataImage();
-    dataNewsAnnounce();
-    dataPromoClubFacilities();
+    // console.log('galery', galery);
 
-    console.log('datauser', user);
-    console.log('about', data);
+    // dataNewsAnnounce();
+    // dataPromoClubFacilities();
+
+    // console.log('datauser', user);
+    // console.log('about', data);
     fetchDataDue();
     fetchDataNotDue();
     fetchDataHistory();
@@ -727,11 +873,14 @@ const Home = (props) => {
     // getLotNo();
 
     setLoading(false);
-  }, [user, dataMenus]);
 
-  useEffect(() => {
-    // getNewsAnnounce();
-  }, []);
+    if (user != null && user.userData != null && user.userData.pict != null) {
+      setFotoProfil(user.userData.pict);
+    } else {
+      setFotoProfil('https://dev.ifca.co.id/no-image.png');
+    }
+    // console.log('User state updated: home', user);
+  }, [user]);
 
   const goPostDetail = (item) => () => {
     navigation.navigate('PostDetail', { item: item });
@@ -754,7 +903,7 @@ const Home = (props) => {
 
   const goToMoreNewsAnnounce = (item) => {
     // console.log('item go to', item.length);
-    navigation.navigate('NewsAnnounce', { items: item });
+    // navigation.navigate('NewsAnnounce', { items: item });
   };
 
   const goToEventResto = (item) => {
@@ -773,12 +922,12 @@ const Home = (props) => {
     return (
       <TouchableOpacity
         onPress={() =>
-          navigation.navigate('PreviewImageHome', { images: item.pict })
+          navigation.navigate('PreviewImageHome', { images: item.url_image })
         }
       >
         <View key={i} style={([styles.shadow], {})}>
           <Image
-            source={{ uri: item.pict }}
+            source={{ uri: item.url_image }}
             style={
               ([styles.shadow],
               {
@@ -797,7 +946,10 @@ const Home = (props) => {
   };
 
   const renderContent = () => {
-    const mainNews = PostListData[0];
+    // console.log('lot_no render', text_lotno);
+    // if (!text_lotno) {
+    //   return <ActivityIndicator />; // Gantikan dengan komponen loading atau pesan sementara lainnya
+    // }
 
     return (
       <View
@@ -889,84 +1041,6 @@ const Home = (props) => {
                     }}
                   ></ImageBackground>
                 </View>
-                // {/* Button Next Here  */}
-                // <View
-                //   style={{
-                //     flex: 1,
-                //     justifyContent: 'flex-end',
-                //     marginBottom: 36,
-                //   }}>
-                //   <View style={{flexDirection: 'row', width: '100%'}}>
-                //     <View
-                //       style={{
-                //         marginTop: 10,
-                //         justifyContent: 'space-between',
-                //         flex: 1,
-                //         // backgroundColor: 'red',
-                //         // width: '50%',
-                //       }}>
-                //       {/* <Text>halo</Text> */}
-                //       <Pressable
-                //         onPress={() =>
-                //           previewZoomGreeting(item.greetings_file)
-                //         }>
-                //         <View
-                //           style={{
-                //             alignItems: 'center',
-                //             flexDirection: 'row',
-                //           }}>
-                //           <Text
-                //             style={{
-                //               paddingHorizontal: 10,
-                //               fontSize: 16,
-                //               color: colors.primary,
-                //             }}>
-                //             Preview Zoom
-                //           </Text>
-                //           <Icon
-                //             name="search"
-                //             solid
-                //             size={16}
-                //             color={colors.primary}
-                //           />
-                //         </View>
-                //       </Pressable>
-                //     </View>
-                //     <View
-                //       style={{
-                //         marginTop: 10,
-                //         justifyContent: 'space-between',
-                //         // marginRight: 10,
-                //         // flex: 1,
-                //         // backgroundColor: 'blue',
-                //         // width: '50%',
-                //       }}>
-                //       <Pressable onPress={() => pressChairmanMessage()}>
-                //         <View
-                //           style={{
-                //             alignItems: 'center',
-                //             marginRight: 20,
-                //             flexDirection: 'row',
-                //           }}>
-                //           <Text
-                //             style={{
-                //               paddingHorizontal: 10,
-                //               fontSize: 16,
-                //               color: colors.primary,
-                //             }}>
-                //             Next
-                //           </Text>
-                //           <Icon
-                //             name="arrow-right"
-                //             solid
-                //             size={16}
-                //             color={colors.primary}
-                //           />
-                //         </View>
-                //       </Pressable>
-                //     </View>
-                //   </View>
-                // </View>
               ))}
             </View>
             <View
@@ -1152,125 +1226,129 @@ const Home = (props) => {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
         >
-          {/* <View style={{flex: 1}}> */}
-          {/* <View style={{flex: 1}}> */}
-          <ImageBackground
-            source={require('../../assets/images/image-home/bgHome-cartenz.png')}
-            // source={require('../../assets/images/image-home/carstensz.webp')}
-            imageStyle={{
-              height: 400,
-              width: '100%',
-              // borderBottomLeftRadius: 200,
-              // borderBottomRightRadius: 200,
-            }}
-          >
-            <LinearGradient
-              colors={['rgba(73, 73, 73, 0)', 'transparent']}
-              // colors={['#4c669f', '#3b5998', '#192f6a']}
-              // {...otherGradientProps}
-              style={{
-                height: 400,
-                // height: '85%',
-                width: '100%',
+          {spinner === false ? (
+            headerImage.map((item, key) => {
+              return (
+                <ImageBackground
+                  // source={require('../../assets/images/image-home/Main_Image.png')}
+                  source={{ uri: item.img_url }}
+                  style={{ height: 400 }} // Match the height of Swiper
+                  imageStyle={{
+                    flex: 1,
 
-                flexDirection: 'column',
-                // flex: 1,
-                justifyContent: 'center',
-                // top: 30,
-                // borderBottomLeftRadius: 200,
-                // borderBottomRightRadius: 200,
-              }}
-            >
-              <View
-                style={{
-                  flexDirection: 'column',
-                  flex: 1,
-                  justifyContent: 'center',
-                  top: 0,
-                }}
-              >
-                <View style={{ alignItems: 'center', top: 0 }}>
-                  <Text
-                    style={{
-                      color: 'white',
-                      fontFamily: 'DMSerifDisplay',
-                      fontSize: 10,
-                    }}
-                  >
-                    {/* Once Upon Your Lifetime */}
-                  </Text>
-                </View>
-                <View style={{ alignItems: 'center', top: 0 }}>
-                  <Image
-                    style={{
-                      height: 100,
-                      width: '80%',
-                      //padding: 100,
-                      resizeMode: 'contain',
-                    }}
-                    source={require('../../assets/images/image-home/vector-logo-carstensz.png')}
-                  ></Image>
-                </View>
-
-                {/* ---- tagline carstensz */}
-                <View
-                  style={{
-                    // flex: 1,
-                    alignItems: 'center',
-
-                    left: 47,
-                    justifyContent: 'center',
-
-                    width: '80%',
+                    height: 400,
+                    width: '100%',
+                    // borderBottomLeftRadius: 175,
+                    // borderBottomRightRadius: 175,
                   }}
                 >
-                  <Text
+                  <LinearGradient
+                    colors={['rgba(73, 73, 73, 0)', 'transparent']}
+                    // colors={['#4c669f', '#3b5998', '#192f6a']}
+                    // {...otherGradientProps}
                     style={{
-                      fontSize: 14,
-                      color: 'white',
-                      fontFamily: Fonts.type.Zocial,
-                      // lineHeight: 10,
+                      height: 400,
+                      // height: '85%',
+                      width: '100%',
+
+                      flexDirection: 'column',
+                      // flex: 1,
+                      justifyContent: 'center',
+                      // top: 30,
+                      // borderBottomLeftRadius: 200,
+                      // borderBottomRightRadius: 200,
                     }}
                   >
-                    Iconic Living at BSD - Gading Serpong
-                  </Text>
-                </View>
-              </View>
-            </LinearGradient>
-          </ImageBackground>
-          {/* </View> */}
-          {/* </View> */}
+                    <View
+                      style={{
+                        flexDirection: 'column',
+                        flex: 1,
+                        justifyContent: 'center',
+                        top: 0,
+                      }}
+                    >
+                      <View style={{ alignItems: 'center', top: 0 }}>
+                        <Text
+                          style={{
+                            color: 'white',
+                            fontFamily: 'DMSerifDisplay',
+                            fontSize: 10,
+                          }}
+                        >
+                          {/* Once Upon Your Lifetime */}
+                        </Text>
+                      </View>
+                      <View style={{ alignItems: 'center', top: 0 }}>
+                        <Image
+                          style={{
+                            height: 100,
+                            width: '80%',
+                            //padding: 100,
+                            resizeMode: 'contain',
+                          }}
+                          source={require('../../assets/images/image-home/vector-logo-carstensz.png')}
+                        ></Image>
+                      </View>
 
+                      {/* ---- tagline carstensz */}
+                      <View
+                        style={{
+                          // flex: 1,
+                          alignItems: 'center',
+
+                          left: 47,
+                          justifyContent: 'center',
+
+                          width: '80%',
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontSize: 14,
+                            color: 'white',
+                            fontFamily: Fonts.type.Zocial,
+                            // lineHeight: 10,
+                          }}
+                        >
+                          Iconic Living at BSD - Gading Serpong
+                        </Text>
+                      </View>
+                    </View>
+                  </LinearGradient>
+                </ImageBackground>
+              );
+            })
+          ) : (
+            <View>
+              {/* <Spinner visible={this.state.spinner} /> */}
+              <Placeholder style={{ marginVertical: 4, paddingHorizontal: 10 }}>
+                <PlaceholderLine width={100} noMargin style={{ height: 100 }} />
+              </Placeholder>
+            </View>
+          )}
+
+          {/* ---- header image dan nama dan unit */}
           <View
             style={{
               flexDirection: 'row',
-              //marginLeft: 35,
+              marginLeft: 35,
               marginTop: 10,
               marginBottom: 10,
-              //backgroundColor: "red",
-              //alignItems: "center",
-              justifyContent: 'center',
             }}
           >
+            {/* ---sementara dulu  */}
+
             <Image
+              // source={fotoprofil}
+              source={{ uri: fotoprofil }}
               style={{
                 height: 60,
                 width: 60,
                 borderRadius: 30,
               }}
-              // source={require('../../assets/images/image-home/Main_Image.png')}
-              // source={user.pict != null ? { uri: repl } : fotoprofil}
-              source={fotoprofil}
-            ></Image>
-            <View
-              style={{
-                //alignSelf: "center",
-                //justifyContent: "center",
-                alignItems: 'center',
-                //backgroundColor: "blue",
-                //marginLeft: 10
-              }}
-            >
+            />
+
+            <View style={{ alignSelf: 'center', marginLeft: 10 }}>
               <View
                 style={{
                   flexDirection: 'row',
@@ -1288,9 +1366,10 @@ const Home = (props) => {
                     fontFamily: 'DMSerifDisplay',
                   }}
                 >
-                  {/* Nama pemilik */}
                   {name}
                 </Text>
+                {/* <Text>{MenuBar}</Text> */}
+
                 <Icon
                   name="star"
                   solid
@@ -1304,7 +1383,8 @@ const Home = (props) => {
               {lotno.length != 0 ? (
                 <View
                   style={{
-                    backgroundColor: colors.primary, //"#315447",
+                    // backgroundColor: '#141F40',
+                    backgroundColor: colors.primary,
                     height: 30,
                     // width: '100%',
                     width: 150,
@@ -1313,20 +1393,28 @@ const Home = (props) => {
                     borderRadius: 10,
                   }}
                 >
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      paddingLeft: 0,
-                    }}
-                  >
-                    <ModalSelector
+                  <View style={{ flexDirection: 'row', paddingLeft: 10 }}>
+                    <Text
+                      adjustsFontSizeToFit={true}
+                      allowFontScaling={true}
                       style={{
-                        justifyContent: 'center',
+                        color: '#fff',
                         alignSelf: 'center',
-                        //flex: 1,
+                        fontSize: 14,
+                        justifyContent: 'center',
+                        paddingRight: 10,
+
+                        fontWeight: '800',
+                        fontFamily: 'KaiseiHarunoUmi',
                       }}
+                    >
+                      Unit
+                    </Text>
+
+                    <ModalSelector
+                      style={{ justifyContent: 'center', alignSelf: 'center' }}
                       childrenContainerStyle={{
-                        color: '#CDB04A',
+                        color: '#141F40',
                         alignSelf: 'center',
                         fontSize: 16,
                         // top: 10,
@@ -1334,11 +1422,10 @@ const Home = (props) => {
                         justifyContent: 'center',
                         fontWeight: '800',
                         fontFamily: 'KaiseiHarunoUmi',
-                        flexDirection: 'row',
                       }}
                       data={lotno}
                       optionTextStyle={{ color: '#333' }}
-                      selectedItemTextStyle={{ color: '#3C85F1' }}
+                      selectedItemTextStyle={{ color: '#141F40' }}
                       accessible={true}
                       keyExtractor={(item) => item.lot_no}
                       // initValue={'ahlo'}
@@ -1349,22 +1436,6 @@ const Home = (props) => {
                         onChangelot(option);
                       }}
                     >
-                      <Text
-                        adjustsFontSizeToFit={true}
-                        allowFontScaling={true}
-                        style={{
-                          color: '#fff',
-                          alignSelf: 'center',
-                          fontSize: 14,
-                          justifyContent: 'center',
-                          paddingRight: 10,
-
-                          fontWeight: '800',
-                          fontFamily: 'KaiseiHarunoUmi',
-                        }}
-                      >
-                        Unit
-                      </Text>
                       <Text
                         style={{
                           color: '#CDB04A',
@@ -1377,23 +1448,26 @@ const Home = (props) => {
                           fontFamily: 'KaiseiHarunoUmi',
                         }}
                       >
+                        {/* {lotno.lot_no} */}
                         {text_lotno.lot_no}
+
+                        {/* 12312 */}
                       </Text>
-                      <Icon
-                        name="caret-down"
-                        solid
-                        size={26}
-                        // color={colors.primary}
-                        style={{ marginLeft: 5 }}
-                        color={'#CDB04A'}
-                      />
                     </ModalSelector>
+                    <Icon
+                      name="caret-down"
+                      solid
+                      size={26}
+                      // color={colors.primary}
+                      style={{ marginLeft: 5 }}
+                      color={'#CDB04A'}
+                    />
                   </View>
                 </View>
               ) : (
                 <View
                   style={{
-                    backgroundColor: colors.primary, //"#315447",
+                    backgroundColor: colors.primary,
                     height: 30,
                     // width: '100%',
                     width: 150,
@@ -1402,13 +1476,7 @@ const Home = (props) => {
                     borderRadius: 10,
                   }}
                 >
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      paddingLeft: 10,
-                      justifyContent: 'center',
-                    }}
-                  >
+                  <View style={{ flexDirection: 'row', paddingLeft: 10 }}>
                     <Text
                       style={{
                         color: '#fff',
@@ -1421,7 +1489,7 @@ const Home = (props) => {
                         fontFamily: 'KaiseiHarunoUmi',
                       }}
                     >
-                      Unit not found
+                      Unit
                     </Text>
 
                     <ModalSelector
@@ -1461,26 +1529,40 @@ const Home = (props) => {
                           fontFamily: 'KaiseiHarunoUmi',
                         }}
                       >
-                        {/* Lot No Available */}
+                        {/* Lot No Available */}-
                       </Text>
                     </ModalSelector>
+                    <Icon
+                      name="caret-down"
+                      solid
+                      size={26}
+                      // color={colors.primary}
+                      style={{ marginLeft: 5 }}
+                      color={'#CDB04A'}
+                    />
                   </View>
                 </View>
               )}
             </View>
           </View>
+          {/* ---- header image dan nama dan unit */}
 
+          {/* --- menu dinamis kotak-kotak  */}
           <View style={styles.paddingContent}>
-            {user == null || user == '' ? (
+            {user == null || user == '' || user.userData == null ? (
               <Text>user not available</Text>
-            ) : (
-              // dataMenus.map((item, index)=>(
-              //   <Text key={index}>{item.Title}</Text>
-              // ))
+            ) : // dataMenus.map((item, index)=>(
+            //   <Text key={index}>{item.Title}</Text>
+            // ))
+            dataMenus.length > 0 ? (
               <Categories style={{ marginTop: 10 }} dataMenus={dataMenus} />
+            ) : (
+              <ActivityIndicator />
             )}
           </View>
+          {/* --- menu dinamis  */}
 
+          {/* ----- content news ---- */}
           <View style={{ marginBottom: 10, flex: 1 }}>
             <View style={{ marginLeft: 30, marginTop: 20, marginBottom: 10 }}>
               <Text
@@ -1506,7 +1588,11 @@ const Home = (props) => {
                       onPress={() => goToMoreNewsAnnounce(newsannounce)}
                     >
                       <View
-                        style={{ alignSelf: 'center', flexDirection: 'row' }}
+                        style={{
+                          alignSelf: 'center',
+                          flexDirection: 'row',
+                          justifyContent: 'center',
+                        }}
                       >
                         <Text style={{ marginHorizontal: 5, fontSize: 14 }}>
                           More
@@ -1531,13 +1617,15 @@ const Home = (props) => {
                 <SliderNews
                   data={newsannounceslice}
                   local={true}
-                  // contentContainerStyle={{paddingHorizontal: 16}}
+                  // contentContainerStyle={{ paddingHorizontal: 16 }}
                   // onPress={console.log('klik')}
                 />
               )}
             </View>
           </View>
+          {/* ----- content news ----- */}
 
+          {/* ---- content event promo resto----  */}
           <View style={{ marginBottom: 20, flex: 1 }}>
             <View style={{ marginLeft: 30, marginTop: 20, marginBottom: 10 }}>
               <Text
@@ -1558,14 +1646,25 @@ const Home = (props) => {
               >
                 <Text>Event And Restaurant</Text>
                 {
-                  eventresto.length >= 6 ? (
+                  eventresto.length >= 5 ? (
                     <TouchableOpacity
                       onPress={() => goToEventResto(eventresto)}
                     >
                       <View
-                        style={{ alignSelf: 'center', flexDirection: 'row' }}
+                        style={{
+                          alignSelf: 'center',
+                          flexDirection: 'row',
+
+                          alignItems: 'center',
+                        }}
                       >
-                        <Text style={{ marginHorizontal: 5, fontSize: 14 }}>
+                        <Text
+                          style={{
+                            marginHorizontal: 5,
+                            fontSize: 14,
+                            alignItems: 'center',
+                          }}
+                        >
                           More
                         </Text>
                         <Icon
@@ -1603,7 +1702,9 @@ const Home = (props) => {
               </ScrollView>
             </View>
           </View>
+          {/* ---- content event promo resto---- */}
 
+          {/* ---- content facility club ----  */}
           <View style={{ marginBottom: 20, flex: 1 }}>
             <View style={{ marginLeft: 30, marginTop: 20, marginBottom: 10 }}>
               <Text
@@ -1624,12 +1725,16 @@ const Home = (props) => {
               >
                 <Text>Check Our Promo Here</Text>
                 {
-                  promoclubfac.length >= 6 ? (
+                  promoclubfac.length >= 3 ? (
                     <TouchableOpacity
                       onPress={() => goToPromoClubFac(promoclubfac)}
                     >
                       <View
-                        style={{ alignSelf: 'center', flexDirection: 'row' }}
+                        style={{
+                          alignSelf: 'center',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                        }}
                       >
                         <Text style={{ marginHorizontal: 5, fontSize: 14 }}>
                           More
@@ -1664,14 +1769,14 @@ const Home = (props) => {
                     <TouchableOpacity
                       onPress={() =>
                         navigation.navigate('PreviewImageHome', {
-                          images: item.pict,
+                          images: item.url_image,
                         })
                       }
                     >
                       <View key={item.rowID} style={{}}>
                         {/* <Text></Text> */}
                         <Image
-                          source={{ uri: item.pict }}
+                          source={{ uri: item.url_image }}
                           style={
                             ([styles.shadow],
                             {
@@ -1692,6 +1797,7 @@ const Home = (props) => {
               </ScrollView>
             </View>
           </View>
+          {/* ---- content facility club ---- */}
         </ScrollView>
       </View>
     );

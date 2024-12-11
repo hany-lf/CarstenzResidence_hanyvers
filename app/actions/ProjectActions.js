@@ -1,7 +1,7 @@
-import ProjectController from "../controllers/ProjectController";
+import ProjectController from '../controllers/ProjectController';
 
 export const actionTypes = {
-  PROJECT_SUCCESS: "PROJECT_SUCCESS",
+  PROJECT_SUCCESS: 'PROJECT_SUCCESS',
 };
 
 const project_success = (Dataproject) => ({
@@ -10,12 +10,14 @@ const project_success = (Dataproject) => ({
   Dataproject,
 });
 
-export const data_project = (email, token_firebase) => async (dispatch) => {
+export const data_project = (datas) => async (dispatch) => {
+  // console.log('token_firebase data_project action', datas);
   const dataproject = await ProjectController.data_project(
-    email,
-    token_firebase
+    datas,
+    // emails,
+    // token_firebases,
   );
-  console.log("dataproject di project  action", dataproject.data);
+  // console.log('dataproject di project  action', dataproject.data);
   dispatch(project_success(dataproject));
   // console.log('notifikasi nbadge', notifnbadge);
   //   dispatch(editRequest());

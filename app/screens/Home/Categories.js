@@ -77,13 +77,16 @@ const Categories = ({ style = {}, dataMenus }) => {
                   icon={item.IconClass}
                   title={t(item.Title)}
                   // onPress={() => console.log('coba di categories', item.Screen)}
-                  onPress={() =>
-                    user.userData.facility_booking == item.User_Facility ||
-                    item.User_Menu == 'Y'
-                      ? goToScreen(item.Screen)
-                      : onExpand(
-                          'User tidak memiliki izin untuk booking fasilitas',
-                        )
+                  onPress={
+                    () =>
+                      user.userData.facility_booking == item.User_Facility ||
+                      item.User_Menu == 'Y'
+                        ? goToScreen(item.Screen)
+                        : onExpand(
+                            'User tidak memiliki izin untuk booking fasilitas',
+                          )
+
+                    //disini bisa ditambah screen coming soon gak? bisa ya harusnya?
                   }
                 />
               </View>

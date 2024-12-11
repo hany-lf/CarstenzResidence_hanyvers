@@ -21,7 +21,8 @@ class UserController {
     //   "\n token_firebase:",
     //   token_firebase
     // );
-    console.log(' login user controller', email);
+    console.log('token_firebase user logincontroller', token_firebase);
+    console.log('password login controller', password);
     // console.log('mac address', macAddress);
 
     try {
@@ -41,9 +42,9 @@ class UserController {
           apps_type: 'S',
         },
         // timeout: 5000, // default is `0` (no timeout)
-        headers: {
-          Authorization: `Bearer ${token_firebase}`,
-        },
+        // headers: {
+        //   Authorization: `Bearer ${token_firebase}`,
+        // },
       });
       console.log('result login user controller', result);
       // // alert(result.Pesan);

@@ -114,7 +114,9 @@ const Home = (props) => {
   const notif = useSelector((state) => getNotifRed(state));
   const project = useSelector((state) => getProject(state));
   const dataMenus = useSelector((state) => getMenu(state));
-  console.log('dataMenus', dataMenus);
+  // console.log('project dari useselector', project);
+  // console.log('user di home dari useselector', user);
+  // console.log('dataMenus', dataMenus);
   // console.log(
   //   "99 state",
   //   useSelector((state) => state)
@@ -186,92 +188,84 @@ const Home = (props) => {
 
   const dispatch = useDispatch();
 
-  // --- useeffect untuk project
+  // --- USEEFFECT NOTIFICATION ---
   useEffect(() => {
-    if (project && project.data && project.data.length > 0) {
-      console.log('project di home', project);
-      console.log('entity useeffect di home', project.data[0].entity_cd);
-      setEntity(project.data[0].entity_cd);
-      setProjectNo(project.data[0].project_no);
-      getLotNo();
-      // notifUser();
-      dataNewsAnnounce();
-      dataPromoClubFacilities();
-    }
-  }, [project]);
+    messaging().onNotificationOpenedApp((remoteMessage) => {
+      // console.log(
+      //   'Notification caused app to open from background state:',
+      //   remoteMessage.notification,
+      // );
+      navigation.navigate('Notification', remoteMessage);
+    });
 
-  useEffect(() => {
-    if (entity_cd != null && project_no != null) {
-      getLotNo();
-      // notifUser();
-      dataNewsAnnounce();
-      dataPromoClubFacilities();
-    }
-  }, [entity_cd, project_no]);
-  // --- useeffect untuk project
+    // Check whether an initial notification is available
+    messaging()
+      .getInitialNotification()
+      .then((remoteMessage) => {
+        if (remoteMessage) {
+          // console.log(
+          //   'Notification caused app to open from quit state:',
+          //   remoteMessage.notification,
+          // );
+          navigation.navigate('Notification', remoteMessage);
+        }
+        setLoading(false);
+      });
+  }, []);
+  // --- CLOSE USEEFFECT NOTIFICATION ---
 
   // --- useEffect untuk update email/name
   useEffect(() => {
     if (user != null && user.userData != null) {
       setName(user.userData.name); // Update name hanya ketika user data berubah
       setEmail(user.userData.email);
+      // console.log('token_firebase untuk ke data_project dihome', user.Token);
+      dispatch(
+        data_project({
+          emails: user.userData.email,
+          token_firebases: user.Token,
+        }),
+      );
+      dispatch(
+        get_menu_actions({
+          token_firebase: user.Token,
+          group_cd: user.userData.Group_Cd,
+        }),
+      );
     }
-  }, [user]); // Dependensi hanya pada user
+  }, [dispatch, user]); // Dependensi hanya pada user
 
-  useFocusEffect(
-    useCallback(() => {
-      if (user?.userData && user.userData.Group_Cd && user.Token) {
-        console.log('useFocusEffect triggered');
-        console.log('user di home focus', user);
-        console.log('userData di home focus', user.userData);
+  // ---- useeffect untuk load datamenu ---
+  useEffect(() => {}, [dataMenus]);
+  // ---- close useeffect untuk load datamenu ---
 
-        // if (user && user.userData) {
-        //   console.log('User data:', user.userData);
-        dispatch(
-          get_menu_actions({
-            token_firebase: user.Token,
-            group_cd: user.userData.Group_Cd,
-          }),
-        );
-        // }
+  // --- useeffect untuk project
+  useEffect(() => {
+    // console.log('project useeffect', project.data);
 
-        dispatch(
-          apiCall(API_URL_LOKAL + `/setting/notification`, {
-            token_firebase: user.Token,
-            entity_cd: entity_cd,
-            project_no: project_no,
-            email: email,
-          }),
-        );
+    if (project && project.data && project.data.length > 0) {
+      setEntity(project.data[0].entity_cd);
+      setProjectNo(project.data[0].project_no);
+      getLotNo();
+      dataNewsAnnounce();
+      dataPromoClubFacilities();
+    }
+  }, [project]);
 
-        // dispatch(
-        //   notifikasi_nbadge({
-        //     email: email,
-        //     entity_cd: entity_cd,
-        //     project_no: project_no,
-        //   }),
-        // );
+  useEffect(() => {
+    fetchDataDue();
+    fetchDataNotDue();
+    fetchDataHistory();
+    getHeaderImage();
+    setLoading(false);
 
-        console.log('Profile screen is focused');
-        if (
-          user != null &&
-          user.userData != null &&
-          user.userData.pict != null
-        ) {
-          setFotoProfil(user.userData.pict);
-        } else {
-          setFotoProfil('https://dev.ifca.co.id/no-image.png');
-        }
-
-        // setLoadMenu(true);
-      } else {
-        console.warn('Data user belum lengkap, menunggu user data');
-        // setLoadMenu(false);
-        // Mungkin tampilkan loader atau coba panggil ulang API jika perlu
-      }
-    }, [user, dispatch]),
-  );
-  // --- useeffect untuk update image pict
+    if (user != null && user.userData != null && user.userData.pict != null) {
+      setFotoProfil(user.userData.pict);
+    } else {
+      setFotoProfil('https://dev.ifca.co.id/no-image.png');
+    }
+    // console.log('User state updated: home', user);
+  }, [user]);
 
   // --- onrefresh ini berfungsi jika ketika ditarik reload, maka update dispatch(ambil data terbaru) menu dari database
   const onRefresh = useCallback(() => {
@@ -351,137 +345,10 @@ const Home = (props) => {
     );
   }, [user, entity_cd, project_no, email]);
 
-  //untuk load data get chairman message
-  // (sebenernya terpakai hanya sekali, saat open screen pertama kali.
-  // jika tidak dibatasi dengan akhir[] maka akan menimbulkan load limit.
-  // tidak error parah, cuma mengganggu saja)
-
-  const doSomething = async () => {
-    // console.log(
-    //   'url greetings chairman',
-    //   `http://apps.pakubuwono-residence.com/apiwebpbi/api/first_login_Get/` + email,
-    // );
-    const config = {
-      timeout: 5000, // default is `0` (no timeout)
-      method: 'get',
-      url: API_URL_LOKAL + `/home/greetings`,
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${user.Token}`,
-      },
-    };
-    await axios(config)
-      .then((res) => {
-        console.log('res greetings', res.data.data);
-        const status_user = res.data.data[0].status;
-        // console.log('status user new old', status_user);
-        setStatusUser(status_user);
-
-        if (status_user == 'Y') {
-          setModalImage(false); // sementara di jadiin false dulu, untuk hide modal.
-          getImageGreetings();
-        } else {
-          setModalImage(false);
-        }
-        setLoadNews(false);
-        // return res.data;
-      })
-      .catch((error) => {
-        console.log('error res greeting', error.response);
-        // alert('error get');
-      });
-  };
-
-  useEffect(() => {
-    doSomething();
-    getHeaderImage();
-  }, []);
-
-  const getHeaderImage = async () => {
-    setSpinner(true);
-    const config = {
-      method: 'get',
-      url: API_URL_LOKAL + `/home/common-mobile-header`,
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${user.Token}`,
-      },
-    };
-    await axios(config)
-      .then((res) => {
-        console.log('res header image', res.data.data);
-        setHeaderImage(res.data.data);
-        // setArrDataTowerUser;
-      })
-      .catch((error) => {
-        console.log('error res header image', error.response);
-        setSpinner(false);
-      });
-  };
-
-  const getImageGreetings = async () => {
-    const config = {
-      timeout: 5000, // default is `0` (no timeout)
-      method: 'get',
-      url: API_URL_LOKAL + `/home/greetings`,
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${user.Token}`,
-      },
-    };
-    // console.log(
-    //   'url greetings chairman',
-    //   `http://apps.pakubuwono-residence.com/apiwebpbi/api/first_login_Get/` + email,
-    // );
-    await axios(config)
-      .then((res) => {
-        // console.log('res greetings', res.data.data);
-        const image_greetings = res.data.data;
-        // console.log('image_greetings', image_greetings);
-        setImageGreetings(image_greetings);
-        setLoadNews(false);
-        // return res.data;
-      })
-      .catch((error) => {
-        console.log('error res image greeting', error);
-        // alert('error get');
-      });
-  };
-
-  const pressChairmanMessage = async () => {
-    //sementara ditutup dulu prosesnya update status dan tanggalnya
-    // setModalImage(false);
-
-    await axios
-      .post(API_URL_LOKAL + `/home/greetings-change-status/` + email)
-      .then((res) => {
-        console.log('res update tanggal greetings', res.data.data);
-        // console.log('status user new old', status_user);
-        setModalImage(false);
-        setLoadNews(false);
-        // return res.data;
-      })
-      .catch((error) => {
-        console.log('error update tanggal greetings', error);
-        // alert('error get');
-      });
-
-    //setelah itu jalanin disini update data status jadi Old dan tanggal first_logindate today where email
-  };
-
-  const previewZoomGreeting = (item) => {
-    // navigation.navigate('PreviewImageHome', {images: item});
-    // navigation.navigate('PinchZoom');
-    setUrlGreetingsImage(item);
-    setmodalShowImage(true);
-  };
-
-  //https://dev.ifca.co.id/apiifcares/api/facility/book/unit?entity=01&project=01&email=martin7id@yahoo.com
-  // https://dev.ifca.co.id/apicarstensz/api/facility/book/unit?entity=01&project=01&email=martin7id@yahoo.com
-
+  // ---  getlotno ---
   async function getLotNo() {
     // console.log('email getlotno', email);
-    console.log('entitycode getlotno', entity_cd);
+    // console.log('entitycode getlotno', entity_cd);
     // console.log('projectno getlotno', project_no);
 
     const params = {
@@ -489,7 +356,7 @@ const Home = (props) => {
       project_no: project_no,
       email: email,
     };
-    console.log('params getlotno', params);
+    // console.log('params getlotno', params);
     const config = {
       timeout: 5000, // default is `0` (no timeout)
       method: 'get',
@@ -509,7 +376,7 @@ const Home = (props) => {
       await axios(config)
         .then((res) => {
           const resLotno = res.data.data;
-          console.log('reslotno', resLotno);
+          // console.log('reslotno', resLotno);
           // console.log("reslotno", res);
           // console.log('default_text_lotno', default_text_lotno);
           if (default_text_lotno === true) {
@@ -537,99 +404,9 @@ const Home = (props) => {
       // alert(hasError.toString());
     }
   }
+  // ---  getlotno ----
 
-  // const notifUser = useCallback(
-  //   (entity_cd, project_no, email) =>
-  //     dispatch(notifikasi_nbadge(email, entity_cd, project_no)),
-  //   [email, entity_cd, project_no, dispatch],
-  // );
-
-  // const dataImage = async () => {
-  //   const config = {
-  //     method: 'get',
-  //     // url: 'http://dev.ifca.co.id:8080/apiciputra/api/approval/groupMenu?approval_user=MGR',
-  //     url: API_URL_LOKAL + `/about/image`,
-  //     headers: {
-  //       'content-type': 'application/json',
-  //       // 'X-Requested-With': 'XMLHttpRequest',
-  //       Authorization: `Bearer ${user.Token}`,
-  //     },
-  //     // params: {approval_user: user.userIDToken.UserId},
-  //     params: {},
-  //   };
-
-  //   await axios(config)
-  //     .then((res) => {
-  //       console.log("res image", res.data.data);
-  //       // console.log('data images', res.data[0].images);
-  //       setData(res.data.data);
-  //       // return res.data;
-  //     })
-  //     .catch((error) => {
-  //       console.log("error get about us image", error.response);
-  //       // alert('error get');
-  //     });
-  // };
-
-  async function fetchDataDue() {
-    const config = {
-      method: 'get',
-      url: API_URL_LOKAL + `/modules/billing/due-summary/${email}`,
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${user.Token}`,
-      },
-    };
-    try {
-      const res = await axios(config);
-      setDataDue(res.data.data);
-      // console.log('data get data due', res.data.data);
-    } catch (error) {
-      setErrors(error);
-      // alert(hasError.toString());
-    }
-  }
-
-  async function fetchDataNotDue() {
-    // console.log('email di home untuk fetchdatanotdue', email);
-    const config = {
-      method: 'get',
-      url: API_URL_LOKAL + `/modules/billing/current-summary/${email}`,
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${user.Token}`,
-      },
-    };
-    try {
-      const res = await axios(config);
-      setDataNotDue(res.data.data);
-      // console.log('data get data not due', res.data.data);
-    } catch (error) {
-      setErrors(error);
-      // alert(hasError.toString());
-    }
-  }
-
-  async function fetchDataHistory() {
-    // console.log('email di home untuk fetchdatahistory', email);
-    const config = {
-      method: 'get',
-      url: API_URL_LOKAL + `/modules/billing/summary-history/${email}`,
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${user.Token}`,
-      },
-    };
-    try {
-      const res = await axios(config);
-      setDataHistory(res.data.data);
-      // console.log('data get history', res.data.Data);
-    } catch (error) {
-      setErrors(error);
-      // alert(hasError.toString());
-    }
-  }
-
+  // --- useeffect datanewsannounce ---
   const dataNewsAnnounce = async () => {
     const params = {
       entity_cd: entity_cd,
@@ -664,7 +441,9 @@ const Home = (props) => {
         // alert('error get');
       });
   };
+  // --- close useeffect datanewsannounce ---
 
+  // --- useeffect data  promoclubfacilities ---
   const dataPromoClubFacilities = async () => {
     const params = {
       entity_cd: entity_cd,
@@ -781,8 +560,7 @@ const Home = (props) => {
         // alert('error get');
       });
   };
-
-  const galery = [...data];
+  // --- close useeffect data  promoclubfacilities ---
 
   //TOTAL DATE DUE
   const sum =
@@ -792,8 +570,6 @@ const Home = (props) => {
           return (max += parseInt(bills.mbal_amt));
         }, 0);
 
-  // console.log('sum', sum);
-
   //TOTAL DATE NOT DUE
   const sumNotDue =
     getDataNotDue == 0 || getDataNotDue == null
@@ -802,67 +578,102 @@ const Home = (props) => {
           return (max += parseInt(bills.mbal_amt));
         }, 0);
 
-  // console.log('sumNotDue', sumNotDue);
-
   const math_total = Math.floor(sumNotDue) + Math.floor(sum);
-  // console.log('math total', math_total);
 
   const unique =
     getDataDue == 0 ? 0 : [...new Set(getDataDue.map((item) => item.doc_no))];
-  // console.log('unique', unique);
 
   const uniqueNotDue =
     getDataNotDue == 0 || getDataNotDue == null
       ? 0
       : [...new Set(getDataNotDue.map((item) => item.doc_no))];
-  // console.log('uniqueNotDue', uniqueNotDue);
 
   const invoice = unique == 0 ? 0 : unique.length;
-  // console.log('invoice', invoice);
 
   const invoiceNotDue = uniqueNotDue == 0 ? 0 : uniqueNotDue.length;
-  // console.log('invoiceNotDue', invoiceNotDue);
 
   const total_outstanding = Math.floor(invoice) + Math.floor(invoiceNotDue);
-  // console.log('total_outstanding', total_outstanding);
 
-  useEffect(() => {}, [dataMenus]);
-
-  useEffect(() => {
-    // console.log('galery', galery);
-
-    // dataNewsAnnounce();
-    // dataPromoClubFacilities();
-
-    // console.log('datauser', user);
-    // console.log('about', data);
-    fetchDataDue();
-    fetchDataNotDue();
-    fetchDataHistory();
-
-    // getLotNo();
-
-    setLoading(false);
-
-    if (user != null && user.userData != null && user.userData.pict != null) {
-      setFotoProfil(user.userData.pict);
-    } else {
-      setFotoProfil('https://dev.ifca.co.id/no-image.png');
+  async function fetchDataDue() {
+    const config = {
+      method: 'get',
+      url: API_URL_LOKAL + `/modules/billing/due-summary/${email}`,
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${user.Token}`,
+      },
+    };
+    try {
+      const res = await axios(config);
+      setDataDue(res.data.data);
+      // console.log('data get data due', res.data.data);
+    } catch (error) {
+      setErrors(error);
+      // alert(hasError.toString());
     }
-    // console.log('User state updated: home', user);
-  }, [user]);
+  }
 
-  const goPostDetail = (item) => () => {
-    navigation.navigate('PostDetail', { item: item });
-  };
+  async function fetchDataNotDue() {
+    // console.log('email di home untuk fetchdatanotdue', email);
+    const config = {
+      method: 'get',
+      url: API_URL_LOKAL + `/modules/billing/current-summary/${email}`,
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${user.Token}`,
+      },
+    };
+    try {
+      const res = await axios(config);
+      setDataNotDue(res.data.data);
+      // console.log('data get data not due', res.data.data);
+    } catch (error) {
+      setErrors(error);
+      // alert(hasError.toString());
+    }
+  }
 
-  const onChangeText = (text) => {
-    setKeyword(text);
-    // setCategory(
-    //   text
-    //     ? category.filter(item => item.title.includes(text))
-    //     : CategoryData,
-    // );
+  async function fetchDataHistory() {
+    // console.log('email di home untuk fetchdatahistory', email);
+    const config = {
+      method: 'get',
+      url: API_URL_LOKAL + `/modules/billing/summary-history/${email}`,
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${user.Token}`,
+      },
+    };
+    try {
+      const res = await axios(config);
+      setDataHistory(res.data.data);
+      // console.log('data get history', res.data.Data);
+    } catch (error) {
+      setErrors(error);
+      // alert(hasError.toString());
+    }
+  }
+
+  // --- getheaderimage ---
+  const getHeaderImage = async () => {
+    setSpinner(true);
+    const config = {
+      method: 'get',
+      url: API_URL_LOKAL + `/home/common-mobile-header`,
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${user.Token}`,
+      },
+    };
+    await axios(config)
+      .then((res) => {
+        console.log('res header image', res.data.data);
+        setHeaderImage(res.data.data);
+        // setArrDataTowerUser;
+      })
+      .catch((error) => {
+        console.log('error res header image', error.response);
+        setSpinner(false);
+      });
   };
 
   const onChangelot = (lot) => {
@@ -871,10 +682,10 @@ const Home = (props) => {
     setTextLotno(lot);
   };
 
-  const goToMoreNewsAnnounce = (item) => {
-    // console.log('item go to', item.length);
-    // navigation.navigate('NewsAnnounce', { items: item });
-  };
+  //  const goToMoreNewsAnnounce = (item) => {
+  //    // console.log('item go to', item.length);
+  //    // navigation.navigate('NewsAnnounce', { items: item });
+  //  };
 
   const goToEventResto = (item) => {
     // console.log('item go to', item.length);
@@ -892,7 +703,9 @@ const Home = (props) => {
     return (
       <TouchableOpacity
         onPress={() =>
-          navigation.navigate('PreviewImageHome', { images: item.url_image })
+          navigation.navigate('PreviewImageHome', {
+            images: item.url_image,
+          })
         }
       >
         <View key={i} style={([styles.shadow], {})}>
@@ -950,7 +763,11 @@ const Home = (props) => {
             >
               {/* Button close X  */}
               <View
-                style={{ flexDirection: 'row', width: '100%', marginBottom: 5 }}
+                style={{
+                  flexDirection: 'row',
+                  width: '100%',
+                  marginBottom: 5,
+                }}
               >
                 <View
                   style={{
@@ -1382,7 +1199,10 @@ const Home = (props) => {
                     </Text>
 
                     <ModalSelector
-                      style={{ justifyContent: 'center', alignSelf: 'center' }}
+                      style={{
+                        justifyContent: 'center',
+                        alignSelf: 'center',
+                      }}
                       childrenContainerStyle={{
                         color: '#141F40',
                         alignSelf: 'center',
@@ -1463,7 +1283,10 @@ const Home = (props) => {
                     </Text>
 
                     <ModalSelector
-                      style={{ justifyContent: 'center', alignSelf: 'center' }}
+                      style={{
+                        justifyContent: 'center',
+                        alignSelf: 'center',
+                      }}
                       childrenContainerStyle={{
                         color: '#CDB04A',
                         alignSelf: 'center',
@@ -1780,6 +1603,9 @@ const Home = (props) => {
         edges={['right', 'top', 'left']}
       >
         {renderContent()}
+        {/* <View>
+          <Text>ini jadi home</Text>
+        </View> */}
       </SafeAreaView>
     </View>
   );

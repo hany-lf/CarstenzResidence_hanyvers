@@ -66,13 +66,6 @@ const SignIn = (props) => {
   const signInButtonRef = useRef(null); // Referensi ini bisa digunakan jika Anda memiliki custom button
 
   useEffect(() => {
-    DeviceInfo.getMacAddress().then((mac) => {
-      console.log('mac address', mac);
-      // setMacAddress(mac);
-    });
-  }, []);
-
-  useEffect(() => {
     const init = async () => {
       // const {version} = Constants.manifest;
       // const version = require('../../package.json');
@@ -89,58 +82,6 @@ const SignIn = (props) => {
     init();
   }, []);
 
-  // const isLoading = useSelector((state) =>
-  //   isLoadingSelector([actionTypes.LOGIN], state)
-  // );
-  // const errors = useSelector((state) =>
-  //   errorsSelector([actionTypes.LOGIN], state)
-  // );
-  const loginklik = () => {
-    console.log('54 run loginKlik');
-    DeviceInfo.getMacAddress().then((mac) => {
-      console.log('mac address', mac);
-      // setMacAddress(mac);
-    });
-    setLoading(true);
-    setTimeout(() => {
-      loginUser();
-      loadProject();
-      setLoading(false);
-    }, 5000);
-  };
-  const loginUser = useCallback(
-    () => dispatch(login(email, password, token_firebase, macAddress)),
-    [email, password, token_firebase, macAddress, dispatch],
-  );
-
-  const loadProject = useCallback(
-    () =>
-      dispatch(data_project({ emails: email, token_firebase: token_firebase })),
-    [{ emails: email, token_firebase: token_firebase }, dispatch],
-  );
-
-  // const loadProject = useCallback(
-  //   () => dispatch(data_project({emails: email})),
-  //   [{emails: email}, dispatch],
-  // );
-
-  const passwordChanged = useCallback((value) => setPassword(value), []);
-  const emailChanged = useCallback((value) => setEmail(value), []);
-
-  useEffect(() => {
-    console.log('user for reset? ', user);
-    console.log('project di useeffect signin -->', project);
-    if (user !== null && project !== null && user.length < 0) {
-      // loadProject();
-      props.navigation.navigate('MainStack');
-      // navigation.navigate('MainStack');
-    }
-  });
-  // Menggunakan useEffect untuk memfokuskan TextInput saat screen terbuka
-  useEffect(() => {
-    emailInputRef.current?.focus(); // Memanggil focus pada TextInput
-  }, []);
-
   useEffect(() => {
     requestUserPermission();
   }, []);
@@ -151,6 +92,8 @@ const SignIn = (props) => {
       authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
       authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
+    console.log('enabled fcm', enabled);
+
     if (enabled) {
       getFcmToken();
       console.log('Authorization status:', authStatus);
@@ -158,15 +101,105 @@ const SignIn = (props) => {
   };
 
   const getFcmToken = async () => {
-    const fcmToken = await messaging().getToken();
-    if (fcmToken) {
-      console.log(fcmToken);
-      console.log('Your Firebase Token is:', fcmToken);
-      setTokenFirebase(fcmToken);
-    } else {
-      console.log('Failed', 'No token received');
+    try {
+      const fcmToken = await messaging().getToken();
+      if (fcmToken) {
+        console.log('Your Firebase Token is:', fcmToken);
+        setTokenFirebase(fcmToken);
+      } else {
+        console.log('Failed', 'No token received');
+      }
+    } catch (error) {
+      console.error('Error getting FCM token:', error);
     }
   };
+
+  const loginklik = async () => {
+    // requestUserPermission();
+    // console.log('54 run loginKlik');
+    try {
+      const mac = await DeviceInfo.getMacAddress();
+      // console.log('mac address', mac);
+      // setMacAddress(mac);
+
+      setLoading(true);
+
+      console.log('token_firebase signin', token_firebase);
+      const loginResponse = await loginUser(); // Tunggu respons login
+      // // console.log('login response awiat', loginResponse);
+
+      if (loginResponse.success === true) {
+        console.log('login sukses');
+        // Jika login berhasil, panggil loadProject
+        // loadProject();
+      } else {
+        console.log('Login failed:', loginResponse.message);
+      }
+    } catch (error) {
+      console.log('Error during login:', error);
+    } finally {
+      setLoading(false); // Pastikan loading di-set ke false di akhir
+    }
+  };
+
+  const loginUser = useCallback(() => {
+    return dispatch(login(email, password, token_firebase, macAddress)); // Pastikan ini mengembalikan promise
+  }, [email, password, token_firebase, macAddress, dispatch]);
+
+  // const loginUser = useCallback(
+  //   () => dispatch(login(email, password, token_firebase, macAddress)),
+  //   [email, password, token_firebase, macAddress, dispatch],
+  // );
+
+  const loadProject = useCallback(() => {
+    if (user && user.Token) {
+      dispatch(
+        data_project({
+          emails: email,
+          token_firebases: user.Token,
+        }),
+      );
+    }
+  }, [email, user, dispatch]);
+
+  useEffect(() => {
+    if (user && user.Token) {
+      loadProject(); // Panggil loadProject ketika user.Token tersedia
+    }
+  }, [user, loadProject]);
+
+  const passwordChanged = useCallback((value) => setPassword(value), []);
+  const emailChanged = useCallback((value) => setEmail(value), []);
+
+  // useEffect(() => {
+  //   // console.log('user for reset? ', user);
+  //   // console.log('project di useeffect signin -->', project);
+  //   if (user !== null && project !== null && user.length < 0) {
+  //     props.navigation.navigate('MainStack');
+
+  //     // navigation.navigate('MainStack');
+  //   }
+  // });
+  useEffect(() => {
+    // Pastikan user dan project tidak null
+    if (user !== null && project !== null && user.length < 0) {
+      // Panggil data_project dengan email dan token
+      dispatch(
+        data_project({
+          emails: user.email, // Pastikan menggunakan 'email' bukan 'emails'
+          token_firebases: user.Token, // Pastikan menggunakan 'token_firebase' bukan 'token_firebases'
+        }),
+      );
+
+      // Navigasi ke MainStack setelah memanggil data_project
+      props.navigation.navigate('MainStack');
+    }
+  }, [user, project, dispatch]); // Tambahkan dependency array
+
+  // Menggunakan useEffect untuk memfokuskan TextInput saat screen terbuka
+  useEffect(() => {
+    emailInputRef.current?.focus(); // Memanggil focus pada TextInput
+  }, []);
 
   const offsetKeyboard = Platform.select({
     ios: 0,

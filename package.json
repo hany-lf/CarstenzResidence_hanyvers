@@ -1,6 +1,6 @@
 {
   "name": "carstenzrdemo",
-  "version": "0.1.1",
+  "version": "0.3.1.1",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -30,7 +30,7 @@
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/stack": "^6.3.17",
     "axios": "^1.7.7",
-    "deprecated-react-native-prop-types": "3.0.2",
+    "deprecated-react-native-prop-types": "^5.0.0",
     "entities": "^4.5.0",
     "i18next": "^23.4.4",
     "lodash": "^4.17.21",

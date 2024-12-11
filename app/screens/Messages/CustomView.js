@@ -1,13 +1,8 @@
-import PropTypes from "prop-types";
-import React from "react";
-import {
-  Linking,
-  Platform,
-  StyleSheet,
-  TouchableOpacity,
-  ViewPropTypes,
-} from "react-native";
-import MapView from "react-native-maps";
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Linking, Platform, StyleSheet, TouchableOpacity } from 'react-native';
+import { ViewPropTypes } from 'deprecated-react-native-prop-types';
+import MapView from 'react-native-maps';
 
 const CustomView = (props) => {
   const { container, mapView, currentMessage } = props;
@@ -29,7 +24,7 @@ const CustomView = (props) => {
               }
             })
             .catch((err) => {
-              console.error("An error occurred", err);
+              console.error('An error occurred', err);
             });
         }}
       >

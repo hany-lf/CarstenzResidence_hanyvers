@@ -9,34 +9,45 @@ class ProjectController {
     this.basePath = API_URL_LOKAL;
   }
 
+  //data_project ini pertama dipanggil ketika login, ketika login sukses maka di screen sign in ada panggil function ini
   data_project = async (datas) => {
-    console.log('email for project di controller', datas);
-    const data_app = 'O';
-    const config = {
-      method: 'GET',
-      // url: 'http://dev.ifca.co.id:8080/apiciputra/api/approval/groupMenu?approval_user=MGR',
-      url: API_URL_LOKAL + `/home/common-project`,
-      headers: {
-        'content-type': 'application/json',
-        // 'X-Requested-With': 'XMLHttpRequest',
-        Authorization: `Bearer ${datas.token_firebase}`,
-      },
-      // params: {approval_user: user.userIDToken.UserId},
-      params: { email: datas.emails },
-      timeout: 5000, // default is `0` (no timeout)
-    };
+    // console.log(
+    //   'token_firebase for project di controller',
+    //   datas.token_firebases,
+    // );
+
+    // // Cek apakah email dan token_firebase ada
+    // if (!datas.emails && !datas.token_firebases) {
+    //   console.error('Email atau token_firebase tidak ada');
+    //   return; // Keluar dari fungsi jika data tidak lengkap
+    // }
 
     try {
-      const result = await httpClient.request(config);
-      // alert(result.Pesan);
-      console.log('vardums result project -->', result);
+      const paramData = {
+        headers: {
+          'content-type': 'application/json',
+          Authorization: `Bearer ${datas.token_firebases}`,
+        },
+        params: {
+          email: datas.emails,
+        },
+      };
+      // const result = await httpClient.request(config);
+      const result = await axios.get(
+        `${API_URL_LOKAL}/home/common-project`,
+        paramData,
+      );
+
+      // console.log('vardums result project -->', result.data.success);
+
       // ini ada isreset dalemnya, sementara dihilangin, buat biar ga nyangkut insert token firebase
-      if (result.success) {
-        return result;
+      if (result.data.success) {
+        return result.data;
       } else {
-        return Promise.reject(result.message);
+        return Promise.reject(result.data.message);
       }
     } catch (error) {
+      console.log('error common project', error.response);
       return Promise.reject(error);
     }
   };

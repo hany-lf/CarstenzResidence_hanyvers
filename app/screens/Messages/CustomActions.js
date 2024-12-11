@@ -1,5 +1,5 @@
-import PropTypes from "prop-types";
-import React, { useState } from "react";
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 import {
   ActionSheetIOS,
   Modal,
@@ -7,8 +7,8 @@ import {
   Text,
   TouchableOpacity,
   View,
-  ViewPropTypes,
-} from "react-native";
+} from 'react-native';
+import { ViewPropTypes } from 'deprecated-react-native-prop-types';
 
 const CustomActions = (props) => {
   const { onSend, options, icon, containerStyle, wrapperStyle, iconTextStyle } =
@@ -16,7 +16,7 @@ const CustomActions = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const onActionsPress = () => {
-    const options = ["Choose From Library", "Send Location", "Cancel"];
+    const options = ['Choose From Library', 'Send Location', 'Cancel'];
     const cancelButtonIndex = options.length - 1;
     ActionSheetIOS.showActionSheetWithOptions(
       {
@@ -43,12 +43,12 @@ const CustomActions = (props) => {
                 enableHighAccuracy: true,
                 timeout: 20000,
                 maximumAge: 1000,
-              }
+              },
             );
             break;
           default:
         }
-      }
+      },
     );
   };
 
@@ -69,7 +69,7 @@ const CustomActions = (props) => {
       onPress={onActionsPress}
     >
       <Modal
-        animationType={"slide"}
+        animationType={'slide'}
         transparent={false}
         visible={modalVisible}
         onRequestClose={() => {
@@ -92,16 +92,16 @@ const styles = StyleSheet.create({
   },
   wrapper: {
     borderRadius: 13,
-    borderColor: "#b2b2b2",
+    borderColor: '#b2b2b2',
     borderWidth: 2,
     flex: 1,
   },
   iconText: {
-    color: "#b2b2b2",
-    fontWeight: "bold",
+    color: '#b2b2b2',
+    fontWeight: 'bold',
     fontSize: 16,
-    backgroundColor: "transparent",
-    textAlign: "center",
+    backgroundColor: 'transparent',
+    textAlign: 'center',
   },
 });
 

@@ -95,72 +95,101 @@ const removeUser = (user) => ({
 
 export const login = (email, password, token_firebase) => async (dispatch) => {
   dispatch(loginRequest());
-  console.log('login action', email);
-  try {
-    console.log('try login action', email);
-    const user = await UserController.login(email, password, token_firebase);
-    dispatch(loginSuccess(user.data));
-    console.log('99 userrrrr', user);
-    // alert("JSON.stringify(user)");
-  } catch (error) {
-    // const msgPesan = error.response.data.message;
-    // Platform.OS == 'android'
-    //   ? Alert.alert('Sorry!', msgPesan)
-    //   : Alert.prompt('Sorry!', msgPesan);
-    // // alert('error di login user action',error);
-    // console.log('103 ini konsol eror', error.response.data);
+  // console.log('token_firebase action', token_firebase);
 
-    // dispatch(loginError(error));
+  const maxRetries = 3; // Jumlah maksimum percobaan
+  let attempt = 0; // Inisialisasi percobaan
 
-    if (error.response.data.message.email != null) {
-      const msgPesan = error.response.data.message.email[0];
-      console.log('msgpesan email tidak null', msgPesan);
-
+  while (attempt < maxRetries) {
+    try {
+      // console.log('try login action', email);
+      const user = await UserController.login(email, password, token_firebase);
+      dispatch(loginSuccess(user.data));
+      // console.log('99 userrrrr', user);
+      // alert("JSON.stringify(user)");
+      return user; // Kembalikan user.data;
+    } catch (error) {
+      // const msgPesan = error.response.data.message;
       // Platform.OS == 'android'
-      //   ? Alert.alert('Sorry! Warning email tidak null', msgPesan)
-      //   : Alert.prompt('Sorry! Warning ios email tidak null', msgPesan);
-      Platform.OS == 'android'
-        ? Alert.alert('Incorrect Username', msgPesan)
-        : Alert.prompt('Incorrect Username', msgPesan);
+      //   ? Alert.alert('Sorry!', msgPesan)
+      //   : Alert.prompt('Sorry!', msgPesan);
+      // // alert('error di login user action',error);
+      // console.log('103 ini konsol eror', error.response.data);
 
-      console.log('ini konsol eror', msgPesan);
+      // dispatch(loginError(error));
 
-      // kalo error email: munculnya {"email": ["The email format is invalid."]}
-      // kalo error password: munculnya Wrong Password / User not found
-    } else if (error.response.data.message.password != null) {
-      const msgPesan = error.response.data.message.password[0];
-      console.log('msgpesan password tidk null', msgPesan);
+      if (error.response.data.message.email != null) {
+        const msgPesan = error.response.data.message.email[0];
+        console.log('msgpesan email tidak null', msgPesan);
 
-      // Platform.OS == 'android'
-      //   ? Alert.alert('Sorry! Warning msgpesan password tidk null', msgPesan)
-      //   : Alert.prompt(
-      //       'Sorry! Warning ios msgpesan password tidk null',
-      //       msgPesan,
-      //     );
+        // Platform.OS == 'android'
+        //   ? Alert.alert('Sorry! Warning email tidak null', msgPesan)
+        //   : Alert.prompt('Sorry! Warning ios email tidak null', msgPesan);
+        Platform.OS == 'android'
+          ? Alert.alert('Incorrect Username', msgPesan)
+          : Alert.prompt('Incorrect Username', msgPesan);
 
-      Platform.OS == 'android'
-        ? Alert.alert('Sorry! Warning', msgPesan)
-        : Alert.prompt('Sorry! Warning', msgPesan);
+        console.log('ini konsol eror', msgPesan);
 
-      console.log('ini konsol eror', msgPesan);
-      // kalo error email: munculnya {"email": ["The email format is invalid."]}
-      // kalo error password: munculnya Wrong Password / User not found
-    } else {
-      const msgPesan = error.response.data.message;
-      console.log('msgpesan password null', msgPesan);
+        // kalo error email: munculnya {"email": ["The email format is invalid."]}
+        // kalo error password: munculnya Wrong Password / User not found
+      } else if (error.response.data.message.password != null) {
+        const msgPesan = error.response.data.message.password[0];
+        console.log('msgpesan password tidk null', msgPesan);
 
-      // Platform.OS == 'android'
-      //   ? Alert.alert('Sorry! Warning password dan email deh', msgPesan)
-      //   : Alert.prompt('Sorry! Warning password dan email deh ios', msgPesan);
+        // Platform.OS == 'android'
+        //   ? Alert.alert('Sorry! Warning msgpesan password tidk null', msgPesan)
+        //   : Alert.prompt(
+        //       'Sorry! Warning ios msgpesan password tidk null',
+        //       msgPesan,
+        //     );
 
-      Platform.OS == 'android'
-        ? Alert.alert('Sorry! Warning', msgPesan)
-        : Alert.prompt('Sorry! Warning', msgPesan);
+        Platform.OS == 'android'
+          ? Alert.alert('Sorry! Warning', msgPesan)
+          : Alert.prompt('Sorry! Warning', msgPesan);
 
-      console.log('ini konsol eror', msgPesan);
-      // kalo error email: munculnya {"email": ["The email format is invalid."]}
-      // kalo error password: munculnya Wrong Password / User not found
+        console.log('ini konsol eror', msgPesan);
+        // kalo error email: munculnya {"email": ["The email format is invalid."]}
+        // kalo error password: munculnya Wrong Password / User not found
+      } else if (
+        error.response.data.message === 'key must be a string when using hmac'
+      ) {
+        const msgPesan = 'Tidak bisa akses server, coba login kembali';
+        //apakah saya bisa mengembalikan function / hit kembali API diatas? agar looping otomatis sampai bisa berhasil login selain error key must be a string when using hmac ?
+
+        Platform.OS == 'android'
+          ? Alert.alert('Sorry! Warning', msgPesan)
+          : Alert.prompt('Sorry! Warning', msgPesan);
+
+        attempt++; // Increment percobaan
+        console.log(`Attempt ${attempt} failed. Retrying...`);
+
+        // Tunggu sebelum mencoba lagi (misalnya 2 detik)
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+      } else {
+        const msgPesan = error.response.data.message;
+        console.log('msgpesan password null', msgPesan);
+
+        // Platform.OS == 'android'
+        //   ? Alert.alert('Sorry! Warning password dan email deh', msgPesan)
+        //   : Alert.prompt('Sorry! Warning password dan email deh ios', msgPesan);
+
+        Platform.OS == 'android'
+          ? Alert.alert('Sorry! Warning', msgPesan)
+          : Alert.prompt('Sorry! Warning', msgPesan);
+
+        console.log('ini konsol eror', msgPesan);
+        // kalo error email: munculnya {"email": ["The email format is invalid."]}
+        // kalo error password: munculnya Wrong Password / User not found
+        dispatch(loginError(error));
+        return;
+      }
     }
+    // Jika semua percobaan gagal
+    Alert.alert(
+      'Error',
+      'Semua percobaan login telah gagal. Silakan coba lagi nanti.',
+    );
   }
 };
 

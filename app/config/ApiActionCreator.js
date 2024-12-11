@@ -32,7 +32,7 @@ const apiActionCreator = (url, params) => (dispatch) => {
       })
       .catch((error) => {
         dispatch(fetchError(error));
-        console.log('error api action creator', error.response);
+        console.log('error api action creator', error.response.message);
       });
   });
 };
