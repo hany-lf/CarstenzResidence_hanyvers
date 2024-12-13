@@ -161,6 +161,25 @@ class UserController {
       return Promise.reject(error);
     }
   };
+
+  refreshToken = async (datas) => {
+    console.log('data for refresh token', datas);
+    try {
+      const result = await httpClient.request({
+        url: API_URL_LOKAL + `/auth/refresh-token`,
+        method: 'POST',
+        data: {
+          // userID: data.userID,
+          token: datas, //kirim token yang udah ada
+        },
+      });
+      console.log('result refresh token', result.data.Token);
+      return result.data;
+    } catch (error) {
+      console.log('error refresh token controller', error.response);
+      return Promise.reject(error);
+    }
+  };
 }
 
 export default new UserController();

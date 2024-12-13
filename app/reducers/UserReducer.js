@@ -61,6 +61,21 @@ const userReducer = (state = initialState, action) => {
         //...state,
         user: [],
       };
+    case actionTypes.UPDATE_REFRESHTOKEN:
+      return {
+        ...state,
+        // ...action.edits,
+        // user: action.edits,
+        user: {
+          ...state.user,
+          Token: action.data, // Mengupdate properti pict saja
+          // refreshToken: undefined, // Hapus refreshToken
+          userData: {
+            ...state.user.userData, // Memastikan objek userData yang ada tidak diganti
+          },
+        },
+        // pict: action.edits,
+      };
 
     default:
       return state;

@@ -53,6 +53,7 @@ import {
   Dimensions,
   Pressable,
   PixelRatio,
+  Alert,
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ImageZoom from 'react-native-image-pan-zoom';
@@ -114,6 +115,8 @@ const Home = (props) => {
   const notif = useSelector((state) => getNotifRed(state));
   const project = useSelector((state) => getProject(state));
   const dataMenus = useSelector((state) => getMenu(state));
+  // --- tes logout jika token invalid----
+  const isLoggedOut = useSelector((state) => state.auth.isLoggedOut);
   // console.log('project dari useselector', project);
   // console.log('user di home dari useselector', user);
   // console.log('dataMenus', dataMenus);
@@ -187,6 +190,24 @@ const Home = (props) => {
   const [loadMenu, setLoadMenu] = useState(true);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (user == null) {
+      props.navigation.navigate('SignIn');
+    }
+  });
+
+  // --- USEEFFECT LOGOUT JIKA INVALID TOKEN ---
+  useEffect(() => {
+    if (isLoggedOut) {
+      Alert.alert(
+        'Session expired',
+        'Your session has expired. Please log in again.',
+      );
+      // Arahkan pengguna ke halaman login jika perlu
+      navigation.navigate('Login');
+    }
+  }, [isLoggedOut]);
 
   // --- USEEFFECT NOTIFICATION ---
   useEffect(() => {
@@ -843,7 +864,10 @@ const Home = (props) => {
               {/* <Button style={{backgroundColor: colors.primary}}>
               </Button> */}
               {imageGreetings.map((item, index) => (
-                <View style={{ flexDirection: 'row', width: '100%' }}>
+                <View
+                  style={{ flexDirection: 'row', width: '100%' }}
+                  key={index}
+                >
                   <View
                     style={{
                       marginTop: 10,
@@ -1017,6 +1041,7 @@ const Home = (props) => {
             headerImage.map((item, key) => {
               return (
                 <ImageBackground
+                  key={key}
                   // source={require('../../assets/images/image-home/Main_Image.png')}
                   source={{ uri: item.img_url }}
                   style={{ height: 400 }} // Match the height of Swiper

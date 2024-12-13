@@ -21,6 +21,13 @@ import Profile from '@screens/Profile';
 import SignIn from '../screens/SignIn';
 import Loading from '../screens/Loading';
 
+//for access token interval
+
+import jwtDecode from 'jwt-decode';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Jika Anda menggunakan AsyncStorage
+import UserController from '../controllers/UserController';
+import { refreshTokenAccess, logout } from '../actions/UserActions';
+
 const RootStack = createStackNavigator();
 import { StackActions } from '@react-navigation/native';
 import MainStack from './MainStack';
@@ -32,6 +39,7 @@ import messaging from '@react-native-firebase/messaging';
 import Home from '../screens/Home';
 import ResetPassword from '../screens/ResetPassword';
 import ChangePasswordFirst from '../screens/ChangePasswordFirst';
+import { Modal } from 'react-native-paper';
 
 const Navigator = (props) => {
   const { theme, colors } = useTheme();
@@ -82,6 +90,125 @@ const Navigator = (props) => {
     };
     onProcess();
   }, []);
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      console.log('ini useeffect dimainstack - refresh otomatis');
+      // checkAksesToken();
+      const refreshTokenisTrue = await checkRefreshToken();
+
+      if (refreshTokenisTrue == true) {
+        checkTokenAkses();
+      } else {
+        dispatch(logout());
+        // console.log('refreshTokenisValid', refreshTokenisValid);
+      }
+    }, 10000); // Set interval untuk setiap 2 detik
+
+    // Cleanup function untuk menghapus interval jika komponen di-unmount
+    return () => clearInterval(interval);
+  }, [user]);
+
+  // const tes = () => {
+  //   console.log('ini ke hit');
+  // };
+
+  const checkTokenAkses = async () => {
+    // console.log('usercheckrefreshtoken', user != null);
+    if (user != null || user != '' || user != 0) {
+      // console.log('ada user nya', user);
+      // Pastikan token tidak kosong
+      if (!user.Token) {
+        throw new Error('Token tidak ada');
+      }
+
+      const token = user.Token; //akses token
+      console.log('token check', token);
+
+      if (token) {
+        try {
+          // Dekode token
+          const decoded = jwtDecode(token);
+          // console.log('Decoded token:', decoded);
+          const currentTime = Math.floor(Date.now() / 1000);
+          // console.log('Checking token validity...');
+          const isTokenExpired = decoded.exp > currentTime;
+          // const isTokenValid = true;
+          // console.log('Is access token valid:', isTokenValid);
+          if (isTokenExpired) {
+            console.log('istokenvalid', isTokenExpired); //besok lagi, ini dihapus, lalu istokenvalid true dijadiin balikin lagi
+            return;
+          } else {
+            console.log('Access token has been refreshed');
+            const userRefreshToken = user.refreshToken;
+            dispatch(refreshTokenAccess(userRefreshToken));
+          }
+        } catch (error) {
+          console.error('Error decoding token:', error);
+          // Jika token tidak valid, lakukan logout
+          // console.log('harus kah logout?');
+          // logout();
+        }
+      } else {
+        console.log('Token tidak ditemukan');
+        // Arahkan pengguna ke halaman login
+        // navigation.navigate('Login');
+      }
+    } else {
+      console.log('user koosng???');
+      // props.navigation.navigate('SignIn');
+    }
+    // return null;
+  };
+
+  const checkRefreshToken = async () => {
+    // console.log('usercheckrefreshtoken', user != null);
+    if (user != null || user != '' || user != 0) {
+      // console.log('ada user nya', user);
+      // Pastikan token tidak kosong
+      if (!user.refreshToken) {
+        throw new Error('refreshToken tidak ada');
+      }
+
+      const refreshToken = user.refreshToken; //akses refresh token
+      console.log('refresh token check', refreshToken);
+
+      if (refreshToken) {
+        try {
+          // Dekode token
+          const decoded = jwtDecode(refreshToken);
+          // console.log('Decoded token:', decoded);
+          const currentTime = Math.floor(Date.now() / 1000);
+          // console.log('Checking token validity...');
+          const isTokenExpired = decoded.exp > currentTime;
+          // const isTokenValid = true;
+          // console.log('Is access token valid:', isTokenValid);
+          if (isTokenExpired) {
+            console.log('isrefreshtokenexpired', isTokenExpired); //besok lagi, ini dihapus, lalu istokenvalid true dijadiin balikin lagi
+            return true;
+          } else {
+            console.log('Access refreshToken token is valid');
+            return false;
+            //  const userRefreshToken = user.refreshToken;
+            //  dispatch(refreshTokenAccess(userRefreshToken));
+          }
+        } catch (error) {
+          console.error('Error decoding refreshtoken:', error);
+          // Jika token tidak valid, lakukan logout
+          // console.log('harus kah logout?');
+          // logout();
+        }
+      } else {
+        console.log('refresh Token tidak ditemukan');
+        // Arahkan pengguna ke halaman login
+        // navigation.navigate('Login');
+      }
+    } else {
+      console.log('refresh token user null');
+      // props.navigation.navigate('SignIn');
+    }
+    // return null;
+  };
 
   // useEffect(() => {
   //   messaging().onNotificationOpenedApp(remoteMessage => {

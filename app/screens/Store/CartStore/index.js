@@ -9,43 +9,43 @@ import {
   TextInput,
   Text,
   FormCounterSelect,
-} from "@components";
-import Checkout from "../Checkout";
-import { BaseColor, BaseStyle, useTheme } from "@config";
-import { ProductsData } from "@data";
-import React, { Fragment, useEffect, useState, useCallback } from "react";
-import { useTranslation } from "react-i18next";
-import { FlatList, RefreshControl, View } from "react-native";
+} from '@components';
+import Checkout from '../Checkout';
+import { BaseColor, BaseStyle, useTheme } from '@config';
+import { ProductsData } from '@data';
+import React, { Fragment, useEffect, useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FlatList, RefreshControl, View } from 'react-native';
 
-import getProject from "../../../selectors/ProjectSelector";
-import { useSelector, useDispatch } from "react-redux";
+import getProject from '../../../selectors/ProjectSelector';
+import { useSelector, useDispatch } from 'react-redux';
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import Modal from "react-native-modal";
+import Modal from 'react-native-modal';
 
-import getCartData from "../../../selectors/cartSelectors";
+import getCartData from '../../../selectors/cartSelectors';
 
 const sortOptionInit = [
   {
-    value: "remove",
-    icon: "sort-amount-up",
-    text: "remove",
+    value: 'remove',
+    icon: 'sort-amount-up',
+    text: 'remove',
   },
   {
-    value: "share_this_article",
-    icon: "sort-amount-down",
-    text: "share_this_article",
+    value: 'share_this_article',
+    icon: 'sort-amount-down',
+    text: 'share_this_article',
   },
   {
-    value: "view_detail",
-    icon: "sort-amount-up",
-    text: "view_detail",
+    value: 'view_detail',
+    icon: 'sort-amount-up',
+    text: 'view_detail',
   },
   {
-    value: "reset_all",
-    icon: "sort-amount-up",
-    text: "reset_all",
+    value: 'reset_all',
+    icon: 'sort-amount-up',
+    text: 'reset_all',
   },
 ];
 
@@ -64,7 +64,7 @@ const CartStore = (props) => {
   const projectSelector = useSelector((state) => getProject(state));
 
   const cartSelector = useSelector((state) => getCartData(state));
-  console.log("cart selector", cartSelector);
+  console.log('cart selector', cartSelector);
   // console.log('project selector', projectSelector);
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -77,7 +77,7 @@ const CartStore = (props) => {
 
   const [tambahItem, setTambahItem] = useState(false);
 
-  const [promotionCode, setPromotionCode] = useState("");
+  const [promotionCode, setPromotionCode] = useState('');
   const [totalHarga, setTotal] = useState(0);
   const [totalHargaParams, setTotalParams] = useState(0);
   const [jumlahTotalHarga, setJumlahTotalHarga] = useState(0);
@@ -137,7 +137,7 @@ const CartStore = (props) => {
           ...item,
           checked: item.value == selected.value,
         };
-      })
+      }),
     );
   };
 
@@ -157,11 +157,11 @@ const CartStore = (props) => {
   const onDelete = () => {
     var myArray = dataListCheckout;
     var myIndex = myArray.indexOf(dataListCheckout.trx_code);
-    console.log("myindex", myIndex);
+    console.log('myindex', myIndex);
     if (myIndex !== -1) {
       myArray.splice(myIndex, 1);
     }
-    console.log("myarray", myArray);
+    console.log('myarray', myArray);
   };
 
   const changeQty = (value, unit_price, index, item) => {
@@ -173,8 +173,8 @@ const CartStore = (props) => {
     // setTotal(value * unit_price);
 
     const totalAwal = value * unit_price;
-    const totalAwaldenganTax = totalAwal + (value * unit_price) / item.tax_rate;
-    const taxSebelumdiJumlah = (value * unit_price) / item.tax_rate;
+    const taxSebelumdiJumlah = totalAwal / item.tax_rate; //hasil dapet misal 1000 pajak per item per harga
+    const totalAwaldenganTax = totalAwal + taxSebelumdiJumlah; //total sudah dengan tax diatas
 
     const dataCheckout = {
       totalHarga: value * unit_price,
@@ -185,16 +185,16 @@ const CartStore = (props) => {
       count_tax_rate_per_item: (value * unit_price) / item.tax_rate,
       total_harga_with_tax: totalAwaldenganTax,
     };
-    console.log("databuy ???", dataCheckout);
+    console.log('databuy ???', dataCheckout);
 
     const arrayCart = [...ArrayDataCheckout, dataCheckout];
-    console.log("array checkout", arrayCart);
+    console.log('array checkout', arrayCart);
 
     const newArray = [
       ...new Map(arrayCart.map((item) => [item.trx_code, item])).values(),
     ];
 
-    console.log("newarray", newArray);
+    console.log('newarray', newArray);
 
     // const filterCart = [...newArray];
 
@@ -206,7 +206,7 @@ const CartStore = (props) => {
         : newArray.reduce(
             (total, currentItem) =>
               (total = total + currentItem.total_harga_with_tax),
-            0
+            0,
           );
 
     const itemFortax =
@@ -215,7 +215,7 @@ const CartStore = (props) => {
         : newArray.reduce(
             (tax, currentItem) =>
               (tax = tax + currentItem.count_tax_rate_per_item),
-            0
+            0,
           );
 
     // const total = newArray.reduce(
@@ -224,7 +224,7 @@ const CartStore = (props) => {
     //   0,
     // );
 
-    console.log("tes tax", itemFortax);
+    console.log('tes tax', itemFortax);
     setTotalTax(itemFortax);
     setTotal(itemFortotal);
   };
@@ -234,7 +234,7 @@ const CartStore = (props) => {
   };
 
   const checkoutSave = () => {
-    console.log("dataListCheckout di button checkout save", dataListCheckout);
+    console.log('dataListCheckout di button checkout save', dataListCheckout);
 
     const formData = {
       entity_cd: dataListCheckout[0].entity_cd, // sebenernya ini cukup ambil dari data array 0, karena termasuk member item yang sama disetiap array produk
@@ -247,16 +247,16 @@ const CartStore = (props) => {
       datadetail: ArrayDataCheckout, // dapet dari isi redux (ini yg nantinya ada kode item, qty, total, dll)
     };
 
-    console.log("formdata", formData);
+    console.log('formdata', formData);
 
-    navigation.navigate("DeliveryAndPayment", formData);
+    navigation.navigate('DeliveryAndPayment', formData);
   };
 
   const renderContent = () => {
     return (
       <View style={{ flex: 1 }}>
         <Header
-          title={t("checkout")}
+          title={t('checkout')}
           renderLeft={() => {
             return (
               <Icon
@@ -310,7 +310,7 @@ const CartStore = (props) => {
                 style={{ marginTop: 10 }}
                 title={item.trx_descs}
                 // image={item.image}
-                image={require("@assets/images/logo.png")} //image di component checkoutnya sengaja di tutup, karena tidak pakai url uri
+                image={require('@assets/images/logo.png')} //image di component checkoutnya sengaja di tutup, karena tidak pakai url uri
                 salePrice={item.unit_price}
                 // description={item.tax_rate}
                 secondDescription={item.tax_rate}
@@ -318,8 +318,8 @@ const CartStore = (props) => {
                   setDataListCheckout(
                     dataListCheckout.filter(
                       (dataListCheckout) =>
-                        dataListCheckout.trx_code != item.trx_code
-                    )
+                        dataListCheckout.trx_code != item.trx_code,
+                    ),
                   )
                 }
                 // onDelete={() => onDelete()}
@@ -345,12 +345,12 @@ const CartStore = (props) => {
         </View>
         <CardBooking
           loading={loading}
-          description={t("total_price")}
+          description={t('total_price')}
           // price={tambahItem == false ? itemFortotal : totalHarga}
           price={totalHarga}
           // price={'1000'}
-          secondDescription={"Tax included"}
-          textButton={t("checkout")}
+          secondDescription={'Tax included'}
+          textButton={t('checkout')}
           // onPress={() => navigation.navigate('EShipping')}
           onPress={() =>
             totalHarga == 0 ? setShowAlert(true) : checkoutSave()
@@ -361,7 +361,7 @@ const CartStore = (props) => {
         <View>
           <Modal
             isVisible={showAlert}
-            style={{ height: "100%" }}
+            style={{ height: '100%' }}
             onBackdropPress={() => onCloseAlert()}
           >
             <View
@@ -370,28 +370,28 @@ const CartStore = (props) => {
 
                 // alignContent: 'center',
                 padding: 10,
-                backgroundColor: "#fff",
+                backgroundColor: '#fff',
                 // height: ,
                 borderRadius: 8,
               }}
             >
-              <View style={{ alignItems: "center" }}>
+              <View style={{ alignItems: 'center' }}>
                 <Text
                   style={{
                     fontSize: 16,
-                    fontWeight: "bold",
+                    fontWeight: 'bold',
                     color: colors.primary,
                     marginBottom: 10,
                   }}
                 >
-                  {"Alert"}
+                  {'Alert'}
                 </Text>
                 <Text>You have to set the quantity</Text>
               </View>
               <View
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "flex-end",
+                  flexDirection: 'row',
+                  justifyContent: 'flex-end',
                 }}
               >
                 <Button
@@ -405,7 +405,7 @@ const CartStore = (props) => {
                   onPress={() => onCloseAlert()}
                 >
                   <Text style={{ fontSize: 13, color: colors.whiteColor }}>
-                    {t("OK")}
+                    {t('OK')}
                   </Text>
                 </Button>
               </View>
@@ -420,7 +420,7 @@ const CartStore = (props) => {
   return (
     <SafeAreaView
       style={BaseStyle.safeAreaView}
-      edges={["right", "top", "left"]}
+      edges={['right', 'top', 'left']}
     >
       {renderContent()}
     </SafeAreaView>

@@ -1,5 +1,5 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text } from 'react-native';
 import HomeScreen from '../screens/Home';
 import ProfileScreen from '../screens/Profile';
@@ -186,6 +186,15 @@ export const WalletMenu = () => (
 );
 
 function MainStack() {
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     console.log('ini useeffect dimainstack');
+  //   }, 2000);
+
+  //   // Cleanup function untuk menghapus timer jika komponen di-unmount
+  //   return () => clearTimeout(timer);
+  // }, []);
+
   return (
     <Stack.Navigator
       screenOptions={{

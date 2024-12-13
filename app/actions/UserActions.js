@@ -1,6 +1,11 @@
 import UserController from '../controllers/UserController';
 import { Alert } from 'react-native';
 import { Platform } from 'react-native';
+import {
+  REFRESHTOKEN_FAILED,
+  REFRESHTOKEN_REQUEST,
+  REFRESHTOKEN_SUCCESS,
+} from './actionTypes';
 
 export const actionTypes = {
   LOGIN: 'LOGIN',
@@ -23,6 +28,12 @@ export const actionTypes = {
   CHANGE_FOTO: 'CHANGE_FOTO',
 
   REMOVE_USER: 'REMOVE_USER',
+
+  REFRESHTOKEN_SUCCESS: 'REFRESHTOKEN_SUCCESS',
+  REFRESHTOKEN_FAILED: 'REFRESHTOKEN_FAILED',
+  REFRESHTOKEN_REQUEST: 'REFRESHTOKEN_REQUEST',
+
+  UPDATE_REFRESHTOKEN: 'UPDATE_REFRESHTOKEN',
 
   // LOAD_LOTNO: 'LOAD_LOTNO'
 };
@@ -86,6 +97,25 @@ const logoutRequest = () => ({
 const removeUser = (user) => ({
   type: actionTypes.REMOVE_USER,
   user: null,
+});
+
+const refreshTokenRequest = () => ({
+  type: actionTypes.REFRESHTOKEN_REQUEST,
+});
+
+const refreshTokenSuccess = (data) => ({
+  type: actionTypes.REFRESHTOKEN_SUCCESS,
+  data,
+});
+
+const refreshTokenFailed = (error) => ({
+  type: actionTypes.REFRESHTOKEN_FAILED,
+  error,
+});
+
+const updateRefreshToken = (data) => ({
+  type: actionTypes.UPDATE_REFRESHTOKEN,
+  data,
 });
 
 // const loadLotno = user => ({
@@ -247,6 +277,20 @@ export const changePass = (email, pass, conpass) => async (dispatch) => {
     dispatch(changePassSuccess(res.data));
   } catch (error) {
     dispatch(changePassError(error));
+  }
+};
+
+export const refreshTokenAccess = (data) => async (dispatch) => {
+  // dispatch(refreshTokenRequest());
+  try {
+    console.log('user action refresh token akses', data);
+    const res = await UserController.refreshToken(data);
+    console.log('res akses token refresh ', res);
+    dispatch(refreshTokenSuccess(res.Token));
+    dispatch(updateRefreshToken(res.Token));
+  } catch (error) {
+    console.log('error actions refresh token', error);
+    dispatch(refreshTokenFailed(error));
   }
 };
 

@@ -117,8 +117,10 @@ const Store = (props) => {
       // getTower();
       if (project && project.data && project.data.length > 0) {
         // console.log('entity useeffect di home', project.data[0].entity_cd);
-        setEntity(project.data[0].entity_cd);
-        setProjectNo(project.data[0].project_no);
+        // setEntity(project.data[0].entity_cd);
+        // setProjectNo(project.data[0].project_no);
+        setEntity('01');
+        setProjectNo('01');
         const projects = project.data.map((item, id) => ({
           label: item.descs,
           value: item.project_no,
@@ -127,7 +129,7 @@ const Store = (props) => {
 
         setProjectData(project.data);
         setValueProject(projects);
-
+        setCheckedEntity(true);
         setSpinner(false);
         setShow(true);
         console.log('spinner after', spinner);
@@ -136,8 +138,12 @@ const Store = (props) => {
   }, [project]);
 
   useEffect(() => {
-    getMenuStore();
-    getMember();
+    console.log('entity_cd useEffect for menustore dan member', entity_cd);
+    if (entity_cd != '' && project_no != '') {
+      console.log('ada entity dan ada project');
+      getMenuStore();
+      getMember();
+    }
   }, [entity_cd, project_no]);
 
   // --- useeffect untuk update email/name
@@ -154,19 +160,25 @@ const Store = (props) => {
 
   const getMenuStore = () => {
     const entity = entity_cd;
-    console.log('entity', entity_cd);
+    // console.log('entity', entity_cd);
     const project = project_no;
 
     const config = {
       method: 'get',
-      url: API_URL_LOKAL + `/modules/store/facility-type`,
+      // url: API_URL_LOKAL + `/modules/store/facility-type`,
+      url:
+        'https://apps.pakubuwono-residence.com/apiwebpbi_train/api' +
+        // `/modules/store/facility-type`,
+        `/pos/factype`,
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${user.token}`,
+        Authorization: `Bearer ${user.Token}`,
       },
       params: {
         entity_cd: entity,
         project_no: project,
+        // entity_cd: '01',
+        // project_no: '01',
       },
     };
     axios(config).then((res) => {
@@ -182,16 +194,21 @@ const Store = (props) => {
   };
 
   const getMember = () => {
+    const entity = entity_cd;
+    const project = project_no;
+    // console.log('entity_cd for member', entity_cd);
+    // console.log('project_no for member', project_no);
+    console.log('token for member', user.Token);
     const config = {
       method: 'get',
       url: API_URL_LOKAL + `/modules/store/member`,
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${user.token}`,
+        Authorization: `Bearer ${user.Token}`,
       },
       params: {
-        entity_cd: entity_cd,
-        project_no: project_no,
+        entity_cd: entity,
+        project_no: project,
       },
     };
     axios(config)
@@ -263,8 +280,10 @@ const Store = (props) => {
     setCheckedEntity(true);
     setShow(true);
 
-    setEntity(data.entity_cd);
-    setProjectNo(data.project_no);
+    // setEntity(data.entity_cd);
+    // setProjectNo(data.project_no);
+    setEntity('01');
+    setProjectNo('01');
     setDb_Profile(data.db_profile);
     setDefaultProjectName(false);
     console.log('projectname', data);
@@ -280,8 +299,8 @@ const Store = (props) => {
 
   const toItemStore = (item) => {
     const dataForItemStore = {
-      entity_cd: entity,
-      project_no: projectno,
+      entity_cd: entity_cd,
+      project_no: project_no,
       facility_type: item.facility_type,
       member_id: memberID,
       member_name: memberName,
@@ -305,7 +324,7 @@ const Store = (props) => {
         forceInset={{ top: 'always', bottom: 'always' }}
       >
         <Header
-          title={t('Store')}
+          title={t('Stores')}
           renderLeft={() => {
             return (
               <Icon
