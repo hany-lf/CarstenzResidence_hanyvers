@@ -93,7 +93,7 @@ const Navigator = (props) => {
 
   useEffect(() => {
     const interval = setInterval(async () => {
-      console.log('ini useeffect dimainstack - refresh otomatis');
+      // console.log('ini useeffect dimainstack - refresh otomatis');
       // checkAksesToken();
       const refreshTokenisTrue = await checkRefreshToken();
 
@@ -101,9 +101,12 @@ const Navigator = (props) => {
         checkTokenAkses();
       } else {
         dispatch(logout());
+        navigation.navigate('SignIn', {
+          message: 'Session ended, please relogin',
+        });
         // console.log('refreshTokenisValid', refreshTokenisValid);
       }
-    }, 10000); // Set interval untuk setiap 2 detik
+    }, 60000); // Set interval untuk setiap 2 detik
 
     // Cleanup function untuk menghapus interval jika komponen di-unmount
     return () => clearInterval(interval);
@@ -123,7 +126,7 @@ const Navigator = (props) => {
       }
 
       const token = user.Token; //akses token
-      console.log('token check', token);
+      // console.log('token check', token);
 
       if (token) {
         try {
@@ -136,7 +139,7 @@ const Navigator = (props) => {
           // const isTokenValid = true;
           // console.log('Is access token valid:', isTokenValid);
           if (isTokenExpired) {
-            console.log('istokenvalid', isTokenExpired); //besok lagi, ini dihapus, lalu istokenvalid true dijadiin balikin lagi
+            // console.log('istokenvalid', isTokenExpired); //besok lagi, ini dihapus, lalu istokenvalid true dijadiin balikin lagi
             return;
           } else {
             console.log('Access token has been refreshed');
@@ -171,7 +174,7 @@ const Navigator = (props) => {
       }
 
       const refreshToken = user.refreshToken; //akses refresh token
-      console.log('refresh token check', refreshToken);
+      // console.log('refresh token check', refreshToken);
 
       if (refreshToken) {
         try {
@@ -184,7 +187,7 @@ const Navigator = (props) => {
           // const isTokenValid = true;
           // console.log('Is access token valid:', isTokenValid);
           if (isTokenExpired) {
-            console.log('isrefreshtokenexpired', isTokenExpired); //besok lagi, ini dihapus, lalu istokenvalid true dijadiin balikin lagi
+            // console.log('isrefreshtokenexpired', isTokenExpired); //besok lagi, ini dihapus, lalu istokenvalid true dijadiin balikin lagi
             return true;
           } else {
             console.log('Access refreshToken token is valid');

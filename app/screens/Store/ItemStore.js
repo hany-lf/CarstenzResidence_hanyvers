@@ -108,48 +108,80 @@ const Product = (params) => {
   const [valueChangeQty, setValue] = useState(0);
 
   const getItemStore = () => {
-    const entity_cd = projectSelector.Data[0].entity_cd;
+    // const entity_cd = projectSelector.Data[0].entity_cd;
+    const entity_cd = dataMember.entity_cd;
     console.log('entity', entity_cd);
-    const project_no = projectSelector.Data[0].project_no;
+    // const project_no = projectSelector.Data[0].project_no;
+    const project_no = dataMember.project_no;
     console.log(
       'url menu store di product',
-      `http://apps.pakubuwono-residence.com/apiwebpbi/api/modules/store/products?entity_cd=${entity_cd}&project_no=${project_no}&trx_class=H&facility_type=${dataMember.facility_type}`,
+      `https://apps.pakubuwono-residence.com/apiwebpbi_train/api/pos/getProductsNew?entity_cd=${entity_cd}&project_no=${project_no}&trx_class=H&facility_type=${dataMember.facility_type}`,
+      // `http://apps.pakubuwono-residence.com/apiwebpbi/api/modules/store/products?entity_cd=${entity_cd}&project_no=${project_no}&trx_class=H&facility_type=${dataMember.facility_type}`,
     );
     axios
       .get(
-        API_URL_LOKAL +
-          `/modules/store/products?entity_cd=${entity_cd}&project_no=${project_no}&trx_class=H&facility_type=${dataMember.facility_type}`,
+        `https://apps.pakubuwono-residence.com/apiwebpbi_train/api/pos/getProductsNew?entity_cd=${entity_cd}&project_no=${project_no}&trx_class=H&facility_type=${dataMember.facility_type}`,
+        // API_URL_LOKAL +
+        // API_URL_LOKAL +
+        //   `/modules/store/products?entity_cd=${entity_cd}&project_no=${project_no}&trx_class=H&facility_type=${dataMember.facility_type}`,
       )
       .then((res) => {
-        console.log(res.data.success);
-        if (res.data.success == true) {
-          const datas = res.data;
-          const arrLocation = datas.data;
-          console.log('res api >', datas);
-          console.log('arrLocation >', arrLocation);
-          console.log('ItemStoreFilter >', dataItemStoreFilter);
-          console.log('dataItemStore >', dataItemStore);
-          const qtyArrayItem = arrLocation.map((item) => {
-            return {
-              ...item,
-              qty: 0,
-            };
-          });
+        // console.log(res.data.success);
+        // if (res.data.success == true) {
+        //   const datas = res.data;
+        //   const arrLocation = datas.data;
+        //   console.log('res api >', datas);
+        //   console.log('arrLocation >', arrLocation);
+        //   console.log('ItemStoreFilter >', dataItemStoreFilter);
+        //   console.log('dataItemStore >', dataItemStore);
+        //   const qtyArrayItem = arrLocation.map((item) => {
+        //     return {
+        //       ...item,
+        //       qty: 0,
+        //     };
+        //   });
 
-          setItemStoreFilter(qtyArrayItem);
-          setSpinner(false);
-        } else {
-          setSpinner(false);
-        }
-        const datas = res.data.data;
-        const qtyArrayItem = datas.map((item) => {
+        //   setItemStoreFilter(qtyArrayItem);
+        //   setSpinner(false);
+        // } else {
+        //   setSpinner(false);
+        // }
+
+        // const datas = res.data.data;
+        // const qtyArrayItem = datas.map((item) => {
+        //   return {
+        //     ...item,
+        //     qty: 0,
+        //   };
+        // });
+
+        // setItemStore(qtyArrayItem);
+
+        console.log('res get itemstore', res.data);
+
+        // sementara sampai API aslinya bisa, pake ini dulu
+        const datas = res.data;
+        const arrLocation = datas.Data;
+        const qtyArrayItem = arrLocation.map((item) => {
           return {
             ...item,
-            qty: 0,
+            qty,
           };
         });
-
+        setItemStoreFilter(qtyArrayItem);
         setItemStore(qtyArrayItem);
+        setSpinner(false);
+
+        // sementara ditutup sampai API aslinya bisa
+        // const datas = res.data.data;
+        // const qtyArrayItem = datas.map((item) => {
+        //   return {
+        //     ...item,
+        //     qty: 0,
+        //   };
+        // });
+
+        // setItemStore(qtyArrayItem);
       });
   };
 
@@ -676,6 +708,7 @@ const Product = (params) => {
         datadetail: dataSplice, // dapet dari isi redux (ini yg nantinya ada kode item, qty, total, dll)
       };
       console.log('formdata', formData);
+      dispatch(data_cart(formData));
       navigation.navigate('DeliveryAndPayment', formData);
     } else {
       dataSplice.splice(indexOfObject, 1);
@@ -694,6 +727,7 @@ const Product = (params) => {
         datadetail: dataSplice, // dapet dari isi redux (ini yg nantinya ada kode item, qty, total, dll)
       };
       console.log('formdata', formData);
+      dispatch(data_cart(formData));
       navigation.navigate('DeliveryAndPayment', formData);
     }
   };

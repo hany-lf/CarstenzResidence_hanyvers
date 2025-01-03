@@ -41,7 +41,7 @@ import DeviceInfo from 'react-native-device-info';
 import VersionInfo from 'react-native-version-info';
 
 const SignIn = (props) => {
-  const { navigation } = props;
+  const { navigation, route } = props;
   const { t } = useTranslation();
   const { colors } = useTheme();
   const dispatch = useDispatch();
@@ -81,6 +81,19 @@ const SignIn = (props) => {
 
     init();
   }, []);
+
+  useEffect(() => {
+    // Ambil parameter dari route
+
+    const { message: paramMessage } = route.params || {};
+    console.log('props for message', route);
+    console.log('ini alert message', paramMessage);
+    if (paramMessage) {
+      // Anda bisa menampilkan pesan ini di UI jika diinginkan
+      console.log('message session alert', paramMessage); // Atau gunakan state untuk menampilkannya di UI
+      Alert.alert('ini alert message', paramMessage);
+    }
+  }, [route.params]);
 
   useEffect(() => {
     requestUserPermission();

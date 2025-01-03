@@ -49,6 +49,8 @@ import { CheckBox, Badge } from 'react-native-elements';
 import ModalSelector from 'react-native-modal-selector';
 import getUser from '../../selectors/UserSelectors';
 import { API_URL_LOKAL } from '@env';
+import { parseHexTransparency } from '@utils';
+
 const Store = (props) => {
   // const {navigation} = props;
   const { navigation, route } = props;
@@ -117,10 +119,9 @@ const Store = (props) => {
       // getTower();
       if (project && project.data && project.data.length > 0) {
         // console.log('entity useeffect di home', project.data[0].entity_cd);
-        // setEntity(project.data[0].entity_cd);
-        // setProjectNo(project.data[0].project_no);
-        setEntity('01');
-        setProjectNo('01');
+        setEntity(project.data[0].entity_cd);
+        setProjectNo(project.data[0].project_no);
+
         const projects = project.data.map((item, id) => ({
           label: item.descs,
           value: item.project_no,
@@ -452,7 +453,7 @@ const Store = (props) => {
                       style={{
                         color: 'white',
                         alignSelf: 'center',
-                        fontSize: 16,
+                        fontSize: 14,
 
                         // top: 10,
                         // flex: 1,
@@ -477,7 +478,8 @@ const Store = (props) => {
             </View>
           )}
 
-          {/* CHOOSE MEMBER HERE */}
+          {/* CHOOSE MEMBER NAME  */}
+
           {spinner == true ? (
             <View>
               <Placeholder style={{ marginVertical: 4, paddingHorizontal: 10 }}>
@@ -489,84 +491,11 @@ const Store = (props) => {
               style={{
                 marginTop: 5,
                 marginBottom: 20,
-
+                width: '100%',
                 flexDirection: 'row',
                 justifyContent: 'space-between',
               }}
             >
-              <View style={{ marginHorizontal: 10 }}>
-                <Text style={{ color: '#3f3b38', fontSize: 14 }}>
-                  Choose Member ID
-                </Text>
-                <View
-                  style={{
-                    paddingVertical: 5,
-                  }}
-                >
-                  <ModalSelector
-                    style={{ justifyContent: 'center' }}
-                    childrenContainerStyle={{
-                      color: '#CDB04A',
-                      // alignSelf: 'center',
-                      fontSize: 16,
-                      // top: 10,
-                      // flex: 1,
-                      justifyContent: 'center',
-                      fontWeight: '800',
-                      fontFamily: 'KaiseiHarunoUmi',
-                    }}
-                    data={dataMember}
-                    optionTextStyle={{ color: '#333' }}
-                    selectedItemTextStyle={{ color: '#3C85F1' }}
-                    cancelText={'Cancel'}
-                    accessible={true}
-                    keyExtractor={(item) => item.card_no}
-                    // initValue={'ahlo'}
-                    labelExtractor={(item) => item.member_id + ' - ' + lotNo} //khusus untuk lotno
-                    cancelButtonAccessibilityLabel={'Cancel Button'}
-                    onChange={(option) => {
-                      onChangeMemberID(option);
-                    }}
-                  >
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        paddingHorizontal: 20,
-                        // paddingLeft: 10,
-                        paddingVertical: 5,
-                        backgroundColor: colors.primary,
-                        justifyContent: 'space-between',
-                        borderRadius: 12,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          color: '#CDB04A',
-                          alignSelf: 'center',
-                          fontSize: 16,
-
-                          // top: 10,
-                          // flex: 1,
-                          // justifyContent: 'center',
-                          fontWeight: '800',
-                          fontFamily: 'KaiseiHarunoUmi',
-                        }}
-                      >
-                        {memberID + ' - ' + lotNo}
-                      </Text>
-                      <Icon
-                        name="caret-down"
-                        solid
-                        size={26}
-                        // color={colors.primary}
-                        style={{ marginLeft: 10 }}
-                        color={'#CDB04A'}
-                      />
-                    </View>
-                  </ModalSelector>
-                </View>
-              </View>
-
               <View style={{ marginHorizontal: 10 }}>
                 <Text style={{ color: '#3f3b38', fontSize: 14 }}>
                   Member Name
@@ -574,7 +503,7 @@ const Store = (props) => {
                 <View
                   style={{
                     marginVertical: 5,
-                    paddingHorizontal: 20,
+                    paddingHorizontal: 5,
                     paddingVertical: 10,
                     backgroundColor: colors.primary,
                     justifyContent: 'center',
@@ -582,13 +511,15 @@ const Store = (props) => {
                   }}
                 >
                   <Text
+                    numberOfLines={2}
+                    ellipsizeMode="tail"
                     style={{
                       color: '#CDB04A',
                       alignSelf: 'center',
-                      fontSize: 16,
-                      flexWrap: 'wrap',
-                      flex: 1,
-                      // width: '80%',
+                      fontSize: 12,
+                      // flexWrap: 'wrap',
+                      // flex: 1,
+                      // width: '100%',
                       // top: 10,
                       // flex: 1,
                       // justifyContent: 'center',
@@ -597,18 +528,9 @@ const Store = (props) => {
                     }}
                   >
                     {memberName}
-
-                    {/* Choose Projesadadact Chsasaoose Project Choose */}
                   </Text>
                 </View>
               </View>
-
-              {/* <View>
-                <Text style={{color: '#3f3b38', fontSize: 14, paddingLeft: 10}}>
-                  Member Name
-                </Text>
-                <Text>{memberName}</Text>
-              </View> */}
             </View>
           )}
 
@@ -716,7 +638,63 @@ const Store = (props) => {
         style={BaseStyle.safeAreaView}
         edges={['right', 'top', 'left']}
       >
-        {renderContent()}
+        {/* {renderContent()} */}
+        {data.length == 0 ? (
+          <View style={{ flex: 1 }}>
+            <Header
+              title={t('Stores')}
+              renderLeft={() => {
+                return (
+                  <Icon
+                    name="angle-left"
+                    size={20}
+                    color={colors.primary}
+                    enableRTL={true}
+                  />
+                );
+              }}
+              onPressLeft={() => {
+                navigation.goBack();
+              }}
+            />
+            <View
+              style={{
+                flex: 1,
+                alignItems: 'center',
+                alignContent: 'center',
+                justifyContent: 'center',
+                // paddingTop: '50%',
+              }}
+            >
+              <View>
+                {/* <Icon
+          name={'exclamation-triangle'}
+          style={{
+            fontSize: 32,
+            color: parseHexTransparency(colors.text, 30),
+          }}
+        /> */}
+                <LottieView
+                  source={require('@data/comingsoon-lottie.json')}
+                  autoPlay
+                  style={{ width: 300, height: 300 }}
+                />
+              </View>
+              <Text
+                // headline
+                bold
+                style={{ color: BaseColor.primary }}
+                // style={{
+                //   color: parseHexTransparency(colors.text, 50),
+                // }}
+              >
+                Store screen coming soon
+              </Text>
+            </View>
+          </View>
+        ) : (
+          renderContent()
+        )}
       </SafeAreaView>
     </View>
   );

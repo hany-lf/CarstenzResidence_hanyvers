@@ -677,24 +677,40 @@ const Home = (props) => {
   // --- getheaderimage ---
   const getHeaderImage = async () => {
     setSpinner(true);
-    const config = {
-      method: 'get',
-      url: API_URL_LOKAL + `/home/common-mobile-header`,
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${user.Token}`,
-      },
-    };
-    await axios(config)
-      .then((res) => {
-        console.log('res header image', res.data.data);
+    const maxRetries = 3; // Jumlah maksimum percobaan
+    let attempt = 0; // Inisialisasi percobaan
+
+    while (attempt < maxRetries) {
+      try {
+        const config = {
+          method: 'get',
+          url: API_URL_LOKAL + `/home/common-mobile-header`,
+          headers: {
+            'content-type': 'application/json',
+            Authorization: `Bearer ${user.Token}`,
+          },
+        };
+        const res = await axios(config);
+        // await axios(config).then((res) => {
+        //   console.log('res header image', res.data.data);
+        //   setHeaderImage(res.data.data);
+        //   // setArrDataTowerUser;
+        // });
         setHeaderImage(res.data.data);
-        // setArrDataTowerUser;
-      })
-      .catch((error) => {
-        console.log('error res header image', error.response);
+        // .catch((error) => {
+        //   console.log('error res header image', error.response);
+        //   setSpinner(false);
+        // });
+        return res; // Kembalikan user.data;
+      } catch (error) {
         setSpinner(false);
-      });
+        attempt++; // Increment percobaan
+        console.log(`Attempt ${attempt} failed. Retrying...`);
+
+        // Tunggu sebelum mencoba lagi (misalnya 2 detik)
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+      }
+    }
   };
 
   const onChangelot = (lot) => {
