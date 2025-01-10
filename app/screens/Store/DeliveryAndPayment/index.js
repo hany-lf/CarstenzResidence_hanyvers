@@ -56,10 +56,8 @@ export default function DeliveryAndPayment({ route, navigation }) {
   const [dataParamsTransaction, setDataParamsTransaction] = useState(
     route.params.datadetail,
   );
-  console.log('data params', dataParams);
-  console.log('data params ?', dataParams.facility_type);
+
   const cartData = useSelector((state) => getCartData(state));
-  console.log('cartstoreselector', cartData);
 
   const [refreshing, setRefreshing] = useState(false);
   const [spinner, setSpinner] = useState(true);
@@ -78,15 +76,19 @@ export default function DeliveryAndPayment({ route, navigation }) {
   // console.log('user cek debtor', user);
 
   const project = useSelector((state) => getProject(state));
+  // console.log('project untuk payment', project);
   const facility_type = dataParams.facility_type;
 
-  const [email, setEmail] = useState(user != null ? user.user : '');
+  const [email, setEmail] = useState(
+    user != null && user.userData ? user.userData.email : '',
+  );
 
   const [lotNo, setLotno] = useState([]);
-  // const [entity_cd, setEntity] = useState(project.Data[0].entity_cd);
-  // const [project_no, setProjectNo] = useState(project.Data[0].project_no);
-  const entity_cd = useState('01'); //sementara aja
-  const project_no = useState('01'); //sementara aja
+  const [entity_cd, setEntity] = useState(project.data[0].entity_cd);
+  const [project_no, setProjectNo] = useState(project.data[0].project_no);
+  // const [entity_cd, setEntity] = '01';
+  // const [project_no, setProjectNo] = '02';
+
   const [default_text_lotno, setDefaultLotno] = useState(false);
   const [text_lotno, setTextLotno] = useState('');
 
@@ -141,8 +143,7 @@ export default function DeliveryAndPayment({ route, navigation }) {
   );
 
   const round = Math.ceil(totalHarga);
-  console.log('rounds', round);
-  console.log('rounds', totalHarga);
+
   const totalHargadenganTax = dataParamsTransaction.reduce(
     (total, currentItem) => (total = total + currentItem.total_harga_with_tax),
     0,
@@ -154,31 +155,19 @@ export default function DeliveryAndPayment({ route, navigation }) {
    */
 
   async function getLotNo() {
-    console.log(
-      'url api lotno',
-      'http://apps.pakubuwono-residence.com/apiwebpbi/api/facility/book/unit?entity=' +
-        entity_cd +
-        '&' +
-        'project=' +
-        project_no +
-        '&' +
-        'email=' +
-        email,
-    );
     try {
       const res = await axios.get(
         API_URL_LOKAL +
-          `/home/common-unit?entity=` +
+          `/home/common-unit?entity_cd=` +
           entity_cd +
           '&' +
-          'project=' +
+          'project_no=' +
           project_no +
           '&' +
           'email=' +
           email,
       );
       const resLotno = res.data.data;
-      console.log('reslotno', resLotno);
 
       // setTextLotno(resLotno[0].lot_no);
 
@@ -201,17 +190,6 @@ export default function DeliveryAndPayment({ route, navigation }) {
   }
 
   async function getListPayment() {
-    console.log(
-      'url api lotno',
-      'http://apps.pakubuwono-residence.com/apiwebpbi/api/modules/store/payment-type?entity_cd=' +
-        entity_cd +
-        '&' +
-        'project_no=' +
-        project_no +
-        '&' +
-        'facility_type=' +
-        facility_type,
-    );
     try {
       const res = await axios.get(
         API_URL_LOKAL +
@@ -219,15 +197,13 @@ export default function DeliveryAndPayment({ route, navigation }) {
           entity_cd +
           '&' +
           'project_no=' +
-          project_no +
-          '&' +
-          'facility_type=' +
-          facility_type,
+          project_no,
+        // '&' +
+        // 'facility_type=' +
+        // facility_type,
       );
       const resPayment = res.data.data;
       // resPayment.push({trx_code: 'others', descs: 'Others'});
-
-      console.log('listpayment', resPayment);
 
       setListPayment(resPayment);
 
@@ -239,9 +215,6 @@ export default function DeliveryAndPayment({ route, navigation }) {
   }
 
   const chooseListPayment = ({ data, index }) => {
-    console.log('data list choose', data);
-    console.log('index list choose', index);
-
     setTextPayment(index.descs);
     setTrxCode(index.trx_code);
   };
@@ -249,7 +222,6 @@ export default function DeliveryAndPayment({ route, navigation }) {
   //-----FOR GET DEBTOR
   const getDebtor = async (data) => {
     // console.log(object)
-    console.log('data for debtor', data);
 
     const params =
       '?' +
@@ -262,33 +234,22 @@ export default function DeliveryAndPayment({ route, navigation }) {
       'email=' +
       email;
 
-    console.log(
-      'api debtor',
-      'http://apps.pakubuwono-residence.com/apiwebpbi/api/modules/cs/debtor' +
-        params,
-    );
-
-    console.log('data for', params);
-    console.log('text_lotno>', text_lotno);
     // console.log('dataDebtors[0]', dataDebtor);
 
     const config = {
       headers: {
         accept: 'application/json',
         'Content-Type': 'application/json',
-        token: '',
+        Authorization: `Bearer ${user.Token}`,
       },
     };
+
     await axios
-      .post(API_URL_LOKAL + '/modules/cs/debtor' + params, {
-        config,
-      })
+      .get(API_URL_LOKAL + '/modules/cs/debtor' + params, { config })
       .then((res) => {
         // console.log('res', res);
         const datas = res.data;
         const dataDebtors = datas.data;
-        console.log('res debtor', dataDebtors);
-        console.log('ada berapa length debtor', dataDebtors.length);
 
         if (dataDebtors.length > 1) {
           setDefaultDebtor(false);
@@ -328,13 +289,12 @@ export default function DeliveryAndPayment({ route, navigation }) {
         // return res.data;
       })
       .catch((error) => {
-        console.log('error get debtor api', error);
+        console.log('error get debtor api', error.response);
         // alert('error get');
       });
   };
 
   const handleChangeModal = ({ data, index }) => {
-    console.log('index,', index);
     setDefaultDebtor(index);
     // console.log('data change debtor', data);
     // data.data.map(dat => {
@@ -355,7 +315,6 @@ export default function DeliveryAndPayment({ route, navigation }) {
   };
 
   const changeBalancePay = (items) => {
-    console.log('items amount paid', items);
     setAmountPaid(items);
 
     const balance = items - totalHargadenganTax;
@@ -385,7 +344,7 @@ export default function DeliveryAndPayment({ route, navigation }) {
 
   const onCheckOut = () => {
     // const fixBalance = balance ;
-    console.log('balance to pay = 0', balancetoPay);
+    // console.log('balance to pay = 0', balancetoPay);
     if (!trxCode && !textPayment) {
       alert('Please Choose Payment');
     }
@@ -405,8 +364,10 @@ export default function DeliveryAndPayment({ route, navigation }) {
         audit_user: dataParams.member_id, // udah dijelasin di sebelumnya ka
         cash: amountPaid == '' ? 0 : amountPaid, // ini tuh nominal kita bayar berapa ka
         return: balancetoPay == '' ? 0 : balancetoPay, // ini nominal kembaliannya
-        datadetail: dataParams.datadetail, // udah dijelasin di sebelumnya ka
+        detail_order: dataParams.datadetail, // udah dijelasin di sebelumnya ka
         status_order: 'M', // ini untuk validasi status pembelian dari Mobiles
+        nominal_payment: amountPaid == '' ? 0 : amountPaid,
+        return_payment: balancetoPay == '' ? 0 : balancetoPay,
       };
       console.log('form data payment', formData);
 
@@ -447,8 +408,10 @@ export default function DeliveryAndPayment({ route, navigation }) {
         audit_user: dataParams.member_id, // udah dijelasin di sebelumnya ka
         cash: amountPaid == '' ? 0 : amountPaid, // ini tuh nominal kita bayar berapa ka
         return: balancetoPay == '' ? 0 : balancetoPay, // ini nominal kembaliannya
-        datadetail: dataParams.datadetail, // udah dijelasin di sebelumnya ka
+        detail_order: dataParams.datadetail, // udah dijelasin di sebelumnya ka
         status_order: 'M', // ini untuk validasi status pembelian dari Mobiles
+        nominal_payment: amountPaid == '' ? 0 : amountPaid,
+        return_payment: balancetoPay == '' ? 0 : balancetoPay,
       };
       console.log('form data payment', formData);
 
@@ -936,21 +899,13 @@ export default function DeliveryAndPayment({ route, navigation }) {
                     style={{
                       fontSize: 16,
                       fontWeight: 'bold',
-                      color: 'salmon',
+                      color: colors.primary,
                       marginBottom: 10,
                     }}
                   >
                     {messageAlert.includes('success') ? 'Success' : 'Failed'}
                   </Text>
-                  <Text></Text>
-                  <IconAnt
-                    name="closecircleo"
-                    size={80}
-                    color={'salmon'}
-                  ></IconAnt>
-                  <Text></Text>
-                  <Text>Result :</Text>
-                  <Text></Text>
+
                   {/* <Text>{message}</Text> */}
                   <Text style={{ alignSelf: 'center', textAlign: 'center' }}>
                     {messageAlert}

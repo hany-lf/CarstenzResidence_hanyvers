@@ -110,78 +110,51 @@ const Product = (params) => {
   const getItemStore = () => {
     // const entity_cd = projectSelector.Data[0].entity_cd;
     const entity_cd = dataMember.entity_cd;
-    console.log('entity', entity_cd);
+    // console.log('entity get item store', entity_cd);
     // const project_no = projectSelector.Data[0].project_no;
     const project_no = dataMember.project_no;
-    console.log(
-      'url menu store di product',
-      `https://apps.pakubuwono-residence.com/apiwebpbi_train/api/pos/getProductsNew?entity_cd=${entity_cd}&project_no=${project_no}&trx_class=H&facility_type=${dataMember.facility_type}`,
-      // `http://apps.pakubuwono-residence.com/apiwebpbi/api/modules/store/products?entity_cd=${entity_cd}&project_no=${project_no}&trx_class=H&facility_type=${dataMember.facility_type}`,
-    );
+    const charges_type = dataMember.facility_type;
+    // console.log('project get item store', project_no);
+
     axios
       .get(
-        `https://apps.pakubuwono-residence.com/apiwebpbi_train/api/pos/getProductsNew?entity_cd=${entity_cd}&project_no=${project_no}&trx_class=H&facility_type=${dataMember.facility_type}`,
+        // `https://apps.pakubuwono-residence.com/apiwebpbi_train/api/pos/getProductsNew?entity_cd=${entity_cd}&project_no=${project_no}&trx_class=H&facility_type=${dataMember.facility_type}`,
         // API_URL_LOKAL +
-        // API_URL_LOKAL +
-        //   `/modules/store/products?entity_cd=${entity_cd}&project_no=${project_no}&trx_class=H&facility_type=${dataMember.facility_type}`,
+        API_URL_LOKAL +
+          `/modules/store/products?entity_cd=${entity_cd}&project_no=${project_no}&trx_class=H&charges_type=${charges_type}`,
+        // `/modules/store/products?entity_cd=${entity_cd}&project_no=${project_no}&trx_class=H&facility_type=${dataMember.facility_type}`,
       )
       .then((res) => {
-        // console.log(res.data.success);
-        // if (res.data.success == true) {
-        //   const datas = res.data;
-        //   const arrLocation = datas.data;
-        //   console.log('res api >', datas);
-        //   console.log('arrLocation >', arrLocation);
-        //   console.log('ItemStoreFilter >', dataItemStoreFilter);
-        //   console.log('dataItemStore >', dataItemStore);
-        //   const qtyArrayItem = arrLocation.map((item) => {
-        //     return {
-        //       ...item,
-        //       qty: 0,
-        //     };
-        //   });
+        console.log(res.data.success);
+        if (res.data.success == true) {
+          const datas = res.data;
+          const arrLocation = datas.data;
 
-        //   setItemStoreFilter(qtyArrayItem);
-        //   setSpinner(false);
-        // } else {
-        //   setSpinner(false);
-        // }
+          const qtyArrayItem = arrLocation.map((item) => {
+            return {
+              ...item,
+              qty: 0,
+            };
+          });
 
-        // const datas = res.data.data;
-        // const qtyArrayItem = datas.map((item) => {
-        //   return {
-        //     ...item,
-        //     qty: 0,
-        //   };
-        // });
+          setItemStoreFilter(qtyArrayItem);
+          setSpinner(false);
+        } else {
+          setSpinner(false);
+        }
 
-        // setItemStore(qtyArrayItem);
-
-        console.log('res get itemstore', res.data);
-
-        // sementara sampai API aslinya bisa, pake ini dulu
-        const datas = res.data;
-        const arrLocation = datas.Data;
-        const qtyArrayItem = arrLocation.map((item) => {
+        const datas = res.data.data;
+        const qtyArrayItem = datas.map((item) => {
           return {
             ...item,
-            qty,
+            qty: 0,
           };
         });
-        setItemStoreFilter(qtyArrayItem);
+
         setItemStore(qtyArrayItem);
-        setSpinner(false);
-
-        // sementara ditutup sampai API aslinya bisa
-        // const datas = res.data.data;
-        // const qtyArrayItem = datas.map((item) => {
-        //   return {
-        //     ...item,
-        //     qty: 0,
-        //   };
-        // });
-
-        // setItemStore(qtyArrayItem);
+      })
+      .catch((error) => {
+        console.log('error get item store', error);
       });
   };
 
@@ -195,16 +168,8 @@ const Product = (params) => {
     }, 1000);
   }, []);
 
-  const goProductDetail = (item) => {
-    navigation.navigate('EProductDetailStore', { item: item });
-  };
-
-  const goStore = (item) => {
-    navigation.goBack();
-  };
-
   const searchFilterFunction = (text) => {
-    console.log('text', text);
+    // console.log('text', text);
     // console.log('arrayholder', arrayholder);
 
     const newData = dataItemStore.filter((item) => {
@@ -213,83 +178,13 @@ const Product = (params) => {
       const textData = text;
       return itemData.indexOf(textData) > -1;
     });
-    console.log('new data', newData);
+    // console.log('new data', newData);
     setItemStoreFilter(newData);
     // console.log('dataItemStoreFilter??', dataItemStoreFilter);
   };
 
-  const onSearch = (keyword) => {
-    const found = dataItemStore.some((item) => item.descs == keyword);
-    let searchData = [];
-
-    if (found) {
-      searchData = dataItemStore.map((item) => {
-        return {
-          ...item,
-          checked: item.keyword == keyword,
-        };
-      });
-    }
-    // else {
-    //   searchData = dataItemStore.concat({
-    //     keyword: item.descs,
-    //   });
-    // }
-    console.log('keyword search', searchData);
-    // setSearch(keyword);
-    // setSearchHistory(searchData);
-    // setLoading(true);
-    // setTimeout(() => navigation.navigate('EProduct'), 1000);
-  };
-
   const onCloseAlert = () => {
     setShowAlert(false);
-  };
-
-  const renderItem = ({ item, index }) => {
-    return (
-      <View key={index}>
-        <ProductList
-          loading={loading}
-          title={item.descs}
-          description={item.remarks}
-          style={{ marginVertical: 8 }}
-          // image={item.picture}
-          image={
-            // require('@assets/images/logo.png')
-            // item.images
-            item.images != '' && item.images != null
-              ? { uri: item.images }
-              : require('@assets/images/logo.png')
-          }
-          // costPrice={item.default_price}
-          salePrice={item.default_price}
-          //   pressBuy={() => pressBuy(item)}
-          //   quantity={qty}
-          // onPress={() => goProductDetail(item)}
-          // isFavorite={item.isFavorite}
-          // salePercent={'30%'}
-        />
-
-        {/* <View>
-          <FormCounterSelect
-            isRow={true}
-            label={''}
-            detail={''}
-            style={{
-              marginTop: 8,
-              backgroundColor: 'transparent',
-              padding: 0,
-              justifyContent: 'center',
-              flex: 0,
-            }}
-            onChange={value =>
-              changeQty(value, item.default_price, item, index)
-            }
-          />
-        </View> */}
-      </View>
-    );
   };
 
   const renderList = () => {
@@ -588,29 +483,27 @@ const Product = (params) => {
       setItemStoreFilter(arraytes);
     }
 
-    console.log('value change', value);
-    console.log('unit price change qty', unit_price);
-    console.log('item cgange qty', item);
-    // console.log('data member', dataMember);
-
     setTambahItem(true);
     setTaxRatePerItem(item.tax_rate);
 
     // setTotal(value * unit_price);
 
     const totalAwal = item.qty * unit_price;
-    console.log('total awal koma??', totalAwal);
+
     // const totalAwal = value * parseFloat(unit_price).toFixed(2);
     const totalAwaldenganTax =
       totalAwal + item.qty * Math.round(unit_price * (item.tax_rate / 100));
-    console.log('total wal dengan tx??', totalAwaldenganTax); //disini yang menyebabkan banyak koma-koma dibelakang
+
     const taxSebelumdiJumlah = Math.round(
       (item.qty * unit_price) / item.tax_rate,
     );
-    console.log('taxSebelumdiJumlah', taxSebelumdiJumlah);
+
     const dataCheckout = {
       totalHarga: item.qty * unit_price,
-      trx_qty: item.qty,
+
+      quantity: item.qty,
+      default_price: item.default_price,
+      descs: item.descs,
       //   ...item,
       // ...dataMember,
 
@@ -621,9 +514,9 @@ const Product = (params) => {
 
       // ----- pengganti item
       trx_code: item.trx_code,
-      trx_descs: item.descs,
+
       unit_price: item.default_price,
-      currency_cd: item.currency_cd, //ini dari api juga
+      curr_cd: item.currency_cd, //ini dari api juga
       currency_rate: item.currency_cd, //ini dari api juga
       discountTotal: 0,
       discountPercent: 0,
@@ -636,13 +529,10 @@ const Product = (params) => {
     };
 
     const arrayCart = [...ArrayDataCheckout, dataCheckout];
-    console.log('array checkout', arrayCart);
 
     const newArray = [
       ...new Map(arrayCart.map((item) => [item.trx_code, item])).values(),
     ];
-
-    console.log('newarray', newArray);
 
     setArrayDataCheckout(newArray);
 
@@ -663,7 +553,7 @@ const Product = (params) => {
               (tax = tax + currentItem.count_tax_rate_per_item),
             0,
           );
-    console.log('itemFortax', itemFortax);
+
     // const total = newArray.reduce(
     //   (total, currentItem) =>
     //     (total = total + currentItem.total_harga_with_tax),
@@ -672,19 +562,14 @@ const Product = (params) => {
 
     const floatTotal =
       itemFortotal == 0 ? 0 : parseFloat(itemFortotal).toFixed(2);
-    console.log('tes decimal', floatTotal);
 
     const floatTax = itemFortax == 0 ? 0 : parseFloat(itemFortax).toFixed(2);
-    console.log('tax decimal', floatTax);
 
-    console.log('tes tax', itemFortotal);
     setTotalTax(floatTax);
     setTotals(floatTotal);
   };
 
   const checkoutSave = () => {
-    console.log('dataListCheckout di button checkout save', ArrayDataCheckout);
-
     const dataSplice = ArrayDataCheckout;
 
     // dataSplice.splice(0, 1);
@@ -694,8 +579,6 @@ const Product = (params) => {
     console.log(indexOfObject); // 👉️ 1
 
     if (indexOfObject == -1) {
-      console.log('remaining', dataSplice);
-      console.log('itemsStore: ', dataItemStore);
       const formData = {
         entity_cd: dataMember.entity_cd, // sebenernya ini cukup ambil dari data array 0, karena termasuk member item yang sama disetiap array produk
         project_no: dataMember.project_no, // sebenernya ini cukup ambil dari data array 0, karena termasuk member item yang sama disetiap array produk

@@ -64,8 +64,8 @@ const Store = (props) => {
   const [heightHeader, setHeightHeader] = useState(Utils.heightHeader());
   const project = useSelector((state) => getProject(state));
   const user = useSelector((state) => getUser(state));
-  console.log('project selector', project);
-  console.log('user selector', user);
+  // console.log('project selector', project);
+  // console.log('user selector', user);
 
   const [defaulTower, setDefaultTower] = useState(false);
   const [checkedEntity, setCheckedEntity] = useState(false);
@@ -92,6 +92,7 @@ const Store = (props) => {
   const [tenantNo, setTenantNo] = useState('');
   const [lotNo, setLotNo] = useState('');
   const [defaultMemberID, setDefaultMemberID] = useState(true);
+  const [dataFetched, setDataFetched] = useState(false);
 
   // console.log('memberID', memberID);
   // console.log('lotNo', lotNo);
@@ -133,15 +134,15 @@ const Store = (props) => {
         setCheckedEntity(true);
         setSpinner(false);
         setShow(true);
-        console.log('spinner after', spinner);
+        // console.log('spinner after', spinner);
       }
     }, 3000);
   }, [project]);
 
   useEffect(() => {
-    console.log('entity_cd useEffect for menustore dan member', entity_cd);
+    // console.log('entity_cd useEffect for menustore dan member', entity_cd);
     if (entity_cd != '' && project_no != '') {
-      console.log('ada entity dan ada project');
+      // console.log('ada entity dan ada project');
       getMenuStore();
       getMember();
     }
@@ -160,17 +161,19 @@ const Store = (props) => {
   }, []);
 
   const getMenuStore = () => {
+    setSpinner(true);
     const entity = entity_cd;
-    // console.log('entity', entity_cd);
+    // console.log('entity for menu store', entity_cd);
+    // console.log('project for menu store', project_no);
     const project = project_no;
 
     const config = {
       method: 'get',
-      // url: API_URL_LOKAL + `/modules/store/facility-type`,
-      url:
-        'https://apps.pakubuwono-residence.com/apiwebpbi_train/api' +
-        // `/modules/store/facility-type`,
-        `/pos/factype`,
+      url: API_URL_LOKAL + `/modules/store/facility-type`,
+      // url:
+      //   'https://apps.pakubuwono-residence.com/apiwebpbi_train/api' +
+      //   // `/modules/store/facility-type`,
+      //   `/pos/factype`,
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${user.Token}`,
@@ -182,27 +185,36 @@ const Store = (props) => {
         // project_no: '01',
       },
     };
-    axios(config).then((res) => {
-      // console.log('ress :', res.data.data);
-      const cekdata = res.data.data;
-      const filterdata = cekdata
-        .filter((item) => item.facility_type != 'RS')
-        .map((items) => items);
-      console.log('cek filter data menu store', filterdata);
-      // setData(res.data.data);
-      setData(filterdata);
-    });
+    axios(config)
+      .then((res) => {
+        const cekdata = res.data.data;
+        const filterdata = cekdata
+          .filter((item) => item.facility_type !== 'RS')
+          .map((items) => items);
+        // console.log('cek filter data menu store', filterdata);
+
+        // Set data dan spinner berdasarkan kondisi
+        setData(filterdata);
+        setDataFetched(true); // Tandai bahwa data sudah diambil
+        setSpinner(false); // Set spinner false setelah data di-set
+      })
+      .catch((error) => {
+        console.error('Error fetching menu store:', error);
+        setDataFetched(true); // Tandai bahwa data sudah diambil
+        setSpinner(false); // Pastikan spinner dimatikan jika terjadi error
+      });
   };
 
   const getMember = () => {
     const entity = entity_cd;
     const project = project_no;
-    // console.log('entity_cd for member', entity_cd);
-    // console.log('project_no for member', project_no);
-    console.log('token for member', user.Token);
+    const emails = email;
+
     const config = {
-      method: 'get',
+      method: 'POST',
       url: API_URL_LOKAL + `/modules/store/member`,
+      // url: API_URL_LOKAL + `/modules/store/member-by-email`,
+      // /member-by-email?entity_cd=01&project_no=02&email=haniyya.ulfah@ifca.co.id
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${user.Token}`,
@@ -210,11 +222,12 @@ const Store = (props) => {
       params: {
         entity_cd: entity,
         project_no: project,
+        // email: emails,
       },
     };
+
     axios(config)
       .then((res) => {
-        console.log('ress member:', res.data.data);
         const data = res.data.data;
         setDataMember(data);
         if (defaultMemberID == true) {
@@ -239,7 +252,7 @@ const Store = (props) => {
         // setDataMember(res.data.Data);
       })
       .catch((error) => {
-        console.log('error get member api', error);
+        console.log('error get member api', error.response);
         // alert('error get');
       });
   };
@@ -281,10 +294,10 @@ const Store = (props) => {
     setCheckedEntity(true);
     setShow(true);
 
-    // setEntity(data.entity_cd);
-    // setProjectNo(data.project_no);
-    setEntity('01');
-    setProjectNo('01');
+    setEntity(data.entity_cd);
+    setProjectNo(data.project_no);
+    // setEntity('01');
+    // setProjectNo('01');
     setDb_Profile(data.db_profile);
     setDefaultProjectName(false);
     console.log('projectname', data);
@@ -639,62 +652,72 @@ const Store = (props) => {
         edges={['right', 'top', 'left']}
       >
         {/* {renderContent()} */}
-        {data.length == 0 ? (
-          <View style={{ flex: 1 }}>
-            <Header
-              title={t('Stores')}
-              renderLeft={() => {
-                return (
-                  <Icon
-                    name="angle-left"
-                    size={20}
-                    color={colors.primary}
-                    enableRTL={true}
-                  />
-                );
-              }}
-              onPressLeft={() => {
-                navigation.goBack();
-              }}
-            />
-            <View
-              style={{
-                flex: 1,
-                alignItems: 'center',
-                alignContent: 'center',
-                justifyContent: 'center',
-                // paddingTop: '50%',
-              }}
-            >
-              <View>
-                {/* <Icon
+
+        {spinner ? (
+          <View>
+            <Placeholder style={{ marginVertical: 4, paddingHorizontal: 10 }}>
+              <PlaceholderLine width={100} noMargin style={{ height: 40 }} />
+            </Placeholder>
+          </View>
+        ) : dataFetched ? ( // Periksa apakah data sudah diambil
+          data.length > 0 ? (
+            renderContent()
+          ) : (
+            <View style={{ flex: 1 }}>
+              <Header
+                title={t('Stores')}
+                renderLeft={() => {
+                  return (
+                    <Icon
+                      name="angle-left"
+                      size={20}
+                      color={colors.primary}
+                      enableRTL={true}
+                    />
+                  );
+                }}
+                onPressLeft={() => {
+                  navigation.goBack();
+                }}
+              />
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: 'center',
+                  alignContent: 'center',
+                  justifyContent: 'center',
+                  // paddingTop: '50%',
+                }}
+              >
+                <View>
+                  {/* <Icon
           name={'exclamation-triangle'}
           style={{
             fontSize: 32,
             color: parseHexTransparency(colors.text, 30),
           }}
         /> */}
-                <LottieView
-                  source={require('@data/comingsoon-lottie.json')}
-                  autoPlay
-                  style={{ width: 300, height: 300 }}
-                />
+                  <LottieView
+                    source={require('@data/comingsoon-lottie.json')}
+                    autoPlay
+                    style={{ width: 300, height: 300 }}
+                  />
+                </View>
+                <Text
+                  // headline
+                  bold
+                  style={{ color: BaseColor.primary }}
+                  // style={{
+                  //   color: parseHexTransparency(colors.text, 50),
+                  // }}
+                >
+                  Store screen coming soon
+                </Text>
               </View>
-              <Text
-                // headline
-                bold
-                style={{ color: BaseColor.primary }}
-                // style={{
-                //   color: parseHexTransparency(colors.text, 50),
-                // }}
-              >
-                Store screen coming soon
-              </Text>
             </View>
-          </View>
-        ) : (
-          renderContent()
-        )}
+          )
+        ) : null}
+        {/* Jangan tampilkan apa pun jika spinner masih aktif */}
       </SafeAreaView>
     </View>
   );
