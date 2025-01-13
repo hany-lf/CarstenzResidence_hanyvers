@@ -211,9 +211,9 @@ const Store = (props) => {
     const emails = email;
 
     const config = {
-      method: 'POST',
-      url: API_URL_LOKAL + `/modules/store/member`,
-      // url: API_URL_LOKAL + `/modules/store/member-by-email`,
+      method: 'GET',
+      // url: API_URL_LOKAL + `/modules/store/member`,
+      url: API_URL_LOKAL + `/modules/store/member-by-email`,
       // /member-by-email?entity_cd=01&project_no=02&email=haniyya.ulfah@ifca.co.id
       headers: {
         'Content-Type': 'application/json',
@@ -222,13 +222,14 @@ const Store = (props) => {
       params: {
         entity_cd: entity,
         project_no: project,
-        // email: emails,
+        email: emails,
       },
     };
 
     axios(config)
       .then((res) => {
         const data = res.data.data;
+        console.log('data member', data);
         setDataMember(data);
         if (defaultMemberID == true) {
           // setTextLotno(resLotno[0]);
@@ -505,8 +506,8 @@ const Store = (props) => {
                 marginTop: 5,
                 marginBottom: 20,
                 width: '100%',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
+                // flexDirection: 'row',
+                // justifyContent: 'space-between',
               }}
             >
               <View style={{ marginHorizontal: 10 }}>
@@ -528,7 +529,8 @@ const Store = (props) => {
                     ellipsizeMode="tail"
                     style={{
                       color: '#CDB04A',
-                      alignSelf: 'center',
+                      // alignSelf: 'center',
+                      marginLeft: 10,
                       fontSize: 12,
                       // flexWrap: 'wrap',
                       // flex: 1,

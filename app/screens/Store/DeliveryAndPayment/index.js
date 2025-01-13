@@ -328,7 +328,7 @@ export default function DeliveryAndPayment({ route, navigation }) {
 
     // const showAlertMinusPayment = totalHargadenganTax > items ? false : true;
 
-    console.log('kembalian', Number(balance.toFixed()));
+    // console.log('kembalian', Number(balance.toFixed()));
     // setShowAlertMinusPayment(showAlertMinusPayment);
     setBalancetoPay(fixBalance);
   };
@@ -779,19 +779,38 @@ export default function DeliveryAndPayment({ route, navigation }) {
           {/* ------ CLOSE AMOUNT PAID HERE ----- */}
         </ScrollView>
 
-        {/* ---- BUTTON PAYMENT HERE ---- */}
-        <View style={{ paddingHorizontal: 20, paddingVertical: 15 }}>
-          <Button
-            loading={loading}
-            full
-            onPress={() => {
-              onCheckOut();
-            }}
-          >
-            {t('payment')}
-          </Button>
+        <View
+          style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}
+        >
+          {/* ---- BUTTON PAYMENT HERE ---- */}
+          <View style={{ flex: 1, paddingHorizontal: 5 }}>
+            <Button
+              loading={loading}
+              full
+              onPress={() => {
+                onCheckOut();
+              }}
+              style={{ height: 40 }}
+            >
+              {t('order')}
+            </Button>
+          </View>
+          {/* ---- CLOSE BUTTON PAYMENT HERE ---- */}
+          {/* ---- BUTTON Order & PAYMENT HERE ---- */}
+          <View style={{ flex: 1, paddingHorizontal: 5 }}>
+            <Button
+              loading={loading}
+              full
+              onPress={() => {
+                onCheckOut();
+              }}
+              style={{ height: 40 }}
+            >
+              {t('order_n_payment')}
+            </Button>
+          </View>
+          {/* ---- CLOSE BUTTON Order & PAYMENT HERE ---- */}
         </View>
-        {/* ---- CLOSE BUTTON PAYMENT HERE ---- */}
       </KeyboardAvoidingView>
 
       {/* ----- MODAL ALERT UNTUK BALANCE PAYMENT ----- */}

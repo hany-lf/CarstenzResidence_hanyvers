@@ -5,6 +5,8 @@ import {
   SafeAreaView,
   TabSlider,
   Tag,
+  PlaceholderLine,
+  Placeholder,
 } from '@components';
 import { BaseStyle, useTheme, BaseColor } from '@config';
 import {
@@ -56,8 +58,8 @@ const History = () => {
   const [refreshing, setRefreshing] = useState(false);
   const project = useSelector((state) => getProject(state));
   const user = useSelector((state) => getUser(state));
-  const [entity_cd, setEntity] = useState('');
-  const [project_no, setProjectNo] = useState('');
+  const [entityCd, setEntity] = useState('');
+  const [projectNo, setProjectNo] = useState('');
   const [email, setEmail] = useState('');
 
   const [valueProject, setValueProject] = useState([]);
@@ -69,59 +71,59 @@ const History = () => {
   const [projectData, setProjectData] = useState([]);
   const [dataHistory, setDataHistory] = useState([]);
   const [dataHistoryFilter, setDataHistoryFilter] = useState([]);
+  const [dataFetchedHistory, setDataFetchedHistory] = useState(false);
 
   // --- useeffect untuk project
   useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-      // getTower();
-      if (project && project.data && project.data.length > 0) {
-        // console.log('entity useeffect di home', project.data[0].entity_cd);
-        setEntity(project.data[0].entity_cd);
-        setProjectNo(project.data[0].project_no);
-        const projects = project.data.map((item, id) => ({
-          label: item.descs,
-          value: item.project_no,
-        }));
-        // console.log('data di project', project);
+    // setTimeout(() => {
+    //   setLoading(false);
+    // getTower();
+    if (project && project.data && project.data.length > 0) {
+      // console.log('entity useeffect di home', project.data[0].entity_cd);
+      setEntity(project.data[0].entity_cd);
+      setProjectNo(project.data[0].project_no);
+      const projects = project.data.map((item, id) => ({
+        label: item.descs,
+        value: item.project_no,
+      }));
+      // console.log('data di project', project);
 
-        setProjectData(project.data);
-        setValueProject(projects);
+      setProjectData(project.data);
+      setValueProject(projects);
 
-        setSpinner(false);
-        setShow(true);
-        console.log('spinner after', spinner);
-      }
-    }, 3000);
+      setSpinner(false);
+      setShow(true);
+      console.log('spinner after', spinner);
+    }
+    // }, 3000);
   }, [project]);
 
   // --- useeffect untuk update email/name
   useEffect(() => {
     setEmail(user != null && user.userData != null ? user.userData.email : '');
-  }, [email]);
+  }, [user]);
   // --- useeffect untuk update email/name
 
   useEffect(() => {
-    setTimeout(() => {
+    if (entityCd !== '' && projectNo !== '' && email !== '') {
       getDataHistory();
-      searchFilterFunction();
-    }, 1000);
-  }, []);
+    }
+  }, [entityCd, projectNo, email]);
 
   const handleClickProject = (item, index) => {
-    console.log('index', index);
+    // console.log('index', index);
     setValueProjectSelected(item.value);
 
     setIsFocus(!isFocus);
     setShowChooseProject(!showChooseProject);
 
     if (item.value != null) {
-      console.log('value project selected', item.value);
+      // console.log('value project selected', item.value);
       projectData.map((items, index) => {
-        console.log('items project data', items);
+        // console.log('items project data', items);
         if (items.project_no === item.value) {
-          console.log('items choose project handle', items);
-          console.log('index', index);
+          // console.log('items choose project handle', items);
+          // console.log('index', index);
           // setProjectData(items);
           setCheckedEntity(true);
           // setShow(true);
@@ -140,7 +142,7 @@ const History = () => {
       url: repl,
       bill_no: bill,
     };
-    console.log('params for click attach], params');
+    // console.log('params for click attach], params');
     navigation.navigate('PDFAttachStore', params);
     // if (data.debtor_acct == '') {
     //   // alert('Please Choose Debtor First');
@@ -151,7 +153,7 @@ const History = () => {
     // }
   };
   const searchFilterFunction = (text) => {
-    console.log('text', text);
+    // console.log('text', text);
     // console.log('arrayholder', arrayholder);
     // const newData = dataHistory.filter(item => {
     //   const itemData =
@@ -172,69 +174,58 @@ const History = () => {
 
   const getDataHistory = () => {
     const config = {
-      url: API_URL_LOKAL + `/modules/store/transaction`,
+      url: API_URL_LOKAL + `/modules/store/transaction-by-email`,
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${user.token}`,
       },
       params: {
-        entity_cd: entity_cd,
-        project_no: project_no,
+        entity_cd: entityCd,
+        project_no: projectNo,
         email: email,
       },
     };
-    axios(config).then((res) => {
-      const data = res.data.data;
+    axios(config)
+      .then((res) => {
+        if (res.data.success === true) {
+          const data = res.data.data;
+          // const arrLocation = datas.data;
 
-      const filterDataStatus = data.filter(function (e) {
-        return ['C', 'X'].includes(e.bill_status);
-      });
+          const filterDataStatus = data.filter(function (e) {
+            // return ['D', 'N'].includes(e.bill_status);
+            return ['C', 'X'].includes(e.bill_status);
+          });
 
-      console.log('data >', data);
-      console.log('filterDataStatusND1', filterDataStatus);
+          // console.log('filterDataStatusND2', filterDataStatus);
 
-      const arr1 = filterDataStatus.map((obj) => {
-        return { ...obj, date_testing: obj.doc_date };
-      });
-      console.log('arr1 >', arr1);
-      const sortedDesc = arr1.sort(
-        (objA, objB) => Number(objB.date_testing) - Number(objA.date_testing),
-      );
+          const arr1 = filterDataStatus.map((obj) => {
+            return { ...obj, date_testing: obj.doc_date };
+          });
 
-      console.log('tesd filter', sortedDesc);
+          const sortedDesc = arr1.sort(
+            (objA, objB) =>
+              Number(objB.date_testing) - Number(objA.date_testing),
+          );
 
-      if (res.data.success == true) {
-        const datas = res.data;
-        const arrLocation = datas.data;
+          // console.log('tesd filter', filterDataStatus);
 
-        const filterDataStatus = data.filter(function (e) {
-          // return ['D', 'N'].includes(e.bill_status);
-          return ['C', 'X'].includes(e.bill_status);
-        });
+          setDataHistoryFilter(sortedDesc);
+          setDataHistory(sortedDesc);
 
-        console.log('filterDataStatusND2', filterDataStatus);
-
-        const arr1 = filterDataStatus.map((obj) => {
-          return { ...obj, date_testing: obj.doc_date };
-        });
-
-        const sortedDesc = arr1.sort(
-          (objA, objB) => Number(objB.date_testing) - Number(objA.date_testing),
-        );
-
-        console.log('tesd filter', sortedDesc);
-
-        setDataHistoryFilter(sortedDesc);
+          setDataFetchedHistory(true); // Tandai bahwa data sudah diambil
+        } else {
+          setDataFetchedHistory(true); // Tetap tandai bahwa data sudah diambil meskipun tidak ada data
+        }
         setSpinner(false);
-      } else {
-        setSpinner(false);
-      }
-
-      setDataHistory(sortedDesc);
-    });
+      })
+      .catch((error) => {
+        console.error('Error fetching payment data:', error);
+        setSpinner(false); // Pastikan spinner dimatikan jika terjadi error
+        setDataFetchedHistory(true); // Tandai bahwa data sudah diambil meskipun ada error
+      });
   };
-  console.log('dataHistoryFilter', dataHistoryFilter);
+  // console.log('dataHistoryFilter', dataHistoryFilter);
   const renderItemContent = ({ item, index }) => {
     return (
       <View
@@ -362,7 +353,7 @@ const History = () => {
         <View style={[BaseStyle.textInput, { backgroundColor: colors.card }]}>
           <TextInput
             placeholder="Search Name or Bill No"
-            placeholderTextColor="#494a4a"
+            placeholderTextColor={colors.text}
             style={{
               flex: 1,
               height: '100%',
@@ -375,24 +366,39 @@ const History = () => {
           />
         </View>
       </View>
-      <FlatList
-        showsHorizontalScrollIndicator={false}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          paddingHorizontal: 0,
-        }}
-        refreshControl={
-          <RefreshControl
-            colors={[colors.primary]}
-            tintColor={colors.primary}
-            refreshing={refreshing}
-            onRefresh={() => {}}
+      {spinner ? (
+        <ActivityIndicator />
+      ) : dataFetchedHistory ? ( // Periksa apakah data sudah diambil
+        dataHistoryFilter.length > 0 ? (
+          <FlatList
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              paddingHorizontal: 0,
+            }}
+            refreshControl={
+              <RefreshControl
+                colors={[colors.primary]}
+                tintColor={colors.primary}
+                refreshing={refreshing}
+                onRefresh={() => {}}
+              />
+            }
+            data={dataHistoryFilter}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={renderItemContent}
           />
-        }
-        data={dataHistoryFilter}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={renderItemContent}
-      />
+        ) : (
+          <Text style={{ color: colors.text }}>Data not available</Text>
+        )
+      ) : (
+        <View>
+          <Placeholder style={{ marginVertical: 4, paddingHorizontal: 10 }}>
+            <PlaceholderLine width={100} noMargin style={{ height: 40 }} />
+          </Placeholder>
+        </View>
+      )}
+      {/* Jangan tampilkan apa pun jika spinner masih aktif */}
     </View>
   );
 };
@@ -410,8 +416,8 @@ const Payment = () => {
 
   const [dataPayment, setDataPayment] = useState([]);
   const [dataPaymentFilter, setDataPaymentFilter] = useState([]);
-  const [entity_cd, setEntity] = useState('');
-  const [project_no, setProjectNo] = useState('');
+  const [entityCd, setEntity] = useState('');
+  const [projectNo, setProjectNo] = useState('');
   const [email, setEmail] = useState('');
   const [showChooseProject, setShowChooseProject] = useState(false);
   const [isFocus, setIsFocus] = useState(false);
@@ -421,47 +427,47 @@ const Payment = () => {
   const [loading, setLoading] = useState(true);
   const [checkedEntity, setCheckedEntity] = useState(false);
   const [show, setShow] = useState(false);
+  const [dataFetched, setDataFetched] = useState(false); // Tambahkan state untuk menandai apakah data sudah diambil
 
   // --- useeffect untuk project
   useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-      // getTower();
-      if (project && project.data && project.data.length > 0) {
-        // console.log('entity useeffect di home', project.data[0].entity_cd);
-        setEntity(project.data[0].entity_cd);
-        setProjectNo(project.data[0].project_no);
-        const projects = project.data.map((item, id) => ({
-          label: item.descs,
-          value: item.project_no,
-        }));
-        // console.log('data di project', project);
+    // setTimeout(() => {
+    //   setLoading(false);
+    // getTower();
+    if (project && project.data && project.data.length > 0) {
+      // console.log('entity useeffect di home', project.data[0].entity_cd);
+      setEntity(project.data[0].entity_cd);
+      setProjectNo(project.data[0].project_no);
+      const projects = project.data.map((item, id) => ({
+        label: item.descs,
+        value: item.project_no,
+      }));
+      // console.log('data di project', project);
 
-        setProjectData(project.data);
-        setValueProject(projects);
+      setProjectData(project.data);
+      setValueProject(projects);
 
-        setSpinner(false);
-        setShow(true);
-        console.log('spinner after', spinner);
-      }
-    }, 3000);
+      setSpinner(false);
+      setShow(true);
+      console.log('spinner after', spinner);
+    }
+    // }, 3000);
   }, [project]);
 
   // --- useeffect untuk update email/name
   useEffect(() => {
     setEmail(user != null && user.userData != null ? user.userData.email : '');
-  }, [email]);
+  }, [user]);
   // --- useeffect untuk update email/name
 
   useEffect(() => {
-    setTimeout(() => {
+    if (entityCd !== '' && projectNo !== '' && email !== '') {
       getDataPayment();
-      searchFilterFunction();
-    }, 1000);
-  }, []);
+    }
+  }, [entityCd, projectNo, email]);
 
   const searchFilterFunction = (text) => {
-    console.log('text', text);
+    // console.log('text', text);
     // console.log('arrayholder', arrayholder);
     // const newData = dataPayment.filter(item => {
     //   const itemData = `${item.bill_name.toUpperCase()}` || `${item.bill_no}`;
@@ -473,7 +479,7 @@ const Payment = () => {
       (item) =>
         haveChildren(item.bill_no, text) || haveChildren(item.bill_name, text),
     );
-    console.log('new data', newData);
+    // console.log('new data', newData);
     setDataPaymentFilter(newData);
   };
 
@@ -502,64 +508,54 @@ const Payment = () => {
 
   const getDataPayment = () => {
     const config = {
-      url: API_URL_LOKAL + `/modules/store/transaction`,
+      url: API_URL_LOKAL + `/modules/store/transaction-by-email`,
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
       params: {
-        entity_cd: entity_cd,
-        project_no: project_no,
+        entity_cd: entityCd,
+        project_no: projectNo,
         email: email,
       },
     };
-    axios(config).then((res) => {
-      const data = res.data.data;
+    axios(config)
+      .then((res) => {
+        if (res.data.success === true) {
+          const data = res.data.data;
+          // const arrLocation = datas.data;
 
-      const filterDataStatus = data.filter(function (e) {
-        return ['D', 'N'].includes(e.bill_status);
-      });
+          const filterDataStatus = data.filter(function (e) {
+            return ['D', 'N'].includes(e.bill_status);
+          });
 
-      console.log('filterDataStatusNDP1', filterDataStatus);
+          // console.log('filterDataStatusNDP2', filterDataStatus);
 
-      const arr1 = filterDataStatus.map((obj) => {
-        return { ...obj, date_testing: obj.doc_date };
-      });
+          const arr1 = filterDataStatus.map((obj) => {
+            return { ...obj, date_testing: obj.doc_date };
+          });
+          console.log('arr1 PAYMENT', arr1);
 
-      const sortedDesc = arr1.sort(
-        (objA, objB) => Number(objB.date_testing) - Number(objA.date_testing),
-      );
+          const sortedDesc = arr1.sort(
+            (objA, objB) =>
+              Number(objB.date_testing) - Number(objA.date_testing),
+          );
 
-      console.log('tesd filter', sortedDesc);
+          console.log('tesd filter PAYMENT', sortedDesc);
 
-      if (res.data.success == true) {
-        const datas = res.data;
-        const arrLocation = datas.data;
-
-        const filterDataStatus = data.filter(function (e) {
-          return ['D', 'N'].includes(e.bill_status);
-        });
-
-        console.log('filterDataStatusNDP2', filterDataStatus);
-
-        const arr1 = filterDataStatus.map((obj) => {
-          return { ...obj, date_testing: obj.doc_date };
-        });
-
-        const sortedDesc = arr1.sort(
-          (objA, objB) => Number(objB.date_testing) - Number(objA.date_testing),
-        );
-
-        console.log('tesd filter', sortedDesc);
-
-        setDataPaymentFilter(sortedDesc);
+          setDataPaymentFilter(sortedDesc);
+          setDataPayment(sortedDesc);
+          setDataFetched(true);
+        } else {
+          setDataFetched(true);
+        }
         setSpinner(false);
-      } else {
-        setSpinner(false);
-      }
-
-      setDataPayment(sortedDesc);
-    });
+      })
+      .catch((error) => {
+        console.error('Error fetching payment data:', error);
+        setSpinner(false); // Pastikan spinner dimatikan jika terjadi error
+        setDataFetched(true); // Tandai bahwa data sudah diambil meskipun ada error
+      });
   };
 
   const renderItemContent = ({ item, index }) => {
@@ -582,7 +578,7 @@ const Payment = () => {
           }}
         >
           <View style={{ flexDirection: 'row' }}>
-            <Text>Bill No : </Text>
+            <Text style={{ color: colors.text }}>Bill No : </Text>
             <Text
               style={{
                 fontSize: 14,
@@ -594,7 +590,9 @@ const Payment = () => {
             </Text>
           </View>
           <View>
-            <Text>{moment(item.doc_date).format('MMM DD YYYY, hh:mm:ss')}</Text>
+            <Text style={{ color: colors.text }}>
+              {moment(item.doc_date).format('MMM DD YYYY, hh:mm:ss')}
+            </Text>
           </View>
         </View>
 
@@ -605,7 +603,9 @@ const Payment = () => {
             justifyContent: 'space-between',
           }}
         >
-          <Text style={{ fontWeight: 'bold', fontSize: 14 }}>
+          <Text
+            style={{ fontWeight: 'bold', fontSize: 14, color: colors.text }}
+          >
             {item.bill_name} - {item.lot_no}
           </Text>
         </View>
@@ -628,7 +628,9 @@ const Payment = () => {
               ? 'Item is being process'
               : 'Item is being delivered'}
           </Text>
-          <Text>{numFormat(item.total_amt)}</Text>
+          <Text style={{ color: colors.text }}>
+            {numFormat(item.total_amt)}
+          </Text>
         </View>
         {/* <View>
           <Text>
@@ -665,24 +667,39 @@ const Payment = () => {
           />
         </View>
       </View>
-      <FlatList
-        showsHorizontalScrollIndicator={false}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          paddingHorizontal: 20,
-        }}
-        refreshControl={
-          <RefreshControl
-            colors={[colors.primary]}
-            tintColor={colors.primary}
-            refreshing={refreshing}
-            onRefresh={() => {}}
+      {spinner ? (
+        <ActivityIndicator />
+      ) : dataFetched ? ( // Periksa apakah data sudah diambil
+        dataPaymentFilter.length > 0 ? (
+          <FlatList
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              paddingHorizontal: 20,
+            }}
+            refreshControl={
+              <RefreshControl
+                colors={[colors.primary]}
+                tintColor={colors.primary}
+                refreshing={refreshing}
+                onRefresh={() => {}}
+              />
+            }
+            data={dataPaymentFilter}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={renderItemContent}
           />
-        }
-        data={dataPaymentFilter}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={renderItemContent}
-      />
+        ) : (
+          <Text style={{ color: colors.text }}>Data not available</Text>
+        )
+      ) : (
+        <View>
+          <Placeholder style={{ marginVertical: 4, paddingHorizontal: 10 }}>
+            <PlaceholderLine width={100} noMargin style={{ height: 40 }} />
+          </Placeholder>
+        </View>
+      )}
+      {/* Jangan tampilkan apa pun jika spinner masih aktif */}
     </View>
   );
 };

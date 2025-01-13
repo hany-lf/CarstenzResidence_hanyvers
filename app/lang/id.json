@@ -1,4 +1,6 @@
 {
+  "order": "Pesanan",
+  "order_n_payment": "Pesanan & Pembayaran",
   "input_your_password": "Masukkan kata sandi Anda",
   "location": "Lokasi",
   "apply": "Berlaku",

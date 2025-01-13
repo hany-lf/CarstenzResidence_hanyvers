@@ -1,4 +1,6 @@
 {
+  "order": "Order",
+  "order_n_payment": "Order & Payment",
   "input_your_password": "Input Your Password",
   "location": "Location",
   "apply": "Apply",
