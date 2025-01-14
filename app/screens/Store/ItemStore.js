@@ -578,14 +578,12 @@ const Product = (params) => {
   };
 
   return (
-    <SafeAreaView>
-      <ScrollView
-        // stickyHeaderIndices={[0]}
-        showsVerticalScrollIndicator={false}
-      >
-        <Fragment>{renderList()}</Fragment>
-      </ScrollView>
-    </SafeAreaView>
+    <ScrollView
+      // stickyHeaderIndices={[0]}
+      showsVerticalScrollIndicator={false}
+    >
+      <Fragment>{renderList()}</Fragment>
+    </ScrollView>
   );
 };
 
