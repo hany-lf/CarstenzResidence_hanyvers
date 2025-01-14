@@ -11,6 +11,7 @@
 {
 //  [RNSplash]
 //  [RNSplashScreen show];  // here
+
   [FIRApp configure];
   self.moduleName = @"CarstenzRDemo";
   // You can add your custom initial props in the dictionary below.
@@ -19,6 +20,7 @@
 
   [super application:application didFinishLaunchingWithOptions:launchOptions];
   [RNSplashScreen show];
+
   return YES;
 }
 

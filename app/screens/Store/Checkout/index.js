@@ -1,11 +1,11 @@
-import CounterSelectCheckout from "@components/Form/CounterSelectCheckout";
-import Text from "@components/Text";
-import { BaseColor, Images, useTheme } from "@config";
-import PropTypes from "prop-types";
-import React from "react";
-import { ImageBackground, TouchableOpacity, View } from "react-native";
-import styles from "./styles";
-import Loading from "./Loading";
+import CounterSelectCheckout from '@components/Form/CounterSelectCheckout';
+import Text from '@components/Text';
+import { BaseColor, Images, useTheme } from '@config';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { ImageBackground, TouchableOpacity, View } from 'react-native';
+import styles from './styles';
+import Loading from './Loading';
 
 const Checkout = ({
   description,
@@ -30,19 +30,38 @@ const Checkout = ({
 
   return (
     <View style={[styles.contain, style]} activeOpacity={0.9}>
-      <TouchableOpacity onPress={onPress}>
-        <ImageBackground
-          // source={image}
-          source={
-            image
-            // require('@assets/images/logo.png')
-          }
-          style={styles.imageBackgroundCard1}
-          imageStyle={{ borderRadius: 8 }}
-        />
+      <TouchableOpacity
+        onPress={onPress}
+        style={{
+          // backgroundColor: 'orange',
+          width: 100, // Atur lebar kotak
+          height: 100, // Atur tinggi kotak
+          justifyContent: 'center', // Pusatkan konten secara vertikal
+          alignItems: 'center', // Pusatkan konten secara horizontal
+        }}
+      >
+        <View
+          style={{
+            flex: 1,
+            // backgroundColor: 'red',
+            alignItems: 'center', // Pusatkan konten secara horizontal
+            justifyContent: 'center', // Pusatkan konten secara vertikal
+          }}
+        >
+          <ImageBackground
+            source={image} // Pastikan source gambar sudah benar
+            style={{
+              width: 80, // Atur lebar gambar
+              height: 80, // Atur tinggi gambar
+            }}
+            imageStyle={{
+              borderRadius: 8, // Jika ingin menambahkan border radius
+            }}
+          />
+        </View>
       </TouchableOpacity>
       <View style={{ flex: 1, paddingVertical: 4 }}>
-        <View style={{ flexDirection: "row", paddingHorizontal: 10 }}>
+        <View style={{ flexDirection: 'row', paddingHorizontal: 10 }}>
           <View style={{ flex: 1, paddingBottom: 4 }}>
             <View style={{ flex: 1 }}>
               <TouchableOpacity onPress={onPress}>
@@ -104,12 +123,12 @@ Checkout.propTypes = {
 };
 
 Checkout.defaultProps = {
-  description: "",
-  title: "",
+  description: '',
+  title: '',
   style: {},
   image: Images.eProduct,
-  salePrice: "",
-  CurrentValue: "",
+  salePrice: '',
+  CurrentValue: '',
   onPress: () => {},
   onDelete: () => {},
   onChange: () => {},

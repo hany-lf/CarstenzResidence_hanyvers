@@ -649,78 +649,73 @@ const Store = (props) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <SafeAreaView
-        style={BaseStyle.safeAreaView}
-        edges={['right', 'top', 'left']}
-      >
-        {/* {renderContent()} */}
+      {/* {renderContent()} */}
 
-        {spinner ? (
-          <View>
-            <Placeholder style={{ marginVertical: 4, paddingHorizontal: 10 }}>
-              <PlaceholderLine width={100} noMargin style={{ height: 40 }} />
-            </Placeholder>
-          </View>
-        ) : dataFetched ? ( // Periksa apakah data sudah diambil
-          data.length > 0 ? (
-            renderContent()
-          ) : (
-            <View style={{ flex: 1 }}>
-              <Header
-                title={t('Stores')}
-                renderLeft={() => {
-                  return (
-                    <Icon
-                      name="angle-left"
-                      size={20}
-                      color={colors.primary}
-                      enableRTL={true}
-                    />
-                  );
-                }}
-                onPressLeft={() => {
-                  navigation.goBack();
-                }}
-              />
-              <View
-                style={{
-                  flex: 1,
-                  alignItems: 'center',
-                  alignContent: 'center',
-                  justifyContent: 'center',
-                  // paddingTop: '50%',
-                }}
-              >
-                <View>
-                  {/* <Icon
+      {spinner ? (
+        <View>
+          <Placeholder style={{ marginVertical: 4, paddingHorizontal: 10 }}>
+            <PlaceholderLine width={100} noMargin style={{ height: 40 }} />
+          </Placeholder>
+        </View>
+      ) : dataFetched ? ( // Periksa apakah data sudah diambil
+        data.length > 0 ? (
+          renderContent()
+        ) : (
+          <View style={{ flex: 1 }}>
+            <Header
+              title={t('Stores')}
+              renderLeft={() => {
+                return (
+                  <Icon
+                    name="angle-left"
+                    size={20}
+                    color={colors.primary}
+                    enableRTL={true}
+                  />
+                );
+              }}
+              onPressLeft={() => {
+                navigation.goBack();
+              }}
+            />
+            <View
+              style={{
+                flex: 1,
+                alignItems: 'center',
+                alignContent: 'center',
+                justifyContent: 'center',
+                // paddingTop: '50%',
+              }}
+            >
+              <View>
+                {/* <Icon
           name={'exclamation-triangle'}
           style={{
             fontSize: 32,
             color: parseHexTransparency(colors.text, 30),
           }}
         /> */}
-                  <LottieView
-                    source={require('@data/comingsoon-lottie.json')}
-                    autoPlay
-                    style={{ width: 300, height: 300 }}
-                  />
-                </View>
-                <Text
-                  // headline
-                  bold
-                  style={{ color: BaseColor.primary }}
-                  // style={{
-                  //   color: parseHexTransparency(colors.text, 50),
-                  // }}
-                >
-                  Store screen coming soon
-                </Text>
+                <LottieView
+                  source={require('@data/comingsoon-lottie.json')}
+                  autoPlay
+                  style={{ width: 300, height: 300 }}
+                />
               </View>
+              <Text
+                // headline
+                bold
+                style={{ color: BaseColor.primary }}
+                // style={{
+                //   color: parseHexTransparency(colors.text, 50),
+                // }}
+              >
+                Store screen coming soon
+              </Text>
             </View>
-          )
-        ) : null}
-        {/* Jangan tampilkan apa pun jika spinner masih aktif */}
-      </SafeAreaView>
+          </View>
+        )
+      ) : null}
+      {/* Jangan tampilkan apa pun jika spinner masih aktif */}
     </View>
   );
 };

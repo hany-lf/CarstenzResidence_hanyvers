@@ -236,6 +236,7 @@ const Product = (params) => {
           onPress={() =>
             totalHarga == 0 ? setShowAlert(true) : checkoutSave()
           }
+          style={{ paddingTop: 0 }}
           // onPress={() => checkoutSave()}
         />
         <Divider style={{ marginTop: 10, marginBottom: 20 }} />
@@ -248,6 +249,8 @@ const Product = (params) => {
             borderWidth: 0.5,
             borderRadius: 10,
             marginHorizontal: 20,
+            height: 40,
+            paddingLeft: 5,
           }}
           // onChangeText={this.handleSearch}
           onChangeText={(text) => searchFilterFunction(text.toUpperCase())}
@@ -361,47 +364,6 @@ const Product = (params) => {
                 </TouchableOpacity>
               </View>
               {/* </View> */}
-              {/* <View
-                style={[
-                  // styles.contentPicker,
-                  {
-                    backgroundColor: colors.background,
-                    flexDirection: 'column',
-                  },
-                  // style,
-                ]}>
-                <TouchableOpacity
-                  onPress={() =>
-                    changeQty(
-                      valueChangeQty,
-                      item.default_price,
-                      index,
-                      item,
-                      'up',
-                    )
-                  }>
-                  <Icon name="plus-circle" size={24} color={colors.primary} />
-                </TouchableOpacity>
-                <Text title2 style={{width: 'auto', textAlign: 'center'}}>
-                  {item.qty}
-                </Text>
-                <TouchableOpacity
-                  onPress={() =>
-                    changeQty(
-                      valueChangeQty,
-                      item.default_price,
-                      index,
-                      item,
-                      'down',
-                    )
-                  }>
-                  <Icon
-                    name="minus-circle"
-                    size={24}
-                    color={BaseColor.grayColor}
-                  />
-                </TouchableOpacity>
-              </View> */}
             </View>
           )}
         />
@@ -590,14 +552,14 @@ const Product = (params) => {
         images: dataItemStore.images,
         datadetail: dataSplice, // dapet dari isi redux (ini yg nantinya ada kode item, qty, total, dll)
       };
-      console.log('formdata', formData);
+      // console.log('formdata', formData);
       dispatch(data_cart(formData));
       navigation.navigate('DeliveryAndPayment', formData);
     } else {
       dataSplice.splice(indexOfObject, 1);
 
       // console.log(arr); // 👉️ [{id: 1}, {id: 5}]
-      console.log('remaining', dataSplice);
+      // console.log('remaining', dataSplice);
       const formData = {
         entity_cd: dataMember.entity_cd, // sebenernya ini cukup ambil dari data array 0, karena termasuk member item yang sama disetiap array produk
         project_no: dataMember.project_no, // sebenernya ini cukup ambil dari data array 0, karena termasuk member item yang sama disetiap array produk
@@ -609,7 +571,7 @@ const Product = (params) => {
         images: dataItemStore.images,
         datadetail: dataSplice, // dapet dari isi redux (ini yg nantinya ada kode item, qty, total, dll)
       };
-      console.log('formdata', formData);
+      // console.log('formdata', formData);
       dispatch(data_cart(formData));
       navigation.navigate('DeliveryAndPayment', formData);
     }
@@ -621,113 +583,7 @@ const Product = (params) => {
         // stickyHeaderIndices={[0]}
         showsVerticalScrollIndicator={false}
       >
-        {/* <View
-          style={{
-            flexDirection: 'row',
-            width: '100%',
-            height: '7%',
-            // borderWidth: 1,
-            borderBottomWidth: 1,
-            borderLeftWidth: 0.5,
-            borderRightWidth: 0.5,
-            borderBottomRightRadius: 15,
-            borderStyle: 'solid',
-            borderBottomEndRadius: 15,
-            borderBottomLeftRadius: 15,
-            // borderTopEndRadius: 15,
-            // borderTopLeftRadius: 15,
-            justifyContent: 'center',
-            backgroundColor: '#FFF',
-          }}>
-          <CardBooking
-            loading={loading}
-            description={t('total_price')}
-            price={numFormattanpaRupiah(totalHarga)}
-            secondDescription={'Tax included'}
-            textButton={t('checkout')}
-            //   // onPress={() => navigation.navigate('EShipping')}
-            onPress={() =>
-              totalHarga == 0 ? setShowAlert(true) : checkoutSave()
-            }
-            // onPress={() => checkoutSave()}
-          />
-          <Divider style={{marginTop: 10, marginBottom: 20}} />
-          <TextInput
-            placeholder="Search"
-            style={{
-              color: '#555',
-              fontSize: 14,
-              borderColor: '#000',
-              borderWidth: 0.5,
-              borderRadius: 10,
-              marginHorizontal: 20,
-            }}
-            // onChangeText={this.handleSearch}
-            onChangeText={text => searchFilterFunction(text.toUpperCase())}
-            // onChangeText={text => onSearch(text)}
-            autoCorrect={false}
-          />
-        </View> */}
         <Fragment>{renderList()}</Fragment>
-
-        {/* <Modal
-          isVisible={modalVisible}
-          animationType={'slide'}
-          swipeDirection={['down']}
-          style={styles.bottomModal}
-          onSwipeComplete={() => setModalVisible(!modalVisible)}
-          onBackdropPress={() => setModalVisible(!modalVisible)}>
-          <View
-            style={[
-              styles.contentFilterBottom,
-              {backgroundColor: colors.card},
-            ]}>
-            <View style={styles.contentSwipeDown}>
-              <View style={styles.lineSwipeDown} />
-            </View>
-
-            <View
-              style={{
-                flexDirection: 'row',
-                marginBottom: 8,
-                marginTop: 20,
-                justifyContent: 'space-between',
-              }}>
-              <View>
-                <Text body1>{t('quantity').toUpperCase()}</Text>
-                <FormCounterSelect
-                  isRow={true}
-                  label={''}
-                  detail={''}
-                  style={{
-                    marginTop: 8,
-                    backgroundColor: 'transparent',
-                    padding: 0,
-                    justifyContent: 'center',
-                    flex: 0,
-                  }}
-                  onChange={value => changeQty(value)}
-                />
-              </View>
-              <View>
-                <Text body1 style={{textAlign: 'right'}}>
-                  {t('total').toUpperCase()}
-                </Text>
-                <Text title3 style={{textAlign: 'right', marginTop: 12}}>
-                  {`${numFormat(`${total}`)}`}
-                </Text>
-              </View>
-            </View>
-
-            <Button
-              full
-              style={{marginTop: 10, marginBottom: 20}}
-              onPress={() => buyNow()}>
-              {t('Add To Cart')}
-            </Button>
-          </View>
-        </Modal>
-       */}
       </ScrollView>
     </SafeAreaView>
   );
@@ -739,7 +595,7 @@ const Product = (params) => {
 
 export default function ItemStore({ route }) {
   const { colors } = useTheme();
-  console.log('routeee', route);
+  // console.log('routeee', route);
   const navigation = useNavigation();
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
@@ -808,7 +664,7 @@ export default function ItemStore({ route }) {
         }}
       />
 
-      <Product params={route.params} />
+      <Product params={route.params} style={{ marginTop: 0 }} />
 
       {/* Kalo mau pake tab dibuka aja ini, tapi harus ada kondisi id / kode buat filter tab nya */}
       {/* <TabView
