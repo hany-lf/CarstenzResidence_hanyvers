@@ -265,7 +265,7 @@ const SignIn = (props) => {
           placeholder={t('input_id')}
           value={email}
           selectionColor={colors.primary}
-          onSubmitEditing={() => passwordInputRef.current?.focus()}
+          // onSubmitEditing={() => passwordInputRef.current?.focus()}
         />
 
         <TextInput
@@ -274,7 +274,7 @@ const SignIn = (props) => {
             BaseStyle.textInput,
             { marginTop: 10, backgroundColor: colors.border },
           ]}
-          onSubmitEditing={() => signInButtonRef.current?.focus()}
+          // onSubmitEditing={() => signInButtonRef.current?.focus()}
           onChangeText={passwordChanged}
           autoCorrect={false}
           placeholder={t('input_password')}

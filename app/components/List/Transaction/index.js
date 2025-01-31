@@ -42,9 +42,10 @@ const ListTransaction = ({
       <View style={{ flex: 1 }}>
         <Text subhead style={styles.text}>
           {lot_no} - {fin_month} - {fin_year}
+          {/* {lot_no} - {doc_no} */}
         </Text>
         <Text footnote light style={[styles.text, { marginTop: 5 }]}>
-          {/* {due_date} */}
+          {due_date}
         </Text>
         <Text
           bold

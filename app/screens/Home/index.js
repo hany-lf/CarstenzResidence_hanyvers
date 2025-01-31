@@ -117,22 +117,9 @@ const Home = (props) => {
   const dataMenus = useSelector((state) => getMenu(state));
   // --- tes logout jika token invalid----
   const isLoggedOut = useSelector((state) => state.auth.isLoggedOut);
-  // console.log('project dari useselector', project);
-  // console.log('user di home dari useselector', user);
-  // console.log('dataMenus', dataMenus);
-  // console.log(
-  //   "99 state",
-  //   useSelector((state) => state)
-  // );
-  // const email = user.user;
+
   const [email, setEmail] = useState('');
-  // console.log('usr di home', user);
-  // console.log('pict user', user.userData.pict)
-  // const [fotoprofil, setFotoProfil] = useState(
-  //   user != null && user.userData != null
-  //     ? { uri: user.userData.pict }
-  //     : { uri: `https://dev.ifca.co.id/no-image.png` },
-  // );
+
   const [fotoprofil, setFotoProfil] = useState('');
   // console.log('fotoprofil cek home', fotoprofil);
   const [name, setName] = useState('');
@@ -368,9 +355,13 @@ const Home = (props) => {
 
   // ---  getlotno ---
   async function getLotNo() {
-    // console.log('email getlotno', email);
-    // console.log('entitycode getlotno', entity_cd);
-    // console.log('projectno getlotno', project_no);
+    // Pastikan entity_cd, project_no, dan email ada
+    if (!entity_cd || !project_no || !email) {
+      console.error(
+        'entity_cd, project_no, dan email harus ada untuk memanggil API',
+      );
+      return;
+    }
 
     const params = {
       entity_cd: entity_cd,
@@ -379,17 +370,16 @@ const Home = (props) => {
     };
     // console.log('params getlotno', params);
     const config = {
-      timeout: 5000, // default is `0` (no timeout)
+      // timeout: 5000, // default is `0` (no timeout)
       method: 'get',
-      // url: 'http://dev.ifca.co.id:8080/apiciputra/api/approval/groupMenu?approval_user=MGR',
       url: API_URL_LOKAL + `/home/common-unit`,
-      // url: API_URL_LOKAL + `/home/common-unit` ,
+
       headers: {
         'content-type': 'application/json',
-        // 'X-Requested-With': 'XMLHttpRequest',
+
         Authorization: `Bearer ${user.Token}`,
       },
-      // params: {approval_user: user.userIDToken.UserId},
+
       params: params,
     };
 

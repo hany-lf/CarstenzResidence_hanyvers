@@ -229,7 +229,7 @@ const Store = (props) => {
     axios(config)
       .then((res) => {
         const data = res.data.data;
-        console.log('data member', data);
+        // console.log('data member', data);
         setDataMember(data);
         if (defaultMemberID == true) {
           // setTextLotno(resLotno[0]);

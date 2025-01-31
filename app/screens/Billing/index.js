@@ -111,7 +111,7 @@ const Billing = ({
   // --- useeffect untuk update email/name
 
   useEffect(() => {
-    console.log('apakah ini terload', email);
+    // console.log('apakah ini terload', email);
     if (email) {
       fetchData();
       fetchDataCurrent();
@@ -198,7 +198,7 @@ const Billing = ({
     try {
       const res = await axios(config);
       setDataCurrent(res.data.data);
-      console.log('DATA DUE DATE -->', res.data.data);
+      // console.log('DATA DUE DATE -->', res.data.data);
       setLoading(false);
     } catch (error) {
       console.log('error due summary', error.response);
@@ -223,7 +223,7 @@ const Billing = ({
     try {
       const res = await axios(config);
       setData(res.data.data);
-      console.log('data current', res.data.data);
+      // console.log('data current', res.data.data);
       setLoading(false);
     } catch (error) {
       console.log('error fetch data current', error.response);
@@ -239,7 +239,7 @@ const Billing = ({
           return (max += parseInt(bills.mbal_amt));
         }, 0)
       : null;
-  console.log('sum', sum);
+  // console.log('sum', sum);
 
   return (
     <SafeAreaView

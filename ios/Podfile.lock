@@ -398,6 +398,9 @@ PODS:
     - glog
   - react-native-blob-util (0.19.11):
     - React-Core
+  - react-native-blur (4.4.1):
+    - RCT-Folly (= 2021.07.22.00)
+    - React-Core
   - react-native-date-picker (5.0.8):
     - React-Core
   - react-native-maps (0.28.1):
@@ -629,6 +632,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-blob-util (from `../node_modules/react-native-blob-util`)
+  - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
   - react-native-date-picker (from `../node_modules/react-native-date-picker`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
@@ -743,6 +747,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   react-native-blob-util:
     :path: "../node_modules/react-native-blob-util"
+  react-native-blur:
+    :path: "../node_modules/@react-native-community/blur"
   react-native-date-picker:
     :path: "../node_modules/react-native-date-picker"
   react-native-maps:
@@ -868,6 +874,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 853b8631b908636bb09ef77cb217376c38a0c8ff
   React-logger: afa402da502a35728c9073804b1802861783a996
   react-native-blob-util: f7234c91ad0e3faeee51b3edee80b61553f74993
+  react-native-blur: 4024ea270983c8b3575768b1d7ecc94c1374f8b3
   react-native-date-picker: efc84d576cf2637a9697853e790c40f2790bd977
   react-native-maps: b64b37b82b4a7ef09ef4c3de4275cea77bc3b5f5
   react-native-pager-view: 4cd103df3ddc1857b70d3f305a21eafac1c9ad8f

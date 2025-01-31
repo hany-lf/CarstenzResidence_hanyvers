@@ -53,6 +53,7 @@ export default function DeliveryAndPayment({ route, navigation }) {
   const { t } = useTranslation();
 
   const [dataParams, setDataParams] = useState(route.params);
+  // console.log('dataParams', dataParams);
   const [dataParamsTransaction, setDataParamsTransaction] = useState(
     route.params.datadetail,
   );
@@ -62,22 +63,14 @@ export default function DeliveryAndPayment({ route, navigation }) {
   const [refreshing, setRefreshing] = useState(false);
   const [spinner, setSpinner] = useState(true);
 
-  const [street, setStreet] = useState('');
-  const [city, setCity] = useState('');
-  const [postCode, setPostCode] = useState('');
-  const [country, setCountry] = useState('');
-  const [contactName, setContactName] = useState('');
-
-  const [phone, setPhone] = useState('');
   const [loading, setLoading] = useState(false);
-  const [type, setType] = useState('home'); // home or office
+
   const [hasError, setErrors] = useState(false);
   const user = useSelector((state) => getUser(state));
-  // console.log('user cek debtor', user);
+  console.log('user cek debtor', user);
 
   const project = useSelector((state) => getProject(state));
   // console.log('project untuk payment', project);
-  const facility_type = dataParams.facility_type;
 
   const [email, setEmail] = useState(
     user != null && user.userData ? user.userData.email : '',
@@ -156,6 +149,13 @@ export default function DeliveryAndPayment({ route, navigation }) {
 
   async function getLotNo() {
     try {
+      const config = {
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user.Token}`,
+        },
+      };
       const res = await axios.get(
         API_URL_LOKAL +
           `/home/common-unit?entity_cd=` +
@@ -166,6 +166,7 @@ export default function DeliveryAndPayment({ route, navigation }) {
           '&' +
           'email=' +
           email,
+        config,
       );
       const resLotno = res.data.data;
 
@@ -191,6 +192,13 @@ export default function DeliveryAndPayment({ route, navigation }) {
 
   async function getListPayment() {
     try {
+      const config = {
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user.Token}`,
+        },
+      };
       const res = await axios.get(
         API_URL_LOKAL +
           `/modules/store/payment-type?entity_cd=` +
@@ -198,9 +206,7 @@ export default function DeliveryAndPayment({ route, navigation }) {
           '&' +
           'project_no=' +
           project_no,
-        // '&' +
-        // 'facility_type=' +
-        // facility_type,
+        config,
       );
       const resPayment = res.data.data;
       // resPayment.push({trx_code: 'others', descs: 'Others'});
@@ -220,8 +226,8 @@ export default function DeliveryAndPayment({ route, navigation }) {
   };
 
   //-----FOR GET DEBTOR
-  const getDebtor = async (data) => {
-    // console.log(object)
+  const getDebtor = async () => {
+    // console.log('user token', user.Token);
 
     const params =
       '?' +
@@ -245,38 +251,25 @@ export default function DeliveryAndPayment({ route, navigation }) {
     };
 
     await axios
-      .get(API_URL_LOKAL + '/modules/cs/debtor' + params, { config })
+      .get(API_URL_LOKAL + '/modules/store/member-by-email' + params, config)
       .then((res) => {
-        // console.log('res', res);
-        const datas = res.data;
-        const dataDebtors = datas.data;
+        const dataDebtors = res.data.data;
 
         if (dataDebtors.length > 1) {
           setDefaultDebtor(false);
-          // getLotNo();
-          // setDebtor(dataDebtors[0].debtor_acct);
+        } else {
+          setDefaultDebtor(true);
 
-          // settextDebtor(
-          //   dataDebtors[0].debtor_acct + ' - ' + dataDebtors[0].name,
-          // );
+          setDebtor(dataDebtors[0].member_id);
+
+          settextDebtor(
+            dataDebtors[0].member_id + ' - ' + dataDebtors[0].member_name,
+          );
           // console.log(
           //   'debn',
           //   dataDebtors[0].debtor_acct + ' - ' + dataDebtors[0].name,
           // );
-          // settextNameDebtor(dataDebtors[0].name);
-        } else {
-          setDefaultDebtor(true);
-
-          setDebtor(dataDebtors[0].debtor_acct);
-
-          settextDebtor(
-            dataDebtors[0].debtor_acct + ' - ' + dataDebtors[0].name,
-          );
-          console.log(
-            'debn',
-            dataDebtors[0].debtor_acct + ' - ' + dataDebtors[0].name,
-          );
-          settextNameDebtor(dataDebtors[0].name);
+          settextNameDebtor(dataDebtors[0].member_name);
 
           setSpinner(false);
           getLotNo();
@@ -285,11 +278,12 @@ export default function DeliveryAndPayment({ route, navigation }) {
         }
 
         setDataDebtor(dataDebtors);
+        // console.log('dataDebtor', dataDebtor);
 
         // return res.data;
       })
       .catch((error) => {
-        console.log('error get debtor api', error.response);
+        // console.log('error get debtor api', error.response);
         // alert('error get');
       });
   };
@@ -304,7 +298,7 @@ export default function DeliveryAndPayment({ route, navigation }) {
     setDebtor(index.debtor_acct);
     // setTenantNo(index.tenant_no);
     setTextLotno(index.lot_no);
-    console.log('text_lot', text_lotno);
+    // console.log('text_lot', text_lotno);
     settextDebtor(index.debtor_acct + ' - ' + index.name);
     settextNameDebtor(index.name);
     // getLot('', index.tenant_no);
@@ -342,7 +336,7 @@ export default function DeliveryAndPayment({ route, navigation }) {
     navigation.navigate('Store');
   };
 
-  const onCheckOut = () => {
+  const onOrderPayment = () => {
     // const fixBalance = balance ;
     // console.log('balance to pay = 0', balancetoPay);
     if (!trxCode && !textPayment) {
@@ -442,6 +436,126 @@ export default function DeliveryAndPayment({ route, navigation }) {
     }
   };
 
+  const onOrder = () => {
+    // console.log('handphone', user.userData.Handphone);
+    const replacePhone = user.userData.Handphone.replace(/^0/, '');
+    const phoneReplace = '+62' + replacePhone;
+
+    const config = {
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${user.Token}`,
+      },
+    };
+    // check if number is greater than 0
+    if (balancetoPay > 0) {
+      setShowAlertMinusPayment(false);
+      const formData = {
+        entity_cd: dataParams.entity_cd, // udah dijelasin di sebelumnya ka
+        project_no: dataParams.project_no, // udah dijelasin di sebelumnya ka
+        facility_type: dataParams.facility_type, // udah dijelasin di sebelumnya ka
+        member_id: dataParams.member_id, // udah dijelasin di sebelumnya ka
+        member_name: dataParams.member_name, // udah dijelasin di sebelumnya ka
+        // payment_trx_code: trxCode, // ambil dari payment code ketika choose payment type
+        // payment_trx_descs: textPayment, // ambil dari payment descs ketika choose payment type
+        debtor_acct: dataParams.tenant_no, // dapet dari choose member_id di screen index.js choose member id
+        lot_no: text_lotno.lot_no, //
+        // lot_no: 'F2621', //hardcode untuk testing
+        audit_user: dataParams.member_id, // udah dijelasin di sebelumnya ka
+        cash: amountPaid == '' ? 0 : amountPaid, // ini tuh nominal kita bayar berapa ka
+        return: balancetoPay == '' ? 0 : balancetoPay, // ini nominal kembaliannya
+        detail_order: dataParams.datadetail, // udah dijelasin di sebelumnya ka
+        status_order: 'M', // ini untuk validasi status pembelian dari Mobiles
+        email: email,
+        member_phone: phoneReplace,
+        // nominal_payment: amountPaid == '' ? 0 : amountPaid,
+        // return_payment: balancetoPay == '' ? 0 : balancetoPay,
+      };
+      // console.log('form data payment', formData);
+
+      axios
+        .post(
+          API_URL_LOKAL + '/modules/store/save-order-pay-later',
+          formData,
+          config,
+        )
+        .then((res) => {
+          if (res.data.success == true) {
+            setModalSuccessPayment(true);
+            setMessageAlert(res.data.message);
+            setMessage(res.data.bill_no);
+            setStatus(res.data.success);
+            // alert(res.data.Pesan);
+          } else {
+            setModalSuccessPayment(true);
+            setMessageAlert(res.data.message);
+            setStatus(res.data.success);
+            // alert(res.data.Pesan);
+          }
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
+    }
+
+    // check if number is 0
+    else if (balancetoPay == 0) {
+      setShowAlertMinusPayment(false);
+      const formData = {
+        entity_cd: dataParams.entity_cd, // udah dijelasin di sebelumnya ka
+        project_no: dataParams.project_no, // udah dijelasin di sebelumnya ka
+        facility_type: dataParams.facility_type, // udah dijelasin di sebelumnya ka
+        member_id: dataParams.member_id, // udah dijelasin di sebelumnya ka
+        member_name: dataParams.member_name, // udah dijelasin di sebelumnya ka
+        // payment_trx_code: trxCode, // ambil dari payment code ketika choose payment type
+        // payment_trx_descs: textPayment, // ambil dari payment descs ketika choose payment type
+        debtor_acct: dataParams.tenant_no, // dapet dari choose member_id di screen index.js choose member id
+        lot_no: text_lotno, //
+        // lot_no: 'F2621', //hardcode untuk testing
+        audit_user: dataParams.member_id, // udah dijelasin di sebelumnya ka
+        cash: amountPaid == '' ? 0 : amountPaid, // ini tuh nominal kita bayar berapa ka
+        return: balancetoPay == '' ? 0 : balancetoPay, // ini nominal kembaliannya
+        detail_order: dataParams.datadetail, // udah dijelasin di sebelumnya ka
+        status_order: 'M', // ini untuk validasi status pembelian dari Mobiles
+        email: email,
+        member_phone: phoneReplace,
+        // nominal_payment: amountPaid == '' ? 0 : amountPaid,
+        // return_payment: balancetoPay == '' ? 0 : balancetoPay,
+      };
+      // console.log('form data payment', formData);
+
+      axios
+        .post(
+          API_URL_LOKAL + '/modules/store/save-order-pay-later',
+          formData,
+          config,
+        )
+        .then((res) => {
+          if (res.data.success == true) {
+            setModalSuccessPayment(true);
+            setMessageAlert(res.data.message);
+            setMessage(res.data.bill_no);
+            setStatus(res.data.success);
+            // alert(res.data.Pesan);
+          } else {
+            setModalSuccessPayment(true);
+            setMessageAlert(res.data.message);
+            setStatus(res.data.success);
+            // alert(res.data.Pesan);
+          }
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
+    }
+
+    // if number is less than 0
+    else {
+      setShowAlertMinusPayment(true);
+    }
+  };
+
   return (
     <SafeAreaView
       style={BaseStyle.safeAreaView}
@@ -471,7 +585,7 @@ export default function DeliveryAndPayment({ route, navigation }) {
           contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 20 }}
         >
           <ModalDropdown_debtor
-            label="Debtor"
+            label="Member"
             data={dataDebtor}
             onChange={(index) => handleChangeModal({ data: dataDebtor, index })}
             value={textDebtor}
@@ -689,7 +803,7 @@ export default function DeliveryAndPayment({ route, navigation }) {
           <Divider style={{ marginVertical: 10 }} />
 
           {/* ----- PAYMENT TYPE HERE ----- */}
-          <View style={{ flexDirection: 'row', marginTop: 10 }}>
+          {/* <View style={{ flexDirection: 'row', marginTop: 10 }}>
             <View
               style={{
                 flex: 3,
@@ -722,7 +836,7 @@ export default function DeliveryAndPayment({ route, navigation }) {
                 }
               />
             </View>
-          </View>
+          </View> */}
           {/* ----- CLOSE PAYMENT TYPE HERE ----- */}
 
           {/* ------ AMOUNT PAID HERE ----- */}
@@ -788,27 +902,27 @@ export default function DeliveryAndPayment({ route, navigation }) {
               loading={loading}
               full
               onPress={() => {
-                onCheckOut();
-              }}
-              style={{ height: 40 }}
-            >
-              {t('order')}
-            </Button>
-          </View>
-          {/* ---- CLOSE BUTTON PAYMENT HERE ---- */}
-          {/* ---- BUTTON Order & PAYMENT HERE ---- */}
-          <View style={{ flex: 1, paddingHorizontal: 5 }}>
-            <Button
-              loading={loading}
-              full
-              onPress={() => {
-                onCheckOut();
+                onOrder();
               }}
               style={{ height: 40 }}
             >
               {t('order_n_payment')}
             </Button>
           </View>
+          {/* ---- CLOSE BUTTON PAYMENT HERE ---- */}
+          {/* ---- BUTTON Order & PAYMENT HERE ---- */}
+          {/* <View style={{ flex: 1, paddingHorizontal: 5 }}>
+            <Button
+              loading={loading}
+              full
+              onPress={() => {
+                onOrderPayment();
+              }}
+              style={{ height: 40 }}
+            >
+              {t('order')}
+            </Button>
+          </View> */}
           {/* ---- CLOSE BUTTON Order & PAYMENT HERE ---- */}
         </View>
       </KeyboardAvoidingView>

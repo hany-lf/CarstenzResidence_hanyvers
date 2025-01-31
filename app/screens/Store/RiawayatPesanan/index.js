@@ -48,6 +48,9 @@ import numFormat from '../../../components/numFormat';
 import { Button, Divider } from 'react-native-paper';
 import { API_URL_LOKAL } from '@env';
 import { Dropdown } from 'react-native-element-dropdown';
+import Modal from 'react-native-modal';
+import { Linking } from 'react-native';
+
 const History = () => {
   const { t, i18n } = useTranslation();
   const { colors } = useTheme();
@@ -93,7 +96,7 @@ const History = () => {
 
       setSpinner(false);
       setShow(true);
-      console.log('spinner after', spinner);
+      // console.log('spinner after', spinner);
     }
     // }, 3000);
   }, [project]);
@@ -174,16 +177,14 @@ const History = () => {
 
   const getDataHistory = () => {
     const config = {
-      url: API_URL_LOKAL + `/modules/store/transaction-by-email`,
+      url:
+        API_URL_LOKAL +
+        `/modules/store/transaction-by-email` +
+        `?entity_cd=${entityCd}&project_no=${projectNo}&email=${email}`,
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${user.token}`,
-      },
-      params: {
-        entity_cd: entityCd,
-        project_no: projectNo,
-        email: email,
+        Authorization: `Bearer ${user.Token}`,
       },
     };
     axios(config)
@@ -429,6 +430,9 @@ const Payment = () => {
   const [show, setShow] = useState(false);
   const [dataFetched, setDataFetched] = useState(false); // Tambahkan state untuk menandai apakah data sudah diambil
 
+  const [modalVisible, setModalVisible] = useState(false);
+  const [dataModal, setDataModal] = useState(null);
+
   // --- useeffect untuk project
   useEffect(() => {
     // setTimeout(() => {
@@ -449,7 +453,7 @@ const Payment = () => {
 
       setSpinner(false);
       setShow(true);
-      console.log('spinner after', spinner);
+      // console.log('spinner after', spinner);
     }
     // }, 3000);
   }, [project]);
@@ -508,15 +512,14 @@ const Payment = () => {
 
   const getDataPayment = () => {
     const config = {
-      url: API_URL_LOKAL + `/modules/store/transaction-by-email`,
+      url:
+        API_URL_LOKAL +
+        `/modules/store/transaction-by-email` +
+        `?entity_cd=${entityCd}&project_no=${projectNo}&email=${email}`,
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-      },
-      params: {
-        entity_cd: entityCd,
-        project_no: projectNo,
-        email: email,
+        Authorization: `Bearer ${user.Token}`,
       },
     };
     axios(config)
@@ -526,7 +529,7 @@ const Payment = () => {
           // const arrLocation = datas.data;
 
           const filterDataStatus = data.filter(function (e) {
-            return ['D', 'N'].includes(e.bill_status);
+            return ['E', 'N'].includes(e.bill_status);
           });
 
           // console.log('filterDataStatusNDP2', filterDataStatus);
@@ -534,14 +537,14 @@ const Payment = () => {
           const arr1 = filterDataStatus.map((obj) => {
             return { ...obj, date_testing: obj.doc_date };
           });
-          console.log('arr1 PAYMENT', arr1);
+          // console.log('arr1 PAYMENT', arr1);
 
           const sortedDesc = arr1.sort(
             (objA, objB) =>
               Number(objB.date_testing) - Number(objA.date_testing),
           );
 
-          console.log('tesd filter PAYMENT', sortedDesc);
+          // console.log('tesd filter PAYMENT', sortedDesc);
 
           setDataPaymentFilter(sortedDesc);
           setDataPayment(sortedDesc);
@@ -552,7 +555,7 @@ const Payment = () => {
         setSpinner(false);
       })
       .catch((error) => {
-        console.error('Error fetching payment data:', error);
+        console.error('Error fetching payment data:', error.response);
         setSpinner(false); // Pastikan spinner dimatikan jika terjadi error
         setDataFetched(true); // Tandai bahwa data sudah diambil meskipun ada error
       });
@@ -570,15 +573,59 @@ const Payment = () => {
           }
         }
       >
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
+        <TouchableOpacity
+          onPress={() => {
+            // console.log('item', item);
+            setDataModal(item);
+            setModalVisible(!modalVisible);
           }}
         >
-          <View style={{ flexDirection: 'row' }}>
-            <Text style={{ color: colors.text }}>Bill No : </Text>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}
+          >
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={{ color: colors.text }}>Bill No : </Text>
+              <Text
+                style={{
+                  fontSize: 14,
+                  // color: BaseColor.grayColor
+                  color: colors.primary,
+                }}
+              >
+                {item.bill_no}
+              </Text>
+            </View>
+            <View>
+              <Text style={{ color: colors.text }}>
+                {moment(item.doc_date).format('MMM DD YYYY, hh:mm:ss')}
+              </Text>
+            </View>
+          </View>
+
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Text
+              style={{ fontWeight: 'bold', fontSize: 14, color: colors.text }}
+            >
+              {item.bill_name} - {item.lot_no}
+            </Text>
+          </View>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}
+          >
             <Text
               style={{
                 fontSize: 14,
@@ -586,59 +633,18 @@ const Payment = () => {
                 color: colors.primary,
               }}
             >
-              {item.bill_no}
+              Status : {item.status_payment}
+              {/* //  == 'N'
+              //   ? 'Item is being process'
+              //   : 'Item is being delivered'} */}
             </Text>
-          </View>
-          <View>
             <Text style={{ color: colors.text }}>
-              {moment(item.doc_date).format('MMM DD YYYY, hh:mm:ss')}
+              {numFormat(item.total_amt)}
             </Text>
           </View>
-        </View>
 
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-          }}
-        >
-          <Text
-            style={{ fontWeight: 'bold', fontSize: 14, color: colors.text }}
-          >
-            {item.bill_name} - {item.lot_no}
-          </Text>
-        </View>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 14,
-              // color: BaseColor.grayColor
-              color: colors.primary,
-            }}
-          >
-            Status :{' '}
-            {item.bill_status == 'N'
-              ? 'Item is being process'
-              : 'Item is being delivered'}
-          </Text>
-          <Text style={{ color: colors.text }}>
-            {numFormat(item.total_amt)}
-          </Text>
-        </View>
-        {/* <View>
-          <Text>
-            Courier Name : {item.courierName == null ? '-' : item.courierName}
-          </Text>
-        </View> */}
-
-        <Divider style={{ marginVertical: 15 }} />
+          <Divider style={{ marginVertical: 15 }} />
+        </TouchableOpacity>
       </View>
     );
   };
@@ -700,6 +706,120 @@ const Payment = () => {
         </View>
       )}
       {/* Jangan tampilkan apa pun jika spinner masih aktif */}
+
+      <Modal
+        isVisible={modalVisible}
+        animationType={'slide'}
+        swipeDirection={['down']}
+        style={styles.bottomModal}
+        onSwipeComplete={() => setModalVisible(!modalVisible)}
+        onBackdropPress={() => setModalVisible(!modalVisible)}
+      >
+        <View
+          style={[
+            styles.contentFilterBottom,
+            { backgroundColor: colors.card, height: 300 },
+          ]}
+        >
+          <View style={styles.contentSwipeDown}>
+            <View style={styles.lineSwipeDown} />
+          </View>
+          {dataModal && ( // Pastikan dataModal tidak null
+            <>
+              <View style={{ flex: 1, marginTop: 30 }}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <View style={{ flexDirection: 'row' }}>
+                    <Text style={{ color: colors.text }}>Bill No : </Text>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        // color: BaseColor.grayColor
+                        color: colors.primary,
+                      }}
+                    >
+                      {dataModal.bill_no}
+                    </Text>
+                  </View>
+                  <View>
+                    <Text style={{ color: colors.text }}>
+                      {moment(dataModal.doc_date).format(
+                        'MMM DD YYYY, hh:mm:ss',
+                      )}
+                    </Text>
+                  </View>
+                </View>
+
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontWeight: 'bold',
+                      fontSize: 14,
+                      color: colors.text,
+                    }}
+                  >
+                    {dataModal.bill_name} - {dataModal.lot_no}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      // color: BaseColor.grayColor
+                      color: colors.primary,
+                    }}
+                  >
+                    Status : {dataModal.status_payment}
+                  </Text>
+                  <Text style={{ color: colors.text }}>
+                    {numFormat(dataModal.total_amt)}
+                  </Text>
+                </View>
+
+                <Button
+                  full
+                  style={{
+                    marginTop: 40,
+                    marginBottom: 20,
+                    backgroundColor: colors.primary,
+                  }}
+                  onPress={() => {
+                    Linking.openURL(dataModal.redirect_url);
+                  }}
+                >
+                  <Text style={{ color: BaseColor.whiteColor }}>
+                    Link Payment
+                  </Text>
+                </Button>
+              </View>
+            </>
+          )}
+
+          <Button
+            full
+            style={{ marginTop: 10, marginBottom: 20 }}
+            onPress={() => {
+              setModalVisible(!modalVisible);
+            }}
+          >
+            {t('close')}
+          </Button>
+        </View>
+      </Modal>
     </View>
   );
 };

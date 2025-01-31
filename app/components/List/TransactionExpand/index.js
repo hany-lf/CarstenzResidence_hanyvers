@@ -83,11 +83,11 @@ const TransactionExpand = ({
 
   const detailDateDue = async () => {
     // /billing/detail-history/mgr@ifca.co.id/01/02/10206/UT24070048
-    console.log(
-      'url api detail date due',
-      API_URL_LOKAL +
-        `/modules/billing/detail-history/${email}/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`,
-    );
+    // console.log(
+    //   'url api detail date due',
+    //   API_URL_LOKAL +
+    //     `/modules/billing/detail-history/${email}/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`,
+    // );
     try {
       const config = {
         method: 'get',
@@ -101,7 +101,7 @@ const TransactionExpand = ({
       };
       const res = await axios(config);
       setDetailDateDue(res.data.data);
-      console.log('detail date due -->', res.data.data);
+      // console.log('detail date due -->', res.data.data);
       setLoading(false);
     } catch (error) {
       console.log('error detail date due -->', error);
@@ -124,7 +124,7 @@ const TransactionExpand = ({
       };
       const res = await axios(config);
       setDetailNotDue(res.data.data);
-      console.log('detail not due -->', res.data);
+      // console.log('detail not due -->', res.data);
       setLoading(false);
     } catch (error) {
       setErrors(error);
@@ -145,8 +145,8 @@ const TransactionExpand = ({
   const replaceTotal = math_total
     .toFixed()
     .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
-  console.log('sum detail mbal mont', sumTotal);
-  console.log('replace total', replaceTotal);
+  // console.log('sum detail mbal mont', sumTotal);
+  // console.log('replace total', replaceTotal);
 
   const datadetailNotDue_null = datadetailNotDue == null ? 0 : datadetailNotDue;
 
@@ -160,8 +160,8 @@ const TransactionExpand = ({
   const replaceTotal_notdue = math_total_notdue
     .toFixed()
     .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
-  console.log('sum detail mbal mont due date', math_total_notdue);
-  console.log('replace total due date', replaceTotal_notdue);
+  // console.log('sum detail mbal mont due date', math_total_notdue);
+  // console.log('replace total due date', replaceTotal_notdue);
 
   // useEffect(() => {
   //   detailDateDue();
@@ -182,7 +182,7 @@ const TransactionExpand = ({
       fin_month: fin_month,
       fin_year: fin_year,
     };
-    console.log('params for click attach', params);
+    // console.log('params for click attach', params);
     navigation.navigate('AttachmentBilling', params);
     // if (data.debtor_acct == '') {
     //   // alert('Please Choose Debtor First');

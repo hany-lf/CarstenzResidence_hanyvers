@@ -174,9 +174,9 @@ export default function SeatBooking(props) {
   // --- useeffect untuk update email/name
 
   useEffect(() => {
-    console.log('apakah ini terload', email);
+    // console.log('apakah ini terload', email);
     if (email) {
-      console.log('email');
+      // console.log('email');
     }
   }, [email]);
 

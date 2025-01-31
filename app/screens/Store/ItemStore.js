@@ -43,6 +43,7 @@ import LottieView from 'lottie-react-native';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import styles from './styles';
 import getProject from '../../selectors/ProjectSelector';
+import getUser from '../../selectors/UserSelectors';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { ActivityIndicator, Divider } from 'react-native-paper';
@@ -72,6 +73,8 @@ const Product = (params) => {
   const [list, setList] = useState(EPostListData);
   const [loading, setLoading] = useState(true);
   const [spinner, setSpinner] = useState(true);
+  const user = useSelector((state) => getUser(state));
+  // console.log('user for itemstore', user);
 
   const [dataItemStore, setItemStore] = useState([]);
   const [dataItemStoreFilter, setItemStoreFilter] = useState([]);
@@ -94,7 +97,7 @@ const Product = (params) => {
   const cartSelector = useSelector((state) => getCartData(state));
   // console.log('cart selector item store', cartSelector.length);
   //   const {navigation, route} = props;
-  console.log('routes di product', dataMember);
+  // console.log('routes di product', dataMember);
 
   //testing
   const [tambahItem, setTambahItem] = useState(false);
@@ -114,17 +117,20 @@ const Product = (params) => {
     // const project_no = projectSelector.Data[0].project_no;
     const project_no = dataMember.project_no;
     const charges_type = dataMember.facility_type;
-    // console.log('project get item store', project_no);
 
     axios
       .get(
-        // `https://apps.pakubuwono-residence.com/apiwebpbi_train/api/pos/getProductsNew?entity_cd=${entity_cd}&project_no=${project_no}&trx_class=H&facility_type=${dataMember.facility_type}`,
-        // API_URL_LOKAL +
         API_URL_LOKAL +
           `/modules/store/products?entity_cd=${entity_cd}&project_no=${project_no}&trx_class=H&charges_type=${charges_type}`,
-        // `/modules/store/products?entity_cd=${entity_cd}&project_no=${project_no}&trx_class=H&facility_type=${dataMember.facility_type}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${user.Token}`,
+          },
+        },
       )
       .then((res) => {
+        console.log('res', res.data.data.length);
         console.log(res.data.success);
         if (res.data.success == true) {
           const datas = res.data;
@@ -154,7 +160,7 @@ const Product = (params) => {
         setItemStore(qtyArrayItem);
       })
       .catch((error) => {
-        console.log('error get item store', error);
+        console.log('error get item store', error.response);
       });
   };
 
@@ -610,7 +616,7 @@ export default function ItemStore({ route }) {
     { key: 'all', title: 'All' },
     // {key: 'feedback', title: 'Feedback'},
   ]);
-  console.log('rputes', routes);
+  // console.log('rputes', routes);
   const renderScene = SceneMap({
     all: Product,
     // feedback: Product,
