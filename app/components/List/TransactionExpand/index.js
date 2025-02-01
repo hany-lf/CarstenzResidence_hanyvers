@@ -2,7 +2,7 @@ import { Text, Button } from '@components';
 import ListTransaction from '@components/List/Transaction';
 import PropTypes from 'prop-types';
 import React, { useState, Fragment, useEffect } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Linking } from 'react-native';
 import styles from './styles';
 import { useTheme } from '@config';
 import numFormat from '../../numFormat';
@@ -80,6 +80,7 @@ const TransactionExpand = ({
   const user = useSelector((state) => getUser(state));
 
   const [loading, setLoading] = useState(true);
+  const [urlPayment, setUrlPayment] = useState('');
 
   const detailDateDue = async () => {
     // /billing/detail-history/mgr@ifca.co.id/01/02/10206/UT24070048
@@ -132,6 +133,24 @@ const TransactionExpand = ({
     }
   };
 
+  const getPaymentFinpay = async () => {
+    const url_dummy_pakubuwono_demo =
+      'https://dev.ifca.co.id:4414/apiifcares/api';
+
+    try {
+      // const res = await axios.get(API_URL_LOKAL + `/get-link-finpay`);
+      const res = await axios.get(
+        url_dummy_pakubuwono_demo + `/get-link-finpay`,
+      );
+      setUrlPayment(res.data.Data.link_url);
+      console.log('urlpayment finpay-->', res);
+      setLoading(false);
+    } catch (error) {
+      setErrors(error);
+      // alert(hasError.toString());
+    }
+  };
+
   const sumTotal =
     datadetailDateDue != 0 ||
     datadetailDateDue != null ||
@@ -171,6 +190,7 @@ const TransactionExpand = ({
     setIsExpand(!isExpand);
     detailDateDue();
     detailNotDue();
+    getPaymentFinpay();
   };
 
   const clickAttachment = () => {
@@ -195,6 +215,10 @@ const TransactionExpand = ({
 
   const onCloseModal = () => {
     showModalSuccess(false);
+  };
+
+  const onPayment = () => {
+    Linking.openURL(`${urlPayment}`);
   };
 
   return (
@@ -306,6 +330,11 @@ const TransactionExpand = ({
                   </Text>
                 </View>
               </View>
+              <View style={{ marginTop: 10 }}>
+                <Button style={{ height: 35 }} onPress={() => onPayment()}>
+                  <Text style={{ color: '#fff', fontSize: 14 }}>Payment</Text>
+                </Button>
+              </View>
             </View>
           ) : (
             tab_id == 1 && (
@@ -397,6 +426,11 @@ const TransactionExpand = ({
                   </Text>
                   {/* <Text subhead>{numFormat(item.mbal_amt)}</Text> */}
                 </View>
+              </View>
+              <View style={{ marginTop: 10 }}>
+                <Button style={{ height: 35 }} onPress={() => onPayment()}>
+                  <Text style={{ color: '#fff', fontSize: 14 }}>Payment</Text>
+                </Button>
               </View>
             </View>
           ) : (

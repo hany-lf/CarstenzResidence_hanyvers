@@ -30,6 +30,7 @@ import {
   TouchableOpacity,
   FlatList,
   StyleSheet,
+  RefreshControl,
 } from 'react-native';
 import HeaderHome from './HeaderHome';
 import styles from './styles';
@@ -71,6 +72,7 @@ const Billing = ({
   const [db_profile, setDb_Profile] = useState('');
   const [spinner, setSpinner] = useState(true);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const TABS = [
     {
       id: 1,
@@ -112,75 +114,14 @@ const Billing = ({
 
   useEffect(() => {
     // console.log('apakah ini terload', email);
+    setLoading(true);
     if (email) {
       fetchData();
       fetchDataCurrent();
+      setRefreshing(false);
     }
   }, [email]);
 
-  //-----FOR GET ENTITY & PROJJECT
-  // const getTower = async () => {
-  //   const data = {
-  //     email: email,
-  //     //   email: 'haniyya.ulfah@ifca.co.id',
-  //     app: 'O',
-  //   };
-
-  //   const config = {
-  //     headers: {
-  //       accept: 'application/json',
-  //       'Content-Type': 'application/json',
-  //       // token: "",
-  //     },
-  //   };
-
-  //   await axios
-  //     .get(
-  //       // `http://apps.pakubuwono-residence.com/apisysadmin/api/getProject/${data.email}`,
-  //       API_URL_LOKAL + `/getData/mysql/${data.email}/${data.app}`,
-  //       {
-  //         config,
-  //       },
-  //     )
-  //     .then((res) => {
-  //       const datas = res.data;
-
-  //       const arrDataTower = datas.data;
-  //       // let dataArr = {};
-  //       arrDataTower.map((dat) => {
-  //         if (dat) {
-  //           console.log('data trower', dat.entity_cd);
-  //           setdataTowerUser(dat);
-  //           setEntity(dat.entity_cd);
-  //           setProjectNo(dat.project_no);
-  //           // const jsonValue = JSON.stringify(dat);
-  //           //   setdataFormHelp(saveStorage);
-  //           // console.log('storage', saveStorage);
-  //           // dataArr.push(jsonValue);
-  //           // getDebtor(dat);
-  //         }
-  //       });
-  //       // AsyncStorage.setItem('@DataTower', dataArr);
-  //       setArrDataTowerUser(arrDataTower);
-
-  //       setSpinner(false);
-  //       // return res.data;
-  //     })
-  //     .catch((error) => {
-  //       console.log('error get tower api', error);
-  //       alert('error get');
-  //     });
-  // };
-
-  useEffect(() => {
-    // getTower(user);
-    setLoading(false);
-    // setTimeout(() => {
-    //   setLoading(false);
-    //   getTower(user);
-    //   // setSpinner(false);
-    // }, 3000);
-  }, []);
   // Make function to call the api
   async function fetchData() {
     // console.log(
@@ -232,6 +173,15 @@ const Billing = ({
     }
   }
 
+  const onRefresh = () => {
+    setRefreshing(true);
+    setTimeout(() => {
+      fetchDataCurrent();
+      fetchData();
+      setRefreshing(false);
+    }, 5000);
+  };
+
   // ----- ini gak kepake kan? ga ada yang panggil const sum
   const sum =
     dataCurrent != 0
@@ -265,6 +215,9 @@ const Billing = ({
       <ScrollView
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       >
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           {TABS.map((item, index) => (
