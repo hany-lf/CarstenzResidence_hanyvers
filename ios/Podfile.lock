@@ -401,11 +401,11 @@ PODS:
   - react-native-blur (4.4.1):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
-  - react-native-date-picker (5.0.8):
+  - react-native-date-picker (5.0.10):
     - React-Core
   - react-native-maps (0.28.1):
     - React-Core
-  - react-native-pager-view (6.6.1):
+  - react-native-pager-view (6.7.0):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
   - react-native-pdf (6.7.6):
@@ -420,7 +420,7 @@ PODS:
     - React-Core
   - react-native-version-info (1.1.1):
     - React-Core
-  - react-native-webview (13.13.1):
+  - react-native-webview (13.13.2):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
   - React-NativeModulesApple (0.72.17):
@@ -558,8 +558,7 @@ PODS:
     - FirebaseCoreExtension (= 10.20.0)
     - React-Core
     - RNFBApp
-  - RNGestureHandler (2.22.0):
-    - RCT-Folly (= 2021.07.22.00)
+  - RNGestureHandler (2.12.1):
     - React-Core
   - RNImageCropPicker (0.40.3):
     - React-Core
@@ -570,30 +569,40 @@ PODS:
     - React-Core
     - React-RCTImage
     - TOCropViewController
-  - RNReanimated (3.16.7):
-    - RCT-Folly (= 2021.07.22.00)
+  - RNReanimated (3.4.2):
+    - DoubleConversion
+    - FBLazyVector
+    - glog
+    - hermes-engine
+    - RCT-Folly
+    - RCTRequired
+    - RCTTypeSafety
+    - React-callinvoker
     - React-Core
+    - React-Core/DevSupport
+    - React-Core/RCTWebSocket
+    - React-CoreModules
+    - React-cxxreact
+    - React-hermes
+    - React-jsi
+    - React-jsiexecutor
+    - React-jsinspector
+    - React-RCTActionSheet
+    - React-RCTAnimation
+    - React-RCTAppDelegate
+    - React-RCTBlob
+    - React-RCTImage
+    - React-RCTLinking
+    - React-RCTNetwork
+    - React-RCTSettings
+    - React-RCTText
     - ReactCommon/turbomodule/core
-    - RNReanimated/reanimated (= 3.16.7)
-    - RNReanimated/worklets (= 3.16.7)
-  - RNReanimated/reanimated (3.16.7):
-    - RCT-Folly (= 2021.07.22.00)
-    - React-Core
-    - ReactCommon/turbomodule/core
-    - RNReanimated/reanimated/apple (= 3.16.7)
-  - RNReanimated/reanimated/apple (3.16.7):
-    - RCT-Folly (= 2021.07.22.00)
-    - React-Core
-    - ReactCommon/turbomodule/core
-  - RNReanimated/worklets (3.16.7):
-    - RCT-Folly (= 2021.07.22.00)
-    - React-Core
-    - ReactCommon/turbomodule/core
+    - Yoga
   - RNScreens (3.35.0):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
     - React-RCTImage
-  - RNSVG (15.11.1):
+  - RNSVG (15.5.0):
     - React-Core
   - SDWebImage (5.11.1):
     - SDWebImage/Core (= 5.11.1)
@@ -875,16 +884,16 @@ SPEC CHECKSUMS:
   React-logger: afa402da502a35728c9073804b1802861783a996
   react-native-blob-util: f7234c91ad0e3faeee51b3edee80b61553f74993
   react-native-blur: 4024ea270983c8b3575768b1d7ecc94c1374f8b3
-  react-native-date-picker: efc84d576cf2637a9697853e790c40f2790bd977
+  react-native-date-picker: c7605040f9fd11702eb818323b31ad7f15e1f7be
   react-native-maps: b64b37b82b4a7ef09ef4c3de4275cea77bc3b5f5
-  react-native-pager-view: 4cd103df3ddc1857b70d3f305a21eafac1c9ad8f
+  react-native-pager-view: 6eabd8ab17a22d2b7ee891e6d48cbf6258032228
   react-native-pdf: 5ad328deec86764b0684cfe3d64f2a81b1b9aacb
   react-native-render-html: 5afc4751f1a98621b3009432ef84c47019dcb2bd
   react-native-restart: 0bc732f4461709022a742bb29bcccf6bbc5b4863
   react-native-safe-area-context: 758e894ca5a9bd1868d2a9cfbca7326a2b6bf9dc
   react-native-splash-screen: 95994222cc95c236bd3cdc59fe45ed5f27969594
   react-native-version-info: f0b04e16111c4016749235ff6d9a757039189141
-  react-native-webview: 4630f9d53fdd5ecc7ffdabc0b61a9a753f157172
+  react-native-webview: fdee786e1b333372bc71f9b94b146dc288e9bac8
   React-NativeModulesApple: a3b3019ffee56cf78bbf09c48e056072f3bb4ea4
   React-perflogger: 785b0063af5178298a61b54bb46aae9a19c7bbb5
   React-RCTActionSheet: 84f37b34bd77249263ace75471d6664393c29972
@@ -911,17 +920,17 @@ SPEC CHECKSUMS:
   RNFastImage: 462a183c4b0b6b26fdfd639e1ed6ba37536c3b87
   RNFBApp: 20bfba7e2a61a959518c1d57e5d48817c62ed3f6
   RNFBMessaging: 48579eec1f6ffaed4038b67426d7076963ab9401
-  RNGestureHandler: dc816e37da60ccd54ef3c4e1ebf1381e1d102b26
+  RNGestureHandler: 627182485becfd74f122c83f93cce2be20c2e8c8
   RNImageCropPicker: 2c53b596a1af85eacba1048e996f916933021bbb
-  RNReanimated: db5eb797eb082e80e3c60c1b033112b9a62bf9bb
+  RNReanimated: c1c395337d1f757941b0a2ad322188474b477ad4
   RNScreens: c09986e2086f03fb9fcaefbff7126fd3a2bb1cf5
-  RNSVG: 35e1960c0f99a1d789d7759f189b8fe06a8a1771
+  RNSVG: 5ce8285d7dd54cec9ebfb53152cdb176690c4bc6
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   TOCropViewController: 80b8985ad794298fb69d3341de183f33d1853654
   Yoga: ef534101bb891fb09bae657417f34d399c1efe38
 
-PODFILE CHECKSUM: 92fb19ae7609f04e429de87613c2f50dc4236044
+PODFILE CHECKSUM: 99edd8f4752992e7c47ad12f8042980385e23aa5
 
 COCOAPODS: 1.16.2

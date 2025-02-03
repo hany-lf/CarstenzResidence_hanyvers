@@ -2,8 +2,8 @@
  * Basic Setting Variables Define
  */
 export const BaseSetting = {
-  name: 'CarstenzRDemo',
-  displayName: 'CarstenzRDemo',
+  name: 'carstenszResLive',
+  displayName: 'carstenszResLive',
   appVersion: '0.0.1',
   defaultLanguage: 'en',
   languageSupport: [

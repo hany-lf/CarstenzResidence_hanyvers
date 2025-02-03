@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00E356F31AD99517003FC87E /* CarstenzRDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* CarstenzRDemoTests.m */; };
+		00E356F31AD99517003FC87E /* carstenszResLiveTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* carstenszResLiveTests.m */; };
 		030AF162635A4864BAD067F7 /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E2D2769D31184A22824BF4B4 /* Fontisto.ttf */; };
 		074EA48873C647D39AB4FA05 /* Merriweather-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 92F2F269D70C44F889B478F3 /* Merriweather-Bold.ttf */; };
 		0D7A1D9AEBA545CE83CCD2E1 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 089EA0D74E71428FBF6660A9 /* Octicons.ttf */; };
@@ -31,11 +31,11 @@
 		53A4E9CA3B2A4B8196636C6C /* Roboto-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8C2E5985F9FB4E2D97054A15 /* Roboto-MediumItalic.ttf */; };
 		5A68D4A596444484A50FFE4D /* Raleway-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 539F733145C74A88AED11CE8 /* Raleway-Regular.ttf */; };
 		5BAA90A83B52420EBBD55D11 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B0930473EEE14E0C82915E01 /* Ionicons.ttf */; };
-		5C458DE5BECBF00074D27C62 /* libPods-CarstenzRDemo-CarstenzRDemoTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C0D3D209E31844CC1336CE2C /* libPods-CarstenzRDemo-CarstenzRDemoTests.a */; };
+		5C458DE5BECBF00074D27C62 /* libPods-carstenszResLive-carstenszResLiveTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C0D3D209E31844CC1336CE2C /* libPods-carstenszResLive-carstenszResLiveTests.a */; };
 		5E0335D32CD048DD8E638306 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A83ED58049834257AE31A2E1 /* Zocial.ttf */; };
 		5E5EA8D7AC23436F866C4ECA /* Merriweather-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5CE975F5AA4D4871AC686357 /* Merriweather-BoldItalic.ttf */; };
 		62EE58F7F00A400793C6CE40 /* Roboto-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F29DB9F6CF6B480BB6333608 /* Roboto-BlackItalic.ttf */; };
-		64D5080350FE6737431AA587 /* libPods-CarstenzRDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A182434C2DAA52F9F70AD12E /* libPods-CarstenzRDemo.a */; };
+		64D5080350FE6737431AA587 /* libPods-carstenszResLive.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A182434C2DAA52F9F70AD12E /* libPods-carstenszResLive.a */; };
 		65AA08890D03490094DA82BB /* Merriweather-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3736D29DE4CC4B748FBA347C /* Merriweather-BlackItalic.ttf */; };
 		68E512156AE543C7967CC043 /* Roboto-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 652388315D30486D8CA024D8 /* Roboto-ThinItalic.ttf */; };
 		6B107DF5141B4060A4E8C90C /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0A437AB3A4304BFAACE36759 /* FontAwesome5_Regular.ttf */; };
@@ -93,25 +93,25 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = CarstenzRDemo;
+			remoteInfo = "carstenszResLive";
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		00E356EE1AD99517003FC87E /* CarstenzRDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CarstenzRDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* carstenszResLiveTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "carstenszResLiveTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* CarstenzRDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CarstenzRDemoTests.m; sourceTree = "<group>"; };
+		00E356F21AD99517003FC87E /* carstenszResLiveTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "carstenszResLiveTests.m"; sourceTree = "<group>"; };
 		03481879826F493885E9D195 /* Raleway-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Raleway-BlackItalic.ttf"; path = "../app/assets/fonts/Raleway-BlackItalic.ttf"; sourceTree = "<group>"; };
 		06F61E5E611C4E1AA2898B29 /* Merriweather-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Merriweather-Black.ttf"; path = "../app/assets/fonts/Merriweather-Black.ttf"; sourceTree = "<group>"; };
 		089EA0D74E71428FBF6660A9 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = ../app/assets/fonts/Octicons.ttf; sourceTree = "<group>"; };
 		0A437AB3A4304BFAACE36759 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = ../app/assets/fonts/FontAwesome5_Regular.ttf; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* CarstenzRDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CarstenzRDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = CarstenzRDemo/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = CarstenzRDemo/AppDelegate.mm; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = CarstenzRDemo/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = CarstenzRDemo/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = CarstenzRDemo/main.m; sourceTree = "<group>"; };
-		16399BE7D658992255A44A34 /* Pods-CarstenzRDemo-CarstenzRDemoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CarstenzRDemo-CarstenzRDemoTests.debug.xcconfig"; path = "Target Support Files/Pods-CarstenzRDemo-CarstenzRDemoTests/Pods-CarstenzRDemo-CarstenzRDemoTests.debug.xcconfig"; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* carstenszResLive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "carstenszResLive.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = "carstenszResLive/AppDelegate.h"; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = "carstenszResLive/AppDelegate.mm"; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "carstenszResLive/Images.xcassets"; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "carstenszResLive/Info.plist"; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "carstenszResLive/main.m"; sourceTree = "<group>"; };
+		16399BE7D658992255A44A34 /* Pods-carstenszResLive-carstenszResLiveTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-carstenszResLive-carstenszResLiveTests.debug.xcconfig"; path = "Target Support Files/Pods-carstenszResLive-carstenszResLiveTests/Pods-carstenszResLive-carstenszResLiveTests.debug.xcconfig"; sourceTree = "<group>"; };
 		191BD8F4840044F98C8361BF /* Raleway-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Raleway-Black.ttf"; path = "../app/assets/fonts/Raleway-Black.ttf"; sourceTree = "<group>"; };
 		192856E6CF564E36B4289EED /* Roboto-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Italic.ttf"; path = "../app/assets/fonts/Roboto-Italic.ttf"; sourceTree = "<group>"; };
 		1A2D1CD0E24A4C00BBF9D5A3 /* ProximaNova-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "ProximaNova-Bold.otf"; path = "../app/assets/fonts/ProximaNova-Bold.otf"; sourceTree = "<group>"; };
@@ -143,23 +143,23 @@
 		75216DA3EB3E4E19B317B6A8 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = ../app/assets/fonts/AntDesign.ttf; sourceTree = "<group>"; };
 		7B382A98094943F2887CC1E3 /* Raleway-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Raleway-BoldItalic.ttf"; path = "../app/assets/fonts/Raleway-BoldItalic.ttf"; sourceTree = "<group>"; };
 		7F381F4541A645858E15A27F /* ProximaNova-Black.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "ProximaNova-Black.otf"; path = "../app/assets/fonts/ProximaNova-Black.otf"; sourceTree = "<group>"; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = CarstenzRDemo/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = "carstenszResLive/LaunchScreen.storyboard"; sourceTree = "<group>"; };
 		85E9FED89C5D41038AA279CF /* Raleway-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Raleway-Bold.ttf"; path = "../app/assets/fonts/Raleway-Bold.ttf"; sourceTree = "<group>"; };
 		8643540A2C105D3300C69F68 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8660DDD92C17E77600D24D4A /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome5_Brands.ttf; sourceTree = "<group>"; };
 		8660DDDD2C17E7AA00D24D4A /* FontAwesome6_Brands.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome6_Brands.ttf; sourceTree = "<group>"; };
 		8660DDDE2C17E7AA00D24D4A /* FontAwesome6_Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome6_Regular.ttf; sourceTree = "<group>"; };
 		867AA72D2C5C769D0002425D /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = fonts; path = ../app/assets/fonts; sourceTree = "<group>"; };
-		86D6E7332B0E11360031C35D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = CarstenzRDemo/Assets.xcassets; sourceTree = "<group>"; };
+		86D6E7332B0E11360031C35D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = carstenszResLive/Assets.xcassets; sourceTree = "<group>"; };
 		8BEF9A4DF6284115889D4BF9 /* Merriweather-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Merriweather-Light.ttf"; path = "../app/assets/fonts/Merriweather-Light.ttf"; sourceTree = "<group>"; };
 		8C2E5985F9FB4E2D97054A15 /* Roboto-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-MediumItalic.ttf"; path = "../app/assets/fonts/Roboto-MediumItalic.ttf"; sourceTree = "<group>"; };
 		8C7AAD5C1FE64E8EAC57C402 /* Proxima-NovaLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Proxima-NovaLight.ttf"; path = "../app/assets/fonts/Proxima-NovaLight.ttf"; sourceTree = "<group>"; };
-		92C259E4A1A0F5366D5E3222 /* Pods-CarstenzRDemo-CarstenzRDemoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CarstenzRDemo-CarstenzRDemoTests.release.xcconfig"; path = "Target Support Files/Pods-CarstenzRDemo-CarstenzRDemoTests/Pods-CarstenzRDemo-CarstenzRDemoTests.release.xcconfig"; sourceTree = "<group>"; };
+		92C259E4A1A0F5366D5E3222 /* Pods-carstenszResLive-carstenszResLiveTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-carstenszResLive-carstenszResLiveTests.release.xcconfig"; path = "Target Support Files/Pods-carstenszResLive-carstenszResLiveTests/Pods-carstenszResLive-carstenszResLiveTests.release.xcconfig"; sourceTree = "<group>"; };
 		92F2F269D70C44F889B478F3 /* Merriweather-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Merriweather-Bold.ttf"; path = "../app/assets/fonts/Merriweather-Bold.ttf"; sourceTree = "<group>"; };
 		94D86CD8EF154FB39B5D1CBD /* Raleway-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Raleway-ExtraLight.ttf"; path = "../app/assets/fonts/Raleway-ExtraLight.ttf"; sourceTree = "<group>"; };
 		96A4172D2C2A4580B089EFCF /* Raleway-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Raleway-Thin.ttf"; path = "../app/assets/fonts/Raleway-Thin.ttf"; sourceTree = "<group>"; };
 		A15D40A10C1646D7BDE85F8C /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = ../app/assets/fonts/Foundation.ttf; sourceTree = "<group>"; };
-		A182434C2DAA52F9F70AD12E /* libPods-CarstenzRDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CarstenzRDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A182434C2DAA52F9F70AD12E /* libPods-carstenszResLive.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-carstenszResLive.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A32C981858A046A789F4C0E5 /* KaiseiHarunoUmi-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "KaiseiHarunoUmi-Regular.ttf"; path = "../app/assets/fonts/KaiseiHarunoUmi-Regular.ttf"; sourceTree = "<group>"; };
 		A44A8491D332429C9AD29283 /* Raleway-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Raleway-MediumItalic.ttf"; path = "../app/assets/fonts/Raleway-MediumItalic.ttf"; sourceTree = "<group>"; };
 		A602FDDB096C4EA4BB90180C /* Roboto-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Light.ttf"; path = "../app/assets/fonts/Roboto-Light.ttf"; sourceTree = "<group>"; };
@@ -170,7 +170,7 @@
 		B29C63A799FF4C579B6496C7 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = ../app/assets/fonts/FontAwesome5_Brands.ttf; sourceTree = "<group>"; };
 		B3F30298C85F43508E49CC08 /* Roboto-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Bold.ttf"; path = "../app/assets/fonts/Roboto-Bold.ttf"; sourceTree = "<group>"; };
 		B3FA200528EA40BFB7194503 /* Proxima-NovaBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Proxima-NovaBold.ttf"; path = "../app/assets/fonts/Proxima-NovaBold.ttf"; sourceTree = "<group>"; };
-		C0D3D209E31844CC1336CE2C /* libPods-CarstenzRDemo-CarstenzRDemoTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CarstenzRDemo-CarstenzRDemoTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C0D3D209E31844CC1336CE2C /* libPods-carstenszResLive-carstenszResLiveTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-carstenszResLive-carstenszResLiveTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C46B6509F8FD42E7A230CC90 /* FontAwesome6_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome6_Regular.ttf; path = ../app/assets/fonts/FontAwesome6_Regular.ttf; sourceTree = "<group>"; };
 		CD3B90B2A2384A7589531EE0 /* ProximaNovaT-Thin.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "ProximaNovaT-Thin.otf"; path = "../app/assets/fonts/ProximaNovaT-Thin.otf"; sourceTree = "<group>"; };
 		CF3DDD32FA884710998049C9 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Regular.ttf"; path = "../app/assets/fonts/Roboto-Regular.ttf"; sourceTree = "<group>"; };
@@ -178,8 +178,8 @@
 		D61B521E35C44D468C62D4B5 /* ProximaNova-Extrabld.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "ProximaNova-Extrabld.otf"; path = "../app/assets/fonts/ProximaNova-Extrabld.otf"; sourceTree = "<group>"; };
 		D6B215CA516645A5A060371E /* Raleway-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Raleway-ExtraLightItalic.ttf"; path = "../app/assets/fonts/Raleway-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
 		D6B925177D054E809B659C82 /* Raleway-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Raleway-Italic.ttf"; path = "../app/assets/fonts/Raleway-Italic.ttf"; sourceTree = "<group>"; };
-		DB3A8D93810839F97BFC264C /* Pods-CarstenzRDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CarstenzRDemo.release.xcconfig"; path = "Target Support Files/Pods-CarstenzRDemo/Pods-CarstenzRDemo.release.xcconfig"; sourceTree = "<group>"; };
-		E267DE2DC26802F77E4718B1 /* Pods-CarstenzRDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CarstenzRDemo.debug.xcconfig"; path = "Target Support Files/Pods-CarstenzRDemo/Pods-CarstenzRDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		DB3A8D93810839F97BFC264C /* Pods-carstenszResLive.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-carstenszResLive.release.xcconfig"; path = "Target Support Files/Pods-carstenszResLive/Pods-carstenszResLive.release.xcconfig"; sourceTree = "<group>"; };
+		E267DE2DC26802F77E4718B1 /* Pods-carstenszResLive.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-carstenszResLive.debug.xcconfig"; path = "Target Support Files/Pods-carstenszResLive/Pods-carstenszResLive.debug.xcconfig"; sourceTree = "<group>"; };
 		E2D2769D31184A22824BF4B4 /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = ../app/assets/fonts/Fontisto.ttf; sourceTree = "<group>"; };
 		E9606031321E49FFAB163DCE /* Merriweather-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Merriweather-Italic.ttf"; path = "../app/assets/fonts/Merriweather-Italic.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -196,7 +196,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5C458DE5BECBF00074D27C62 /* libPods-CarstenzRDemo-CarstenzRDemoTests.a in Frameworks */,
+				5C458DE5BECBF00074D27C62 /* libPods-carstenszResLive-carstenszResLiveTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -204,20 +204,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				64D5080350FE6737431AA587 /* libPods-CarstenzRDemo.a in Frameworks */,
+				64D5080350FE6737431AA587 /* libPods-carstenszResLive.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* CarstenzRDemoTests */ = {
+		00E356EF1AD99517003FC87E /* carstenszResLiveTests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* CarstenzRDemoTests.m */,
+				00E356F21AD99517003FC87E /* carstenszResLiveTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = CarstenzRDemoTests;
+			path = "carstenszResLiveTests";
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -228,7 +228,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* CarstenzRDemo */ = {
+		13B07FAE1A68108700A75B9A /* carstenszResLive */ = {
 			isa = PBXGroup;
 			children = (
 				8643540A2C105D3300C69F68 /* GoogleService-Info.plist */,
@@ -240,7 +240,7 @@
 				13B07FB71A68108700A75B9A /* main.m */,
 				86D6E7332B0E11360031C35D /* Assets.xcassets */,
 			);
-			name = CarstenzRDemo;
+			name = "carstenszResLive";
 			sourceTree = "<group>";
 		};
 		2CF6B4BAA0BD490699FB8C97 /* Resources */ = {
@@ -322,8 +322,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				A182434C2DAA52F9F70AD12E /* libPods-CarstenzRDemo.a */,
-				C0D3D209E31844CC1336CE2C /* libPods-CarstenzRDemo-CarstenzRDemoTests.a */,
+				A182434C2DAA52F9F70AD12E /* libPods-carstenszResLive.a */,
+				C0D3D209E31844CC1336CE2C /* libPods-carstenszResLive-carstenszResLiveTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -342,9 +342,9 @@
 				8660DDDD2C17E7AA00D24D4A /* FontAwesome6_Brands.ttf */,
 				8660DDDE2C17E7AA00D24D4A /* FontAwesome6_Regular.ttf */,
 				8660DDD92C17E77600D24D4A /* FontAwesome5_Brands.ttf */,
-				13B07FAE1A68108700A75B9A /* CarstenzRDemo */,
+				13B07FAE1A68108700A75B9A /* carstenszResLive */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* CarstenzRDemoTests */,
+				00E356EF1AD99517003FC87E /* carstenszResLiveTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
@@ -358,8 +358,8 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* CarstenzRDemo.app */,
-				00E356EE1AD99517003FC87E /* CarstenzRDemoTests.xctest */,
+				13B07F961A680F5B00A75B9A /* carstenszResLive.app */,
+				00E356EE1AD99517003FC87E /* carstenszResLiveTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -367,10 +367,10 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				E267DE2DC26802F77E4718B1 /* Pods-CarstenzRDemo.debug.xcconfig */,
-				DB3A8D93810839F97BFC264C /* Pods-CarstenzRDemo.release.xcconfig */,
-				16399BE7D658992255A44A34 /* Pods-CarstenzRDemo-CarstenzRDemoTests.debug.xcconfig */,
-				92C259E4A1A0F5366D5E3222 /* Pods-CarstenzRDemo-CarstenzRDemoTests.release.xcconfig */,
+				E267DE2DC26802F77E4718B1 /* Pods-carstenszResLive.debug.xcconfig */,
+				DB3A8D93810839F97BFC264C /* Pods-carstenszResLive.release.xcconfig */,
+				16399BE7D658992255A44A34 /* Pods-carstenszResLive-carstenszResLiveTests.debug.xcconfig */,
+				92C259E4A1A0F5366D5E3222 /* Pods-carstenszResLive-carstenszResLiveTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -378,9 +378,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* CarstenzRDemoTests */ = {
+		00E356ED1AD99517003FC87E /* carstenszResLiveTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "CarstenzRDemoTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "carstenszResLiveTests" */;
 			buildPhases = (
 				B77C8649F8BBB77EB77FD631 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
@@ -394,14 +394,14 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = CarstenzRDemoTests;
-			productName = CarstenzRDemoTests;
-			productReference = 00E356EE1AD99517003FC87E /* CarstenzRDemoTests.xctest */;
+			name = "carstenszResLiveTests";
+			productname = "carstenszResLiveTests";
+			productReference = 00E356EE1AD99517003FC87E /* carstenszResLiveTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* CarstenzRDemo */ = {
+		13B07F861A680F5B00A75B9A /* carstenszResLive */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "CarstenzRDemo" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "carstenszResLive" */;
 			buildPhases = (
 				60B7EA40D08547C87A66C8B0 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
@@ -418,9 +418,9 @@
 			);
 			dependencies = (
 			);
-			name = CarstenzRDemo;
-			productName = CarstenzRDemo;
-			productReference = 13B07F961A680F5B00A75B9A /* CarstenzRDemo.app */;
+			name = "carstenszResLive";
+			productName = "carstenszResLive";
+			productReference = 13B07F961A680F5B00A75B9A /* carstenszResLive.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -441,7 +441,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "CarstenzRDemo" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "carstenszResLive" */;
 			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -457,8 +457,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* CarstenzRDemo */,
-				00E356ED1AD99517003FC87E /* CarstenzRDemoTests */,
+				13B07F861A680F5B00A75B9A /* carstenszResLive */,
+				00E356ED1AD99517003FC87E /* carstenszResLiveTests */,
 			);
 		};
 /* End PBXProject section */
@@ -577,15 +577,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CarstenzRDemo-CarstenzRDemoTests/Pods-CarstenzRDemo-CarstenzRDemoTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-carstenszResLive-carstenszResLiveTests/Pods-carstenszResLive-carstenszResLiveTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CarstenzRDemo-CarstenzRDemoTests/Pods-CarstenzRDemo-CarstenzRDemoTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-carstenszResLive-carstenszResLiveTests/Pods-carstenszResLive-carstenszResLiveTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CarstenzRDemo-CarstenzRDemoTests/Pods-CarstenzRDemo-CarstenzRDemoTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-carstenszResLive-carstenszResLiveTests/Pods-carstenszResLive-carstenszResLiveTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		12AE39E41B099913F04C04DA /* [CP] Embed Pods Frameworks */ = {
@@ -594,15 +594,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CarstenzRDemo/Pods-CarstenzRDemo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-carstenszResLive/Pods-carstenszResLive-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CarstenzRDemo/Pods-CarstenzRDemo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-carstenszResLive/Pods-carstenszResLive-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CarstenzRDemo/Pods-CarstenzRDemo-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-carstenszResLive/Pods-carstenszResLive-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		2A24837B7F3483CA47332992 /* [CP] Copy Pods Resources */ = {
@@ -611,15 +611,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CarstenzRDemo-CarstenzRDemoTests/Pods-CarstenzRDemo-CarstenzRDemoTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-carstenszResLive-carstenszResLiveTests/Pods-carstenszResLive-carstenszResLiveTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CarstenzRDemo-CarstenzRDemoTests/Pods-CarstenzRDemo-CarstenzRDemoTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-carstenszResLive-carstenszResLiveTests/Pods-carstenszResLive-carstenszResLiveTests-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CarstenzRDemo-CarstenzRDemoTests/Pods-CarstenzRDemo-CarstenzRDemoTests-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-carstenszResLive-carstenszResLiveTests/Pods-carstenszResLive-carstenszResLiveTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		60B7EA40D08547C87A66C8B0 /* [CP] Check Pods Manifest.lock */ = {
@@ -637,7 +637,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-CarstenzRDemo-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-carstenszResLive-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -690,7 +690,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-CarstenzRDemo-CarstenzRDemoTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-carstenszResLive-carstenszResLiveTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -723,15 +723,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CarstenzRDemo/Pods-CarstenzRDemo-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-carstenszResLive/Pods-carstenszResLive-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CarstenzRDemo/Pods-CarstenzRDemo-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-carstenszResLive/Pods-carstenszResLive-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CarstenzRDemo/Pods-CarstenzRDemo-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-carstenszResLive/Pods-carstenszResLive-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -741,7 +741,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* CarstenzRDemoTests.m in Sources */,
+				00E356F31AD99517003FC87E /* carstenszResLiveTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -759,7 +759,7 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* CarstenzRDemo */;
+			target = 13B07F861A680F5B00A75B9A /* carstenszResLive */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -767,7 +767,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 16399BE7D658992255A44A34 /* Pods-CarstenzRDemo-CarstenzRDemoTests.debug.xcconfig */;
+			baseConfigurationReference = 16399BE7D658992255A44A34 /* Pods-carstenszResLive-carstenszResLiveTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -775,7 +775,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = CarstenzRDemoTests/Info.plist;
+				INFOPLIST_FILE = "carstenszResLiveTests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -787,20 +787,20 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = id.co.property365.carstenzresidence;
+				PRODUCT_BUNDLE_IDENTIFIER = "id.co.ifca.carstenszresidence";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CarstenzRDemo.app/CarstenzRDemo";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/carstenszResLive.app/carstenszResLive";
 			};
 			name = Debug;
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 92C259E4A1A0F5366D5E3222 /* Pods-CarstenzRDemo-CarstenzRDemoTests.release.xcconfig */;
+			baseConfigurationReference = 92C259E4A1A0F5366D5E3222 /* Pods-carstenszResLive-carstenszResLiveTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				INFOPLIST_FILE = CarstenzRDemoTests/Info.plist;
+				INFOPLIST_FILE = "carstenszResLiveTests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -812,15 +812,15 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = id.co.property365.carstenzresidence;
+				PRODUCT_BUNDLE_IDENTIFIER = "id.co.ifca.carstenszresidence";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CarstenzRDemo.app/CarstenzRDemo";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/carstenszResLive.app/carstenszResLive";
 			};
 			name = Release;
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E267DE2DC26802F77E4718B1 /* Pods-CarstenzRDemo.debug.xcconfig */;
+			baseConfigurationReference = E267DE2DC26802F77E4718B1 /* Pods-carstenszResLive.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -830,8 +830,8 @@
 				DEVELOPMENT_TEAM = C99L922ZVC;
 				ENABLE_BITCODE = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				INFOPLIST_FILE = CarstenzRDemo/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Carstenz Residence";
+				INFOPLIST_FILE = "carstenszResLive/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "carstenszResLive";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -844,8 +844,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = id.co.property365.carstenzresidence;
-				PRODUCT_NAME = CarstenzRDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = "id.co.ifca.carstenszresidence";
+				PRODUCT_NAME = "carstenszResLive";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -860,7 +860,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DB3A8D93810839F97BFC264C /* Pods-CarstenzRDemo.release.xcconfig */;
+			baseConfigurationReference = DB3A8D93810839F97BFC264C /* Pods-carstenszResLive.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -869,8 +869,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = C99L922ZVC;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				INFOPLIST_FILE = CarstenzRDemo/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Carstenz Residence";
+				INFOPLIST_FILE = "carstenszResLive/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "carstenszResLive";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -883,8 +883,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = id.co.property365.carstenzresidence;
-				PRODUCT_NAME = CarstenzRDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = "id.co.ifca.carstenszresidence";
+				PRODUCT_NAME = "carstenszResLive";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -1071,7 +1071,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "CarstenzRDemoTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "carstenszResLiveTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -1080,7 +1080,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "CarstenzRDemo" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "carstenszResLive" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -1089,7 +1089,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "CarstenzRDemo" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "carstenszResLive" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,

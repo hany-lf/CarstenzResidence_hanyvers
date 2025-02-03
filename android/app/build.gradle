@@ -84,9 +84,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "id.co.property365.carstenzresidence"
+    namespace "id.co.ifca.carstenszresidence"
     defaultConfig {
-        applicationId "id.co.property365.carstenzresidence"
+        applicationId "id.co.ifca.carstenszresidence"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 5
@@ -136,7 +136,7 @@ android {
 
 dependencies {
     // implementation project(path: ":@react-native-firebase_app")
-    implementation platform('com.google.firebase:firebase-bom:32.8.1')
+    implementation platform('com.google.firebase:firebase-bom:33.8.0')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
