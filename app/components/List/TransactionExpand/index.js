@@ -28,6 +28,7 @@ const TransactionExpand = ({
   doc_no = '',
   descs = '',
   mbal_amt = '',
+  trx_amt = '',
   trx_type = '',
   due_date = '',
   doc_date = '',
@@ -56,6 +57,7 @@ const TransactionExpand = ({
     due_date: due_date,
     doc_no: doc_no,
     mbal_amt: mbal_amt,
+    trx_amt: trx_amt,
     disabled: true,
     lot_no: lot_no,
     debtor_acct: debtor_acct,
@@ -94,7 +96,7 @@ const TransactionExpand = ({
         method: 'get',
         url:
           API_URL_LOKAL +
-          `/modules/billing/detail-history/${email}/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`,
+          `/modules/billing/detail-history/${entity_cd}/${project_no}/${debtor_acct}/${fin_month}/${fin_year}`,
         headers: {
           'content-type': 'application/json',
           Authorization: `Bearer ${user.Token}`,
@@ -117,7 +119,7 @@ const TransactionExpand = ({
         method: 'get',
         url:
           API_URL_LOKAL +
-          `/modules/billing/detail-history/${email}/${entity_cd}/${project_no}/${debtor_acct}/${doc_no}`,
+          `/modules/billing/detail-history/${entity_cd}/${project_no}/${debtor_acct}/${fin_month}/${fin_year}`,
         headers: {
           'content-type': 'application/json',
           Authorization: `Bearer ${user.Token}`,
@@ -157,7 +159,7 @@ const TransactionExpand = ({
     datadetailDateDue.length > 0
       ? datadetailDateDue.reduceRight((max, bills) => {
           // return (max += parseInt(bills.mbal_amt));
-          return (max += parseInt(bills.mdoc_amt));
+          return (max += parseInt(bills.trx_amt));
         }, 0)
       : null;
   const math_total = Math.floor(sumTotal);
@@ -172,7 +174,7 @@ const TransactionExpand = ({
   const sumTotalNotDue =
     datadetailNotDue_null != 0
       ? datadetailNotDue.reduceRight((max, bills) => {
-          return (max += parseInt(bills.mdoc_amt));
+          return (max += parseInt(bills.trx_amt));
         }, 0)
       : null;
   const math_total_notdue = Math.floor(sumTotalNotDue);
@@ -284,7 +286,7 @@ const TransactionExpand = ({
                     >
                       <Text>Rp. </Text>
                       <Text subhead>
-                        {numFormattanpaRupiah(item.mdoc_amt)}
+                        {numFormattanpaRupiah(item.trx_amt)}
                         {/* 100.000.000.00 */}
                       </Text>
                       {/* <Text subhead>{numFormat(item.mbal_amt)}</Text> */}
@@ -363,7 +365,9 @@ const TransactionExpand = ({
                     }}
                   >
                     <View style={{ width: '50%', paddingLeft: 10 }}>
-                      <Text subhead>{item.descs_detail}</Text>
+                      <Text subhead style={{ fontSize: 14 }}>
+                        {item.descs}
+                      </Text>
                     </View>
                     <View
                       style={{
@@ -373,13 +377,15 @@ const TransactionExpand = ({
                         width: '35%',
                       }}
                     >
-                      <Text>Rp. </Text>
-                      <Text subhead>
+                      <Text subhead style={{ fontSize: 14 }}>
+                        Rp.{' '}
+                      </Text>
+                      <Text subhead style={{ fontSize: 14 }}>
                         {/* {item.mbal_amt.replace(
                           /(\d)(?=(\d{3})+(?!\d))/g,
                           '$1.',
                         )} */}
-                        {numFormattanpaRupiah(item.mbal_amt)}
+                        {numFormattanpaRupiah(item.trx_amt)}
                         {/* 100.000.000.00 */}
                       </Text>
                       {/* <Text subhead>{numFormat(item.mbal_amt)}</Text> */}
@@ -405,7 +411,7 @@ const TransactionExpand = ({
                 }}
               >
                 <View style={{ width: '50%', paddingLeft: 10 }}>
-                  <Text subhead bold style={{ fontSize: 16 }}>
+                  <Text subhead bold style={{ fontSize: 14 }}>
                     Total
                   </Text>
                 </View>
@@ -417,10 +423,10 @@ const TransactionExpand = ({
                     width: '35%',
                   }}
                 >
-                  <Text subhead bold style={{ fontSize: 16 }}>
+                  <Text subhead bold style={{ fontSize: 14 }}>
                     Rp.{' '}
                   </Text>
-                  <Text subhead bold style={{ fontSize: 16 }}>
+                  <Text subhead bold style={{ fontSize: 14 }}>
                     {replaceTotal_notdue}
                     {/* 100.000.000.00 */}
                   </Text>

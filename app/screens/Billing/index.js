@@ -163,6 +163,7 @@ const Billing = ({
     };
     try {
       const res = await axios(config);
+      // console.log('res current summary', res.data.data);
       setData(res.data.data);
       // console.log('data current', res.data.data);
       setLoading(false);
@@ -250,27 +251,30 @@ const Billing = ({
           <View style={{ flex: 1, paddingHorizontal: 20 }}>
             {tab.id == 1 && dataCurrent != 0 && dataCurrent.length > 0
               ? dataCurrent.map((item, key) => (
-                  <ListTransactionExpand
-                    onPress={() => navigation.navigate('FHistoryDetail')}
-                    // key={item.id}
-                    key={key}
-                    tower={item.tower}
-                    name={item.name}
-                    trx_type={item.trx_type}
-                    doc_no={item.doc_no}
-                    doc_date={moment(item.doc_date).format('DD MMMM YYYY')}
-                    descs={item.descs}
-                    due_date={moment(item.due_date).format('DD MMMM YYYY')}
-                    mbal_amt={`${numFormat(`${item.mbal_amt}`)}`}
-                    lot_no={item.lot_no}
-                    debtor_acct={item.debtor_acct}
-                    entity_cd={entity_cd}
-                    project_no={project_no}
-                    email={email}
-                    fin_month={item.fin_month}
-                    fin_year={item.fin_year}
-                    tab_id={1}
-                  />
+                  <>
+                    <ListTransactionExpand
+                      onPress={() => navigation.navigate('FHistoryDetail')}
+                      // key={item.id}
+                      key={key}
+                      tower={item.tower}
+                      name={item.name}
+                      trx_type={item.trx_type}
+                      doc_no={item.doc_no}
+                      doc_date={moment(item.doc_date).format('DD MMMM YYYY')}
+                      descs={item.descs}
+                      due_date={moment(item.due_date).format('DD MMMM YYYY')}
+                      // mbal_amt={`${numFormat(`${item.trx_amt}`)}`}
+                      trx_amt={`${numFormat(`${item.trx_amt}`)}`}
+                      lot_no={item.lot_no}
+                      debtor_acct={item.debtor_acct}
+                      entity_cd={entity_cd}
+                      project_no={project_no}
+                      email={email}
+                      fin_month={item.fin_month}
+                      fin_year={item.fin_year}
+                      tab_id={1}
+                    />
+                  </>
                 ))
               : tab.id == 1 &&
                 dataCurrent == 0 && (
@@ -326,14 +330,15 @@ const Billing = ({
                   doc_date={moment(item.doc_date).format('DD MMMM YYYY')}
                   descs={item.descs}
                   due_date={moment(item.due_date).format('DD MMMM YYYY')}
-                  mbal_amt={`${numFormat(`${item.mbal_amt}`)}`}
+                  trx_amt={`${numFormat(`${item.trx_amt}`)}`}
+                  // mbal_amt={`${numFormat(`${item.mbal_amt}`)}`}
                   lot_no={item.lot_no}
                   debtor_acct={item.debtor_acct}
                   entity_cd={entity_cd}
                   project_no={project_no}
                   email={email}
-                  // fin_month={item.fin_month}
-                  // fin_year={item.fin_year}
+                  fin_month={item.fin_month}
+                  fin_year={item.fin_year}
                   tab_id={2}
                 />
               ))

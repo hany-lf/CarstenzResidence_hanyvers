@@ -14,6 +14,7 @@ const ListTransaction = ({
   doc_no = '',
   descs = '',
   mbal_amt = '',
+  trx_amt = '',
   trx_type = '',
   due_date = '',
   doc_date = '',
@@ -28,6 +29,7 @@ const ListTransaction = ({
   onPress = () => {},
 }) => {
   const { colors } = useTheme();
+  // console.log('descs', descs);
   return (
     <TouchableOpacity style={[styles.container, style]} onPress={onPress}>
       {/* <View style={[styles.image, {backgroundColor: colors.primaryLight}]}>
@@ -68,6 +70,7 @@ ListTransaction.propTypes = {
   name: PropTypes.string,
   descs: PropTypes.string,
   mbal_amt: PropTypes.string,
+  trx_amt: PropTypes.string,
   due_date: PropTypes.string,
   doc_no: PropTypes.string,
   price: PropTypes.string,
