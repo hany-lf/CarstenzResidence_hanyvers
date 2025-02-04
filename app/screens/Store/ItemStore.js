@@ -451,6 +451,8 @@ const Product = (params) => {
       setItemStoreFilter(arraytes);
     }
 
+    // setItemStore(arraytes);
+    // setItemStoreFilter(arraytes);
     setTambahItem(true);
     setTaxRatePerItem(item.tax_rate);
 
@@ -538,15 +540,17 @@ const Product = (params) => {
   };
 
   const checkoutSave = () => {
-    const dataSplice = ArrayDataCheckout;
-
+    const dataSplice = ArrayDataCheckout.filter((item) => {
+      console.log('item datasplice', item);
+      return item.quantity > 0;
+    }); // Hanya ambil item dengan qty > 0
+    console.log('dataSplice', dataSplice);
     // dataSplice.splice(0, 1);
     const indexOfObject = dataSplice.findIndex((object) => {
-      return object.trx_qty === 0;
+      return object.quantity === 0;
     });
-    console.log(indexOfObject); // 👉️ 1
 
-    if (indexOfObject == -1) {
+    if (indexOfObject === -1) {
       const formData = {
         entity_cd: dataMember.entity_cd, // sebenernya ini cukup ambil dari data array 0, karena termasuk member item yang sama disetiap array produk
         project_no: dataMember.project_no, // sebenernya ini cukup ambil dari data array 0, karena termasuk member item yang sama disetiap array produk
@@ -562,10 +566,9 @@ const Product = (params) => {
       dispatch(data_cart(formData));
       navigation.navigate('DeliveryAndPayment', formData);
     } else {
+      // Jika ada item dengan qty 0, hapus item tersebut
       dataSplice.splice(indexOfObject, 1);
 
-      // console.log(arr); // 👉️ [{id: 1}, {id: 5}]
-      // console.log('remaining', dataSplice);
       const formData = {
         entity_cd: dataMember.entity_cd, // sebenernya ini cukup ambil dari data array 0, karena termasuk member item yang sama disetiap array produk
         project_no: dataMember.project_no, // sebenernya ini cukup ambil dari data array 0, karena termasuk member item yang sama disetiap array produk

@@ -181,6 +181,7 @@ const Store = (props) => {
       params: {
         entity_cd: entity,
         project_no: project,
+        member_id: memberID,
         // entity_cd: '01',
         // project_no: '01',
       },
@@ -205,6 +206,31 @@ const Store = (props) => {
       });
   };
 
+  const dummyData = {
+    success: true,
+    message: 'Success',
+    data: [
+      {
+        member_id: '10021',
+        member_name: 'Shinta',
+        tenant_no: '10021',
+        lot_no: 'F2621',
+        card_no: null,
+        email: 'haniyya.ulfah@ifca.co.id',
+        hand_phone: '628972573500',
+      },
+      {
+        member_id: '10022',
+        member_name: 'Juliastuty',
+        tenant_no: '10022',
+        lot_no: 'F2622',
+        card_no: null,
+        email: 'haniyya.ulfah@ifca.co.id',
+        hand_phone: '628972573500',
+      },
+    ],
+  };
+
   const getMember = () => {
     const entity = entity_cd;
     const project = project_no;
@@ -213,43 +239,48 @@ const Store = (props) => {
     const config = {
       method: 'GET',
       // url: API_URL_LOKAL + `/modules/store/member`,
-      url: API_URL_LOKAL + `/modules/store/member-by-email`,
-      // /member-by-email?entity_cd=01&project_no=02&email=haniyya.ulfah@ifca.co.id
+      url:
+        API_URL_LOKAL +
+        `/modules/store/member-by-email` +
+        `?entity_cd=${entity}&project_no=${project}&email=${emails}`,
+
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${user.Token}`,
       },
-      params: {
-        entity_cd: entity,
-        project_no: project,
-        email: emails,
-      },
+      // params: {
+      //   entity_cd: entity,
+      //   project_no: project,
+      //   email: emails,
+      // },
     };
 
     axios(config)
       .then((res) => {
         const data = res.data.data;
-        // console.log('data member', data);
+        // const dataDummy = dummyData.data;
+        // console.log('data length member', dataDummy.length);
         setDataMember(data);
-        if (defaultMemberID == true) {
-          // setTextLotno(resLotno[0]);
+        // setDataMember(dataDummy);
+        // if (defaultMemberID == true) {
+        //   // setTextLotno(resLotno[0]);
+        //   setMemberID(res.data.data[0].member_id);
+        //   setMemberName(res.data.data[0].member_name);
+        //   setTenantNo(res.data.data[0].tenant_no);
+        //   setLotNo(res.data.data[0].lot_no);
+        // }
+        if (data.length > 1) {
+          setDefaultMemberID(false);
+          setDataMember(data);
+          // setMemberID(res.data.Data[0].member_id);
+          // setMemberName(res.data.Data[0].member_name);
+          // setTenantNo(res.data.Data[0].tenant_no);
+        } else {
           setMemberID(res.data.data[0].member_id);
           setMemberName(res.data.data[0].member_name);
           setTenantNo(res.data.data[0].tenant_no);
           setLotNo(res.data.data[0].lot_no);
         }
-        // if (data.length > 1) {
-        //   setDefaultMemberID(false);
-        //   setDataMember(data);
-        //   // setMemberID(res.data.Data[0].member_id);
-        //   // setMemberName(res.data.Data[0].member_name);
-        //   // setTenantNo(res.data.Data[0].tenant_no);
-        // } else {
-        //   setDefaultMemberID(true);
-        //   setMemberID(res.data.Data[0].member_id);
-        //   setMemberName(res.data.Data[0].member_name);
-        //   setTenantNo(res.data.Data[0].tenant_no);
-        // }
         // setDataMember(res.data.Data);
       })
       .catch((error) => {
@@ -306,10 +337,17 @@ const Store = (props) => {
   };
 
   const onChangeMemberID = (data) => {
+    // console.log('data member', data);
     setDefaultMemberID(false);
     setMemberID(data.member_id);
     setMemberName(data.member_name);
     setTenantNo(data.tenant_no);
+    setLotNo(data.lot_no);
+
+    //  setMemberID(res.data.data[0].member_id);
+    //  setMemberName(res.data.data[0].member_name);
+    //  setTenantNo(res.data.data[0].tenant_no);
+    //  setLotNo(res.data.data[0].lot_no);
   };
 
   const toItemStore = (item) => {
@@ -482,9 +520,9 @@ const Store = (props) => {
                       name="caret-down"
                       solid
                       size={27}
-                      // color={colors.primary}
+                      color={BaseColor.goldColor}
                       style={{ marginLeft: 10, marginRight: 10 }}
-                      color={'#CDB04A'}
+                      // color={'#CDB04A'}
                     />
                   </View>
                 </ModalSelector>
@@ -514,7 +552,68 @@ const Store = (props) => {
                 <Text style={{ color: '#3f3b38', fontSize: 14 }}>
                   Member Name
                 </Text>
-                <View
+                <ModalSelector
+                  style={{ justifyContent: 'center' }}
+                  childrenContainerStyle={{
+                    color: '#CDB04A',
+                    // alignSelf: 'center',
+                    fontSize: 16,
+                    // top: 10,
+                    // flex: 1,
+                    justifyContent: 'center',
+                    fontWeight: '800',
+                    fontFamily: 'KaiseiHarunoUmi',
+                  }}
+                  data={dataMember}
+                  optionTextStyle={{ color: '#333' }}
+                  selectedItemTextStyle={{ color: '#3C85F1' }}
+                  accessible={true}
+                  keyExtractor={(item) => item.member_id}
+                  // initValue={'ahlo'}
+                  labelExtractor={(item) => item.member_name} //khusus untuk lotno
+                  cancelButtonAccessibilityLabel={'Cancel Button'}
+                  cancelText={'Cancel'}
+                  onChange={(option) => {
+                    onChangeMemberID(option);
+                  }}
+                >
+                  <View
+                    style={{
+                      flexDirection: 'row',
+
+                      paddingLeft: 10,
+                      paddingVertical: 5,
+                      backgroundColor: colors.primary,
+                      justifyContent: 'space-between',
+                      borderRadius: 12,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: 'white',
+                        alignSelf: 'center',
+                        fontSize: 14,
+
+                        // top: 10,
+                        // flex: 1,
+                        // justifyContent: 'center',
+                        fontWeight: '800',
+                        fontFamily: 'KaiseiHarunoUmi',
+                      }}
+                    >
+                      {memberName}
+                    </Text>
+                    <Icon
+                      name="caret-down"
+                      solid
+                      size={27}
+                      color={BaseColor.goldColor}
+                      style={{ marginLeft: 10, marginRight: 10 }}
+                      // color={'#CDB04A'}
+                    />
+                  </View>
+                </ModalSelector>
+                {/* <View
                   style={{
                     marginVertical: 5,
                     paddingHorizontal: 5,
@@ -544,7 +643,7 @@ const Store = (props) => {
                   >
                     {memberName}
                   </Text>
-                </View>
+                </View> */}
               </View>
             </View>
           )}

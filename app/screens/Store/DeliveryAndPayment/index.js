@@ -19,6 +19,7 @@ import {
   RefreshControl,
   TouchableOpacity,
   ImageBackground,
+  Linking,
 } from 'react-native';
 import styles from './styles';
 import { Picker } from '@react-native-picker/picker';
@@ -67,7 +68,7 @@ export default function DeliveryAndPayment({ route, navigation }) {
 
   const [hasError, setErrors] = useState(false);
   const user = useSelector((state) => getUser(state));
-  console.log('user cek debtor', user);
+  // console.log('user cek debtor', user);
 
   const project = useSelector((state) => getProject(state));
   // console.log('project untuk payment', project);
@@ -437,6 +438,7 @@ export default function DeliveryAndPayment({ route, navigation }) {
   };
 
   const onOrder = () => {
+    setLoading(true);
     // console.log('handphone', user.userData.Handphone);
     const replacePhone = user.userData.Handphone.replace(/^0/, '');
     const phoneReplace = '+62' + replacePhone;
@@ -482,20 +484,25 @@ export default function DeliveryAndPayment({ route, navigation }) {
         )
         .then((res) => {
           if (res.data.success == true) {
+            Linking.openURL(res.data.data.redirecturl);
             setModalSuccessPayment(true);
             setMessageAlert(res.data.message);
             setMessage(res.data.bill_no);
             setStatus(res.data.success);
+
+            setLoading(false);
             // alert(res.data.Pesan);
           } else {
             setModalSuccessPayment(true);
             setMessageAlert(res.data.message);
             setStatus(res.data.success);
+            setLoading(false);
             // alert(res.data.Pesan);
           }
         })
         .catch((error) => {
           console.log(error.response);
+          setLoading(false);
         });
     }
 
@@ -533,26 +540,31 @@ export default function DeliveryAndPayment({ route, navigation }) {
         )
         .then((res) => {
           if (res.data.success == true) {
+            Linking.openURL(res.data.data.redirecturl);
             setModalSuccessPayment(true);
             setMessageAlert(res.data.message);
             setMessage(res.data.bill_no);
             setStatus(res.data.success);
+            setLoading(false);
             // alert(res.data.Pesan);
           } else {
             setModalSuccessPayment(true);
             setMessageAlert(res.data.message);
             setStatus(res.data.success);
+            setLoading(false);
             // alert(res.data.Pesan);
           }
         })
         .catch((error) => {
           console.log(error.response);
+          setLoading(false);
         });
     }
 
     // if number is less than 0
     else {
       setShowAlertMinusPayment(true);
+      setLoading(false);
     }
   };
 
@@ -615,7 +627,7 @@ export default function DeliveryAndPayment({ route, navigation }) {
                   // }
                   setTextLotno(
                     itemValue.lot_no,
-                    console.log('itemvalue', itemValue.lot_no),
+                    // console.log('itemvalue', itemValue.lot_no),
                   )
                 }
                 value={text_lotno}
@@ -653,7 +665,11 @@ export default function DeliveryAndPayment({ route, navigation }) {
                 data={dataParamsTransaction}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item, index }) => (
-                  <View style={[styles.contain]} activeOpacity={0.9}>
+                  <View
+                    style={[styles.contain]}
+                    activeOpacity={0.9}
+                    key={index}
+                  >
                     <TouchableOpacity>
                       <ImageBackground
                         // source={image}
@@ -679,12 +695,12 @@ export default function DeliveryAndPayment({ route, navigation }) {
                         <View style={{ flex: 1, paddingBottom: 4 }}>
                           <View style={{ flex: 1 }}>
                             <View>
-                              <Text semibold style={{ fontSize: 16 }}>
-                                {item.trx_descs}
+                              <Text semibold style={{ fontSize: 14 }}>
+                                {item.descs}
                               </Text>
                             </View>
                             <View>
-                              <Text semibold style={{ fontSize: 16 }}>
+                              <Text semibold style={{ fontSize: 14 }}>
                                 {item.trx_qty} x{' '}
                                 {numFormattanpaRupiah(item.unit_price)}
                               </Text>
@@ -693,7 +709,7 @@ export default function DeliveryAndPayment({ route, navigation }) {
                         </View>
                         <View>
                           <View>
-                            <Text semibold style={{ fontSize: 16 }}>
+                            <Text semibold style={{ fontSize: 14 }}>
                               {numFormattanpaRupiah(item.totalHarga)}
                             </Text>
                           </View>
@@ -901,10 +917,14 @@ export default function DeliveryAndPayment({ route, navigation }) {
             <Button
               loading={loading}
               full
+              disable={loading}
               onPress={() => {
                 onOrder();
               }}
-              style={{ height: 40 }}
+              style={{
+                height: 40,
+                backgroundColor: loading ? BaseColor.grayColor : colors.primary,
+              }}
             >
               {t('order_n_payment')}
             </Button>
@@ -937,7 +957,6 @@ export default function DeliveryAndPayment({ route, navigation }) {
           <View
             style={{
               // flex: 1,
-
               // alignContent: 'center',
               padding: 10,
               backgroundColor: '#fff',
