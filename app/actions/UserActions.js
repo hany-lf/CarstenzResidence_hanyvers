@@ -247,9 +247,9 @@ export const logout = () => async (dispatch) => {
 };
 
 export const saveProfile = (data) => async (dispatch) => {
-  console.log('user action save profile', data);
+  // console.log('user action save profile', data);
   const edits = await UserController.saveProfile(data);
-  console.log('res save profil', edits);
+  // console.log('res save profil', edits);
   alert(edits.message);
   dispatch(editRequest(edits.data));
 };
@@ -262,9 +262,9 @@ export const saveProfile = (data) => async (dispatch) => {
 //   dispatch(changeFoto(foto.data));
 // };
 export const saveFotoProfil = (data) => async (dispatch) => {
-  console.log('image change profil action save profile', data);
+  // console.log('image change profil action save profile', data);
   const foto = await UserController.saveFotoProfil(data);
-  console.log('res save foto profil', foto);
+  // console.log('res save foto profil', foto);
   // alert(foto.Pesan);
   dispatch(changeFoto(foto.data));
 };
@@ -283,9 +283,9 @@ export const changePass = (email, pass, conpass) => async (dispatch) => {
 export const refreshTokenAccess = (data) => async (dispatch) => {
   // dispatch(refreshTokenRequest());
   try {
-    console.log('user action refresh token akses', data);
+    // console.log('user action refresh token akses', data);
     const res = await UserController.refreshToken(data);
-    console.log('res akses token refresh ', res);
+    // console.log('res akses token refresh ', res);
     dispatch(refreshTokenSuccess(res.Token));
     dispatch(updateRefreshToken(res.Token));
   } catch (error) {

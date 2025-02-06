@@ -10,7 +10,7 @@ class MenuController {
   }
 
   get_menu_controller = async (datas) => {
-    console.log('datas for menu controler', datas);
+    // console.log('datas for menu controler', datas);
 
     try {
       const result = await httpClient.request({
@@ -33,7 +33,7 @@ class MenuController {
         data: sortedResult,
       };
       // alert(result.Pesan);
-      console.log('vardums result menu -->', updatedResult);
+      // console.log('vardums result menu -->', updatedResult);
 
       // ini ada isreset dalemnya, sementara dihilangin, buat biar ga nyangkut insert token firebase
       if (result.success) {

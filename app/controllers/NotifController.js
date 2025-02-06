@@ -36,7 +36,7 @@ class NotifController {
         // timeout: 5000, // default is `0` (no timeout)
       });
       // alert(result.Pesan);
-      console.log('vardums result notifikasi -->', result);
+      // console.log('vardums result notifikasi -->', result);
       // ini ada isreset dalemnya, sementara dihilangin, buat biar ga nyangkut insert token firebase
       if (result.success) {
         return result;

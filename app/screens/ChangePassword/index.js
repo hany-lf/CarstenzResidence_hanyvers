@@ -34,6 +34,7 @@ const ChangePassword = (props) => {
   const [messageAlertNotMatch, setMessageAlertNotMatch] = useState('');
 
   const changePassword = () => {
+    console.log('user email', user);
     if (password == repassword) {
       const formData = {
         email: email,

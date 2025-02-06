@@ -2,12 +2,18 @@ import ProjectController from '../controllers/ProjectController';
 
 export const actionTypes = {
   PROJECT_SUCCESS: 'PROJECT_SUCCESS',
+  CHOOSEN_PROJECT: 'CHOOSEN_PROJECT',
 };
 
 const project_success = (Dataproject) => ({
   type: actionTypes.PROJECT_SUCCESS,
   //   user,'
   Dataproject,
+});
+
+const data_choosed_project = (project) => ({
+  type: actionTypes.CHOOSEN_PROJECT,
+  project,
 });
 
 export const data_project = (datas) => async (dispatch) => {
@@ -21,6 +27,10 @@ export const data_project = (datas) => async (dispatch) => {
   dispatch(project_success(dataproject));
   // console.log('notifikasi nbadge', notifnbadge);
   //   dispatch(editRequest());
+};
+
+export const choosed_project = (project) => async (dispatch) => {
+  dispatch(data_choosed_project(project));
 };
 
 // export const login = (email, password, token_firebase) => async dispatch => {

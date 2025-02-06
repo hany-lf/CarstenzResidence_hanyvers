@@ -55,7 +55,7 @@ const SignIn = (props) => {
 
   const user = useSelector((state) => getUser(state));
   const userError = useSelector((state) => getUser(state));
-  console.log('usererror?', userError);
+  // console.log('usererror?', userError);
   const project = useSelector((state) => getProject(state));
   const [macAddress, setMacAddress] = useState('');
   const [version, setVersion] = useState('');
@@ -70,10 +70,10 @@ const SignIn = (props) => {
       // const {version} = Constants.manifest;
       // const version = require('../../package.json');
       // console.log('ceeek', version);
-      console.log(VersionInfo.appVersion);
-      console.log(VersionInfo.buildNumber);
-      console.log(VersionInfo.buildVersion);
-      console.log(VersionInfo.bundleIdentifier);
+      // console.log(VersionInfo.appVersion);
+      // console.log(VersionInfo.buildNumber);
+      // console.log(VersionInfo.buildVersion);
+      // console.log(VersionInfo.bundleIdentifier);
       const version = VersionInfo.appVersion;
       setVersion(version);
       setBuildVersion(VersionInfo.buildVersion);
@@ -86,11 +86,11 @@ const SignIn = (props) => {
     // Ambil parameter dari route
 
     const { message: paramMessage } = route.params || {};
-    console.log('props for message', route);
-    console.log('ini alert message', paramMessage);
+    // console.log('props for message', route);
+    // console.log('ini alert message', paramMessage);
     if (paramMessage) {
       // Anda bisa menampilkan pesan ini di UI jika diinginkan
-      console.log('message session alert', paramMessage); // Atau gunakan state untuk menampilkannya di UI
+      // console.log('message session alert', paramMessage); // Atau gunakan state untuk menampilkannya di UI
       Alert.alert('ini alert message', paramMessage);
     }
   }, [route.params]);
@@ -105,11 +105,11 @@ const SignIn = (props) => {
       authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
       authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
-    console.log('enabled fcm', enabled);
+    // console.log('enabled fcm', enabled);
 
     if (enabled) {
       getFcmToken();
-      console.log('Authorization status:', authStatus);
+      // console.log('Authorization status:', authStatus);
     }
   };
 
@@ -117,7 +117,7 @@ const SignIn = (props) => {
     try {
       const fcmToken = await messaging().getToken();
       if (fcmToken) {
-        console.log('Your Firebase Token is:', fcmToken);
+        // console.log('Your Firebase Token is:', fcmToken);
         setTokenFirebase(fcmToken);
       } else {
         console.log('Failed', 'No token received');
@@ -137,12 +137,12 @@ const SignIn = (props) => {
 
       setLoading(true);
 
-      console.log('token_firebase signin', token_firebase);
+      // console.log('token_firebase signin', token_firebase);
       const loginResponse = await loginUser(); // Tunggu respons login
       // // console.log('login response awiat', loginResponse);
 
       if (loginResponse.success === true) {
-        console.log('login sukses');
+        // console.log('login sukses');
         // Jika login berhasil, panggil loadProject
         // loadProject();
       } else {

@@ -3,8 +3,8 @@ import { fetchData, fetchSuccess, fetchError } from './ApiActions';
 import { logout } from '../actions/UserActions'; // Pastikan path ini sesuai dengan struktur proyek Anda
 
 const apiActionCreator = (url, params) => async (dispatch) => {
-  console.log('token di apiactioncreator', params);
-  console.log('urldi apiactioncreator', url);
+  // console.log('token di apiactioncreator', params);
+  // console.log('urldi apiactioncreator', url);
   dispatch(fetchData());
 
   let attempt = 0; // Inisialisasi percobaan

@@ -72,9 +72,17 @@ import numFormat from '../../components/numFormat';
 import { notifikasi_nbadge, actionTypes } from '../../actions/NotifActions';
 import getNotifRed from '../../selectors/NotifSelectors';
 import getProject from '../../selectors/ProjectSelector';
+import getProjectUser from '../../selectors/ProjectUserSelector';
 import getMenu from '../../selectors/MenuSelectors';
+import getUnit from '../../selectors/UnitSelector';
+import getUnitUser from '../../selectors/UnitUserSelector';
 import { get_menu_actions } from '../../actions/MenuActions';
-import { data_project } from '../../actions/ProjectActions';
+import { data_project, choosed_project } from '../../actions/ProjectActions';
+import {
+  data_unit,
+  data_choosed_unit,
+  choosed_unit,
+} from '../../actions/UnitActions';
 import messaging from '@react-native-firebase/messaging';
 import apiCall from '../../config/ApiActionCreator';
 // import {TextInput} from '../../components';
@@ -96,6 +104,9 @@ import AlertSvg from '../../components/Svg/home/eye.svg'; // Mengimpor SVG sebag
 import { Alert2 } from '../../components/Svg';
 
 import { API_URL_LOKAL } from '@env';
+
+import { Picker } from '@react-native-picker/picker';
+
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
@@ -114,6 +125,11 @@ const Home = (props) => {
   const user = useSelector((state) => getUser(state));
   const notif = useSelector((state) => getNotifRed(state));
   const project = useSelector((state) => getProject(state));
+  const unit = useSelector((state) => getUnit(state));
+  const projectUser = useSelector((state) => getProjectUser(state));
+  // const unitUser = useSelector((state) => getUnitUser(state));
+  // console.log('project di home', projectData);
+
   const dataMenus = useSelector((state) => getMenu(state));
   // --- tes logout jika token invalid----
   const isLoggedOut = useSelector((state) => state.auth.isLoggedOut);
@@ -147,7 +163,7 @@ const Home = (props) => {
       ? fotoprofil.uri
       : `https://dev.ifca.co.id/no-image.png`;
   // console.log("repll", repl);
-  const [text_lotno, setTextLotno] = useState();
+  const [text_lotno, setTextLotno] = useState('');
   const [default_text_lotno, setDefaultLotno] = useState(true);
   const [keyword, setKeyword] = useState('');
 
@@ -175,6 +191,10 @@ const Home = (props) => {
   const [headerImage, setHeaderImage] = useState([]);
 
   const [loadMenu, setLoadMenu] = useState(true);
+
+  // --- const untuk project dropdown
+  const [text_project, setTextProject] = useState('');
+  const [default_text_project, setDefaultProject] = useState(true);
 
   const dispatch = useDispatch();
 
@@ -248,16 +268,29 @@ const Home = (props) => {
   // ---- close useeffect untuk load datamenu ---
 
   // --- useeffect untuk project
-  useEffect(() => {
-    // console.log('project useeffect', project.data);
+  // useEffect(() => {
+  //   // console.log('project useeffect', project.data);
 
-    if (project && project.data && project.data.length > 0) {
-      setEntity(project.data[0].entity_cd);
-      setProjectNo(project.data[0].project_no);
-      getLotNo();
-      dataNewsAnnounce();
-      dataPromoClubFacilities();
-    }
+  //   if (project && project.data && project.data.length > 0) {
+  //     setEntity(project.data[0].entity_cd);
+  //     setProjectNo(project.data[0].project_no);
+  //     // getLotNo();
+  //     dataNewsAnnounce();
+  //     dataPromoClubFacilities();
+  //   }
+  // }, [project]);
+  useEffect(() => {
+    const fetchData = async () => {
+      if (project && project.data && project.data.length > 0) {
+        setEntity(project.data[0].entity_cd);
+        setProjectNo(project.data[0].project_no);
+        // await getLotNo(); // Pastikan untuk menunggu hasilnya jika perlu
+        dataNewsAnnounce();
+        dataPromoClubFacilities();
+      }
+    };
+
+    fetchData();
   }, [project]);
 
   useEffect(() => {
@@ -279,7 +312,7 @@ const Home = (props) => {
   const onRefresh = useCallback(() => {
     if (user?.userData && user.userData.Group_Cd && user.Token) {
       setRefreshing(true);
-      console.log('ini refresh on di home', user.userData);
+      // console.log('ini refresh on di home', user.userData);
       // if (user && user.userData) {
       //     console.log('user di home refresh', user),
       //     console.log('userData di home refresh', user.userData),
@@ -353,69 +386,13 @@ const Home = (props) => {
     );
   }, [user, entity_cd, project_no, email]);
 
-  // ---  getlotno ---
-  async function getLotNo() {
-    // Pastikan entity_cd, project_no, dan email ada
-    if (!entity_cd || !project_no || !email) {
-      console.error(
-        'entity_cd, project_no, dan email harus ada untuk memanggil API',
-      );
-      return;
-    }
-
-    const params = {
-      entity_cd: entity_cd,
-      project_no: project_no,
-      email: email,
-    };
-    // console.log('params getlotno', params);
-    const config = {
-      // timeout: 5000, // default is `0` (no timeout)
-      method: 'get',
-      url: API_URL_LOKAL + `/home/common-unit`,
-
-      headers: {
-        'content-type': 'application/json',
-
-        Authorization: `Bearer ${user.Token}`,
-      },
-
-      params: params,
-    };
-
-    try {
-      await axios(config)
-        .then((res) => {
-          const resLotno = res.data.data;
-          // console.log('reslotno', resLotno);
-          // console.log("reslotno", res);
-          // console.log('default_text_lotno', default_text_lotno);
-          if (default_text_lotno === true) {
-            // console.log('ini kena gaksih?', res.data.data[0]);
-            setTextLotno(res.data.data[0]);
-          }
-          setLotno(resLotno);
-
-          // if (default_text_lotno === true) {
-          //   console.log('ini kena gaksih?', default_text_lotno);
-          //     if (default_text_lotno == true) {
-          //       setTextLotno(resLotno[0]);
-          //     }
-          // }
-
-          setSpinner(false);
-        })
-        .catch((error) => {
-          console.log('error reslotno', error.response);
-          // alert('error get');
-        });
-    } catch (error) {
-      console.log('error get lotno', error.response);
-      setErrors(error);
-      // alert(hasError.toString());
-    }
-  }
-  // ---  getlotno ----
+  // useEffect(() => {
+  //   // Panggil updateUserLotno hanya jika kondisi tertentu terpenuhi
+  //   if (text_lotno) {
+  //     console.log('text_lotno APAKAH LOOPING', text_lotno.lot_no);
+  //     // dispatch(updateUserLotno(text_lotno.lot_no));
+  //   }
+  // }, [text_lotno]);
 
   // --- useeffect datanewsannounce ---
   const dataNewsAnnounce = async () => {
@@ -435,7 +412,7 @@ const Home = (props) => {
       // params: {approval_user: user.userIDToken.UserId},
       params: params,
     };
-    console.log('config news', config);
+    // console.log('config news', config);
     await axios(config)
       .then((res) => {
         // console.log('res news', res.data.data);
@@ -628,7 +605,9 @@ const Home = (props) => {
     // console.log('email di home untuk fetchdatanotdue', email);
     const config = {
       method: 'get',
-      url: API_URL_LOKAL + `/modules/billing/current-summary/${email}`,
+      url:
+        API_URL_LOKAL +
+        `/modules/billing/current-summary/${entity_cd}/${project_no}/${email}`,
       headers: {
         'content-type': 'application/json',
         Authorization: `Bearer ${user.Token}`,
@@ -667,57 +646,73 @@ const Home = (props) => {
   // --- getheaderimage ---
   const getHeaderImage = async () => {
     setSpinner(true);
-    const maxRetries = 3; // Jumlah maksimum percobaan
-    let attempt = 0; // Inisialisasi percobaan
+    try {
+      const config = {
+        method: 'GET',
+        url: API_URL_LOKAL + `/home/common-mobile-header`,
+        headers: {
+          'content-type': 'application/json',
+          Authorization: `Bearer ${user.Token}`,
+        },
+      };
+      const res = await axios(config);
 
-    while (attempt < maxRetries) {
-      try {
-        const config = {
-          method: 'get',
-          url: API_URL_LOKAL + `/home/common-mobile-header`,
-          headers: {
-            'content-type': 'application/json',
-            Authorization: `Bearer ${user.Token}`,
-          },
-        };
-        const res = await axios(config);
-        // await axios(config).then((res) => {
-        //   console.log('res header image', res.data.data);
-        //   setHeaderImage(res.data.data);
-        //   // setArrDataTowerUser;
-        // });
-        setHeaderImage(res.data.data);
-        // .catch((error) => {
-        //   console.log('error res header image', error.response);
-        //   setSpinner(false);
-        // });
-        return res; // Kembalikan user.data;
-      } catch (error) {
-        setSpinner(false);
-        attempt++; // Increment percobaan
-        console.log(`Attempt ${attempt} failed. Retrying...`);
+      setHeaderImage(res.data.data);
+      setSpinner(false);
 
-        // Tunggu sebelum mencoba lagi (misalnya 2 detik)
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-      }
+      return res; // Kembalikan user.data;
+    } catch (error) {
+      setSpinner(false);
     }
   };
 
+  // ---- UNTUK SAVE UNIT KE DISPATCH KETIKA UNIT DIGANTI
+  const saveProject = useCallback((project) => {
+    console.log('choose project', project);
+    dispatch(choosed_project(project));
+  });
+  // ---- UNTUK SAVE UNIT KE DISPATCH KETIKA UNIT DIGANTI
+
+  // ---- UNTUK SAVE UNIT KE DISPATCH KETIKA UNIT DIGANTI
+  const saveUnit = useCallback((unit) => {
+    dispatch(choosed_unit(unit));
+  });
+  // ---- UNTUK SAVE UNIT KE DISPATCH KETIKA UNIT DIGANTI
+
   const onChangelot = (lot) => {
     setDefaultLotno(false);
-    // console.log('lot', lot);
     setTextLotno(lot);
+    saveUnit(lot);
   };
 
-  //  const goToMoreNewsAnnounce = (item) => {
-  //    // console.log('item go to', item.length);
-  //    // navigation.navigate('NewsAnnounce', { items: item });
-  //  };
+  const onChangeProject = (project) => {
+    // console.log('project di home', project);
+    forUnitDispatch(project); //untuk dispatch unit ketika project di ganti
+    setDefaultProject(false);
+    setTextProject(project.entity_name);
+    saveProject(project);
+    saveUnit(''); //untuk clear unit ketika project di ganti
+  };
+
+  const forUnitDispatch = useCallback((item) => {
+    const params = {
+      entity_cd: item.entity_cd,
+      project_no: item.project_no,
+      email: email,
+      token_firebases: user.Token,
+    };
+    dispatch(data_unit(params));
+  });
 
   const goToEventResto = (item) => {
     // console.log('item go to', item.length);
     navigation.navigate('EventResto', { items: item });
   };
+
+  const dataDummyProject = [
+    { entity_cd: '123', entity_name: 'entity 1' },
+    { entity_cd: '124', entity_name: 'entity 2' },
+  ];
 
   const goToPromoClubFac = (item) => {
     // console.log('item go to', item.length);
@@ -1186,7 +1181,6 @@ const Home = (props) => {
                 >
                   {name}
                 </Text>
-                {/* <Text>{MenuBar}</Text> */}
 
                 <Icon
                   name="star"
@@ -1196,39 +1190,129 @@ const Home = (props) => {
                   style={{ marginHorizontal: 5 }}
                 />
               </View>
-              {/* <Text>{lotno.length}</Text> */}
 
-              {lotno.length != 0 ? (
-                <View
-                  style={{
-                    // backgroundColor: '#141F40',
-                    backgroundColor: colors.primary,
-                    height: 30,
-                    // width: '100%',
-                    width: 150,
-                    justifyContent: 'center',
-                    paddingHorizontal: 10,
-                    borderRadius: 10,
-                  }}
-                >
-                  <View style={{ flexDirection: 'row', paddingLeft: 10 }}>
+              {/* ---- PILIH PROJECT DULU */}
+
+              <View
+                style={{
+                  // backgroundColor: '#141F40',
+                  backgroundColor: colors.primary,
+                  height: 40,
+                  // width: '100%',
+                  width: '100%',
+                  justifyContent: 'center',
+                  paddingHorizontal: 10,
+                  borderRadius: 10,
+                  marginTop: 5,
+                  marginBottom: 10,
+                }}
+              >
+                <View style={{ flexDirection: 'row', paddingLeft: 10 }}>
+                  <Text
+                    adjustsFontSizeToFit={true}
+                    allowFontScaling={true}
+                    style={{
+                      color: '#fff',
+                      alignSelf: 'center',
+                      fontSize: 12,
+                      justifyContent: 'center',
+                      paddingRight: 10,
+
+                      fontWeight: '800',
+                      fontFamily: 'KaiseiHarunoUmi',
+                    }}
+                  >
+                    Project
+                  </Text>
+                  <ModalSelector
+                    style={{
+                      justifyContent: 'center',
+                      alignSelf: 'center',
+                    }}
+                    childrenContainerStyle={{
+                      color: '#141F40',
+                      alignSelf: 'center',
+                      fontSize: 16,
+                      // top: 10,
+                      // flex: 1,
+                      justifyContent: 'center',
+                      fontWeight: '800',
+                      fontFamily: 'KaiseiHarunoUmi',
+                    }}
+                    data={project.data}
+                    optionTextStyle={{ color: '#333' }}
+                    selectedItemTextStyle={{ color: '#141F40' }}
+                    accessible={true}
+                    keyExtractor={(item) => item.entity_cd}
+                    // initValue={'ahlo'}
+                    labelExtractor={(item) => item.entity_name} //khusus untuk lotno
+                    cancelButtonAccessibilityLabel={'Cancel Button'}
+                    cancelText={'Cancel'}
+                    onChange={(option) => {
+                      onChangeProject(option);
+                    }}
+                  >
                     <Text
-                      adjustsFontSizeToFit={true}
-                      allowFontScaling={true}
                       style={{
-                        color: '#fff',
+                        color: '#CDB04A',
                         alignSelf: 'center',
-                        fontSize: 14,
+                        fontSize: 12,
+                        // top: 10,
+                        // flex: 1,
                         justifyContent: 'center',
-                        paddingRight: 10,
-
                         fontWeight: '800',
                         fontFamily: 'KaiseiHarunoUmi',
                       }}
                     >
-                      Unit
+                      {text_project == ''
+                        ? 'Choose Project here'
+                        : text_project}
                     </Text>
+                  </ModalSelector>
+                  <Icon
+                    name="caret-down"
+                    solid
+                    size={26}
+                    // color={colors.primary}
+                    style={{ marginLeft: 5 }}
+                    color={'#CDB04A'}
+                  />
+                </View>
+              </View>
+              {/* ---- PILIH PROJECT DULU */}
 
+              {/* ---- PILIH UNIT */}
+              <View
+                style={{
+                  // backgroundColor: '#141F40',
+                  backgroundColor: colors.primary,
+                  height: 30,
+                  // width: '100%',
+                  width: '100%',
+                  justifyContent: 'center',
+                  paddingHorizontal: 10,
+                  borderRadius: 10,
+                }}
+              >
+                <View style={{ flexDirection: 'row', paddingLeft: 10 }}>
+                  <Text
+                    adjustsFontSizeToFit={true}
+                    allowFontScaling={true}
+                    style={{
+                      color: '#fff',
+                      alignSelf: 'center',
+                      fontSize: 12,
+                      justifyContent: 'center',
+                      paddingRight: 10,
+
+                      fontWeight: '800',
+                      fontFamily: 'KaiseiHarunoUmi',
+                    }}
+                  >
+                    Unit
+                  </Text>
+
+                  {text_project != '' ? (
                     <ModalSelector
                       style={{
                         justifyContent: 'center',
@@ -1244,7 +1328,7 @@ const Home = (props) => {
                         fontWeight: '800',
                         fontFamily: 'KaiseiHarunoUmi',
                       }}
-                      data={lotno}
+                      data={unit.data}
                       optionTextStyle={{ color: '#333' }}
                       selectedItemTextStyle={{ color: '#141F40' }}
                       accessible={true}
@@ -1269,104 +1353,37 @@ const Home = (props) => {
                           fontFamily: 'KaiseiHarunoUmi',
                         }}
                       >
-                        {/* {lotno.lot_no} */}
-                        {text_lotno.lot_no}
-
-                        {/* 12312 */}
+                        {text_lotno.lot_no ? text_lotno.lot_no : 'Choose Unit'}
                       </Text>
                     </ModalSelector>
-                    <Icon
-                      name="caret-down"
-                      solid
-                      size={26}
-                      // color={colors.primary}
-                      style={{ marginLeft: 5 }}
-                      color={'#CDB04A'}
-                    />
-                  </View>
-                </View>
-              ) : (
-                <View
-                  style={{
-                    backgroundColor: colors.primary,
-                    height: 30,
-                    // width: '100%',
-                    width: 150,
-                    justifyContent: 'center',
-                    paddingHorizontal: 10,
-                    borderRadius: 10,
-                  }}
-                >
-                  <View style={{ flexDirection: 'row', paddingLeft: 10 }}>
+                  ) : (
                     <Text
                       style={{
-                        color: '#fff',
-                        alignSelf: 'center',
-                        fontSize: 14,
-                        justifyContent: 'center',
-                        paddingRight: 10,
-
-                        fontWeight: '800',
-                        fontFamily: 'KaiseiHarunoUmi',
-                      }}
-                    >
-                      Unit
-                    </Text>
-
-                    <ModalSelector
-                      style={{
-                        justifyContent: 'center',
-                        alignSelf: 'center',
-                      }}
-                      childrenContainerStyle={{
                         color: '#CDB04A',
                         alignSelf: 'center',
-                        fontSize: 16,
+                        fontSize: 12,
                         // top: 10,
                         // flex: 1,
                         justifyContent: 'center',
                         fontWeight: '800',
                         fontFamily: 'KaiseiHarunoUmi',
                       }}
-                      data={lotno}
-                      optionTextStyle={{ color: '#333' }}
-                      selectedItemTextStyle={{ color: '#3C85F1' }}
-                      accessible={true}
-                      keyExtractor={(item) => item.lot_no}
-                      // initValue={'ahlo'}
-                      labelExtractor={(item) => item.lot_no} //khusus untuk lotno
-                      cancelButtonAccessibilityLabel={'Cancel Button'}
-                      cancelText={'Cancel'}
-                      onChange={(option) => {
-                        onChangelot(option);
-                      }}
                     >
-                      <Text
-                        style={{
-                          color: '#CDB04A',
-                          alignSelf: 'center',
-                          fontSize: 16,
-                          // top: 10,
-                          // flex: 1,
-                          justifyContent: 'center',
-                          fontWeight: '800',
-                          fontFamily: 'KaiseiHarunoUmi',
-                        }}
-                      >
-                        {/* Lot No Available */}-
-                      </Text>
-                    </ModalSelector>
-                    <Icon
-                      name="caret-down"
-                      solid
-                      size={26}
-                      // color={colors.primary}
-                      style={{ marginLeft: 5 }}
-                      color={'#CDB04A'}
-                    />
-                  </View>
+                      Choose Project First
+                    </Text>
+                  )}
+
+                  <Icon
+                    name="caret-down"
+                    solid
+                    size={26}
+                    // color={colors.primary}
+                    style={{ marginLeft: 5 }}
+                    color={'#CDB04A'}
+                  />
                 </View>
-              )}
+              </View>
+              {/* ---- PILIH UNIT */}
             </View>
           </View>
           {/* ---- header image dan nama dan unit */}

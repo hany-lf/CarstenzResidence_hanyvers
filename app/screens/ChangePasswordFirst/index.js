@@ -13,10 +13,11 @@ import styles from './styles';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import getUser from '../../selectors/UserSelectors';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Modal from 'react-native-modal';
 import { API_URL_LOKAL } from '@env';
 import { useNavigation } from '@react-navigation/native';
+import { logout } from '../../actions/UserActions';
 
 const ChangePasswordFirst = (props) => {
   // const { navigation } = props;
@@ -27,15 +28,17 @@ const ChangePasswordFirst = (props) => {
   const [repassword, setRepassword] = useState('');
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => getUser(state));
-  const [email, setEmail] = useState(user != null ? user.user : '');
+  const [email, setEmail] = useState(user != null ? user.email : '');
   const [hidePass, setHidePass] = useState(true);
   const [hideRePass, setHideRePass] = useState(true);
   const [modalAlert, setModalAlert] = useState(false);
   const [modalAlertNotMatch, setModalAlertNotMatch] = useState(false);
   const [messageAlert, setMessageAlert] = useState('');
   const [messageAlertNotMatch, setMessageAlertNotMatch] = useState('');
+  const dispatch = useDispatch();
 
   const changePassword = () => {
+    // console.log('user email', user);
     if (password == repassword) {
       const formData = {
         email: email,
@@ -69,8 +72,13 @@ const ChangePasswordFirst = (props) => {
   };
 
   const onCloseAlert = () => {
-    setModalAlert(false);
-    navigation.navigate('SignIn');
+    // console.log('close alert');
+    // console.log('navigation', navigation);
+    // console.log('navigation.navigate', navigation.navigate);
+    // setModalAlert(false);
+    // navigation.navigate('SignIn');
+    dispatch(logout());
+    // navigation.navigate('SignIn');
   };
   const onCloseAlertNotMatch = () => {
     setModalAlertNotMatch(false);
@@ -94,7 +102,9 @@ const ChangePasswordFirst = (props) => {
           );
         }}
         onPressLeft={() => {
-          navigation.goBack();
+          // navigation.goBack();
+          dispatch(logout());
+          // navigation.navigate('SignIn');
         }}
       />
       <ScrollView>

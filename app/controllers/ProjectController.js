@@ -51,6 +51,40 @@ class ProjectController {
       return Promise.reject(error);
     }
   };
+
+  data_unit = async (datas) => {
+    // console.log('datas for controler unit', datas);
+    try {
+      const paramData = {
+        headers: {
+          'content-type': 'application/json',
+          Authorization: `Bearer ${datas.token_firebases}`,
+        },
+        params: {
+          entity_cd: datas.entity_cd,
+          project_no: datas.project_no,
+          email: datas.email,
+        },
+      };
+      // const result = await httpClient.request(config);
+      const result = await axios.get(
+        `${API_URL_LOKAL}/home/common-unit`,
+        paramData,
+      );
+
+      // console.log('vardums result unit -->', result.data.success);
+
+      // ini ada isreset dalemnya, sementara dihilangin, buat biar ga nyangkut insert token firebase
+      if (result.data.success) {
+        return result.data;
+      } else {
+        return Promise.reject(result.data.message);
+      }
+    } catch (error) {
+      console.log('error common unit', error.response);
+      return Promise.reject(error);
+    }
+  };
 }
 
 export default new ProjectController();

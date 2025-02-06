@@ -47,9 +47,9 @@ const Navigator = (props) => {
   const language = useSelector(languageSelect);
   const { navigation, route } = props;
   // const {route} = props;
-  console.log('navigation from app for notif', props);
+  // console.log('navigation from app for notif', props);
   // const navigation = useNavigation();
-  console.log('route from app for notif', route);
+  // console.log('route from app for notif', route);
 
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
@@ -60,7 +60,7 @@ const Navigator = (props) => {
   const [isidataNotif, setisidataNotif] = useState([]);
   const [noti, setNoti] = useState(false);
 
-  console.log('user null ?? ', user);
+  // console.log('user null ?? ', user);
 
   useEffect(() => {
     // Hide screen loading
