@@ -1,3 +1,3 @@
-const getProjectUser = (state) => state.Dataproject.Dataproject.projectUser;
+const getProjectUser = (state) => state.Dataproject.projectUser;
 
 export default getProjectUser;

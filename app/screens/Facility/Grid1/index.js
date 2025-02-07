@@ -1,12 +1,12 @@
-import Icon from "@components/Icon";
-import Text from "@components/Text";
-import Image from "@components/Image";
-import { BaseColor, Images, useTheme } from "@config";
-import PropTypes from "prop-types";
-import React from "react";
-import { ImageBackground, TouchableOpacity, View } from "react-native";
-import styles from "./styles";
-import { Button } from "../../../components";
+import Icon from '@components/Icon';
+import Text from '@components/Text';
+import Image from '@components/Image';
+import { BaseColor, Images, useTheme } from '@config';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { ImageBackground, TouchableOpacity, View } from 'react-native';
+import styles from './styles';
+import { Button } from '../../../components';
 
 const Grid1 = ({
   // description,
@@ -34,7 +34,7 @@ const Grid1 = ({
           subhead
           bold
           numberOfLines={2}
-          style={{ marginTop: 20, textAlign: "center" }}
+          style={{ marginTop: 20, textAlign: 'center' }}
         >
           {title}
         </Text>
@@ -45,11 +45,11 @@ const Grid1 = ({
 
       <View
         style={{
-          alignItems: "center",
-          alignSelf: "center",
-          justifyContent: "center",
+          alignItems: 'center',
+          alignSelf: 'center',
+          justifyContent: 'center',
           height: 35,
-          width: "100%",
+          width: '100%',
           borderRadius: 15,
           marginTop: 10,
           backgroundColor: colors.primary,
@@ -59,7 +59,7 @@ const Grid1 = ({
           style={{
             fontSize: 10,
             color: BaseColor.whiteColor,
-            fontWeight: "bold",
+            fontWeight: 'bold',
           }}
         >
           Check Availability
@@ -70,7 +70,7 @@ const Grid1 = ({
 };
 
 Grid1.propTypes = {
-  description: PropTypes.string,
+  // description: PropTypes.string,
   title: PropTypes.string,
   style: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   image: PropTypes.node.isRequired,
@@ -82,11 +82,11 @@ Grid1.propTypes = {
 
 Grid1.defaultProps = {
   description: {},
-  title: "",
+  title: '',
   style: {},
   image: Images.eProduct,
-  costPrice: "",
-  salePrice: "",
+  costPrice: '',
+  salePrice: '',
   onPress: () => {},
   isFavorite: false,
 };

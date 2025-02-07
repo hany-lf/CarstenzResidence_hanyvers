@@ -42,7 +42,9 @@ const Categories = ({ style = {}, dataMenus }) => {
       (['Billing', 'Helpdesk', 'Store'].includes(name) ||
         item.isProject == 1) &&
       !projectUser &&
-      !unitUser
+      projectUser == undefined &&
+      !unitUser &&
+      unitUser == undefined
     ) {
       setAlertProject(true);
       return;

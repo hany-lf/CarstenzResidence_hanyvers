@@ -144,6 +144,8 @@ import AttachRenov from '@screens/LegalManagement/Renovation/Permit/PDFAttach';
 import SuratIzinKerja from '@screens/LegalManagement/SuratIzinKerja';
 import SuratIzinKeluarMasukBarang from '@screens/LegalManagement/SuratIzinKeluarMasukBarang';
 
+import DetailBilling from '@screens/Billing/DetailBilling';
+
 const Stack = createStackNavigator();
 
 export const WalletTabScreens = {
@@ -815,6 +817,11 @@ function MainStack() {
       <Stack.Screen
         name="AttachRenov"
         component={AttachRenov}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="DetailBilling"
+        component={DetailBilling}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

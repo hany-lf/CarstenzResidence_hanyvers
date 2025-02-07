@@ -2,6 +2,7 @@ import { actionTypes } from '../actions/ProjectActions';
 
 const initialState = {
   Dataproject: [],
+  projectUser: null,
 };
 
 const projectReducer = (state = initialState, action) => {
@@ -15,10 +16,11 @@ const projectReducer = (state = initialState, action) => {
     case actionTypes.CHOOSEN_PROJECT:
       return {
         ...state,
-        Dataproject: {
-          ...state.Dataproject,
-          projectUser: action.project, // Mengupdate projectUser saja
-        },
+        // Dataproject: {
+        //   ...state.Dataproject,
+        //   projectUser: action.project, // Mengupdate projectUser saja
+        // },
+        projectUser: action.projectUser,
       };
 
     default:

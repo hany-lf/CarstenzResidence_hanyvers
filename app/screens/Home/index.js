@@ -762,7 +762,7 @@ const Home = (props) => {
         edges={['right', 'top', 'left']}
       >
         {user == null || user == '' ? (
-          <Text>data user dihome null</Text>
+          <Text>No User at home</Text>
         ) : // <HeaderHome />
         null}
         <View>
@@ -1173,7 +1173,7 @@ const Home = (props) => {
                   // allowFontScaling={true}
                   style={{
                     // fontSize: 18,s
-                    fontSize: fontPixel(18),
+                    fontSize: fontPixel(14),
                     paddingVertical: pixelSizeVertical(10),
                     // marginVertical: 3,
                     fontFamily: 'DMSerifDisplay',
@@ -1185,21 +1185,20 @@ const Home = (props) => {
                 <Icon
                   name="star"
                   solid
-                  size={18}
+                  size={14}
                   color={colors.primary}
                   style={{ marginHorizontal: 5 }}
                 />
               </View>
 
               {/* ---- PILIH PROJECT DULU */}
-
               <View
                 style={{
                   // backgroundColor: '#141F40',
                   backgroundColor: colors.primary,
                   height: 40,
                   // width: '100%',
-                  width: '100%',
+                  width: 300,
                   justifyContent: 'center',
                   paddingHorizontal: 10,
                   borderRadius: 10,
@@ -1207,23 +1206,33 @@ const Home = (props) => {
                   marginBottom: 10,
                 }}
               >
-                <View style={{ flexDirection: 'row', paddingLeft: 10 }}>
-                  <Text
-                    adjustsFontSizeToFit={true}
-                    allowFontScaling={true}
-                    style={{
-                      color: '#fff',
-                      alignSelf: 'center',
-                      fontSize: 12,
-                      justifyContent: 'center',
-                      paddingRight: 10,
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    paddingLeft: 10,
 
-                      fontWeight: '800',
-                      fontFamily: 'KaiseiHarunoUmi',
-                    }}
-                  >
-                    Project
-                  </Text>
+                    // justifyContent: 'space-evenly',
+                    justifyContent: 'space-between', // Ubah dari 'space-evenly' ke 'flex-start'
+                  }}
+                >
+                  {text_project == '' ? null : (
+                    <Text
+                      adjustsFontSizeToFit={true}
+                      allowFontScaling={true}
+                      style={{
+                        color: '#fff',
+                        alignSelf: 'center',
+                        fontSize: 12,
+                        justifyContent: 'center',
+                        paddingRight: 10,
+
+                        fontWeight: '800',
+                        fontFamily: 'KaiseiHarunoUmi',
+                      }}
+                    >
+                      Project
+                    </Text>
+                  )}
                   <ModalSelector
                     style={{
                       justifyContent: 'center',
@@ -1232,9 +1241,9 @@ const Home = (props) => {
                     childrenContainerStyle={{
                       color: '#141F40',
                       alignSelf: 'center',
-                      fontSize: 16,
-                      // top: 10,
-                      // flex: 1,
+                      fontSize: 12,
+                      flexWrap: 'wrap',
+                      width: 190,
                       justifyContent: 'center',
                       fontWeight: '800',
                       fontFamily: 'KaiseiHarunoUmi',
@@ -1254,11 +1263,9 @@ const Home = (props) => {
                   >
                     <Text
                       style={{
-                        color: '#CDB04A',
+                        color: BaseColor.goldColor,
                         alignSelf: 'center',
-                        fontSize: 12,
-                        // top: 10,
-                        // flex: 1,
+                        fontSize: 11,
                         justifyContent: 'center',
                         fontWeight: '800',
                         fontFamily: 'KaiseiHarunoUmi',
@@ -1274,45 +1281,57 @@ const Home = (props) => {
                     solid
                     size={26}
                     // color={colors.primary}
-                    style={{ marginLeft: 5 }}
-                    color={'#CDB04A'}
+                    style={{
+                      marginLeft: 5,
+
+                      // Tambahkan flex: 1 untuk membuat ikon fleksibel
+                    }}
+                    color={BaseColor.goldColor}
                   />
                 </View>
               </View>
+
               {/* ---- PILIH PROJECT DULU */}
 
               {/* ---- PILIH UNIT */}
-              <View
-                style={{
-                  // backgroundColor: '#141F40',
-                  backgroundColor: colors.primary,
-                  height: 30,
-                  // width: '100%',
-                  width: '100%',
-                  justifyContent: 'center',
-                  paddingHorizontal: 10,
-                  borderRadius: 10,
-                }}
-              >
-                <View style={{ flexDirection: 'row', paddingLeft: 10 }}>
-                  <Text
-                    adjustsFontSizeToFit={true}
-                    allowFontScaling={true}
+              {text_project != '' ? (
+                <View
+                  style={{
+                    // backgroundColor: '#141F40',
+                    backgroundColor: colors.primary,
+                    height: 40,
+                    // width: '100%',
+                    width: '100%',
+                    justifyContent: 'center',
+                    paddingHorizontal: 10,
+                    borderRadius: 10,
+                  }}
+                >
+                  <View
                     style={{
-                      color: '#fff',
-                      alignSelf: 'center',
-                      fontSize: 12,
-                      justifyContent: 'center',
-                      paddingRight: 10,
-
-                      fontWeight: '800',
-                      fontFamily: 'KaiseiHarunoUmi',
+                      flexDirection: 'row',
+                      paddingLeft: 10,
+                      justifyContent: 'space-between',
                     }}
                   >
-                    Unit
-                  </Text>
+                    {text_lotno.lot_no ? (
+                      <Text
+                        adjustsFontSizeToFit={true}
+                        allowFontScaling={true}
+                        style={{
+                          color: '#fff',
+                          alignSelf: 'center',
+                          fontSize: 12,
+                          justifyContent: 'center',
+                          paddingRight: 10,
 
-                  {text_project != '' ? (
+                          fontWeight: '800',
+                          fontFamily: 'KaiseiHarunoUmi',
+                        }}
+                      >
+                        Unit
+                      </Text>
+                    ) : null}
                     <ModalSelector
                       style={{
                         justifyContent: 'center',
@@ -1343,12 +1362,13 @@ const Home = (props) => {
                     >
                       <Text
                         style={{
-                          color: '#CDB04A',
+                          color: BaseColor.goldColor,
                           alignSelf: 'center',
-                          fontSize: 16,
+                          // textAlign: 'left',
+                          fontSize: 12,
                           // top: 10,
                           // flex: 1,
-                          justifyContent: 'center',
+                          justifyContent: 'flex-start',
                           fontWeight: '800',
                           fontFamily: 'KaiseiHarunoUmi',
                         }}
@@ -1356,33 +1376,49 @@ const Home = (props) => {
                         {text_lotno.lot_no ? text_lotno.lot_no : 'Choose Unit'}
                       </Text>
                     </ModalSelector>
-                  ) : (
+                    <Icon
+                      name="caret-down"
+                      solid
+                      size={26}
+                      // color={colors.primary}
+                      style={{ marginLeft: 5 }}
+                      color={BaseColor.goldColor}
+                    />
+                  </View>
+                </View>
+              ) : (
+                <View
+                  style={{
+                    // backgroundColor: '#141F40',
+                    backgroundColor: colors.primary,
+                    height: 40,
+                    // width: '100%',
+                    width: '100%',
+                    justifyContent: 'center',
+                    paddingHorizontal: 10,
+                    borderRadius: 10,
+                  }}
+                >
+                  <View style={{ flexDirection: 'row', paddingLeft: 10 }}>
                     <Text
+                      adjustsFontSizeToFit={true}
+                      allowFontScaling={true}
                       style={{
-                        color: '#CDB04A',
+                        color: BaseColor.goldColor,
                         alignSelf: 'center',
-                        fontSize: 12,
-                        // top: 10,
-                        // flex: 1,
+                        fontSize: 11,
                         justifyContent: 'center',
+                        paddingRight: 10,
+
                         fontWeight: '800',
                         fontFamily: 'KaiseiHarunoUmi',
                       }}
                     >
                       Choose Project First
                     </Text>
-                  )}
-
-                  <Icon
-                    name="caret-down"
-                    solid
-                    size={26}
-                    // color={colors.primary}
-                    style={{ marginLeft: 5 }}
-                    color={'#CDB04A'}
-                  />
+                  </View>
                 </View>
-              </View>
+              )}
               {/* ---- PILIH UNIT */}
             </View>
           </View>

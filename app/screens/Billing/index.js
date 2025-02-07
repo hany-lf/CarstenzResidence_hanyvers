@@ -43,6 +43,8 @@ import numFormat from '../../components/numFormat';
 import CurrencyFormatter from '../../components/CurrencyFormatter';
 import ModalDropdown_debtor from '@components/ModalDropdown_debtor';
 import { ActivityIndicator } from 'react-native-paper';
+import getProjectUser from '../../selectors/ProjectUserSelector';
+import getUnitUser from '../../selectors/UnitUserSelector';
 
 const Billing = ({
   isCenter = false,
@@ -84,6 +86,10 @@ const Billing = ({
   const [defaultDebtor, setDefaultDebtor] = useState(false);
   const [defaultLotNo, setDefaultLotNo] = useState(false);
 
+  const projectUser = useSelector((state) => getProjectUser(state));
+
+  const unitUser = useSelector((state) => getUnitUser(state));
+
   const TABS = [
     {
       id: 1,
@@ -106,188 +112,38 @@ const Billing = ({
   }, [route?.params?.id]);
 
   // --- useeffect untuk project
+  // useEffect(() => {
+  //   if (project && project.data && project.data.length > 0) {
+  //     // console.log('entity useeffect di home', project.data[0].entity_cd);
+  //     setEntity(project.data[0].entity_cd);
+  //     setProjectNo(project.data[0].project_no);
+  //   }
+  // }, [project]);
+
   useEffect(() => {
-    if (project && project.data && project.data.length > 0) {
-      // console.log('entity useeffect di home', project.data[0].entity_cd);
-      setEntity(project.data[0].entity_cd);
-      setProjectNo(project.data[0].project_no);
+    if (projectUser) {
+      setEntity(projectUser.entity_cd);
+      setProjectNo(projectUser.project_no);
     }
-  }, [project]);
+  }, [projectUser]);
 
   // --- useeffect untuk update email/name
   useEffect(() => {
     if (user && user.userData) {
       // console.log('entity useeffect di home', user);
       setEmail(user.userData.email);
+      setDebtor(user.userData.userID); //userID ini saat user login adalah nomor tenant_no / debtor_acct
+      setDataDebtor(user.userData.userID);
     }
   }, [user]);
   // --- useeffect untuk update email/name
 
   useEffect(() => {
-    if (entity_cd && project_no && email) {
-      const dataparams = {
-        entity_cd: entity_cd,
-        project_no: project_no,
-        email: email,
-      };
-      getDebtor(dataparams);
+    if (unitUser) {
+      setDataLotno(unitUser);
+      setLotno(unitUser.lot_no);
     }
-  }, [entity_cd, project_no, email]);
-
-  //-----FOR GET DEBTOR
-  const getDebtor = async (data) => {
-    // console.log(object)
-    // console.log('data for debtor', data);
-
-    const formData = {
-      entity_cd: data.entity_cd,
-      project_no: data.project_no,
-      email: data.email,
-    };
-
-    // console.log('data for', formData);
-
-    const config = {
-      method: 'get',
-      url: API_URL_LOKAL + '/modules/cs/debtor',
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${user.Token}`,
-      },
-      params: formData,
-    };
-    await axios(config)
-      .then((res) => {
-        const datas = res.data;
-        const dataDebtors = datas.data;
-        // console.log('res debtor', dataDebtors);
-        // console.log('ada berapa length debtor', dataDebtors.length);
-
-        setDefaultDebtor(true);
-        setDebtor(dataDebtors[0].debtor_acct);
-        // setTenantNo(dataDebtors[0].tenant_no);
-
-        // setDebtor(dataDebtors[0].debtor_acct);
-        // setTenantNo(dataDebtors[0].tenant_no);
-        // settextDebtor(dataDebtors[0].debtor_acct + ' - ' + dataDebtors[0].name);
-        // settextNameDebtor(dataDebtors[0].name);
-
-        const params = {
-          entity_cd: data.entity_cd,
-          project_no: data.project_no,
-          tenant_no: dataDebtors[0].tenant_no,
-        };
-
-        // if (dataDebtors.length > 1) {
-        //   setDefaultDebtor(false);
-        // } else {
-        //   setDefaultDebtor(true);
-        //   setDebtor(dataDebtors[0].debtor_acct);
-        //   setTenantNo(dataDebtors[0].tenant_no);
-        //   settextDebtor(
-        //     dataDebtors[0].debtor_acct + ' - ' + dataDebtors[0].name,
-        //   );
-        //   settextNameDebtor(dataDebtors[0].name);
-        //   const params = {
-        //     entity_cd: data.entity_cd,
-        //     project_no: data.project_no,
-        //     tenant_no: dataDebtors[0].tenant_no,
-        //     email: data.email,
-        //   };
-        //   console.log('params for lotno default', params);
-
-        //   // setCheckedEntity(true);
-
-        getLot(params, '');
-        //   setSpinner(false);
-        //   // console.log('params for debtor tower default', params);
-        //   // getDebtor(params);
-        // }
-
-        setDataDebtor(dataDebtors);
-
-        // return res.data;
-      })
-      .catch((error) => {
-        console.log('error get tower api', error.response);
-        // alert('error get');
-      });
-  };
-
-  const handleChangeModal = ({ data, index }) => {
-    // console.log('index,', index);
-    // console.log('data chjange', data);
-    // data.data.map(dat => {
-    //   console.log('data for text debtor', dat);
-    //   if (dat) {
-
-    setDebtor(index.debtor_acct);
-    setTenantNo(index.tenant_no);
-    settextDebtor(index.debtor_acct + ' - ' + index.name);
-    settextNameDebtor(index.name);
-    getLot('', index.tenant_no);
-    //   }
-    // });
-    setSpinner(false);
-  };
-
-  const getLot = async (data, tenantno) => {
-    // console.log('tenant_no lot', data);
-    const params = {
-      entity_cd: entity_cd || data.entity_cd,
-      project_no: project_no || data.project_no,
-      email: email,
-      tenant_no: tenantno || data.tenant_no,
-    };
-
-    const config = {
-      method: 'get',
-      url: API_URL_LOKAL + '/modules/cs/lot-no',
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${user.Token}`,
-      },
-      params: params,
-    };
-
-    // console.log('url getlotno', API_URL_LOKAL + '/modules/cs/lot-no', params);
-
-    await axios(config)
-      .then((res) => {
-        // console.log('datalotno', res);
-        const datas = res.data;
-        const dataLotno = datas.data;
-        // console.log('datalotno', dataLotno);
-        setLotno(dataLotno[0].lot_no);
-        // console.log('ada berapa length debtor', dataLotno.length);
-        // console.log(object)
-
-        // if (dataLotno.length > 1) {
-        //   setDefaultLotNo(false);
-        // } else {
-        //   setDefaultLotNo(true);
-        //   setLotno(dataLotno[0].lot_no);
-        //   // this.setState({textLot: lot});
-        //   getFloor(dataLotno[0].lot_no);
-        //   setSpinner(false);
-        //   // console.log('params for debtor tower default', params);
-        //   // getDebtor(params);
-        // }
-
-        setDataLotno(dataLotno);
-
-        // return res.data;
-      })
-      .catch((error) => {
-        console.log('error get lotno api', error.response);
-        // alert('error get');
-      });
-  };
-
-  const handleLotChange = (lot) => {
-    // console.log('lot', lot);
-    setLotno(lot);
-  };
+  }, [unitUser]);
 
   useEffect(() => {
     // console.log('apakah ini terload', email);
@@ -307,7 +163,10 @@ const Billing = ({
     // );
     const config = {
       method: 'get',
-      url: API_URL_LOKAL + `/modules/billing/due-summary/${email}`,
+      // url: API_URL_LOKAL + `/modules/billing/due-summary/${email}`,
+      url:
+        API_URL_LOKAL +
+        `/modules/billing/current-summary/${entity_cd}/${project_no}/${debtor}/${textLot}/${email}`, //sementara untuk testing payment chanel dan detail
       headers: {
         'content-type': 'application/json',
         Authorization: `Bearer ${user.Token}`,

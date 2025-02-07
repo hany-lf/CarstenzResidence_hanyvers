@@ -11,9 +11,9 @@ const project_success = (Dataproject) => ({
   Dataproject,
 });
 
-const data_choosed_project = (project) => ({
+const data_choosed_project = (projectUser) => ({
   type: actionTypes.CHOOSEN_PROJECT,
-  project,
+  projectUser,
 });
 
 export const data_project = (datas) => async (dispatch) => {

@@ -1,31 +1,34 @@
-import Icon from "@components/Icon";
-import Text from "@components/Text";
-import { useTheme } from "@config";
-import React from "react";
-import { TouchableOpacity } from "react-native";
+import Icon from '@components/Icon';
+import Text from '@components/Text';
+import { useTheme } from '@config';
+import React from 'react';
+import { TouchableOpacity } from 'react-native';
 
 const CheckBox = ({
   onPress = () => {},
-  title = "",
-  checkedIcon = "check-square",
-  uncheckedIcon = "square",
+  title = '',
+  checkedIcon = '',
+  uncheckedIcon = '',
   checked = true,
+  style = {}, // Tambahkan props style
+  colorCheck = '',
+  styleText = {},
 }) => {
   const { colors } = useTheme();
   return (
     <TouchableOpacity
-      style={{ flexDirection: "row", alignItems: "center" }}
+      style={[{ flexDirection: 'row', alignItems: 'center' }, style]}
       onPress={onPress}
     >
+      <Text body1 style={[{ paddingHorizontal: 8 }, styleText]}>
+        {title}
+      </Text>
       <Icon
         solid={checked}
         name={checked ? checkedIcon : uncheckedIcon}
-        color={colors.text}
+        color={colorCheck == '' ? colors.text : colorCheck}
         size={24}
       />
-      <Text body1 style={{ paddingHorizontal: 8 }}>
-        {title}
-      </Text>
     </TouchableOpacity>
   );
 };

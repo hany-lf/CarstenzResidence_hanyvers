@@ -179,3 +179,6 @@ export { default as CounterSelectCheckout } from './Form/CounterSelectCheckout';
 
 //Svg
 export { default as Svg } from './Svg';
+
+//BlockLine
+export { default as BlockLine } from './BlockLine';

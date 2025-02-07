@@ -49,6 +49,7 @@ const TransactionExpand = ({
   tab_id = '',
   fin_month = '',
   fin_year = '',
+  key = '',
   ListTransactionProps = {
     icon: 'exchange-alt',
     name: name,
@@ -67,6 +68,7 @@ const TransactionExpand = ({
     tab_id: tab_id,
     fin_month: fin_month,
     fin_year: fin_year,
+    key: key,
   },
   isExpandInit = false,
 }) => {
@@ -145,7 +147,7 @@ const TransactionExpand = ({
         url_dummy_pakubuwono_demo + `/get-link-finpay`,
       );
       setUrlPayment(res.data.Data.link_url);
-      console.log('urlpayment finpay-->', res);
+      // console.log('urlpayment finpay-->', res);
       setLoading(false);
     } catch (error) {
       setErrors(error);
@@ -220,7 +222,17 @@ const TransactionExpand = ({
   };
 
   const onPayment = () => {
-    Linking.openURL(`${urlPayment}`);
+    // Linking.openURL(`${urlPayment}`);
+    const params = {
+      entity_cd: entity_cd,
+      project_no: project_no,
+      debtor_acct: debtor_acct,
+      doc_no: doc_no,
+      fin_month: fin_month,
+      fin_year: fin_year,
+    };
+    // navigation.navigate('DetailPaymentChanel', params);
+    navigation.navigate('DetailBilling', params);
   };
 
   return (
@@ -333,8 +345,13 @@ const TransactionExpand = ({
                 </View>
               </View>
               <View style={{ marginTop: 10 }}>
-                <Button style={{ height: 35 }} onPress={() => onPayment()}>
-                  <Text style={{ color: '#fff', fontSize: 14 }}>Payment</Text>
+                <Button
+                  style={{ height: 35 }}
+                  onPress={() => onPayment(datadetailDateDue)}
+                >
+                  <Text style={{ color: '#fff', fontSize: 14 }}>
+                    Detail Billing
+                  </Text>
                 </Button>
               </View>
             </View>
@@ -472,6 +489,7 @@ TransactionExpand.propTypes = {
   changeValue: PropTypes.string,
   currentTitle: PropTypes.string,
   currentValue: PropTypes.string,
+  key: PropTypes.string,
 };
 
 export default TransactionExpand;
