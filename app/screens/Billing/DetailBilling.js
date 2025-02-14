@@ -27,6 +27,8 @@ import { ActivityIndicator } from 'react-native-paper';
 import numFormattanpaRupiah from '@components/numFormattanpaRupiah';
 import { API_URL_LOKAL } from '@env';
 import getUser from '@selectors/UserSelectors';
+import getProjectUser from '@selectors/ProjectUserSelector';
+import getUnitUser from '@selectors/UnitUserSelector';
 import { useDispatch, useSelector } from 'react-redux';
 import { BlockLine } from '@components';
 import dummypaymentChannel from './dummy_paymentchannel.json';
@@ -42,6 +44,8 @@ const DetailBilling = ({ route }) => {
   const [dataDetail, setDetailData] = useState([]);
   const [isExpand, setIsExpand] = useState(false);
   const user = useSelector((state) => getUser(state));
+  const projectUser = useSelector((state) => getProjectUser(state));
+  const unitUser = useSelector((state) => getUnitUser(state));
 
   const [loading, setLoading] = useState(true);
   const [urlPayment, setUrlPayment] = useState('');
@@ -50,7 +54,11 @@ const DetailBilling = ({ route }) => {
   const [choosedPaymentChannel, setChoosedPaymentChannel] = useState(null);
 
   const detailData = async () => {
-    const { entity_cd, project_no, debtor_acct, fin_month, fin_year } = params;
+    const entity_cd = projectUser.entity_cd;
+    const project_no = projectUser.project_no;
+    const debtor_acct = params.debtor_acct;
+    const fin_month = params.fin_month;
+    const fin_year = params.fin_year;
     try {
       const config = {
         method: 'get',
@@ -63,29 +71,41 @@ const DetailBilling = ({ route }) => {
         },
       };
       const res = await axios(config);
+
       setDetailData(res.data.data);
 
       setLoading(false);
     } catch (error) {
-      console.log('error detail date due -->', error);
+      console.log('error detail blling -->', error.response);
       setErrors(error);
       // alert(hasError.toString());
     }
   };
 
   const getPaymentFinpay = async () => {
-    const url_dummy_pakubuwono_demo =
-      'https://dev.ifca.co.id:4414/apiifcares/api';
+    // const url_dummy_pakubuwono_demo =
+    //   'https://dev.ifca.co.id:4414/apiifcares/api';
+    setLoading(true);
 
     try {
-      // const res = await axios.get(API_URL_LOKAL + `/get-link-finpay`);
-      const res = await axios.get(
-        url_dummy_pakubuwono_demo + `/get-link-finpay`,
-      );
-      setUrlPayment(res.data.Data.link_url);
+      const config = {
+        method: 'get',
+        url:
+          API_URL_LOKAL +
+          `/modules/billing/payment-channel?entity_cd=${projectUser.entity_cd}&project_no=${projectUser.project_no}`,
+        headers: {
+          'content-type': 'application/json',
+          Authorization: `Bearer ${user.Token}`,
+        },
+      };
+      const res = await axios(config);
+
+      setPaymentChannel(res.data.data);
+
       // console.log('urlpayment finpay-->', res);
       setLoading(false);
     } catch (error) {
+      console.log('error payment channel-->', error.response);
       setErrors(error);
       // alert(hasError.toString());
     }
@@ -105,7 +125,8 @@ const DetailBilling = ({ route }) => {
 
   useEffect(() => {
     detailData();
-    setPaymentChannel(fetchPayment);
+    getPaymentFinpay();
+    // setPaymentChannel(fetchPayment);
   }, []);
 
   const clickExpand = () => {
@@ -127,6 +148,49 @@ const DetailBilling = ({ route }) => {
 
   const onCloseModal = () => {
     showModalSuccess(false);
+  };
+
+  const handleProccessPayment = async (items) => {
+    const itemsPayment = {
+      entity_cd: items.entity_cd,
+      project_no: items.project_no,
+      member_id: user.userData.userID,
+      member_name: user.userData.name,
+      member_phone: user.userData.Handphone,
+      email: user.userData.email,
+      lot_no: unitUser.lot_no,
+      doc_amt: math_total,
+      sof: items.sof_id,
+    };
+    console.log('items payment', itemsPayment);
+
+    try {
+      const config = {
+        method: 'post',
+        url: API_URL_LOKAL + `/modules/billing/process-billing`,
+        headers: {
+          'content-type': 'application/json',
+          Authorization: `Bearer ${user.Token}`,
+        },
+        data: itemsPayment,
+      };
+      const res = await axios(config);
+      console.log('res proccess payment-->', res);
+      if (res.data.success === true) {
+        Linking.openURL(res.data.data.redirecturl);
+      } else {
+        setMessage(res.data.message);
+        showModalSuccess(true);
+      }
+    } catch (error) {
+      console.log('error proccess payment-->', error.response.data);
+      if (error.response.data.success === false) {
+        setMessage(error.response.data.message);
+        showModalSuccess(true);
+      }
+      // console.log('error proccess payment-->', error.response);
+      setErrors(error);
+    }
   };
 
   return (
@@ -317,8 +381,9 @@ const DetailBilling = ({ route }) => {
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
               <TouchableOpacity
                 style={styles.boxPaymentChannel}
-                onPress={() =>
-                  console.log('item payment chanel', choosedPaymentChannel)
+                onPress={
+                  () => handleProccessPayment(choosedPaymentChannel)
+                  // console.log('item payment chanel', choosedPaymentChannel)
                 }
               >
                 <Text style={{ color: BaseColor.whiteColor, fontSize: 14 }}>
@@ -329,6 +394,61 @@ const DetailBilling = ({ route }) => {
           </View>
         )}
       </ScrollView>
+
+      <View>
+        <Modal
+          isVisible={modalSuccessVisible}
+          style={{ height: '100%' }}
+          onBackdropPress={() => showModalSuccess(false)}
+        >
+          <View
+            style={{
+              // flex: 1,
+
+              // alignContent: 'center',
+              padding: 10,
+              backgroundColor: '#fff',
+              // height: ,
+              borderRadius: 8,
+            }}
+          >
+            <View style={{ alignItems: 'center' }}>
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontWeight: 'bold',
+                  color: colors.primary,
+                  marginBottom: 10,
+                }}
+              >
+                {'Ups, Failed!'}
+              </Text>
+              <Text>{message}</Text>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+              }}
+            >
+              <Button
+                style={{
+                  marginTop: 10,
+                  // marginBottom: 10,
+
+                  width: 70,
+                  height: 40,
+                }}
+                onPress={() => onCloseModal()}
+              >
+                <Text style={{ fontSize: 13, color: BaseColor.whiteColor }}>
+                  {t('OK')}
+                </Text>
+              </Button>
+            </View>
+          </View>
+        </Modal>
+      </View>
     </SafeAreaView>
   );
 };

@@ -106,7 +106,7 @@ const TransactionExpand = ({
       };
       const res = await axios(config);
       setDetailDateDue(res.data.data);
-      // console.log('detail date due -->', res.data.data);
+      console.log('detail due date-->', res.data.data);
       setLoading(false);
     } catch (error) {
       console.log('error detail date due -->', error);
@@ -250,6 +250,7 @@ const TransactionExpand = ({
             borderBottomColor: colors.border,
           },
         ])}
+        key={key}
         {...ListTransactionProps}
         onPress={() => clickExpand()}
       />

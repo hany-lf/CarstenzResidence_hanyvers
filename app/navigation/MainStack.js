@@ -145,6 +145,7 @@ import SuratIzinKerja from '@screens/LegalManagement/SuratIzinKerja';
 import SuratIzinKeluarMasukBarang from '@screens/LegalManagement/SuratIzinKeluarMasukBarang';
 
 import DetailBilling from '@screens/Billing/DetailBilling';
+import PaymentPending from '@screens/Billing/PaymentPending';
 
 const Stack = createStackNavigator();
 
@@ -822,6 +823,11 @@ function MainStack() {
       <Stack.Screen
         name="DetailBilling"
         component={DetailBilling}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="PaymentPending"
+        component={PaymentPending}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

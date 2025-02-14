@@ -1,0 +1,28 @@
+{
+    "error": false,
+    "message": "Success",
+    "data": [
+        {
+            "id": 1,
+            "title_letter": "Renovation Permit",
+            "navigation_letter": "RenovationPermit"
+           
+        },
+        {
+            "id": 2,
+            "title_letter": "Fit Out",
+            "navigation_letter": "FitOut"
+        },
+        {
+            "id": 3,
+            "title_letter": "Surat Izin Kerja",
+            "navigation_letter": "SuratIzinKerja"
+        },
+        {
+            "id": 4,
+            "title_letter": "Surat Izin Keluar / Masuk Barang",
+            "navigation_letter": "SuratIzinKeluarMasukBarang"
+        }
+
+    ]
+}

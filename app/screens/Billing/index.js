@@ -163,10 +163,10 @@ const Billing = ({
     // );
     const config = {
       method: 'get',
-      // url: API_URL_LOKAL + `/modules/billing/due-summary/${email}`,
       url:
         API_URL_LOKAL +
-        `/modules/billing/current-summary/${entity_cd}/${project_no}/${debtor}/${textLot}/${email}`, //sementara untuk testing payment chanel dan detail
+        `/modules/billing/due-summary/${entity_cd}/${project_no}/${debtor}/${textLot}/${email}`,
+
       headers: {
         'content-type': 'application/json',
         Authorization: `Bearer ${user.Token}`,
@@ -254,6 +254,35 @@ const Billing = ({
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
+        <TouchableOpacity onPress={() => navigation.navigate('PaymentPending')}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              alignSelf: 'center',
+              alignContent: 'center',
+              marginVertical: 25,
+            }}
+          >
+            <Icon
+              name="credit-card"
+              size={20}
+              color={colors.primary}
+              style={{ marginRight: 10 }}
+            />
+            <Text style={{ fontSize: 14, color: colors.primary }}>
+              Payment Pending
+            </Text>
+            <Icon
+              name="angle-right"
+              size={20}
+              color={colors.primary}
+              style={{ marginLeft: 10 }}
+            />
+          </View>
+        </TouchableOpacity>
+
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           {TABS.map((item, index) => (
             <View key={index} style={{ flex: 1, paddingHorizontal: 20 }}>
