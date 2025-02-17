@@ -26,7 +26,7 @@ const ListTransaction = ({
   debtor_acct = '',
   fin_month = '',
   fin_year = '',
-  key = '',
+  keys = '',
   onPress = () => {},
 }) => {
   const { colors } = useTheme();
@@ -35,7 +35,7 @@ const ListTransaction = ({
     <TouchableOpacity
       style={[styles.container, style]}
       onPress={onPress}
-      key={key}
+      key={keys}
     >
       {/* <View style={[styles.image, {backgroundColor: colors.primaryLight}]}>
         <Icon name={icon} size={24} solid color={BaseColor.whiteColor} />
@@ -81,7 +81,7 @@ ListTransaction.propTypes = {
   price: PropTypes.string,
   lot_no: PropTypes.string,
   onPress: PropTypes.func,
-  key: PropTypes.string,
+  keys: PropTypes.string,
 };
 
 export default ListTransaction;

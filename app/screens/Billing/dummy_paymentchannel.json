@@ -6,65 +6,17 @@
             "rowID": "1",
             "entity_cd": "01",
             "project_no": "02",
-            "sof_id": "vabca",
-            "sof_name": "Virtual Account BCA",
-            "status": "Y"
-        },
-        {
-            "rowID": "2",
-            "entity_cd": "01",
-            "project_no": "02",
-            "sof_id": "vabni",
-            "sof_name": "Virtual Account BNI",
-            "status": "Y"
-        },
-        {
-            "rowID": "3",
-            "entity_cd": "01",
-            "project_no": "02",
-            "sof_id": "vabri",
-            "sof_name": "Virtual Account BRI",
-            "status": "Y"
-        },
-        {
-            "rowID": "4",
-            "entity_cd": "01",
-            "project_no": "02",
-            "sof_id": "vabsi",
-            "sof_name": "Virtual Account BSI",
-            "status": "Y"
-        },
-        {
-            "rowID": "5",
-            "entity_cd": "01",
-            "project_no": "02",
-            "sof_id": "vamandiri",
-            "sof_name": "Virtual Account Mandiri",
-            "status": "Y"
-        },
-        {
-            "rowID": "6",
-            "entity_cd": "01",
-            "project_no": "02",
-            "sof_id": "vamuamalat",
-            "sof_name": "Virtual Account Muamalat",
-            "status": "Y"
-        },
-        {
-            "rowID": "7",
-            "entity_cd": "01",
-            "project_no": "02",
-            "sof_id": "vapermata",
-            "sof_name": "Virtual Account Permata",
-            "status": "Y"
-        },
-        {
-            "rowID": "15",
-            "entity_cd": "01",
-            "project_no": "02",
-            "sof_id": "idm",
-            "sof_name": "Indomaret",
-            "status": "Y"
+            "member_id": "10021",
+            "member_name": "Shinta Juliastuty",
+            "mobile_number": "+6281234567890",
+            "email_addr": "haniyya.ulfah@ifca.co.id",
+            "lot_no": "F2621",
+            "order_id": "INV_250214_F2621_c3kV2B",
+            "order_descs":"Billing #F2621(Shinta Juliastuty)",
+            "order_total": "1063260.0000",
+            "redirect_url": "https://devo.finpay.id/pg/payment/card/v2/access/029fb089047b12888d1225dde67b5ba99a55f5927c2a50578ace59c2b85c5774",
+            "status_payment": "Pending"
         }
+        
     ]
 }

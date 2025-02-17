@@ -318,7 +318,7 @@ const Billing = ({
                     <ListTransactionExpand
                       onPress={() => navigation.navigate('FHistoryDetail')}
                       // key={item.id}
-                      key={key}
+                      keys={key}
                       tower={item.tower}
                       name={item.name}
                       trx_type={item.trx_type}
@@ -385,7 +385,7 @@ const Billing = ({
                 <ListTransactionExpand
                   onPress={() => navigation.navigate('FHistoryDetail')}
                   // key={item.id}
-                  key={key}
+                  keys={key}
                   tower={item.tower}
                   name={item.name}
                   trx_type={item.trx_type}

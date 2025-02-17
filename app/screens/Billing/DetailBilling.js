@@ -31,7 +31,7 @@ import getProjectUser from '@selectors/ProjectUserSelector';
 import getUnitUser from '@selectors/UnitUserSelector';
 import { useDispatch, useSelector } from 'react-redux';
 import { BlockLine } from '@components';
-import dummypaymentChannel from './dummy_paymentchannel.json';
+
 const DetailBilling = ({ route }) => {
   const { colors } = useTheme();
   const [params, setParams] = useState(route?.params);
@@ -49,7 +49,7 @@ const DetailBilling = ({ route }) => {
 
   const [loading, setLoading] = useState(true);
   const [urlPayment, setUrlPayment] = useState('');
-  const fetchPayment = dummypaymentChannel.data;
+
   const [paymentChannel, setPaymentChannel] = useState([]);
   const [choosedPaymentChannel, setChoosedPaymentChannel] = useState(null);
 
